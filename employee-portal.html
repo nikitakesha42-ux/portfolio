@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Portal · Portfolio Nikitina A.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="case-header">
+    <a href="index.html" data-en="← Employee portal" data-no="← Ansattportal">← Employee portal</a>
+    <div class="header-right">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="no" aria-pressed="false">NO</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="case-banner">
+    <img src="assets/case/ep-hero.png" alt="Employee Portal" />
+  </div>
+
+  <main class="case">
+    <p class="lede" style="margin-bottom: 48px"
+       data-en="Designing an employee portal that helps people understand their equity, with confidence and ease. My goal was to turn a complex, finance-heavy product into something that feels approachable, clear and trustworthy."
+       data-no="Designe en ansattportal som hjelper folk å forstå aksjene sine med trygghet og letthet. Målet var å gjøre et komplekst, finanstungt produkt til noe som føles tilgjengelig, tydelig og pålitelig.">
+      Designing an employee portal that helps people understand their equity, with confidence and ease. My goal was to turn a complex, finance-heavy product into something that feels approachable, clear and trustworthy.
+    </p>
+
+    <div class="toc">
+      <h3 data-en="Contents" data-no="Innhold">Contents</h3>
+      <ol>
+        <li><a href="#overview" data-en="Overview" data-no="Oversikt">Overview</a></li>
+        <li><a href="#challenges" data-en="Core Challenges" data-no="Kjerneutfordringer">Core Challenges</a></li>
+        <li><a href="#solutions" data-en="Key Solutions" data-no="Nøkkelløsninger">Key Solutions</a></li>
+        <li><a href="#research" data-en="Research & Testing" data-no="Research og testing">Research &amp; Testing</a></li>
+        <li><a href="#principles" data-en="Design Principles" data-no="Designprinsipper">Design Principles</a></li>
+        <li><a href="#outcomes" data-en="Outcomes" data-no="Resultater">Outcomes</a></li>
+      </ol>
+    </div>
+
+    <section id="overview">
+      <h2><span class="num">01</span><span data-en="Overview" data-no="Oversikt">Overview</span></h2>
+      <dl class="meta-grid">
+        <dt data-en="Product" data-no="Produkt">Product</dt>
+        <dd data-en="Optio Employee Equity Portal" data-no="Optio aksjeportal for ansatte">Optio Employee Equity Portal</dd>
+        <dt data-en="Users" data-no="Brukere">Users</dt>
+        <dd data-en="Employees from startups to large enterprises receiving equity-based compensation" data-no="Ansatte fra oppstartsselskaper til store virksomheter med aksjebasert kompensasjon">Employees from startups to large enterprises receiving equity-based compensation</dd>
+        <dt data-en="My role" data-no="Min rolle">My role</dt>
+        <dd>
+          <span class="tags">
+            <span class="tag" data-en="Lead Product Designer" data-no="Lead produktdesigner">Lead Product Designer</span>
+            <span class="tag" data-en="Visual design" data-no="Visuell design">Visual design</span>
+            <span class="tag" data-en="Interaction design" data-no="Interaksjonsdesign">Interaction design</span>
+          </span>
+        </dd>
+        <dt data-en="Team" data-no="Team">Team</dt>
+        <dd data-en="Frontend, Backend, Finance, Sales, Customer Success" data-no="Frontend, backend, finans, salg, Customer Success">Frontend, Backend, Finance, Sales, Customer Success</dd>
+        <dt data-en="Methods" data-no="Metoder">Methods</dt>
+        <dd>
+          <span class="tags">
+            <span class="tag">Research</span>
+            <span class="tag">Prototyping</span>
+          </span>
+        </dd>
+        <dt data-en="Duration" data-no="Varighet">Duration</dt>
+        <dd data-en="~2 years (multiple feature launches & iterations)" data-no="~2 år (flere funksjonslanseringer og iterasjoner)">~2 years (multiple feature launches &amp; iterations)</dd>
+      </dl>
+
+      <h3 data-en="Problem summary" data-no="Problemoppsummering">Problem summary</h3>
+      <p data-en="Employees interact with their equity only a few times a year, yet are asked to make important financial decisions across instruments, tax rules, trading windows and vesting schedules. Most don't fully understand the terms, the timing or the trade-offs — and a single mistake can be costly and hard to undo."
+         data-no="Ansatte er innom aksjene sine bare noen få ganger i året, men må likevel ta viktige finansielle beslutninger på tvers av instrumenter, skatteregler, handelsvinduer og vestingplaner. De fleste forstår ikke fullt ut vilkårene, tidspunktene eller avveiningene — og én feil kan være kostbar og vanskelig å reversere.">
+        Employees interact with their equity only a few times a year, yet are asked to make important financial decisions across instruments, tax rules, trading windows and vesting schedules. Most don't fully understand the terms, the timing or the trade-offs — and a single mistake can be costly and hard to undo.
+      </p>
+
+      <h3 data-en="How I framed it" data-no="Hvordan jeg rammet det inn">How I framed it</h3>
+      <p data-en="Most equity tools are designed for the people who work with equity every day — finance, HR, plan administrators. The portal was being used by everyone else: regular employees who log in twice a year and need to remember everything from scratch each time. I treated this as a re-engagement problem, not a finance UI problem. Every interaction had to assume the user had forgotten the previous one, and the dashboard had to answer two questions before anything else: what do I have right now, and what should I do next?"
+         data-no="De fleste aksjeverktøy er designet for folk som jobber med aksjer hver dag — finans, HR, plan-administratorer. Portalen ble brukt av alle de andre: vanlige ansatte som logger inn to ganger i året og må huske alt fra bunnen hver gang. Jeg behandlet dette som et re-engasjement-problem, ikke et finans-UI-problem. Hver interaksjon måtte anta at brukeren hadde glemt den forrige, og dashbordet måtte svare på to spørsmål før noe annet: hva har jeg akkurat nå, og hva bør jeg gjøre videre?">
+        Most equity tools are designed for the people who work with equity every day — finance, HR, plan administrators. The portal was being used by everyone else: regular employees who log in twice a year and need to remember everything from scratch each time. I treated this as a re-engagement problem, not a finance UI problem. Every interaction had to assume the user had forgotten the previous one, and the dashboard had to answer two questions before anything else: what do I have right now, and what should I do next?
+      </p>
+
+      <h3 data-en="Goal" data-no="Mål">Goal</h3>
+      <ul>
+        <li data-en="Build a portal that explains equity in context, in plain language — without rewarding users for being financially literate." data-no="Bygg en portal som forklarer aksjer i kontekst, på et tydelig språk — uten å belønne brukere for å være finansielt skolerte.">Build a portal that explains equity in context, in plain language — without rewarding users for being financially literate.</li>
+        <li data-en="Guide important actions safely, with eligibility and consequences visible before the user commits." data-no="Veiled viktige handlinger trygt, med rettigheter og konsekvenser synlige før brukeren forplikter seg.">Guide important actions safely, with eligibility and consequences visible before the user commits.</li>
+        <li data-en="Build trust through clarity, transparency and a calmer visual tone than typical fintech." data-no="Bygg tillit gjennom klarhet, transparens og et roligere visuelt uttrykk enn typisk fintech.">Build trust through clarity, transparency and a calmer visual tone than typical fintech.</li>
+      </ul>
+    </section>
+
+    <section id="challenges">
+      <h2><span class="num">02</span><span data-en="Core Challenges" data-no="Kjerneutfordringer">Core Challenges</span></h2>
+      <p class="muted"
+         data-en="The portal was originally built for stock options. As more instrument types, country-specific tax rules and audience profiles entered the platform, the experience needed to scale — not just visually, but cognitively."
+         data-no="Portalen ble opprinnelig bygget for opsjoner. Etter hvert som flere instrumenttyper, landspesifikke skatteregler og brukerprofiler kom inn på plattformen, måtte opplevelsen skalere — ikke bare visuelt, men kognitivt.">
+        The portal was originally built for stock options. As more instrument types, country-specific tax rules and audience profiles entered the platform, the experience needed to scale — not just visually, but cognitively.
+      </p>
+      <ul>
+        <li data-en="Multiple instruments, one experience: complex equity types stacked into a single UI risked overwhelming users." data-no="Flere instrumenter, én opplevelse: komplekse aksjetyper stablet i ett UI risikerte å overvelde brukerne.">Multiple instruments, one experience: complex equity types stacked into a single UI risked overwhelming users.</li>
+        <li data-en="Low clarity on what I have now versus what I'll get later." data-no="Lav klarhet i hva jeg har nå versus hva jeg får senere.">Low clarity on what I have now versus what I'll get later.</li>
+        <li data-en="Equity actions are high-risk: exercising, sales and acceptance flows had to feel safe." data-no="Aksjehandlinger er høyrisiko: exercise, salg og aksept-flyter måtte føles trygge.">Equity actions are high-risk: exercising, sales and acceptance flows had to feel safe.</li>
+        <li data-en="Customisation at scale: clients wanted their own branding, wording and process variations." data-no="Tilpasning i skala: kunder ville ha sin egen branding, ordlyd og prosessvariasjoner.">Customisation at scale: clients wanted their own branding, wording and process variations.</li>
+        <li data-en="Desktop-first legacy, mobile catching up: usage data showed growing mobile traffic, while mobile was a neglected afterthought." data-no="Desktop-først-arv, mobil tar innpå: bruksdata viste økende mobiltrafikk, mens mobilopplevelsen var en neglisjert ettertanke.">Desktop-first legacy, mobile catching up: usage data showed growing mobile traffic, while mobile was a neglected afterthought.</li>
+      </ul>
+    </section>
+
+    <section id="solutions">
+      <h2><span class="num">03</span><span data-en="Key Solutions" data-no="Nøkkelløsninger">Key Solutions</span></h2>
+      <p class="muted"
+         data-en="The portal was redesigned as a set of flexible, scalable building blocks. Each piece focused on making complex equity easier to interpret and act on — guiding people through what was theirs and what to consider next."
+         data-no="Portalen ble redesignet som et sett fleksible, skalerbare byggeklosser. Hver del fokuserte på å gjøre kompleks aksjeinformasjon enklere å tolke og handle på — å lede folk gjennom det som er deres og hva de bør vurdere som neste steg.">
+        The portal was redesigned as a set of flexible, scalable building blocks. Each piece focused on making complex equity easier to interpret and act on — guiding people through what was theirs and what to consider next.
+      </p>
+
+      <h3 data-en="Multi-instrument Dashboard & My Overview" data-no="Multi-instrument Dashboard og Min oversikt">Multi-instrument Dashboard &amp; My Overview</h3>
+      <p data-en="The original dashboard assumed everyone held a single instrument type. As soon as employees had a mix — options, RSUs, shares, savings — the page got crowded and the totals stopped meaning the same thing for everyone. I redesigned the dashboard around what the user holds, not what the system can store. The three views (Per Year, Per Plan, Per Instrument) emerged from research as the three questions employees actually ask: how does this change over time, what plan does it belong to, and what kind of equity is it?"
+         data-no="Det opprinnelige dashbordet antok at alle hadde én instrumenttype. Så snart ansatte hadde en blanding — opsjoner, RSU-er, aksjer, sparing — ble siden trang og totalene betydde ikke det samme for alle. Jeg redesignet dashbordet rundt hva brukeren har, ikke hva systemet kan lagre. De tre visningene (per år, per plan, per instrument) vokste fram fra research som de tre spørsmålene ansatte faktisk stiller: hvordan endrer dette seg over tid, hvilken plan tilhører det, og hva slags egenkapital er det?">
+        The original dashboard assumed everyone held a single instrument type. As soon as employees had a mix — options, RSUs, shares, savings — the page got crowded and the totals stopped meaning the same thing for everyone. I redesigned the dashboard around what the user holds, not what the system can store. The three views (Per Year, Per Plan, Per Instrument) emerged from research as the three questions employees actually ask: how does this change over time, what plan does it belong to, and what kind of equity is it?
+      </p>
+      <figure class="figure">
+        <img src="assets/case/ep-dashboard.png" alt="Multi-instrument dashboard" />
+        <figcaption data-en="Dashboard with vesting overview, three breakdown views, share price card and quick actions."
+                    data-no="Dashboard med vestingoversikt, tre breakdown-visninger, aksjekurs-kort og hurtighandlinger.">
+          Dashboard with vesting overview, three breakdown views, share price card and quick actions.
+        </figcaption>
+      </figure>
+
+      <h3 data-en="Share Price Simulator" data-no="Aksjekurs-simulator">Share Price Simulator</h3>
+      <p data-en="The earlier simulator was a hover-state on the share price card — easy to miss and easy to misread. In testing, employees treated it as marketing dressing rather than something they could actually use. I argued the simulator should be its own destination, not a flourish, and that the entry point on the dashboard should make the action explicit ('Simulate'). Pulling it onto a dedicated page also gave us room to show the controls that matter: scenario, time horizon, and a clear comparison against the user's actual equity."
+         data-no="Den tidligere simulatoren var en hover-tilstand på aksjekurs-kortet — lett å overse og lett å mistolke. I testing behandlet ansatte den som markedspynt heller enn noe de faktisk kunne bruke. Jeg argumenterte for at simulatoren skulle være sin egen destinasjon, ikke en pynt, og at inngangspunktet på dashbordet skulle gjøre handlingen eksplisitt («Simulér»). Å trekke den ut til en dedikert side ga oss også plass til å vise kontrollene som betyr noe: scenario, tidshorisont, og en tydelig sammenligning mot brukerens faktiske egenkapital.">
+        The earlier simulator was a hover-state on the share price card — easy to miss and easy to misread. In testing, employees treated it as marketing dressing rather than something they could actually use. I argued the simulator should be its own destination, not a flourish, and that the entry point on the dashboard should make the action explicit ("Simulate"). Pulling it onto a dedicated page also gave us room to show the controls that matter: scenario, time horizon, and a clear comparison against the user's actual equity.
+      </p>
+      <figure class="figure">
+        <img src="assets/case/ep-simulator.png" alt="Share price simulator" />
+        <figcaption data-en="Share price simulator: slider, scenarios, simulated value and impact on actual equity."
+                    data-no="Aksjekurs-simulator: glider, scenarier, simulert verdi og påvirkning på faktisk egenkapital.">
+          Share price simulator: slider, scenarios, simulated value and impact on actual equity.
+        </figcaption>
+      </figure>
+
+      <h3 data-en="Equity Actions & Processes" data-no="Aksjehandlinger og prosesser">Equity Actions &amp; Processes</h3>
+      <p data-en="Equity actions are rare but consequential — exercising options, selling shares, accepting an award, choosing a savings rate. The previous flows were technically correct but emotionally tense: dense forms, internal jargon, and confirm buttons that didn't really tell you what you were committing to. I designed each action as a short, ordered conversation: one decision per step, the consequence visible inline, and the user's own language ('purchase share', not 'subscribe to issuance') instead of internal terminology. Every step shows what's about to change before you confirm — there are no irreversible last clicks."
+         data-no="Aksjehandlinger er sjeldne, men konsekvensfylte — å exercise opsjoner, selge aksjer, akseptere en tildeling, velge en sparingsrate. De tidligere flytene var teknisk korrekte, men emosjonelt anspente: tette skjemaer, internt fagspråk og bekreftknapper som egentlig ikke fortalte hva du forpliktet deg til. Jeg designet hver handling som en kort, sekvensiell samtale: én beslutning per steg, konsekvensen synlig inline, og brukerens eget språk («kjøp aksje», ikke «tegn deg for emisjon») i stedet for intern terminologi. Hvert steg viser hva som er i ferd med å endre seg før du bekrefter — det finnes ingen ugjenkallelige siste-klikk.">
+        Equity actions are rare but consequential — exercising options, selling shares, accepting an award, choosing a savings rate. The previous flows were technically correct but emotionally tense: dense forms, internal jargon, and confirm buttons that didn't really tell you what you were committing to. I designed each action as a short, ordered conversation: one decision per step, the consequence visible inline, and the user's own language ("purchase share", not "subscribe to issuance") instead of internal terminology. Every step shows what's about to change before you confirm — there are no irreversible last clicks.
+      </p>
+      <figure class="figure">
+        <img src="assets/case/ep-equity-actions.png" alt="Equity actions and processes" />
+        <figcaption data-en="Action flows: each step shows what's about to happen and what the user can change before confirming."
+                    data-no="Handlingsflyter: hvert steg viser hva som er i ferd med å skje og hva brukeren kan endre før bekreftelse.">
+          Action flows: each step shows what's about to happen and what the user can change before confirming.
+        </figcaption>
+      </figure>
+
+      <h3 data-en="Custom Overviews (Configurable Grouping)" data-no="Tilpassede oversikter (konfigurerbar gruppering)">Custom Overviews (Configurable Grouping)</h3>
+      <p data-en="The same configurable grouping pattern was reused on the participant side — letting clients define how participants see their portfolio across plans, units and time."
+         data-no="Det samme konfigurerbare grupperingsmønsteret ble gjenbrukt på deltakersiden — slik at kunder kan definere hvordan deltakere ser porteføljen sin på tvers av planer, enheter og tid.">
+        The same configurable grouping pattern was reused on the participant side — letting clients define how participants see their portfolio across plans, units and time.
+      </p>
+      <figure class="figure">
+        <img src="assets/case/custom-overviews.png" alt="Configurable grouping" />
+      </figure>
+
+      <h3 data-en="Education, Content & Branding" data-no="Opplæring, innhold og branding">Education, Content &amp; Branding</h3>
+      <p data-en="Equity is a learning curve and a localisation problem at the same time — every country has different terminology, every employer wants their own voice. Rather than write static help articles, I designed education as a layer that sits inside the product: tooltips appear at the term, examples appear at the calculation, deeper reading is one step away when the user wants it. A separate wording system lets clients adjust tone, labels and explanations without designers being in the loop, and brand theming adopts the client's primary colours while keeping the clarity and accessibility of the base system intact."
+         data-no="Aksjer er en læringskurve og et lokaliseringsproblem på samme tid — hvert land har ulik terminologi, hver arbeidsgiver vil ha sin egen stemme. I stedet for å skrive statiske hjelpeartikler, designet jeg opplæring som et lag som ligger inne i produktet: tooltips dukker opp ved begrepet, eksempler dukker opp ved beregningen, dypere lesing er ett steg unna når brukeren vil ha det. Et separat ord-system lar kunder justere tone, etiketter og forklaringer uten at designere er involvert, og brand theming tar i bruk kundens primærfarger samtidig som klarheten og tilgjengeligheten i basesystemet beholdes.">
+        Equity is a learning curve and a localisation problem at the same time — every country has different terminology, every employer wants their own voice. Rather than write static help articles, I designed education as a layer that sits inside the product: tooltips appear at the term, examples appear at the calculation, deeper reading is one step away when the user wants it. A separate wording system lets clients adjust tone, labels and explanations without designers being in the loop, and brand theming adopts the client's primary colours while keeping the clarity and accessibility of the base system intact.
+      </p>
+      <figure class="figure">
+        <img src="assets/case/ep-education.png" alt="Education content and branding" />
+        <figcaption data-en="Editable content blocks, tooltips and brand theming controls — admins can shape the participant experience without engineering."
+                    data-no="Redigerbare innholdsblokker, tooltips og brand theming-kontroller — admins kan forme deltakeropplevelsen uten utviklere.">
+          Editable content blocks, tooltips and brand theming controls — admins can shape the participant experience without engineering.
+        </figcaption>
+      </figure>
+
+      <h3 data-en="Feedback Loop & Mobile" data-no="Tilbakemeldingssløyfe og mobil">Feedback Loop &amp; Mobile</h3>
+      <p data-en="An in-portal feedback tool created a direct line from participants to the product team, surfacing real qualitative insights every day. With usage growing on mobile, design also shifted from desktop-first toward mobile, speeding up later delivery."
+         data-no="Et innebygd tilbakemeldingsverktøy skapte en direkte linje fra deltakere til produktteamet og avdekket reelle kvalitative innsikter daglig. Med voksende mobilbruk skiftet designet også fra desktop-først mot mobil, og fartet opp senere leveranse.">
+        An in-portal feedback tool created a direct line from participants to the product team, surfacing real qualitative insights every day. With usage growing on mobile, design also shifted from desktop-first toward mobile, speeding up later delivery.
+      </p>
+      <figure class="figure">
+        <img src="assets/case/ep-feedback.png" alt="Feedback loop and mobile views" />
+        <figcaption data-en="In-portal feedback collection, plus mobile dashboard and action flows."
+                    data-no="Innebygd tilbakemeldingsinnsamling, pluss mobil-dashboard og handlingsflyter.">
+          In-portal feedback collection, plus mobile dashboard and action flows.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section id="research">
+      <h2><span class="num">04</span><span data-en="Research & Testing" data-no="Research og testing">Research &amp; Testing</span></h2>
+      <p class="muted"
+         data-en="Most decisions were grounded in research — moderated and unmoderated, internal and external, sometimes scrappy and always close to the people actually using the portal."
+         data-no="De fleste beslutningene ble forankret i research — moderert og umoderert, internt og eksternt, noen ganger lett og alltid nært de som faktisk bruker portalen.">
+        Most decisions were grounded in research — moderated and unmoderated, internal and external, sometimes scrappy and always close to the people actually using the portal.
+      </p>
+
+      <h3 data-en="Card sorting & information architecture testing" data-no="Card sorting og informasjonsarkitektur-testing">Card sorting &amp; information architecture testing</h3>
+      <figure class="figure">
+        <img src="assets/case/ep-card-sorting.png" alt="Card sorting and IA testing" />
+      </figure>
+
+      <h3 data-en="Moderated and unmoderated testing" data-no="Moderert og umoderert testing">Moderated and unmoderated testing</h3>
+      <figure class="figure">
+        <img src="assets/case/ep-usertesting.png" alt="Moderated and unmoderated user testing" />
+        <figcaption data-en="Internally and through a User Testing platform — same prototypes, two angles."
+                    data-no="Internt og via en User Testing-plattform — samme prototyper, to vinkler.">
+          Internally and through a User Testing platform — same prototypes, two angles.
+        </figcaption>
+      </figure>
+
+      <h3 data-en="Lean UX Canvas & Hypothesis mapping" data-no="Lean UX Canvas og hypotesekartlegging">Lean UX Canvas &amp; Hypothesis mapping</h3>
+      <figure class="figure">
+        <img src="assets/case/ep-lean-canvas.png" alt="Lean UX canvas and hypothesis mapping" />
+      </figure>
+
+      <h3 data-en="Prototype tests (desktop + mobile)" data-no="Prototype-tester (desktop + mobil)">Prototype tests (desktop + mobile)</h3>
+      <figure class="figure">
+        <img src="assets/case/ep-prototypes.png" alt="Prototype tests" />
+      </figure>
+
+      <h3 data-en="Feedback collection from Sales demos and Customer Success calls" data-no="Tilbakemeldinger fra salgsdemoer og Customer Success-samtaler">Feedback collection from Sales demos and Customer Success calls</h3>
+      <figure class="figure">
+        <img src="assets/case/ep-sales-feedback.png" alt="Feedback from sales and CS calls" />
+      </figure>
+
+      <h3 data-en="Final usability test pass" data-no="Siste usability-test før implementering">Final usability test pass</h3>
+      <figure class="figure">
+        <img src="assets/case/ep-final-test.png" alt="Final usability test" />
+        <figcaption data-en="A last test pass before implementation — used to validate flows and copy."
+                    data-no="Siste test før implementering — brukt til å validere flyter og copy.">
+          A last test pass before implementation — used to validate flows and copy.
+        </figcaption>
+      </figure>
+
+      <h3 data-en="Key patterns we found" data-no="Nøkkelmønstre vi fant">Key patterns we found</h3>
+      <ul>
+        <li data-en="People log in infrequently and mostly want to know two things: 'What do I have now?' and 'What should I do next?'" data-no="Folk logger inn sjelden og vil mest av alt vite to ting: «Hva har jeg nå?» og «Hva bør jeg gjøre nå?»">People log in infrequently and mostly want to know two things: "What do I have now?" and "What should I do next?"</li>
+        <li data-en="Even financial-literate users assumed the worst about equity terms — examples and visual metaphors helped." data-no="Selv finansielt skolerte brukere antok det verste om aksjevilkår — eksempler og visuelle metaforer hjalp.">Even financial-literate users assumed the worst about equity terms — examples and visual metaphors helped.</li>
+        <li data-en="Visual polish read as credibility, but understanding still required real plain-language explanations." data-no="Visuell polering ble lest som troverdighet, men forståelse krevde fortsatt reelle, tydelige forklaringer.">Visual polish read as credibility, but understanding still required real plain-language explanations.</li>
+        <li data-en="Tooltips were appreciated, but most users only opened them once during onboarding — repeat visits skipped them." data-no="Tooltips ble satt pris på, men de fleste brukere åpnet dem bare én gang under onboarding — gjentatte besøk hoppet over dem.">Tooltips were appreciated, but most users only opened them once during onboarding — repeat visits skipped them.</li>
+      </ul>
+    </section>
+
+    <section id="principles">
+      <h2><span class="num">05</span><span data-en="Design Principles" data-no="Designprinsipper">Design Principles</span></h2>
+      <p class="muted"
+         data-en="The approach moved from domain-driven discovery into iterative simplification. Simplicity was achieved not by removing detail, but by revealing it only when the user needed it."
+         data-no="Tilnærmingen flyttet seg fra domenedrevet discovery til iterativ forenkling. Enkelhet ble ikke oppnådd ved å fjerne detaljer, men ved å avsløre dem bare når brukeren trengte dem.">
+        The approach moved from domain-driven discovery into iterative simplification. Simplicity was achieved not by removing detail, but by revealing it only when the user needed it.
+      </p>
+      <h3 data-en="Show the whole story, then let users zoom in" data-no="Vis hele historien, så la brukeren zoome inn">Show the whole story, then let users zoom in</h3>
+      <p data-en="High-level 'now vs future' first, with drill-downs by year, plan or instrument."
+         data-no="Høynivå «nå vs fremtid» først, med drill-downs etter år, plan eller instrument.">
+        High-level "now vs future" first, with drill-downs by year, plan or instrument.
+      </p>
+      <h3 data-en="Support all instruments without showing all complexity at once" data-no="Støtt alle instrumenter uten å vise all kompleksiteten samtidig">Support all instruments without showing all complexity at once</h3>
+      <p data-en="Tabs, tailored labels and conditional states per instrument type."
+         data-no="Faner, tilpassede etiketter og betingede tilstander per instrumenttype.">
+        Tabs, tailored labels and conditional states per instrument type.
+      </p>
+      <h3 data-en="Educate in context, not in a separate manual" data-no="Lær i kontekst, ikke i en separat manual">Educate in context, not in a separate manual</h3>
+      <p data-en="Tooltips, FAQs and links to deeper learning where questions arise."
+         data-no="Tooltips, FAQ-er og lenker til dypere læring der spørsmål oppstår.">
+        Tooltips, FAQs and links to deeper learning where questions arise.
+      </p>
+      <h3 data-en="Design for rare but important actions" data-no="Design for sjeldne, men viktige handlinger">Design for rare but important actions</h3>
+      <p data-en="Exercising or selling shares is infrequent but high-stakes — flows make confirmation explicit."
+         data-no="Exercise eller salg av aksjer skjer sjelden, men har høy innsats — flyter gjør bekreftelse eksplisitt.">
+        Exercising or selling shares is infrequent but high-stakes — flows make confirmation explicit.
+      </p>
+      <h3 data-en="Full discovery, minimal scalable MVP" data-no="Full discovery, minimal skalerbar MVP">Full discovery, minimal scalable MVP</h3>
+      <p data-en="Map all edge cases and future needs, but ship the simplest version that can grow."
+         data-no="Kartlegg alle kanttilfeller og fremtidige behov, men lever den enkleste versjonen som kan vokse.">
+        Map all edge cases and future needs, but ship the simplest version that can grow.
+      </p>
+      <h3 data-en="Iterate to simplify" data-no="Iterer for å forenkle">Iterate to simplify</h3>
+      <p data-en="Use research sessions and feedback to remove friction, not just polish."
+         data-no="Bruk researchsesjoner og tilbakemeldinger for å fjerne friksjon — ikke bare polere.">
+        Use research sessions and feedback to remove friction, not just polish.
+      </p>
+    </section>
+
+    <section id="outcomes">
+      <h2><span class="num">06</span><span data-en="Outcomes" data-no="Resultater">Outcomes</span></h2>
+      <p data-en="The redesign did more than refine the UI — it changed how Optio employees, Customer Success and Sales interact with the product."
+         data-no="Redesignet gjorde mer enn å forbedre UI — det endret hvordan Optios ansatte, Customer Success og salg samhandler med produktet.">
+        The redesign did more than refine the UI — it changed how Optio employees, Customer Success and Sales interact with the product.
+      </p>
+      <ul>
+        <li data-en="Smooth migration from the old portal to the new Dashboard for existing clients, while accommodating new client requests." data-no="Sømløs migrasjon fra gammel portal til nytt Dashboard for eksisterende kunder, samtidig som nye kundeønsker ble ivaretatt.">Smooth migration from the old portal to the new Dashboard for existing clients, while accommodating new client requests.</li>
+        <li data-en="The redesigned Dashboard contributed to one of the strongest months of positive feedback for the product (September 2024)." data-no="Det redesignede dashbordet bidro til en av månedene med sterkest positiv tilbakemelding for produktet (september 2024).">The redesigned Dashboard contributed to one of the strongest months of positive feedback for the product (September 2024).</li>
+        <li data-en="A later mobile app rollout was significantly faster because the dashboard and IA were already designed with responsive intent." data-no="En senere mobilapp-utrulling gikk betydelig raskere fordi dashbordet og IA-en allerede var designet med responsiv intensjon.">A later mobile app rollout was significantly faster because the dashboard and IA were already designed with responsive intent.</li>
+        <li data-en="Customer Success spends less time explaining basic concepts and chasing edge questions." data-no="Customer Success bruker mindre tid på å forklare grunnleggende konsepter og jakte på kanttilfeller.">Customer Success spends less time explaining basic concepts and chasing edge questions.</li>
+        <li data-en="Internally, collaboration with Customer Success, Sales and Tax & Finance experts was much tighter, and that knowledge directly shaped UX decisions." data-no="Internt ble samarbeidet med Customer Success, salg og skatte- og finanseksperter mye tettere, og den kunnskapen formet UX-valgene direkte.">Internally, collaboration with Customer Success, Sales and Tax &amp; Finance experts was much tighter, and that knowledge directly shaped UX decisions.</li>
+      </ul>
+    </section>
+  </main>
+
+  <div class="case-end">
+    <h2 data-en="Employee portal" data-no="Ansattportal">Employee portal</h2>
+    <a href="#" data-en="Back to the top" data-no="Tilbake til toppen">Back to the top</a>
+  </div>
+
+  <script src="i18n.js"></script>
+</body>
+</html>

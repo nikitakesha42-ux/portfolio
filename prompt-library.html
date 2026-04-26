@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Library · Portfolio Nikitina A.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="case-header">
+    <a href="index.html" data-en="← Back to home" data-no="← Tilbake til hjem">← Back to home</a>
+    <div class="header-right">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="no" aria-pressed="false">NO</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="case-banner">
+    <img src="assets/case/pl-hero.png" alt="Prompt Library interface" />
+  </div>
+
+  <main class="case">
+    <p class="lede" style="margin-bottom: 48px"
+       data-en="I built my prompt library in Figma Make to make AI actually usable in my daily UX work — not just faster, but easier to structure, reuse and adapt across different UX tasks."
+       data-no="Jeg bygde prompt-biblioteket mitt i Figma Make for å gjøre AI faktisk brukbart i det daglige UX-arbeidet — ikke bare raskere, men lettere å strukturere, gjenbruke og tilpasse på tvers av ulike UX-oppgaver.">
+      I built my prompt library in Figma Make to make AI actually usable in my daily UX work — not just faster, but easier to structure, reuse and adapt across different UX tasks.
+    </p>
+
+    <section>
+      <h2><span class="num">01</span><span data-en="What it does" data-no="Hva den gjør">What it does</span></h2>
+      <p data-en="The library groups prompts by intent, with personal notes on when each one works best — making AI a faster, more structured part of the design process. Categories include:"
+         data-no="Biblioteket grupperer prompts etter intensjon, med personlige notater om når hver fungerer best — slik at AI blir en raskere, mer strukturert del av designprosessen. Kategorier inkluderer:">
+        The library groups prompts by intent, with personal notes on when each one works best — making AI a faster, more structured part of the design process. Categories include:
+      </p>
+      <ul>
+        <li data-en="Research synthesis" data-no="Researchsyntese">Research synthesis</li>
+        <li data-en="Insight writing" data-no="Innsikt-skriving">Insight writing</li>
+        <li data-en="Critique frameworks" data-no="Kritikk-rammeverk">Critique frameworks</li>
+        <li data-en="Presentation prep" data-no="Presentasjonsforberedelse">Presentation prep</li>
+        <li data-en="Surveys and interview scripts" data-no="Spørreundersøkelser og intervjuguider">Surveys and interview scripts</li>
+      </ul>
+      <p data-en="It makes it much easier to find the right prompt when I need it and reuse what works."
+         data-no="Det gjør det mye enklere å finne riktig prompt når jeg trenger den og å gjenbruke det som fungerer.">
+        It makes it much easier to find the right prompt when I need it and reuse what works.
+      </p>
+    </section>
+
+    <section>
+      <h2><span class="num">02</span><span data-en="How it's built" data-no="Hvordan den er bygget">How it's built</h2>
+      <p data-en="The interface was built in Figma Make as a structured set of reusable cards, clear sections and a simple input pattern for adding new prompts. The early versions were prototype-only, but I wanted the library to behave like a real product — so the next step was to make it persistent and multi-user."
+         data-no="Grensesnittet ble bygget i Figma Make som et strukturert sett med gjenbrukbare kort, tydelige seksjoner og et enkelt input-mønster for å legge til nye prompts. De første versjonene var prototype-only, men jeg ville at biblioteket skulle oppføre seg som et ekte produkt — så neste steg var å gjøre det persistent og fler-bruker.">
+        The interface was built in Figma Make as a structured set of reusable cards, clear sections and a simple input pattern for adding new prompts. The early versions were prototype-only, but I wanted the library to behave like a real product — so the next step was to make it persistent and multi-user.
+      </p>
+
+      <h3 data-en="Going live with Supabase" data-no="Å gå live med Supabase">Going live with Supabase</h3>
+      <p data-en="To make the library actually usable, I connected it to Supabase as a lightweight backend. That gave me three things without writing a server:"
+         data-no="For å gjøre biblioteket faktisk brukbart, koblet jeg det til Supabase som en lett backend. Det ga meg tre ting uten å skrive en server:">
+        To make the library actually usable, I connected it to Supabase as a lightweight backend. That gave me three things without writing a server:
+      </p>
+      <ul>
+        <li data-en="A Postgres database for prompts, categories and notes — so additions persist between sessions instead of resetting on reload." data-no="En Postgres-database for prompts, kategorier og notater — slik at tillegg lagres mellom økter i stedet for å nullstilles ved reload.">A Postgres database for prompts, categories and notes — so additions persist between sessions instead of resetting on reload.</li>
+        <li data-en="Email + password auth with row-level security, so the site is shareable but not fully open." data-no="E-post + passord-autentisering med row-level security, slik at siden kan deles uten å være helt åpen.">Email + password auth with row-level security, so the site is shareable but not fully open.</li>
+        <li data-en="A small REST surface that Figma Make can call directly — no separate hosting, no glue code." data-no="En liten REST-flate som Figma Make kan kalle direkte — ingen separat hosting, ingen glue-kode.">A small REST surface that Figma Make can call directly — no separate hosting, no glue code.</li>
+      </ul>
+      <p data-en="Picking Supabase was a deliberate trade-off — it kept the project well within a designer's reach (no DevOps, no auth from scratch) while still behaving like a proper deployed product."
+         data-no="Valget av Supabase var et bevisst trade-off — det holdt prosjektet godt innenfor en designers rekkevidde (ingen DevOps, ingen auth fra bunnen) samtidig som det oppfører seg som et ordentlig publisert produkt.">
+        Picking Supabase was a deliberate trade-off — it kept the project well within a designer's reach (no DevOps, no auth from scratch) while still behaving like a proper deployed product.
+      </p>
+
+      <h3 data-en="See the build process" data-no="Se byggprosessen">See the build process</h3>
+      <p data-en="The Figma Make project below is open with its full AI chat history — you can scroll through the prompts and iterations that shaped the component system, the data model, and the Supabase integration."
+         data-no="Figma Make-prosjektet under er åpent med hele AI-chatthistorikken — du kan bla gjennom promptene og iterasjonene som formet komponentsystemet, datamodellen og Supabase-integrasjonen.">
+        The Figma Make project below is open with its full AI chat history — you can scroll through the prompts and iterations that shaped the component system, the data model, and the Supabase integration.
+      </p>
+      <p>
+        <a class="btn-pill" href="https://www.figma.com/make/FLxDjdvmJaO7MHv5QddufG/Production-level-component-system?t=yevtxPjARsM7Pqx5-20&fullscreen=1" target="_blank" rel="noopener">
+          <span data-en="Open the Figma Make project" data-no="Åpne Figma Make-prosjektet">Open the Figma Make project</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </p>
+    </section>
+
+    <section>
+      <h2><span class="num">03</span><span data-en="Try it live" data-no="Prøv den live">Try it live</h2>
+      <p data-en="The library is deployed as its own Figma site. Use the credentials below to log in:"
+         data-no="Biblioteket er publisert som sin egen Figma-side. Bruk innloggingen nedenfor for å logge inn:">
+        The library is deployed as its own Figma site. Use the credentials below to log in:
+      </p>
+      <dl class="creds">
+        <div class="row">
+          <dt>Email</dt>
+          <dd><code>nikitakesha42@gmail.com</code></dd>
+        </div>
+        <div class="row">
+          <dt data-en="Password" data-no="Passord">Password</dt>
+          <dd><code>shokoladnyjmuss96069</code></dd>
+        </div>
+      </dl>
+      <p>
+        <a class="btn-pill" href="https://ai-prompt-system-nikitinaa.figma.site" target="_blank" rel="noopener">
+          <span data-en="See it live" data-no="Se den live">See it live</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </p>
+      <p class="muted" style="margin-top:24px; font-size:14px"
+         data-en="The site is hosted on Figma Sites. If the page asks you to sign in, just paste the email and password above."
+         data-no="Siden er hostet på Figma Sites. Hvis du blir bedt om å logge inn, lim bare inn e-posten og passordet over.">
+        The site is hosted on Figma Sites. If the page asks you to sign in, just paste the email and password above.
+      </p>
+    </section>
+  </main>
+
+  <div class="case-end">
+    <h2 data-en="Prompt library" data-no="Prompt-bibliotek">Prompt library</h2>
+    <a href="#" data-en="Back to the top" data-no="Tilbake til toppen">Back to the top</a>
+  </div>
+
+  <script src="i18n.js"></script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial reporting · Portfolio Nikitina A.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="case-header">
+    <a href="index.html" data-en="← Financial reporting" data-no="← Finansiell rapportering">← Financial reporting</a>
+    <div class="header-right">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="no" aria-pressed="false">NO</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="case-banner">
+    <img src="assets/case/fr-hero.png" alt="Financial reporting" />
+  </div>
+
+  <main class="case">
+    <p class="lede" style="margin-bottom: 48px"
+       data-en="Designing financial reporting tools for reliable, complete, self-service equity reporting. My role was to help build complex, audit-critical modules that enable Optio's company administrators and auditors to generate fully automated and compliant equity reports — without relying on support or engineering."
+       data-no="Designe verktøy for finansiell rapportering for pålitelig, fullstendig, selvbetjent egenkapitalrapportering. Min rolle var å bidra til å bygge komplekse, revisjons-kritiske moduler som gjør Optios kundeadministratorer og revisorer i stand til å generere fullt automatiserte og samsvarende egenkapitalrapporter — uten å være avhengig av support eller utvikling.">
+      Designing financial reporting tools for reliable, complete, self-service equity reporting. My role was to help build complex, audit-critical modules that enable Optio's company administrators and auditors to generate fully automated and compliant equity reports — without relying on support or engineering.
+    </p>
+    <p class="muted" style="margin-bottom: 48px"
+       data-en="The goal was to bring more clarity, transparency, and trust to reporting that's usually painful and packed with rules, formulas, and high-stakes decisions."
+       data-no="Målet var å bringe mer klarhet, transparens og tillit til rapportering som vanligvis er smertefull og full av regler, formler og høyt-innsats-beslutninger.">
+      The goal was to bring more clarity, transparency, and trust to reporting that's usually painful and packed with rules, formulas, and high-stakes decisions.
+    </p>
+
+    <div class="toc">
+      <h3 data-en="Contents" data-no="Innhold">Contents</h3>
+      <ol>
+        <li><a href="#overview" data-en="Overview" data-no="Oversikt">Overview</a></li>
+        <li><a href="#challenges" data-en="Core Challenges" data-no="Kjerneutfordringer">Core Challenges</a></li>
+        <li><a href="#solutions" data-en="Key Solutions" data-no="Nøkkelløsninger">Key Solutions</a></li>
+        <li><a href="#frameworks" data-en="Key UX Frameworks" data-no="UX-rammeverk">Key UX Frameworks</a></li>
+        <li><a href="#collab" data-en="Collaboration Practices" data-no="Samarbeid">Collaboration Practices</a></li>
+        <li><a href="#outcomes" data-en="Outcomes" data-no="Resultater">Outcomes</a></li>
+      </ol>
+    </div>
+
+    <section id="overview">
+      <h2><span class="num">01</span><span data-en="Overview" data-no="Oversikt">Overview</span></h2>
+      <dl class="meta-grid">
+        <dt data-en="Product" data-no="Produkt">Product</dt>
+        <dd data-en="Financial Reporting administration tool" data-no="Administrasjonsverktøy for finansiell rapportering">Financial Reporting administration tool</dd>
+        <dt data-en="Users" data-no="Brukere">Users</dt>
+        <dd data-en="Finance leads, controllers, auditors, accounting firms" data-no="Finansledere, controllere, revisorer, regnskapsbyråer">Finance leads, controllers, auditors, accounting firms</dd>
+        <dt data-en="My role" data-no="Min rolle">My role</dt>
+        <dd>
+          <span class="tags">
+            <span class="tag" data-en="Lead Product Designer" data-no="Lead produktdesigner">Lead Product Designer</span>
+            <span class="tag" data-en="UX Strategy" data-no="UX-strategi">UX Strategy</span>
+          </span>
+        </dd>
+        <dt data-en="Team" data-no="Team">Team</dt>
+        <dd data-en="Finance experts, Backend engineers, Tax/Compliance advisors" data-no="Finanseksperter, backend-utviklere, skatte-/compliance-rådgivere">Finance experts, Backend engineers, Tax/Compliance advisors</dd>
+        <dt data-en="Methods" data-no="Metoder">Methods</dt>
+        <dd>
+          <span class="tags">
+            <span class="tag">Research</span>
+            <span class="tag">Prototyping</span>
+            <span class="tag">AI</span>
+          </span>
+        </dd>
+        <dt data-en="Duration" data-no="Varighet">Duration</dt>
+        <dd data-en="~2 years (multiple releases)" data-no="~2 år (flere lanseringer)">~2 years (multiple releases)</dd>
+      </dl>
+
+      <h3 data-en="Problem summary" data-no="Problemoppsummering">Problem summary</h3>
+      <p data-en="Reporting at Optio was held together by manual work. Data lived across tools, formatting drifted between teams, and small errors triggered review loops that slowed delivery for finance leads, auditors and accounting partners. The product technically supported reporting, but the actual workflow lived in spreadsheets, Slack threads and email exports."
+         data-no="Rapportering hos Optio ble holdt sammen av manuelt arbeid. Data lå spredt på tvers av verktøy, formatering varierte mellom team, og små feil utløste gjennomgangsrunder som forsinket leveransen for finansledere, revisorer og regnskapspartnere. Produktet støttet teknisk sett rapportering, men selve arbeidsflyten foregikk i regneark, Slack-tråder og e-posteksporter.">
+        Reporting at Optio was held together by manual work. Data lived across tools, formatting drifted between teams, and small errors triggered review loops that slowed delivery for finance leads, auditors and accounting partners. The product technically supported reporting, but the actual workflow lived in spreadsheets, Slack threads and email exports.
+      </p>
+
+      <h3 data-en="How I framed it" data-no="Hvordan jeg rammet det inn">How I framed it</h3>
+      <p data-en="The brief sounded like a UI redesign, but the real question was different: which parts of the reporting cycle should the product own, and which parts will always belong to the finance team's judgment? I treated that boundary as the design problem. Anything mechanical (data assembly, formatting, validation) should move into the product. Anything judgemental (interpretation, exceptions, narrative) should stay with finance — but be supported with better context."
+         data-no="Briefen lød som et UI-redesign, men det reelle spørsmålet var et annet: hvilke deler av rapporteringssyklusen skal produktet eie, og hvilke deler vil alltid tilhøre finansteamets skjønn? Jeg behandlet den grensen som designproblemet. Alt mekanisk (datasamling, formatering, validering) skulle flyttes inn i produktet. Alt skjønnsmessig (tolkning, unntak, narrativ) skulle bli værende hos finans — men støttes med bedre kontekst.">
+        The brief sounded like a UI redesign, but the real question was different: which parts of the reporting cycle should the product own, and which parts will always belong to the finance team's judgment? I treated that boundary as the design problem. Anything mechanical (data assembly, formatting, validation) should move into the product. Anything judgemental (interpretation, exceptions, narrative) should stay with finance — but be supported with better context.
+      </p>
+
+      <h3 data-en="Goal" data-no="Mål">Goal</h3>
+      <ul>
+        <li data-en="Replace manual reporting prep with one configurable surface — not a single static template." data-no="Erstatt manuelt rapporteringsarbeid med én konfigurerbar flate — ikke én statisk mal.">Replace manual reporting prep with one configurable surface — not a single static template.</li>
+        <li data-en="Reduce error risk by moving validation, FX and turnover logic out of spreadsheets." data-no="Reduser feilrisiko ved å flytte validering, FX og omsetningslogikk ut av regneark.">Reduce error risk by moving validation, FX and turnover logic out of spreadsheets.</li>
+        <li data-en="Make reporting reusable across scales, accuracy categories and report types — without forking the design." data-no="Gjør rapportering gjenbrukbar på tvers av skalaer, nøyaktighetskategorier og rapporttyper — uten å splitte designet.">Make reporting reusable across scales, accuracy categories and report types — without forking the design.</li>
+      </ul>
+    </section>
+
+    <section id="challenges">
+      <h2><span class="num">02</span><span data-en="Core Challenges" data-no="Kjerneutfordringer">Core Challenges</span></h2>
+      <p class="muted"
+         data-en="The challenge wasn't tooling — it was orchestration. Finance teams needed a self-serve product that respected deep domain rules without forcing them back into spreadsheets, and the design had to land without breaking compliance."
+         data-no="Utfordringen var ikke verktøyene — det var orkestreringen. Finansteam trengte et selvbetjent produkt som respekterte dype domeneregler uten å tvinge dem tilbake i regneark, og designet måtte lande uten å bryte compliance.">
+        The challenge wasn't tooling — it was orchestration. Finance teams needed a self-serve product that respected deep domain rules without forcing them back into spreadsheets, and the design had to land without breaking compliance.
+      </p>
+      <ul>
+        <li data-en="Deep domain knowledge — high learning curve for the design team." data-no="Dyp domenekunnskap — bratt læringskurve for designteamet.">Deep domain knowledge — high learning curve for the design team.</li>
+        <li data-en="Complex data relationships — risks of mismapping cascade across reports." data-no="Komplekse datarelasjoner — risikoen for feilmapping forplantet seg på tvers av rapporter.">Complex data relationships — risks of mismapping cascade across reports.</li>
+        <li data-en="Technical constraints — calculations had to stay accurate without sacrificing UX." data-no="Tekniske begrensninger — beregninger måtte forbli nøyaktige uten å gå på akkord med UX.">Technical constraints — calculations had to stay accurate without sacrificing UX.</li>
+      </ul>
+
+      <h3 data-en="My approach" data-no="Min tilnærming">My approach</h3>
+      <ul>
+        <li data-en="Worked closely with finance experts and clients on discovery — not handed off." data-no="Jobbet tett med finanseksperter og kunder på discovery — ikke overlevert.">Worked closely with finance experts and clients on discovery — not handed off.</li>
+        <li data-en="Introduced progressive disclosure, guided flows, and AI-assisted UI to keep complexity invisible to the user." data-no="Innførte progressiv visning, guidede flyter og AI-assistert UI for å holde kompleksiteten skjult for brukeren.">Introduced progressive disclosure, guided flows, and AI-assisted UI to keep complexity invisible to the user.</li>
+        <li data-en="Continuous syncs with engineers and a prototype validation loop with finance partners." data-no="Kontinuerlige syncs med utviklere og en prototype-valideringsløkke med finanspartnere.">Continuous syncs with engineers and a prototype validation loop with finance partners.</li>
+      </ul>
+    </section>
+
+    <section id="solutions">
+      <h2><span class="num">03</span><span data-en="Key Solutions" data-no="Nøkkelløsninger">Key Solutions</span></h2>
+      <p class="muted"
+         data-en="Across two years I worked on three shifts that changed how companies configure, generate and approve their financial reports."
+         data-no="I løpet av to år jobbet jeg med tre skift som endret hvordan selskaper konfigurerer, genererer og godkjenner finansielle rapporter.">
+        Across two years I worked on three shifts that changed how companies configure, generate and approve their financial reports.
+      </p>
+
+      <h3 data-en="Customisable self-service reporting" data-no="Tilpasningsdyktig selvbetjent rapportering">Customisable self-service reporting</h3>
+      <p data-en="The hardest design question here was: how do we let clients configure something this complex without giving them enough rope to break their own audit trail? My approach was to treat configuration as a guided journey, not a settings panel. Each decision point appears in the order finance teams actually need to make it, with the consequence visible inline before they confirm."
+         data-no="Det vanskeligste designspørsmålet her var: hvordan lar vi kunder konfigurere noe så komplekst uten å gi dem nok tau til å bryte sin egen revisjonslogg? Min tilnærming var å behandle konfigurasjon som en guidet reise, ikke et innstillings-panel. Hvert beslutningspunkt dukker opp i den rekkefølgen finansteam faktisk trenger å ta dem, med konsekvensen synlig inline før de bekrefter.">
+        The hardest design question here was: how do we let clients configure something this complex without giving them enough rope to break their own audit trail? My approach was to treat configuration as a guided journey, not a settings panel. Each decision point appears in the order finance teams actually need to make it, with the consequence visible inline before they confirm.
+      </p>
+      <p data-en="Concretely, that meant:"
+         data-no="Konkret betydde det:">
+        Concretely, that meant:
+      </p>
+      <ul>
+        <li data-en="Guided creation flows that surface only the choices that matter at each step, and explain why each one is being asked." data-no="Guidede opprettelsesflyter som viser bare valgene som betyr noe på hvert steg, og forklarer hvorfor hver av dem blir spurt om.">Guided creation flows that surface only the choices that matter at each step, and explain why each one is being asked.</li>
+        <li data-en="Built-in revaluation controls so adjustments stay reversible and reviewable — never a one-way door." data-no="Innebygd revurderingskontroll slik at justeringer forblir reversible og kan gjennomgås — aldri en énveis-dør.">Built-in revaluation controls so adjustments stay reversible and reviewable — never a one-way door.</li>
+        <li data-en="Sophisticated configuration logic kept behind sensible defaults, so the easy path is also the safe path." data-no="Avansert konfigurasjonslogikk holdt bak fornuftige standarder, slik at den enkle veien også er den trygge veien.">Sophisticated configuration logic kept behind sensible defaults, so the easy path is also the safe path.</li>
+        <li data-en="Modular layouts that scale to new report types without forcing a redesign of the system." data-no="Modulære oppsett som skalerer til nye rapporttyper uten å tvinge fram et redesign av systemet.">Modular layouts that scale to new report types without forcing a redesign of the system.</li>
+      </ul>
+      <figure class="figure">
+        <img src="assets/case/fr-self-service.png" alt="Customisable self-service reporting screens" />
+        <figcaption data-en="Self-service flow: creating a new report, choosing scope, validating data and downloading output."
+                    data-no="Selvbetjent flyt: opprette ny rapport, velge omfang, validere data og laste ned output.">
+          Self-service flow: creating a new report, choosing scope, validating data and downloading output.
+        </figcaption>
+      </figure>
+      <div class="callout"
+           data-en="Removed hours of manual work per delivery."
+           data-no="Fjernet timer med manuelt arbeid per leveranse.">
+        Removed hours of manual work per delivery.
+      </div>
+
+      <h3 data-en="Integrated valuation service" data-no="Integrert verdsettelsestjeneste">Integrated valuation service</h3>
+      <p data-en="Fair Value calculations were the most error-prone part of the old workflow — and the most expensive to get wrong. The temptation was to expose every parameter as a form field. I argued the opposite: anything an admin shouldn't change without thinking should not look like a quick edit. The flow was designed in ordered steps, with explanations and warnings layered into the path so users couldn't accidentally skip the reasoning."
+         data-no="Fair Value-beregninger var den mest feilutsatte delen av den gamle arbeidsflyten — og den dyreste å gjøre feil. Fristelsen var å eksponere hver parameter som et skjemafelt. Jeg argumenterte for det motsatte: alt en admin ikke bør endre uten å tenke, bør ikke se ut som en rask redigering. Flyten ble designet i sekvensielle trinn, med forklaringer og advarsler lagt inn i veien slik at brukere ikke kunne hoppe over resonnementet ved et uhell.">
+        Fair Value calculations were the most error-prone part of the old workflow — and the most expensive to get wrong. The temptation was to expose every parameter as a form field. I argued the opposite: anything an admin shouldn't change without thinking should not look like a quick edit. The flow was designed in ordered steps, with explanations and warnings layered into the path so users couldn't accidentally skip the reasoning.
+      </p>
+      <p data-en="UX focus:"
+         data-no="UX-fokus:">
+        UX focus:
+      </p>
+      <ul>
+        <li data-en="A guided FV journey that breaks complex inputs into simple, sequenced steps." data-no="En guidet FV-reise som bryter komplekse innspill i enkle, sekvensielle trinn.">A guided FV journey that breaks complex inputs into simple, sequenced steps.</li>
+        <li data-en="Inline education — explanations and warnings layered into the flow, not hidden in docs." data-no="Innebygd opplæring — forklaringer og advarsler innebygd i flyten, ikke gjemt i dokumentasjon.">Inline education — explanations and warnings layered into the flow, not hidden in docs.</li>
+        <li data-en="Comparison and history views to see what changed and why." data-no="Sammenligning- og historikkvisninger for å se hva som har endret seg og hvorfor.">Comparison and history views to see what changed and why.</li>
+        <li data-en="Admin-first controls for supported use cases without blocking edge cases." data-no="Admin-først-kontroller for støttede bruksområder uten å blokkere kanttilfeller.">Admin-first controls for supported use cases without blocking edge cases.</li>
+      </ul>
+      <figure class="figure">
+        <img src="assets/case/fr-valuation.png" alt="Integrated valuation service screens" />
+        <figcaption data-en="Fair value setup, scenarios and history — all administrable in-product."
+                    data-no="Fair value-oppsett, scenarier og historikk — alt administrerbart i produktet.">
+          Fair value setup, scenarios and history — all administrable in-product.
+        </figcaption>
+      </figure>
+      <div class="callout"
+           data-en="Valuations that took weeks now run in hours."
+           data-no="Verdsettelser som tok uker går nå unna på timer.">
+        Valuations that took weeks now run in hours.
+      </div>
+
+      <h3 data-en="Custom Overviews (Configurable Grouping)" data-no="Tilpasset oversikt (konfigurerbar gruppering)">Custom Overviews (Configurable Grouping)</h3>
+      <p data-en="Different clients wanted different breakdowns — by tier, business unit, country. The product originally answered this with custom development per client, which didn't scale. The design question was: can a single component handle every grouping a finance team can come up with, without becoming a generic spreadsheet?"
+         data-no="Ulike kunder ville ha ulike inndelinger — etter nivå, forretningsenhet, land. Produktet svarte opprinnelig på dette med tilpasset utvikling per kunde, noe som ikke skalerte. Designspørsmålet var: kan én komponent håndtere enhver gruppering et finansteam kan komme på, uten å bli et generisk regneark?">
+        Different clients wanted different breakdowns — by tier, business unit, country. The product originally answered this with custom development per client, which didn't scale. The design question was: can a single component handle every grouping a finance team can come up with, without becoming a generic spreadsheet?
+      </p>
+      <p data-en="I rethought the 'overview' as a composable surface: a few well-defined dimensions, drag-to-reorder structure and a preview that updates live. The constraint kept it from becoming an open-ended builder; the live preview kept it from feeling like configuration."
+         data-no="Jeg tenkte om «oversikten» som en sammensetbar flate: noen få veldefinerte dimensjoner, dra-for-å-omorganisere struktur og en forhåndsvisning som oppdateres live. Begrensningen hindret den fra å bli en åpen builder; live-forhåndsvisningen hindret den fra å føles som konfigurasjon.">
+        I rethought the "overview" as a composable surface: a few well-defined dimensions, drag-to-reorder structure and a preview that updates live. The constraint kept it from becoming an open-ended builder; the live preview kept it from feeling like configuration.
+      </p>
+      <figure class="figure">
+        <img src="assets/case/custom-overviews.png" alt="Custom Overviews / Configurable Grouping" />
+        <figcaption data-en="Configurable grouping lets admins compose overviews per entity, plan, country or custom dimension."
+                    data-no="Konfigurerbar gruppering lar admins bygge oversikter per entitet, plan, land eller egen dimensjon.">
+          Configurable grouping lets admins compose overviews per entity, plan, country or custom dimension.
+        </figcaption>
+      </figure>
+      <div class="callout"
+           data-en="Saved roughly a full reporting cycle of manual work per year."
+           data-no="Sparte omtrent én full rapporteringssyklus med manuelt arbeid per år.">
+        Saved roughly a full reporting cycle of manual work per year.
+      </div>
+
+      <h3 data-en="FX and Turnover rules flexibility" data-no="FX- og omsetningsregler-fleksibilitet">FX and Turnover rules flexibility</h3>
+      <p data-en="FX and turnover rules were hardcoded into the engine, which meant any country-specific edge case became an engineering ticket. Moving them into the product made sense in theory — but only if the design stopped admins from quietly breaking the calculation. I treated this as a controlled-edit surface: every change must declare its scope and pass validation before it touches a report."
+         data-no="FX- og omsetningsregler var hardkodet inn i motoren, noe som betydde at ethvert landspesifikt kanttilfelle ble til en utviklersak. Å flytte dem inn i produktet ga mening i teorien — men bare hvis designet hindret admins i å stille bryte beregningen. Jeg behandlet dette som en kontrollert redigeringsflate: hver endring må deklarere sitt omfang og passere validering før den treffer en rapport.">
+        FX and turnover rules were hardcoded into the engine, which meant any country-specific edge case became an engineering ticket. Moving them into the product made sense in theory — but only if the design stopped admins from quietly breaking the calculation. I treated this as a controlled-edit surface: every change must declare its scope and pass validation before it touches a report.
+      </p>
+      <p data-en="UX highlights:"
+         data-no="UX-høydepunkter:">
+        UX highlights:
+      </p>
+      <ul>
+        <li data-en="Permission boundaries so only authorised admins could edit critical rules." data-no="Tillatelsesgrenser slik at bare autoriserte admins kunne redigere kritiske regler.">Permission boundaries so only authorised admins could edit critical rules.</li>
+        <li data-en="Validation rules to prevent invalid currency pairs, overlapping turnover steps and risky values." data-no="Valideringsregler for å hindre ugyldige valutapar, overlappende omsetningstrinn og risikable verdier.">Validation rules to prevent invalid currency pairs, overlapping turnover steps and risky values.</li>
+        <li data-en="Safe defaults so users only need to configure values when necessary." data-no="Trygge standardverdier slik at brukere bare trenger å konfigurere verdier når det er nødvendig.">Safe defaults so users only need to configure values when necessary.</li>
+      </ul>
+      <figure class="figure">
+        <img src="assets/case/fr-fx-rules.png" alt="FX and turnover rules editor" />
+        <figcaption data-en="Editable FX and turnover-rate rules — moved out of code and into a guarded admin surface."
+                    data-no="Redigerbare FX- og omsetnings-rater — flyttet ut av kode og inn i en sikret admin-flate.">
+          Editable FX and turnover-rate rules — moved out of code and into a guarded admin surface.
+        </figcaption>
+      </figure>
+      <div class="callout"
+           data-en="A few hours a month back to the Customer Success team."
+           data-no="Noen timer i måneden tilbake til Customer Success-teamet.">
+        A few hours a month back to the Customer Success team.
+      </div>
+    </section>
+
+    <section id="frameworks">
+      <h2><span class="num">04</span><span data-en="Key UX Frameworks" data-no="UX-rammeverk">Key UX Frameworks</span></h2>
+      <p class="muted"
+         data-en="We tested directly with clients and auditors with high compliance demands. I owned method choices in partnership with finance experts and clients."
+         data-no="Vi testet direkte med kunder og revisorer med høye compliance-krav. Jeg eide metodevalg i samarbeid med finanseksperter og kunder.">
+        We tested directly with clients and auditors with high compliance demands. I owned method choices in partnership with finance experts and clients.
+      </p>
+
+      <h3 data-en="Robust user journeys and low-fidelity sketching" data-no="Robuste brukerreiser og lo-fi skissering">Robust user journeys and low-fidelity sketching</h3>
+      <figure class="figure">
+        <img src="assets/case/fr-journey-1.png" alt="User journeys and lo-fi sketches" />
+        <figcaption data-en="Mapping user journeys before any high-fidelity work — keeps later iterations cheap."
+                    data-no="Kartlegging av brukerreiser før høyoppløst arbeid — holder senere iterasjoner billige.">
+          Mapping user journeys before any high-fidelity work — keeps later iterations cheap.
+        </figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="assets/case/fr-journey-2.png" alt="More journeys and sketches" />
+      </figure>
+
+      <h3 data-en="350+ hours of client-driven research and testing" data-no="350+ timer med kundedrevet research og testing">350+ hours of client-driven research and testing</h3>
+      <p data-en="A research insight breakdown — tagged by category and outcome — kept the team honest about what users actually struggled with."
+         data-no="En oppsummering av research-innsikter — tagget etter kategori og utfall — holdt teamet ærlig om hva brukerne faktisk slet med.">
+        A research insight breakdown — tagged by category and outcome — kept the team honest about what users actually struggled with.
+      </p>
+      <figure class="figure dark">
+        <img src="assets/case/fr-research-hours.png" alt="Research insight breakdown chart" />
+        <figcaption data-en="Insight tagging across 350+ hours of research — Insight, Would-like, Negative/Positive, completion difficulty, and more."
+                    data-no="Innsikts-tagging på tvers av 350+ timer med research — innsikt, ønsker, negativ/positiv, fullføringsvansker, og mer.">
+          Insight tagging across 350+ hours of research — Insight, Would-like, Negative/Positive, completion difficulty, and more.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section id="collab">
+      <h2><span class="num">05</span><span data-en="Collaboration Practices" data-no="Samarbeid">Collaboration Practices</span></h2>
+      <p class="muted"
+         data-en="Working as an automation-focused team, with continuous validation of hypotheses and sketches, kept design and engineering moving in step. The notes below are from teammates over the project run."
+         data-no="Vi jobbet som et automatiseringsfokusert team, med kontinuerlig validering av hypoteser og skisser, noe som holdt design og engineering i takt. Notatene nedenfor er fra kolleger gjennom prosjektet.">
+        Working as an automation-focused team, with continuous validation of hypotheses and sketches, kept design and engineering moving in step. The notes below are from teammates over the project run.
+      </p>
+      <figure class="figure">
+        <img src="assets/case/fr-team.png" alt="Dream team feedback wall" />
+        <figcaption data-en="Sticky notes from a team retro — visiting team meetups, kudos, and notes on what worked."
+                    data-no="Post-it-lapper fra en team-retro — møter, kudos og notater på hva som fungerte.">
+          Sticky notes from a team retro — visiting team meetups, kudos, and notes on what worked.
+        </figcaption>
+      </figure>
+      <div class="figure-grid">
+        <figure>
+          <img src="assets/case/fr-feedback-2.png" alt="Slack feedback from teammate" />
+          <figcaption class="label" data-en="Slack — Sebastian" data-no="Slack — Sebastian">Slack — Sebastian</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/case/fr-feedback.png" alt="Peer kudos note" />
+          <figcaption class="label" data-en="Peer kudos — May 2024" data-no="Peer kudos — mai 2024">Peer kudos — May 2024</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="outcomes">
+      <h2><span class="num">06</span><span data-en="Outcomes" data-no="Resultater">Outcomes</span></h2>
+      <p data-en="The redesign did more than refine the UI — it changed how Optio employees, Customer Success and Sales interact with the product."
+         data-no="Redesignet gjorde mer enn å forbedre UI — det endret hvordan Optios ansatte, Customer Success og salg samhandler med produktet.">
+        The redesign did more than refine the UI — it changed how Optio employees, Customer Success and Sales interact with the product.
+      </p>
+      <ul>
+        <li data-en="Complex configurations became a streamlined, automated flow." data-no="Komplekse konfigurasjoner ble en strømlinjeformet, automatisert flyt.">Complex configurations became a streamlined, automated flow.</li>
+        <li data-en="Self-service adoption lowered support and manual intervention." data-no="Selvbetjent adopsjon reduserte support og manuell inngripen.">Self-service adoption lowered support and manual intervention.</li>
+        <li data-en="Hours reduced in reporting configuration & delivery." data-no="Færre timer brukt på rapporteringskonfigurasjon og leveranse.">Hours reduced in reporting configuration &amp; delivery.</li>
+        <li data-en="Scaled to more global regulation requirements." data-no="Skalerte til flere globale reguleringskrav.">Scaled to more global regulation requirements.</li>
+      </ul>
+
+      <h3 data-en="Before & after" data-no="Før og etter">Before &amp; after</h3>
+      <div class="figure-grid">
+        <figure>
+          <img src="assets/case/fr-before.png" alt="Reports list before redesign" />
+          <figcaption class="label" data-en="Before" data-no="Før">Before</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/case/fr-after.png" alt="Reports list after redesign" />
+          <figcaption class="label" data-en="After" data-no="Etter">After</figcaption>
+        </figure>
+      </div>
+
+      <h3 data-en="User feedback over time" data-no="Tilbakemeldinger over tid">User feedback over time</h3>
+      <figure class="figure dark">
+        <img src="assets/case/fr-mixpanel-1.png" alt="User feedback chart in Mixpanel" />
+        <figcaption data-en="Happy / neutral / sad reactions tracked monthly — September peak after the new flow rolled out."
+                    data-no="Glad / nøytral / trist reaksjoner sporet månedlig — september-topp etter at den nye flyten ble lansert.">
+          Happy / neutral / sad reactions tracked monthly — September peak after the new flow rolled out.
+        </figcaption>
+      </figure>
+      <figure class="figure dark">
+        <img src="assets/case/fr-mixpanel-2.png" alt="Qualitative feedback list" />
+        <figcaption data-en="Qualitative replies (in Norwegian and English) — 'lett forståelig', 'Enkelt, tydelig og intuitivt', 'Bra portal'."
+                    data-no="Kvalitative svar (på norsk og engelsk) — «lett forståelig», «Enkelt, tydelig og intuitivt», «Bra portal».">
+          Qualitative replies (in Norwegian and English) — "lett forståelig", "Enkelt, tydelig og intuitivt", "Bra portal".
+        </figcaption>
+      </figure>
+    </section>
+  </main>
+
+  <div class="case-end">
+    <h2 data-en="Financial reporting" data-no="Finansiell rapportering">Financial reporting</h2>
+    <a href="#" data-en="Back to the top" data-no="Tilbake til toppen">Back to the top</a>
+  </div>
+
+  <script src="i18n.js"></script>
+</body>
+</html>
