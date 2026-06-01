@@ -5,10 +5,16 @@
   --soft: #9ca3af;
   --rule: #e5e7eb;
   --panel: #f5f5f5;
+  --panel-warm: #fafaf7;
+  --accent: #d23a3a;
+  --accent-soft: #ffeceb;
+  --dark: #0a0a0a;
   --gradient: linear-gradient(120deg, #eaf3ff 0%, #f4f1ff 50%, #e8fbf3 100%);
   --max: 1160px;
   --case-max: 760px;
+  --case-wide: 920px;
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -121,6 +127,9 @@ section { margin-bottom: 96px; }
   margin-bottom: 24px;
   transition: transform 0.3s ease;
 }
+.project-card .thumb.thumb-hero {
+  aspect-ratio: 16 / 8;
+}
 .project-card a:hover .thumb { transform: translateY(-2px); }
 .project-card .thumb img {
   width: 100%;
@@ -134,12 +143,14 @@ section { margin-bottom: 96px; }
   gap: 16px;
 }
 .project-card h3 {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
+  max-width: 28ch;
 }
 .project-card h3 .ext {
   font-size: 14px;
@@ -150,8 +161,24 @@ section { margin-bottom: 96px; }
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
+.project-card .card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+.project-card .card-tags .tag {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
 .project-card p {
-  margin-top: 12px;
+  margin-top: 16px;
   color: var(--muted);
   font-size: 15px;
   line-height: 1.55;
@@ -393,10 +420,13 @@ footer.site {
 }
 
 .figure {
-  margin: 32px 0;
+  margin: 28px 0;
 }
 .figure img {
   width: 100%;
+  max-height: 340px;
+  object-fit: contain;
+  background: var(--panel-warm);
   border-radius: 12px;
   display: block;
 }
@@ -405,18 +435,27 @@ footer.site {
   color: var(--muted);
   margin-top: 12px;
   line-height: 1.5;
+  max-width: 60ch;
 }
 .figure.dark img {
   background: #0a0a0a;
+  max-height: 260px;
+}
+.figure.compact img,
+.figure.feedback img {
+  max-height: 220px;
 }
 .figure-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  margin: 32px 0;
+  margin: 28px 0;
 }
 .figure-grid img {
   width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  background: var(--panel-warm);
   border-radius: 10px;
   display: block;
 }
@@ -508,3 +547,382 @@ footer.site {
   .case-end { padding: 64px 20px 32px; }
   .case-end h2 { font-size: 36px; }
 }
+
+/* ============================================================
+   EDITORIAL LAYER — eyebrow labels, impact, decisions, pulls
+   ============================================================ */
+
+/* Load mono font for eyebrows */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* Eyebrow label — small caps in mono, accent colour */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-transform: lowercase;
+  display: inline-block;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.eyebrow.muted { color: var(--muted); }
+.eyebrow.dark  { color: #fff; }
+
+/* IMPACT row — proportioned numbers, never dominant */
+.impact-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding: 28px 0;
+  margin: 36px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.impact-stat .num {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.05;
+  margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.impact-stat .num.small { font-size: 22px; white-space: normal; }
+.impact-stat .caption {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 24ch;
+}
+
+/* Design-decision card */
+.decision-card {
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  padding: 40px;
+  margin: 40px 0;
+  background: var(--panel-warm);
+}
+.decision-card > h3,
+.decision-card > .h3 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+  margin: 0 0 16px;
+}
+.decision-card p { color: var(--ink); }
+.decision-card p:last-of-type { margin-bottom: 0; }
+.decision-card figure.figure { margin: 28px 0 8px; }
+.decision-card figure.figure img {
+  border: 1px solid var(--rule);
+}
+
+/* Learning callouts inside decision cards */
+.learnings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 28px;
+}
+.learning {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 20px 22px;
+}
+.learning .label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 8px;
+}
+.learning .text {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* Version frame — "Version 01" caption above an image */
+.version {
+  margin: 24px 0;
+}
+.version .label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 10px;
+}
+.version .title {
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 12px;
+}
+.version img { width: 100%; border-radius: 12px; border: 1px solid var(--rule); display: block; }
+
+/* Pull quote — scaled below the section h2 */
+.pull-quote {
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  font-style: italic;
+  margin: 40px 0;
+  padding: 4px 0 4px 20px;
+  border-left: 3px solid var(--accent);
+  max-width: 580px;
+  color: var(--ink);
+}
+.pull-quote cite {
+  display: block;
+  margin-top: 12px;
+  font-style: normal;
+  font-size: 12px;
+  font-family: var(--mono);
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* Dark block — for contrast sections */
+.dark-block {
+  background: var(--dark);
+  color: #f5f5f5;
+  border-radius: 24px;
+  padding: 56px 48px;
+  margin: 56px 0;
+}
+.dark-block h2 { color: #fff; }
+.dark-block p  { color: #d4d4d4; }
+.dark-block .eyebrow { color: #ff7a6c; }
+.dark-block ul li { color: #d4d4d4; }
+.dark-block ul li::before { background: #ff7a6c; }
+.dark-block figure img { border: 1px solid #1f1f1f; }
+.dark-block .pull-quote { color: #fff; border-left-color: #ff7a6c; }
+
+/* Insight block — artefact wrapped around a single key insight */
+.insight-block {
+  background: var(--panel-warm);
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  padding: 32px 36px;
+  margin: 36px 0;
+}
+.insight-block .eyebrow { margin-bottom: 14px; }
+.insight-block .quote {
+  font-size: 22px;
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  margin: 0 0 10px;
+  max-width: 580px;
+  color: var(--ink);
+}
+.insight-block .source {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  display: block;
+  margin-bottom: 20px;
+}
+.insight-block figure.figure {
+  margin: 8px 0 0;
+}
+.insight-block figure.figure img {
+  max-height: 300px;
+}
+
+/* Annotation list — numbered notes that make a figure speak */
+.annotation-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 24px;
+  margin-top: 20px;
+}
+.annotation {
+  display: flex;
+  gap: 12px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.annotation .num {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 3px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  height: fit-content;
+  margin-top: 2px;
+  letter-spacing: 0.04em;
+}
+
+/* Quote callout — a single high-signal sentence pulled from a user */
+.quote-callout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: start;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 22px 26px;
+  margin: 28px 0;
+}
+.quote-callout .mark {
+  font-family: var(--mono);
+  font-size: 32px;
+  color: var(--accent);
+  line-height: 1;
+}
+.quote-callout .body {
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--ink);
+  font-weight: 500;
+}
+.quote-callout .meta {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  font-weight: 400;
+}
+
+/* AI loop band — dedicated tinted block */
+.ai-block {
+  background: #f3f0ff;
+  border: 1px solid #e2dbf9;
+  border-radius: 20px;
+  padding: 40px;
+  margin: 40px 0;
+}
+.ai-block .eyebrow { color: #6938e0; }
+.ai-block h2, .ai-block h3 { color: var(--ink); }
+
+/* Section divider — eyebrow + rule */
+.divider {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 16px;
+  margin: 72px 0 24px;
+}
+.divider .eyebrow { margin: 0; }
+.divider .line {
+  height: 1px;
+  background: var(--rule);
+}
+
+/* Home: "How I work" — skills snapshot */
+.skills-snapshot {
+  background: var(--panel);
+  border-radius: 24px;
+  padding: 48px;
+}
+.skills-snapshot h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 4px 0 24px;
+}
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 32px;
+  margin-top: 16px;
+}
+.skill-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+  gap: 16px;
+}
+.skill-row .name {
+  font-weight: 600;
+  font-size: 16px;
+}
+.skill-row .evidence {
+  font-size: 13.5px;
+  color: var(--muted);
+  grid-column: 1 / -1;
+  margin-top: 2px;
+}
+.skill-row .pct {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+}
+
+/* Meta chips bar — comma-separated metadata */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  line-height: 1.7;
+  margin: 20px 0 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.chips span strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Section h2 in cases — slight editorial bump */
+.case section > h2 {
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+
+/* Wider container for cases when needed */
+.case.wide {
+  max-width: var(--case-wide);
+}
+
+@media (max-width: 760px) {
+  .impact-row { grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 24px 0; margin: 28px 0; }
+  .impact-stat .num { font-size: 26px; }
+  .impact-stat .num.small { font-size: 18px; }
+  .impact-stat .caption { font-size: 12px; }
+  .decision-card { padding: 24px 20px; border-radius: 14px; }
+  .decision-card > h3 { font-size: 20px; }
+  .learnings { grid-template-columns: 1fr; }
+  .pull-quote { font-size: 18px; padding-left: 16px; margin: 32px 0; }
+  .pull-quote cite { font-size: 11px; }
+  .dark-block { padding: 28px 20px; border-radius: 16px; margin: 32px 0; }
+  .ai-block { padding: 24px 20px; border-radius: 16px; }
+  .skills-snapshot { padding: 28px 22px; }
+  .skill-grid { grid-template-columns: 1fr; }
+  .chips { gap: 2px 14px; font-size: 11px; padding: 12px 0; }
+  .case section > h2 { font-size: 22px; }
+  .figure img { max-height: 320px; }
+  .figure.dark img { max-height: 260px; }
+  .figure-grid { grid-template-columns: 1fr; }
+  .figure-grid img { max-height: 260px; }
+  .insight-block { padding: 24px 20px; border-radius: 14px; }
+  .insight-block .quote { font-size: 18px; }
+  .annotation-list { grid-template-columns: 1fr; }
+  .quote-callout { padding: 18px 20px; gap: 14px; }
+  .quote-callout .body { font-size: 15px; }
+  .quote-callout .mark { font-size: 26px; }
+}
+

@@ -24,15 +24,41 @@
     <img src="assets/case/pl-hero.png" alt="Prompt Library interface" />
   </div>
 
-  <main class="case">
-    <p class="lede" style="margin-bottom: 48px"
-       data-en="I built my prompt library in Figma Make to make AI actually usable in my daily UX work — not just faster, but easier to structure, reuse and adapt across different UX tasks."
-       data-no="Jeg bygde prompt-biblioteket mitt i Figma Make for å gjøre AI faktisk brukbart i det daglige UX-arbeidet — ikke bare raskere, men lettere å strukturere, gjenbruke og tilpasse på tvers av ulike UX-oppgaver.">
-      I built my prompt library in Figma Make to make AI actually usable in my daily UX work — not just faster, but easier to structure, reuse and adapt across different UX tasks.
+  <main class="case wide">
+    <span class="eyebrow" data-en="tool · ai fluency in practice" data-no="verktøy · AI-flyt i praksis">tool · ai fluency in practice</span>
+    <p class="lede" style="margin-bottom: 32px; font-size: 22px; line-height: 1.4"
+       data-en="A working prompt library, built in Figma Make and deployed with a Supabase backend. The piece of my AI fluency I can hand someone a login to — not just talk about."
+       data-no="Et fungerende prompt-bibliotek, bygget i Figma Make og publisert med en Supabase-backend. Den delen av AI-flyten min jeg kan gi noen en innlogging til — ikke bare snakke om.">
+      A working prompt library, built in Figma Make and deployed with a Supabase backend. The piece of my AI fluency I can hand someone a login to — not just talk about.
     </p>
 
+    <div class="chips" data-en-html="<span><strong>Type:</strong> Personal tool, live</span><span><strong>Built in:</strong> Figma Make</span><span><strong>Backend:</strong> Supabase (Postgres + auth)</span><span><strong>Stack:</strong> React, Tailwind, REST</span><span><strong>Year:</strong> 2026</span>"
+         data-no-html="<span><strong>Type:</strong> Personlig verktøy, live</span><span><strong>Bygget i:</strong> Figma Make</span><span><strong>Backend:</strong> Supabase (Postgres + auth)</span><span><strong>Stack:</strong> React, Tailwind, REST</span><span><strong>År:</strong> 2026</span>">
+      <span><strong>Type:</strong> Personal tool, live</span><span><strong>Built in:</strong> Figma Make</span><span><strong>Backend:</strong> Supabase (Postgres + auth)</span><span><strong>Stack:</strong> React, Tailwind, REST</span><span><strong>Year:</strong> 2026</span>
+    </div>
+
+    <div class="impact-row">
+      <div class="impact-stat">
+        <div class="num small">Live</div>
+        <div class="caption" data-en="Shareable with a login — runs as a Figma Site, not a prototype." data-no="Delbar med en innlogging — kjører som en Figma-side, ikke en prototype.">Shareable with a login — runs as a Figma Site, not a prototype.</div>
+      </div>
+      <div class="impact-stat">
+        <div class="num small">5 cats</div>
+        <div class="caption" data-en="Research synthesis, insight writing, critique frameworks, presentation prep, interview scripts." data-no="Researchsyntese, innsiktsskriving, kritikkrammeverk, presentasjonsforberedelse, intervjuguider.">Research synthesis, insight writing, critique frameworks, presentation prep, interview scripts.</div>
+      </div>
+      <div class="impact-stat">
+        <div class="num small">0 servers</div>
+        <div class="caption" data-en="No DevOps, no glue code — Figma Make calls Supabase directly. A designer's stack." data-no="Ingen DevOps, ingen glue-kode — Figma Make kaller Supabase direkte. En designers stack.">No DevOps, no glue code — Figma Make calls Supabase directly. A designer's stack.</div>
+      </div>
+      <div class="impact-stat">
+        <div class="num small">Daily</div>
+        <div class="caption" data-en="How often it earns its keep — in research synthesis, copy drafting, and stress-testing my own design rationale." data-no="Hvor ofte den gjør nytte for seg — i researchsyntese, copy-utkast og stresstest av eget design-rasjonale.">How often it earns its keep — in research synthesis, copy drafting, and stress-testing my own design rationale.</div>
+      </div>
+    </div>
+
+    <div class="divider"><span class="eyebrow muted" data-en="01 · what it does" data-no="01 · hva den gjør">01 · what it does</span><div class="line"></div></div>
     <section>
-      <h2><span class="num">01</span><span data-en="What it does" data-no="Hva den gjør">What it does</span></h2>
+      <h2><span data-en="What it does" data-no="Hva den gjør">What it does</span></h2>
       <p data-en="The library groups prompts by intent, with personal notes on when each one works best — making AI a faster, more structured part of the design process. Categories include:"
          data-no="Biblioteket grupperer prompts etter intensjon, med personlige notater om når hver fungerer best — slik at AI blir en raskere, mer strukturert del av designprosessen. Kategorier inkluderer:">
         The library groups prompts by intent, with personal notes on when each one works best — making AI a faster, more structured part of the design process. Categories include:
@@ -48,10 +74,18 @@
          data-no="Det gjør det mye enklere å finne riktig prompt når jeg trenger den og å gjenbruke det som fungerer.">
         It makes it much easier to find the right prompt when I need it and reuse what works.
       </p>
+
+      <blockquote class="pull-quote"
+         data-en="“AI fluency isn't a vibe — it's a workflow you can show someone, a backend you can log into, and a list of things you choose not to ask the model.”"
+         data-no="«AI-flyt er ikke en stemning — det er en arbeidsflyt du kan vise noen, en backend du kan logge inn på, og en liste over ting du velger å ikke spørre modellen om.»">
+        "AI fluency isn't a vibe — it's a workflow you can show someone, a backend you can log into, and a list of things you choose not to ask the model."
+        <cite data-en="— the operating principle behind this tool" data-no="— det operative prinsippet bak dette verktøyet">— the operating principle behind this tool</cite>
+      </blockquote>
     </section>
 
+    <div class="divider"><span class="eyebrow muted" data-en="02 · how it's built" data-no="02 · hvordan den er bygget">02 · how it's built</span><div class="line"></div></div>
     <section>
-      <h2><span class="num">02</span><span data-en="How it's built" data-no="Hvordan den er bygget">How it's built</h2>
+      <h2><span data-en="How it's built" data-no="Hvordan den er bygget">How it's built</span></h2>
       <p data-en="The interface was built in Figma Make as a structured set of reusable cards, clear sections and a simple input pattern for adding new prompts. The early versions were prototype-only, but I wanted the library to behave like a real product — so the next step was to make it persistent and multi-user."
          data-no="Grensesnittet ble bygget i Figma Make som et strukturert sett med gjenbrukbare kort, tydelige seksjoner og et enkelt input-mønster for å legge til nye prompts. De første versjonene var prototype-only, men jeg ville at biblioteket skulle oppføre seg som et ekte produkt — så neste steg var å gjøre det persistent og fler-bruker.">
         The interface was built in Figma Make as a structured set of reusable cards, clear sections and a simple input pattern for adding new prompts. The early versions were prototype-only, but I wanted the library to behave like a real product — so the next step was to make it persistent and multi-user.
@@ -85,8 +119,9 @@
       </p>
     </section>
 
+    <div class="divider"><span class="eyebrow muted" data-en="03 · try it live" data-no="03 · prøv den live">03 · try it live</span><div class="line"></div></div>
     <section>
-      <h2><span class="num">03</span><span data-en="Try it live" data-no="Prøv den live">Try it live</h2>
+      <h2><span data-en="Try it live" data-no="Prøv den live">Try it live</span></h2>
       <p data-en="The library is deployed as its own Figma site. Use the credentials below to log in:"
          data-no="Biblioteket er publisert som sin egen Figma-side. Bruk innloggingen nedenfor for å logge inn:">
         The library is deployed as its own Figma site. Use the credentials below to log in:
@@ -113,6 +148,26 @@
         The site is hosted on Figma Sites. If the page asks you to sign in, just paste the email and password above.
       </p>
     </section>
+
+    <div class="divider"><span class="eyebrow muted" data-en="04 · how I actually use AI" data-no="04 · slik bruker jeg AI">04 · how I actually use AI</span><div class="line"></div></div>
+    <div class="dark-block">
+      <span class="eyebrow dark" data-en="ai · day-to-day" data-no="ai · daglig">ai · day-to-day</span>
+      <h2 data-en="The four places AI earns its keep in my week" data-no="De fire stedene AI gjør nytte for seg i uken min">The four places AI earns its keep in my week</h2>
+      <p data-en="The prompt library exists because I leaned hard on the same four moves and got tired of rewriting them. Each one shows up in the case studies — this is the consolidated version."
+         data-no="Prompt-biblioteket finnes fordi jeg lente meg hardt på de samme fire grepene og ble lei av å skrive dem på nytt. Hver av dem dukker opp i case-studiene — dette er den konsoliderte versjonen.">
+        The prompt library exists because I leaned hard on the same four moves and got tired of rewriting them. Each one shows up in the case studies — this is the consolidated version.
+      </p>
+      <ul>
+        <li data-en="Synthesis — clustering raw research, support tickets and feedback-widget replies into themes. AI does the first pass; I verify against the source quotes." data-no="Syntese — å klynge rå research, supportsaker og widget-svar i temaer. AI gjør første runde; jeg verifiserer mot original-sitatene.">Synthesis — clustering raw research, support tickets and feedback-widget replies into themes. AI does the first pass; I verify against the source quotes.</li>
+        <li data-en="Draft copy — tooltips, microcopy, education entries, OKR talking points. AI writes the first three variants in the right register; I pick and rewrite." data-no="Utkast-copy — tooltips, microcopy, opplæringsinnhold, OKR-snakkepunkter. AI skriver de tre første variantene i riktig register; jeg velger og skriver om.">Draft copy — tooltips, microcopy, education entries, OKR talking points. AI writes the first three variants in the right register; I pick and rewrite.</li>
+        <li data-en="Translation between languages and audiences — Norwegian tax language into plain employee English, finance jargon into copy a CS team can hand a client." data-no="Oversettelse mellom språk og målgrupper — norsk skattespråk til tydelig engelsk for ansatte, finansjargong til copy en CS-kollega kan gi en kunde.">Translation between languages and audiences — Norwegian tax language into plain employee English, finance jargon into copy a CS team can hand a client.</li>
+        <li data-en="Devil's advocate — paste a half-finished rationale into the chat and ask for the strongest objections a CFO or sceptical engineer would raise. Two out of three rounds are noise; the third catches a real hole." data-no="Djevelens advokat — lim et halvferdig rasjonale i chatten og be om de sterkeste innvendingene en CFO eller skeptisk utvikler ville reise. To av tre runder er støy; den tredje finner et reelt hull.">Devil's advocate — paste a half-finished rationale into the chat and ask for the strongest objections a CFO or sceptical engineer would raise. Two out of three rounds are noise; the third catches a real hole.</li>
+      </ul>
+      <p data-en="What I don't ask AI to do: pick the IA, define the brand, or write the copy I'd put my name on without reading. The model is a fast pencil, not a designer."
+         data-no="Det jeg ikke ber AI om: velge IA, definere merkevaren eller skrive copy jeg ville signert uten å lese. Modellen er en rask blyant, ikke en designer.">
+        What I don't ask AI to do: pick the IA, define the brand, or write the copy I'd put my name on without reading. The model is a fast pencil, not a designer.
+      </p>
+    </div>
   </main>
 
   <div class="case-end">
