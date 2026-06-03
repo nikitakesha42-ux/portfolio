@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio Nikitina A.</title>
-  <meta name="description" content="Senior product designer leading strategy and execution across finance, equity and brand experiences." />
+  <title>Anastasiia Nikitina — Product Designer, Oslo</title>
+  <meta name="description" content="Product Designer in Oslo. 5+ years on complex B2B SaaS — most recently Optio Incentives — with a background in information security." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -13,158 +13,288 @@
 <body>
   <a class="skip-link" href="#main" data-en="Skip to main content" data-no="Hopp til hovedinnhold">Skip to main content</a>
 
-  <header class="site-header">
-    <a class="brand" href="index.html">Portfolio Nikitina A.</a>
+  <header class="site-header is-home">
+    <a class="brand-mark" href="index.html" aria-label="Anastasiia Nikitina — home">
+      <span class="mark" aria-hidden="true">AN</span>
+      <span class="name">Anastasiia Nikitina</span>
+    </a>
     <div class="header-right">
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="about.html" data-en="About" data-no="Om meg">About</a>
+        <a href="#reach" data-en="Contact" data-no="Kontakt">Contact</a>
+      </nav>
       <div class="lang-switch" role="group" aria-label="Language">
         <button type="button" data-lang="en" aria-pressed="true">EN</button>
         <button type="button" data-lang="no" aria-pressed="false">NO</button>
       </div>
+      <a class="cta-pill-dark" href="mailto:nikitakesha42@gmail.com">
+        <span class="spark" aria-hidden="true">✦</span>
+        <span data-en="Let's talk" data-no="La oss snakke">Let's talk</span>
+      </a>
     </div>
   </header>
 
   <main id="main" class="wrap">
 
-    <section>
-      <h1 class="section-title" data-en="Selected work" data-no="Utvalgt arbeid">Selected work</h1>
-      <ul class="project-grid">
-        <li class="project-card">
-          <a href="financial-reporting.html">
-            <div class="thumb thumb-hero"><img src="assets/case/fr-hero.png" alt="" /></div>
-            <div class="row">
-              <h3 data-en="From spreadsheets to self-serve IFRS reporting" data-no="Fra regneark til selvbetjent IFRS-rapportering">From spreadsheets to self-serve IFRS reporting</h3>
-              <span class="year">2024</span>
-            </div>
-            <div class="card-tags">
-              <span class="tag" data-en="Optio" data-no="Optio">Optio</span>
-              <span class="tag" data-en="B2B SaaS" data-no="B2B SaaS">B2B SaaS</span>
-              <span class="tag" data-en="Finance UX" data-no="Finans-UX">Finance UX</span>
-              <span class="tag" data-en="Lead Product Designer" data-no="Lead produktdesigner">Lead Product Designer</span>
-            </div>
-            <p data-en="Finance teams used to email reports back and forth for days. I designed the flow that lets them generate IFRS-ready reports on their own."
-               data-no="Finansteam pleide å sende rapporter frem og tilbake på e-post i flere dager. Jeg designet flyten som lar dem lage IFRS-klare rapporter selv.">
-              Finance teams used to email reports back and forth for days. I designed the flow that lets them generate IFRS-ready reports on their own.
-            </p>
-          </a>
-        </li>
+    <!-- HERO — reference style -->
+    <section class="home-hero-ref">
+      <div class="portrait-wrap">
+        <img src="assets/portrait.jpg" alt="Portrait of Anastasiia Nikitina" />
+        <div class="meet-badge" aria-hidden="true">
+          <svg class="ring" viewBox="0 0 100 100" width="88" height="88">
+            <defs>
+              <path id="badge-circle" d="M 50 50 m -38 0 a 38 38 0 1 1 76 0 a 38 38 0 1 1 -76 0"/>
+            </defs>
+            <text>
+              <textPath href="#badge-circle">NICE TO MEET YOU · NICE TO MEET YOU · </textPath>
+            </text>
+          </svg>
+          <span class="star">✦</span>
+        </div>
+      </div>
 
-        <li class="project-card">
-          <a href="employee-portal.html">
-            <div class="thumb thumb-hero"><img src="assets/case/ep-hero.png" alt="" /></div>
-            <div class="row">
-              <h3 data-en="Helping employees actually understand their equity" data-no="Slik ble aksjeordningen forståelig for ansatte">Helping employees actually understand their equity</h3>
-              <span class="year">2023</span>
-            </div>
-            <div class="card-tags">
-              <span class="tag" data-en="Optio" data-no="Optio">Optio</span>
-              <span class="tag" data-en="Consumer fintech" data-no="Forbrukerrettet fintech">Consumer fintech</span>
-              <span class="tag" data-en="Equity & comp" data-no="Aksjer og kompensasjon">Equity &amp; comp</span>
-              <span class="tag" data-en="Lead Product Designer" data-no="Lead produktdesigner">Lead Product Designer</span>
-            </div>
-            <p data-en="Most people open the portal twice a year and forget how it works. I redesigned the dashboard so the first two questions — what do I have, what should I do — answer themselves."
-               data-no="De fleste åpner portalen to ganger i året og glemmer hvordan den fungerer. Jeg redesignet dashbordet slik at de to første spørsmålene — hva har jeg, hva bør jeg gjøre — svarer seg selv.">
-              Most people open the portal twice a year and forget how it works. I redesigned the dashboard so the first two questions — what do I have, what should I do — answer themselves.
-            </p>
-          </a>
-        </li>
-      </ul>
+      <h1 data-en="Product Designer with background in Information Security"
+          data-no="Produktdesigner med bakgrunn fra informasjonssikkerhet">
+        Product Designer with background in Information Security
+      </h1>
+
+      <div class="hero-bio"
+           data-en-html="<p>Hi, I'm Anastasiia — a product designer based in Oslo with 5+ years of design behind me, most recently as <strong>Product Designer at Optio Incentives</strong> (2022 — 2025).</p><p>My information-security degree quietly shapes the work: I think in roles, permissions and rule-based interfaces — exactly the territory of equity, transactions and financial reporting.</p>"
+           data-no-html="<p>Hei, jeg er Anastasiia — produktdesigner i Oslo med 5+ års designerfaring, sist som <strong>produktdesigner hos Optio Incentives</strong> (2022 — 2025).</p><p>Graden min i informasjonssikkerhet former arbeidet i det stille: jeg tenker i roller, tillatelser og regelbaserte grensesnitt — nettopp territoriet til aksjer, transaksjoner og finansiell rapportering.</p>">
+        <p>Hi, I'm Anastasiia — a product designer based in Oslo with 5+ years of design behind me, most recently as <strong>Product Designer at Optio Incentives</strong> (2022 — 2025).</p>
+        <p>My information-security degree quietly shapes the work: I think in roles, permissions and rule-based interfaces — exactly the territory of equity, transactions and financial reporting.</p>
+      </div>
+
+      <div class="hero-cta-row">
+        <a class="cta-pill-dark" href="about.html">
+          <span class="spark" aria-hidden="true">✦</span>
+          <span data-en="Get to know me better" data-no="Bli bedre kjent med meg">Get to know me better</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div id="selected-work" class="work-label">
+        <span class="num">01</span>
+        <span data-en="Work / Case study" data-no="Arbeid / Case-studie">Work / Case study</span>
+      </div>
     </section>
 
+    <!-- SELECTED WORK — Project snapshots -->
     <section>
-      <span class="eyebrow" data-en="tools · ai fluency in practice" data-no="verktøy · AI-flyt i praksis">tools · ai fluency in practice</span>
-      <h2 class="section-title" style="margin-top: 4px" data-en="Tools I build" data-no="Verktøy jeg bygger">Tools I build</h2>
-      <div class="tool-row">
-        <div class="tool-text">
-          <div class="year">2026</div>
-          <h3 data-en="Prompt Library" data-no="Prompt-bibliotek">Prompt Library</h3>
-          <p data-en="I built a small prompt library in Figma Make to make AI more usable in my daily workflow — not just faster, but easier to structure, reuse, and adapt across different UX tasks."
-             data-no="Jeg bygde et lite prompt-bibliotek i Figma Make for å gjøre AI mer brukbart i den daglige arbeidsflyten — ikke bare raskere, men lettere å strukturere, gjenbruke og tilpasse på tvers av ulike UX-oppgaver.">
-            I built a small prompt library in Figma Make to make AI more usable in my daily workflow — not just faster, but easier to structure, reuse, and adapt across different UX tasks.
+
+      <!-- Project snapshot 01 — Financial Reporting -->
+      <article class="project-snapshot">
+        <div class="snap-text">
+          <span class="meta-year">2022 — 2024</span>
+          <h3 data-en="Self-serve financial reporting for compliance-heavy teams"
+              data-no="Selvbetjent finansiell rapportering for compliance-tunge team">
+            Self-serve financial reporting for compliance-heavy teams
+          </h3>
+          <p class="snap-desc"
+             data-en="Customer Success used to hand-build the monthly Excel exports for every client. I led the redesign that replaces those with guided self-serve flows — across IFRS, audit, period-close and ad hoc report types — and shaped the rules engine that scales them across jurisdictions without engineering tickets."
+             data-no="Customer Success pleide å lage de månedlige Excel-eksportene manuelt for hver kunde. Jeg ledet redesignet som erstattet dem med veiledede selvbetjente flyter — på tvers av IFRS, revisjon, periodeavslutning og ad hoc-rapporter — og formet regelmotoren som skalerer dem på tvers av jurisdiksjoner uten utviklersaker.">
+            Customer Success used to hand-build the monthly Excel exports for every client. I led the redesign that replaces those with guided self-serve flows — across IFRS, audit, period-close and ad hoc report types — and shaped the rules engine that scales them across jurisdictions without engineering tickets.
           </p>
+          <div class="snap-metrics">
+            <div class="snap-metric">
+              <div class="num small" data-en="~1 000 h / yr" data-no="~1 000 t / år">~1 000 h / yr</div>
+              <div class="label" data-en="Manual Customer Success work eliminated by self-serve reporting." data-no="Manuelt Customer Success-arbeid eliminert av selvbetjent rapportering.">Manual Customer Success work eliminated by self-serve reporting.</div>
+            </div>
+            <div class="snap-metric">
+              <div class="num small" data-en="days → hours" data-no="dager → timer">days → hours</div>
+              <div class="label" data-en="Reporting prep time end-to-end, across multiple report types." data-no="Forberedelsestid fra start til slutt, på tvers av flere rapporttyper.">Reporting prep time end-to-end, across multiple report types.</div>
+            </div>
+          </div>
+          <a class="btn-pill-light" href="financial-reporting.html">
+            <span data-en="Read the case" data-no="Les caset">Read the case</span>
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
-        <div class="tool-img">
-          <a href="prompt-library.html"><img src="assets/prompt-library.png" alt="" /></a>
+        <figure class="snap-image">
+          <img src="assets/case/fr-hero.png" alt="" />
+          <figcaption data-en="One self-serve surface that finance teams can own across report types and jurisdictions."
+                      data-no="Én selvbetjent flate finansteam kan eie på tvers av rapporttyper og jurisdiksjoner.">
+            One self-serve surface that finance teams can own across report types and jurisdictions.
+          </figcaption>
+        </figure>
+      </article>
+
+      <!-- Project snapshot 02 — Employee Portal -->
+      <article class="project-snapshot">
+        <div class="snap-text">
+          <span class="meta-year">2022 — 2024</span>
+          <h3 data-en="Making employee equity make sense"
+              data-no="Når aksjeordningen endelig gir mening">
+            Making employee equity make sense
+          </h3>
+          <p class="snap-desc"
+             data-en="Most people open an equity portal twice a year and forget how it works. I redesigned the dashboard around the two questions participants actually ask — what do I have, what should I do — and kept the team close to them with an in-product feedback loop."
+             data-no="De fleste åpner aksjeportalen to ganger i året og glemmer hvordan den fungerer. Jeg redesignet dashbordet rundt de to spørsmålene deltakerne faktisk stiller — hva har jeg, hva bør jeg gjøre — og holdt teamet tett på dem med en innebygd tilbakemeldingsløkke.">
+            Most people open an equity portal twice a year and forget how it works. I redesigned the dashboard around the two questions participants actually ask — what do I have, what should I do — and kept the team close to them with an in-product feedback loop.
+          </p>
+          <div class="snap-metrics">
+            <div class="snap-metric">
+              <div class="num small" data-en="Sept '24" data-no="sept. '24">Sept '24</div>
+              <div class="label" data-en="Optio's highest positive-feedback month on record." data-no="Optios beste tilbakemeldingsmåned noen sinne.">Optio's highest positive-feedback month on record.</div>
+            </div>
+            <div class="snap-metric">
+              <div class="num small" data-en="1 retained" data-no="1 beholdt">1 retained</div>
+              <div class="label" data-en="Biggest client kept through a chunked plan when the roadmap paused." data-no="Største kunde beholdt gjennom en oppdelt plan da roadmappen ble pauset.">Biggest client kept through a chunked plan when the roadmap paused.</div>
+            </div>
+          </div>
+          <a class="btn-pill-light" href="employee-portal.html">
+            <span data-en="Read the case" data-no="Les caset">Read the case</span>
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
-      </div>
+        <figure class="snap-image">
+          <img src="assets/case/ep-hero.png" alt="" />
+          <figcaption data-en="The participant dashboard, organised around what people own and what they need to act on."
+                      data-no="Deltakerdashbordet, organisert rundt hva man eier og hva man trenger å handle på.">
+            The participant dashboard, organised around what people own and what they need to act on.
+          </figcaption>
+        </figure>
+      </article>
     </section>
 
+    <!-- OTHER SNAPSHOTS — smaller cards -->
     <section>
-      <div class="skills-snapshot">
-        <span class="eyebrow" data-en="how I work" data-no="slik jobber jeg">how I work</span>
-        <h2 data-en="The skills I bring, with the evidence behind them" data-no="Ferdighetene jeg tar med — og bevisene bak">The skills I bring, with the evidence behind them</h2>
-        <p style="color: var(--muted); margin-top: -8px; max-width: 540px"
-           data-en="Ranked by how much I lean on them, not by what the industry charts suggest. Each line points to a place in the work where I'd show it on a call."
-           data-no="Rangert etter hvor mye jeg lener meg på dem, ikke etter hva bransje-grafer sier. Hver linje peker til et sted i arbeidet jeg ville vist det på en samtale.">
-          Ranked by how much I lean on them, not by what the industry charts suggest. Each line points to a place in the work where I'd show it on a call.
-        </p>
-        <div class="skill-grid">
-          <div class="skill-row">
-            <span class="name" data-en="AI fluency" data-no="AI-flyt">AI fluency</span>
-            <span class="pct">01</span>
-            <span class="evidence" data-en="Shipped a Supabase-backed prompt library in Figma Make (2026) · used AI on FR (2024) to synthesise research notes and draft IFRS-correct tooltip copy." data-no="Lanserte et prompt-bibliotek på Supabase i Figma Make (2026) · brukte AI på FR (2024) til å syntetisere researchnotater og skrive utkast til IFRS-korrekt tooltip-copy.">Shipped a Supabase-backed prompt library in Figma Make (2026) · used AI on FR (2024) to synthesise research notes and draft IFRS-correct tooltip copy.</span>
+      <span class="tpl-section-label" data-en="Other snapshots" data-no="Andre prosjekter">Other snapshots</span>
+      <div class="other-snapshots-grid">
+        <article class="other-snap">
+          <figure class="snap-image">
+            <img src="assets/prompt-library.png" alt="" />
+          </figure>
+          <div class="pill-row">
+            <span class="status-pill tool"><span class="dot figma" aria-hidden="true"></span>Figma Make</span>
           </div>
-          <div class="skill-row">
-            <span class="name" data-en="Strategic framing" data-no="Strategisk innramming">Strategic framing</span>
-            <span class="pct">02</span>
-            <span class="evidence" data-en="The mechanical-vs-judgemental split that anchored FR · the 'what do I have / what should I do' frame for EP." data-no="Skillet mellom mekanisk og skjønnsmessig som forankret FR · «hva har jeg / hva bør jeg gjøre»-rammen for EP.">The mechanical-vs-judgemental split that anchored FR · the "what do I have / what should I do" frame for EP.</span>
+          <h4 data-en="A prompt library that turned AI from a daily experiment into a daily habit"
+              data-no="Et prompt-bibliotek som gjorde AI fra et daglig eksperiment til en daglig vane">
+            A prompt library that turned AI from a daily experiment into a daily habit
+          </h4>
+          <p data-en="Figma Make + Supabase. Versioned prompts across five categories — synthesis, copy review, IA pressure-tests, adversarial review, domain onboarding — so AI helps where it actually helps, not where it sounds clever."
+             data-no="Figma Make + Supabase. Versjonerte prompts på tvers av fem kategorier — syntese, copy-review, IA-stresstester, adversariell gjennomgang, domeneinnlemming — så AI hjelper der den faktisk hjelper, ikke der den høres smart ut.">
+            Figma Make + Supabase. Versioned prompts across five categories — synthesis, copy review, IA pressure-tests, adversarial review, domain onboarding — so AI helps where it actually helps, not where it sounds clever.
+          </p>
+          <div>
+            <a class="btn-pill-light" href="prompt-library.html">
+              <span data-en="See the tool" data-no="Se verktøyet">See the tool</span>
+              <span aria-hidden="true">→</span>
+            </a>
           </div>
-          <div class="skill-row">
-            <span class="name" data-en="Business judgment" data-no="Forretningsskjønn">Business judgment</span>
-            <span class="pct">03</span>
-            <span class="evidence" data-en="Chunked OKR-aligned delivery that kept Optio's largest client when the roadmap paused · Customer Success as a research source in FR." data-no="Oppdelt OKR-koblet levering som beholdt Optios største kunde da roadmappen ble pauset · Customer Success som researchkilde i FR.">Chunked OKR-aligned delivery that kept Optio's largest client when the roadmap paused · Customer Success as a research source in FR.</span>
+        </article>
+
+        <article class="other-snap">
+          <figure class="snap-image">
+            <img src="assets/case/share-simulator-prototype.png" alt="Share simulator co-pilot prototype — empty state with mock portfolio and suggested questions" />
+          </figure>
+          <div class="pill-row">
+            <span class="status-pill tool"><span class="dot claude" aria-hidden="true"></span>Claude Code</span>
           </div>
-          <div class="skill-row">
-            <span class="name" data-en="Storytelling" data-no="Fortellerteknikk">Storytelling</span>
-            <span class="pct">04</span>
-            <span class="evidence" data-en="Action flows rewritten as ordered conversations · in-product education that earns its place next to the term." data-no="Handlingsflyter omskrevet som sekvensielle samtaler · innebygd opplæring som fortjener plassen ved siden av begrepet.">Action flows rewritten as ordered conversations · in-product education that earns its place next to the term.</span>
+          <h4 data-en="Rebuilding the share simulator so the AI explains the numbers, not just calculates them"
+              data-no="Aksjesimulatoren bygd om så AI forklarer tallene, ikke bare regner dem ut">
+            Rebuilding the share simulator so the AI explains the numbers, not just calculates them
+          </h4>
+          <p data-en="Coming next. Where the previous simulator returned a number, this one walks the participant through what the number means — tax, vesting and exit scenarios, in language they can carry into a conversation with HR or a partner."
+             data-no="Kommer snart. Der den forrige simulatoren returnerte et tall, leder denne deltakeren gjennom hva tallet betyr — skatt, opptjening og exit-scenarier, på et språk de kan ta med inn i en samtale med HR eller en partner.">
+            Coming next. Where the previous simulator returned a number, this one walks the participant through what the number means — tax, vesting and exit scenarios, in language they can carry into a conversation with HR or a partner.
+          </p>
+          <div>
+            <a class="btn-pill-light" href="share-simulator.html">
+              <span data-en="See the rebuild" data-no="Se rebyggingen">See the rebuild</span>
+              <span aria-hidden="true">→</span>
+            </a>
           </div>
-          <div class="skill-row">
-            <span class="name" data-en="Systems thinking" data-no="Systemtenkning">Systems thinking</span>
-            <span class="pct">05</span>
-            <span class="evidence" data-en="Configurable grouping that scaled across clients without forking the design · IA built once, reused across desktop and mobile." data-no="Konfigurerbar gruppering som skalerte på tvers av kunder uten å splitte designet · IA bygget én gang, gjenbrukt på desktop og mobil.">Configurable grouping that scaled across clients without forking the design · IA built once, reused across desktop and mobile.</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- CAREER METRICS -->
+    <section>
+      <div class="career-metrics">
+        <span class="tpl-section-label" data-en="Career metrics" data-no="Karrieretall">Career metrics</span>
+        <div class="career-stat-grid">
+          <div class="career-stat">
+            <div class="num">5+</div>
+            <div class="label" data-en="Years in design" data-no="År med design">Years in design</div>
+            <div class="desc" data-en="Four+ in B2B SaaS; earlier work in e-commerce and accessibility-led web." data-no="Fire+ i B2B SaaS; tidligere arbeid innen e-handel og tilgjengelighetsledet web.">Four+ in B2B SaaS; earlier work in e-commerce and accessibility-led web.</div>
           </div>
-          <div class="skill-row">
-            <span class="name" data-en="Creative direction" data-no="Kreativ retning">Creative direction</span>
-            <span class="pct">06</span>
-            <span class="evidence" data-en="A calm, finance-aware visual language built into product, marketing and pitch surfaces through shared tokens." data-no="Et rolig, finansbevisst visuelt språk bygget inn i produkt, markedsføring og pitchflater gjennom delte tokens.">A calm, finance-aware visual language built into product, marketing and pitch surfaces through shared tokens.</span>
+          <div class="career-stat">
+            <div class="num">1 000+</div>
+            <div class="label" data-en="Equity programs on the platform" data-no="Aksjeprogrammer på plattformen">Equity programs on the platform</div>
+            <div class="desc" data-en="Across 130+ jurisdictions, as Optio's first in-house product designer." data-no="På tvers av 130+ jurisdiksjoner, som Optios første interne produktdesigner.">Across 130+ jurisdictions, as Optio's first in-house product designer.</div>
           </div>
-          <div class="skill-row">
-            <span class="name" data-en="Coding" data-no="Koding">Coding</span>
-            <span class="pct">07</span>
-            <span class="evidence" data-en="This site (hand-built HTML/CSS/JS, bilingual toggle) · the Prompt Library shipped with a Supabase backend." data-no="Denne siden (håndbygget HTML/CSS/JS, tospråklig veksler) · Prompt-biblioteket levert med en Supabase-backend.">This site (hand-built HTML/CSS/JS, bilingual toggle) · the Prompt Library shipped with a Supabase backend.</span>
+          <div class="career-stat">
+            <div class="num">EN / NO</div>
+            <div class="label" data-en="Working in four languages" data-no="Jobber på fire språk">Working in four languages</div>
+            <div class="desc" data-en="EN fluent · NO professional · UK native · DE advanced." data-no="EN flytende · NO profesjonell · UK morsmål · DE avansert.">EN fluent · NO professional · UK native · DE advanced.</div>
+          </div>
+          <div class="career-stat">
+            <div class="num small" data-en="~1 000 h / yr" data-no="~1 000 t / år">~1 000 h / yr</div>
+            <div class="label" data-en="Manual work eliminated" data-no="Manuelt arbeid eliminert">Manual work eliminated</div>
+            <div class="desc" data-en="Customer Success Excel exports replaced by self-serve reporting." data-no="Excel-eksporter fra Customer Success erstattet av selvbetjent rapportering.">Customer Success Excel exports replaced by self-serve reporting.</div>
+          </div>
+          <div class="career-stat">
+            <div class="num small" data-en="Sept '24" data-no="sept. '24">Sept '24</div>
+            <div class="label" data-en="Best positive-feedback month" data-no="Beste tilbakemeldingsmåned">Best positive-feedback month</div>
+            <div class="desc" data-en="The product's strongest month in Mixpanel after the unified dashboard launch." data-no="Produktets sterkeste måned i Mixpanel etter lansering av det samlede dashbordet.">The product's strongest month in Mixpanel after the unified dashboard launch.</div>
+          </div>
+          <div class="career-stat">
+            <div class="num">6</div>
+            <div class="label" data-en="High-risk transaction flows" data-no="Høyrisiko-transaksjonsflyter">High-risk transaction flows</div>
+            <div class="desc" data-en="Buy, sell, issue, accept — with stepwise validation, live previews and explicit state." data-no="Kjøp, salg, utstedelse, aksept — med trinnvis validering, live forhåndsvisning og eksplisitt tilstand.">Buy, sell, issue, accept — with stepwise validation, live previews and explicit state.</div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- TOP SKILL -->
+    <section>
+      <div class="top-skill">
+        <span class="eyebrow muted" data-en="top skill" data-no="hovedstyrke">top skill</span>
+        <h2 data-en="I bring AI into product work without losing the craft."
+            data-no="Jeg tar AI inn i produktarbeidet uten å miste håndverket.">
+          I bring AI into product work without losing the craft.
+        </h2>
+        <p class="top-skill-supporting"
+           data-en="The Prompt Library is the studio. The Share Simulator redesign is where it earns its keep in front of users. In between, Figma Make, Cursor and Claude Code help me synthesise research, draft regulation-aware copy and pressure-test flows — never replacing the judgment call, just making more of them possible in a week."
+           data-no="Prompt-biblioteket er studioet. Share-simulator-redesignet er stedet det viser seg foran brukerne. Mellom dem hjelper Figma Make, Cursor og Claude Code meg å syntetisere research, skrive utkast til regelverkstro tekst og stresstesteflyter — uten å erstatte vurderingen, men ved å gjøre flere mulige i løpet av en uke.">
+          The Prompt Library is the studio. The Share Simulator redesign is where it earns its keep in front of users. In between, Figma Make, Cursor and Claude Code help me synthesise research, draft regulation-aware copy and pressure-test flows — never replacing the judgment call, just making more of them possible in a week.
+        </p>
+      </div>
+    </section>
+
+    <!-- BEHANCE BAND -->
     <section>
       <div class="behance-band">
-        <h2 data-en="More Projects on Behance" data-no="Flere prosjekter på Behance">More Projects on Behance</h2>
-        <p data-en="Check out my full portfolio featuring additional case studies, explorations, and design work."
-           data-no="Se hele porteføljen min med flere case-studier, utforskninger og designarbeid.">
-          Check out my full portfolio featuring additional case studies, explorations, and design work.
+        <h2 data-en="More projects on Behance" data-no="Flere prosjekter på Behance">More projects on Behance</h2>
+        <p data-en="Earlier brand and product work, illustration and side projects from before Optio."
+           data-no="Tidligere merkevare- og produktarbeid, illustrasjon og sideprosjekter fra før Optio.">
+          Earlier brand and product work, illustration and side projects from before Optio.
         </p>
-        <a class="btn-pill" href="https://www.behance.net/nikitakeshb79b" target="_blank" rel="noopener">
-          <span data-en="View Behance Portfolio" data-no="Se Behance-portefølje">View Behance Portfolio</span>
+        <a class="btn-pill" href="https://www.behance.net/anastasiianikitina" target="_blank" rel="noopener">
+          <span data-en="View Behance" data-no="Gå til Behance">View Behance</span>
           <span aria-hidden="true">↗</span>
         </a>
       </div>
     </section>
 
-    <section>
+    <!-- REACH OUT -->
+    <section id="reach">
       <div class="foot-cols">
         <div>
-          <h2 data-en="My design philosophy" data-no="Min designfilosofi">My design philosophy</h2>
-          <p data-en="Every portfolio reflects a unique perspective. My design philosophy is to hold space for real human stories inside digital products. I believe good UX is not just usable, but emotionally honest: it respects people's time, energy, and limitations while helping businesses make clear, grounded decisions."
-             data-no="Hver portefølje reflekterer et unikt perspektiv. Min designfilosofi er å holde rom for ekte menneskelige historier inne i digitale produkter. Jeg tror god UX ikke bare er brukbar, men emosjonelt ærlig: den respekterer folks tid, energi og begrensninger, samtidig som den hjelper virksomheter å ta tydelige, jordnære beslutninger.">
-            Every portfolio reflects a unique perspective. My design philosophy is to hold space for real human stories inside digital products. I believe good UX is not just usable, but emotionally honest: it respects people's time, energy, and limitations while helping businesses make clear, grounded decisions.
+          <h2 data-en="A note on how I work" data-no="Et ord om hvordan jeg jobber">A note on how I work</h2>
+          <p data-en="I'm drawn to the slower problems behind clean interfaces — the rules, the edge cases, the bit of policy nobody wants to read. Good UX in finance, to me, is honest about complexity instead of hiding it. It respects people's time and helps the business make grounded decisions."
+             data-no="Jeg trekkes mot de mer tregere problemene bak rene grensesnitt — reglene, kanttilfellene, den lille policy-biten ingen vil lese. God UX i finans er for meg ærlig om kompleksitet i stedet for å skjule den. Den respekterer folks tid og hjelper virksomheten med å ta jordnære beslutninger.">
+            I'm drawn to the slower problems behind clean interfaces — the rules, the edge cases, the bit of policy nobody wants to read. Good UX in finance, to me, is honest about complexity instead of hiding it. It respects people's time and helps the business make grounded decisions.
           </p>
         </div>
         <div>
           <h2 data-en="Reach out" data-no="Ta kontakt">Reach out</h2>
           <ul class="contact-list">
-            <li><a href="mailto:hello@example.com" data-en="Email" data-no="E-post">Email</a></li>
+            <li><a href="mailto:nikitakesha42@gmail.com">nikitakesha42@gmail.com</a></li>
             <li><a href="https://www.linkedin.com/in/nikitina-anastasia/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.behance.net/anastasiianikitina" target="_blank" rel="noopener">Behance</a></li>
           </ul>
         </div>
       </div>
@@ -172,7 +302,7 @@
   </main>
 
   <footer class="site">
-    <span>© 2026 Nikitina Anastasiia</span>
+    <span>© 2026 Anastasiia Nikitina</span>
     <span data-en="Designed and built with care" data-no="Designet og bygget med omtanke">Designed and built with care</span>
   </footer>
 

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Share simulator, rebuilt with AI at the centre · Anastasiia Nikitina</title>
+  <meta name="description" content="Rebuilding the share-price simulator I designed for Optio so AI explains the numbers in plain language — not just calculates them." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main" data-en="Skip to main content" data-no="Hopp til hovedinnhold">Skip to main content</a>
+
+  <header class="case-header">
+    <a href="index.html" data-en="← All work" data-no="← Alt arbeid">← All work</a>
+    <div class="header-right">
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="index.html#selected-work" data-en="Work" data-no="Arbeid">Work</a>
+        <a href="about.html" data-en="About" data-no="Om meg">About</a>
+      </nav>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="no" aria-pressed="false">NO</button>
+      </div>
+    </div>
+  </header>
+
+  <figure class="case-banner">
+    <img src="assets/case/share-simulator-prototype.png" alt="The rebuilt share simulator — co-pilot front door, mock portfolio, country picker, suggested questions including the deliberately-red 'Should I sell now?'" />
+    <figcaption data-en="The rebuild — a co-pilot front door over the mock portfolio, with a country picker and the deliberately-red “Should I sell now?” chip that demonstrates the AI's refusal to recommend."
+                data-no="Rebyggingen — en medpilot-inngangsport over den fiktive porteføljen, med landvelger og den bevisst røde «Bør jeg selge nå?»-knappen som demonstrerer AI-ens avslag på å anbefale.">
+      The rebuild — a co-pilot front door over the mock portfolio, with a country picker and the deliberately-red “Should I sell now?” chip that demonstrates the AI's refusal to recommend.
+    </figcaption>
+  </figure>
+
+  <main id="main" class="case wide">
+
+    <span class="case-eyebrow brand" data-en="Self-initiated rebuild · 2026 — in progress"
+                                     data-no="Selvinitiert rebygging · 2026 — pågående">Self-initiated rebuild · 2026 — in progress</span>
+    <h1 class="case-h1"
+        data-en="Rebuilding the share simulator so AI explains the numbers, not just calculates them"
+        data-no="Aksjesimulatoren bygd om så AI forklarer tallene, ikke bare regner dem ut">
+      Rebuilding the share simulator so AI explains the numbers, not just calculates them
+    </h1>
+
+    <nav class="case-toc-pills" aria-label="On this page">
+      <a href="#problem"><span class="num">01</span> <span data-en="Problem" data-no="Problem">Problem</span></a>
+      <a href="#centre"><span class="num">02</span> <span data-en="AI at the centre" data-no="AI i sentrum">AI at the centre</span></a>
+      <a href="#examples"><span class="num">03</span> <span data-en="The conversation" data-no="Samtalen">The conversation</span></a>
+    </nav>
+
+    <!-- SNAPSHOT ROW -->
+    <div class="snap-row">
+      <div class="cell">
+        <span class="label" data-en="Years" data-no="År">Years</span>
+        <span class="value">
+          <strong>2026 — ongoing</strong>
+          <span class="aside" data-en="rebuild of my own 2022 — 2024 work" data-no="rebygging av eget arbeid fra 2022 — 2024">rebuild of my own 2022 — 2024 work</span>
+        </span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="Status" data-no="Status">Status</span>
+        <span class="value" data-en="Self-initiated · in design" data-no="Selvinitiert · i designfase">Self-initiated · in design</span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="My role" data-no="Min rolle">My role</span>
+        <span class="value" data-en="Solo · design + AI integration"
+                            data-no="Alene · design + AI-integrasjon">Solo · design + AI integration</span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="In one line" data-no="På én linje">In one line</span>
+        <span class="value" data-en="Took an old static simulator and put an AI co-pilot at the centre of it."
+                            data-no="Tok en gammel statisk simulator og satte en AI-medpilot i sentrum av den.">Took an old static simulator and put an AI co-pilot at the centre of it.</span>
+      </div>
+    </div>
+
+    <!-- TRY THE PROTOTYPE -->
+    <section class="sf-section" style="margin-bottom: 56px;">
+      <div style="background: var(--panel-warm); border: 1px solid var(--rule); border-radius: 18px; padding: 28px 32px; display: flex; gap: 24px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 280px;">
+          <span class="case-eyebrow ai" data-en="Click-through prototype" data-no="Klikkbar prototype">Click-through prototype</span>
+          <h2 style="font-size: 20px; font-weight: 700; line-height: 1.3; margin: 8px 0 6px;"
+              data-en="Try the co-pilot on a mock share programme"
+              data-no="Prøv medpiloten på et fiktivt aksjeprogram">
+            Try the co-pilot on a mock share programme
+          </h2>
+          <p style="font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0;"
+             data-en="Ask anything. Switch countries. Toggle the what-if slider. The prototype covers the edge cases — including the questions the co-pilot won't answer."
+             data-no="Spør hva som helst. Bytt land. Veksle til hva-hvis-glideren. Prototypen dekker kanttilfellene — inkludert spørsmålene medpiloten ikke svarer på.">
+            Ask anything. Switch countries. Toggle the what-if slider. The prototype covers the edge cases — including the questions the co-pilot won't answer.
+          </p>
+        </div>
+        <a class="btn-pill-light" href="share-simulator-prototype.html" style="background: var(--ink); color: #fff; border-color: var(--ink); white-space: nowrap;">
+          <span data-en="Open the prototype" data-no="Åpne prototypen">Open the prototype</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 01 PROBLEM -->
+    <section id="problem" class="sf-section">
+      <span class="case-eyebrow" data-en="01 · Problem" data-no="01 · Problem">01 · Problem</span>
+      <h2 data-en="The old simulator answered one question. People arrived with five."
+          data-no="Den gamle simulatoren svarte på ett spørsmål. Folk kom med fem.">
+        The old simulator answered one question. People arrived with five.
+      </h2>
+      <p data-en="The original simulator opened on a slider: what if the share price moves X%? People had to bring their own math — when their shares unlock, what tax looks like, what happens if they leave. The static answer didn't help with the actual question. And the people opening it twice a year couldn't remember enough of the language to ask it properly."
+         data-no="Den opprinnelige simulatoren åpnet på en glider: hva om aksjekursen beveger seg X %? Folk måtte ha med seg sin egen matte — når aksjene deres låses opp, hvordan skatten ser ut, hva som skjer om de slutter. Det statiske svaret hjalp ikke med det faktiske spørsmålet. Og folk som åpnet den to ganger i året husket ikke nok av språket til å spørre skikkelig.">
+        The original simulator opened on a slider: what if the share price moves X%? People had to bring their own math — when their shares unlock, what tax looks like, what happens if they leave. The static answer didn't help with the actual question. And the people opening it twice a year couldn't remember enough of the language to ask it properly.
+      </p>
+    </section>
+
+    <!-- THE SHIFT — verbatim italic rule -->
+    <section class="sf-section" style="margin-bottom: 48px;">
+      <span class="case-eyebrow" data-en="The rule I'm designing against"
+                                 data-no="Regelen jeg designer mot">The rule I'm designing against</span>
+      <p class="shift-quote" data-en="“A simulator that only returns a number isn't simulating much.”"
+                             data-no="“En simulator som bare returnerer et tall, simulerer ikke mye.”">
+        “A simulator that only returns a number isn't simulating much.”
+      </p>
+    </section>
+
+    <!-- 03 AI AT THE CENTRE -->
+    <section id="centre" class="sf-section">
+      <span class="case-eyebrow ai" data-en="02 · AI at the centre"
+                                    data-no="02 · AI i sentrum">02 · AI at the centre</span>
+      <h2 data-en="What I'd automate, cut, keep human, and add with AI"
+          data-no="Hva jeg ville automatisert, kuttet, beholdt menneskelig, og lagt til med AI">
+        What I'd automate, cut, keep human, and add with AI
+      </h2>
+
+      <div class="sf-decisions four">
+        <article class="sf-decision">
+          <span class="signal-tag ai" data-en="AI fluency · Automate" data-no="AI-flyt · Automatiser">AI fluency · Automate</span>
+          <h3 data-en="The math runs itself" data-no="Matten kjører seg selv">The math runs itself</h3>
+          <p data-en="Tax rules per country, share-unlock schedules, blackout windows, currency. All calculated against the participant's actual programme, in the background. No manual setup, no remembering the formula."
+             data-no="Skatteregler per land, opptjeningsplaner, blackout-vinduer, valuta. Alt beregnet mot deltakerens faktiske program, i bakgrunnen. Ingen manuell oppsett, ingen huske formelen.">
+            Tax rules per country, share-unlock schedules, blackout windows, currency. All calculated against the participant's actual programme, in the background. No manual setup, no remembering the formula.
+          </p>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag problem" data-en="Problem reframed · Cut" data-no="Problem omformulert · Kutt">Problem reframed · Cut</span>
+          <h3 data-en="The ‘what if the price moves X%’ slider as the front door"
+              data-no="«Hva om kursen beveger seg X %»-glideren som inngangsport">The “what if the price moves X%” slider as the front door</h3>
+          <p data-en="The slider stays for the people who want it. But most people don't think in percentages — they think in life events. The new front door is a question box: ‘ask anything about your shares.’"
+             data-no="Glideren blir for de som vil ha den. Men de fleste tenker ikke i prosenter — de tenker i livshendelser. Den nye inngangsporten er en spørsmålsboks: «spør hva som helst om aksjene dine.»">
+            The slider stays for the people who want it. But most people don't think in percentages — they think in life events. The new front door is a question box: “ask anything about your shares.”
+          </p>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag strategic" data-en="Risk mitigated · Keep human" data-no="Risiko redusert · Behold menneskelig">Risk mitigated · Keep human</span>
+          <h3 data-en="The decision belongs to the person, never to the AI"
+              data-no="Beslutningen tilhører personen, aldri AI-en">The decision belongs to the person, never to the AI</h3>
+          <p data-en="The co-pilot explains. It does not recommend. ‘Sell now’ / ‘wait until next quarter’ — that's a financial decision the simulator never makes. The risk of an AI giving someone wrong advice about their own money is too high to accept."
+             data-no="Medpiloten forklarer. Den anbefaler ikke. «Selg nå» / «vent til neste kvartal» — det er en finansiell beslutning simulatoren aldri tar. Risikoen for at en AI gir noen feil råd om deres egne penger er for høy til å akseptere.">
+            The co-pilot explains. It does not recommend. “Sell now” / “wait until next quarter” — that's a financial decision the simulator never makes. The risk of an AI giving someone wrong advice about their own money is too high to accept.
+          </p>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag built" data-en="Built unprompted · Add with AI" data-no="Bygget uten oppdrag · Tillegg med AI">Built unprompted · Add with AI</span>
+          <h3 data-en="Plain-language Q&amp;A about your own programme"
+              data-no="Spørsmål og svar på vanlig språk om ditt eget program">Plain-language Q&amp;A about your own programme</h3>
+          <p data-en="Ask in your own words. ‘What happens if I leave in 18 months?’ ‘Why is my tax different from a colleague's?’ The co-pilot answers against the actual math of the user's programme — in the language they already use."
+             data-no="Spør med dine egne ord. «Hva skjer hvis jeg slutter om 18 måneder?» «Hvorfor er skatten min annerledes enn en kollegas?» Medpiloten svarer mot den faktiske matten i brukerens program — på språket de allerede bruker.">
+            Ask in your own words. “What happens if I leave in 18 months?” “Why is my tax different from a colleague's?” The co-pilot answers against the actual math of the user's programme — in the language they already use.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 04 EXAMPLES -->
+    <section id="examples" class="sf-section">
+      <span class="case-eyebrow" data-en="03 · What the conversation looks like"
+                                 data-no="03 · Slik ser samtalen ut">03 · What the conversation looks like</span>
+      <h2 data-en="Two real questions, two plain-language answers"
+          data-no="To ekte spørsmål, to svar på vanlig språk">
+        Two real questions, two plain-language answers
+      </h2>
+
+      <div class="sf-figure-row">
+        <figure>
+          <div class="ai-example">
+            <p class="question" data-en="“What happens if I leave in 18 months?”"
+                                data-no="«Hva skjer hvis jeg slutter om 18 måneder?»">“What happens if I leave in 18 months?”</p>
+            <div>
+              <span class="ai-label" data-en="Co-pilot answer" data-no="Svar fra medpilot">Co-pilot answer</span>
+              <p class="answer" data-en="In 18 months, 1 250 of your shares will have unlocked. You'd be able to sell them inside a 90-day window. The remaining 2 750 would go back to the company. At today's price and Norwegian tax rules, that's about €12 500 in your pocket after tax."
+                                data-no="Om 18 måneder vil 1 250 av aksjene dine ha låst seg opp. Du ville kunnet selge dem innenfor et 90-dagers vindu. De resterende 2 750 ville gått tilbake til selskapet. Med dagens kurs og norske skatteregler er det rundt €12 500 etter skatt i lomma.">
+                In 18 months, 1 250 of your shares will have unlocked. You'd be able to sell them inside a 90-day window. The remaining 2 750 would go back to the company. At today's price and Norwegian tax rules, that's about €12 500 in your pocket after tax.
+              </p>
+            </div>
+          </div>
+          <figcaption data-en="The leaving scenario — short answer, real numbers from the user's own programme."
+                      data-no="«Hvis jeg slutter»-scenarioet — kort svar, ekte tall fra brukerens eget program.">
+            The leaving scenario — short answer, real numbers from the user's own programme.
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="ai-example">
+            <p class="question" data-en="“Why is my tax different from my colleague's?”"
+                                data-no="«Hvorfor er skatten min annerledes enn en kollegas?»">“Why is my tax different from my colleague's?”</p>
+            <div>
+              <span class="ai-label" data-en="Co-pilot answer" data-no="Svar fra medpilot">Co-pilot answer</span>
+              <p class="answer" data-en="Your shares are taxed under Norwegian rules — the tax happens when each share unlocks, at your income tax rate. Your colleague's contract is under UK rules — they're taxed only when they sell. Same programme, different countries, different timing."
+                                data-no="Aksjene dine beskattes etter norske regler — skatten skjer når hver aksje låses opp, til inntektsskatten din. Kollegaens kontrakt er under britiske regler — de beskattes først når de selger. Samme program, ulike land, ulik timing.">
+                Your shares are taxed under Norwegian rules — the tax happens when each share unlocks, at your income tax rate. Your colleague's contract is under UK rules — they're taxed only when they sell. Same programme, different countries, different timing.
+              </p>
+            </div>
+          </div>
+          <figcaption data-en="The “my colleague has X, I have Y” scenario — comparing without recommending."
+                      data-no="«Kollegaen min har X, jeg har Y»-scenarioet — sammenligner uten å anbefale.">
+            The “my colleague has X, I have Y” scenario — comparing without recommending.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="case-end">
+    <h2 data-en="Next: Prompt Library" data-no="Neste: Prompt-bibliotek">Next: Prompt Library</h2>
+    <a href="prompt-library.html" data-en="See the tool →" data-no="Se verktøyet →">See the tool →</a>
+  </div>
+
+  <script src="i18n.js"></script>
+</body>
+</html>

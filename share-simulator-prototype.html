@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Share simulator — prototype · Anastasiia Nikitina</title>
+  <meta name="description" content="Interactive prototype of the rebuilt share simulator. Ask the co-pilot anything about a mock share programme — or switch to the what-if slider." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fafaf7;
+      --surface: #ffffff;
+      --ink: #0a0a0a;
+      --muted: #6b7280;
+      --soft: #9ca3af;
+      --rule: #e5e7eb;
+      --panel: #f5f5f5;
+      --panel-warm: #fafaf7;
+      --accent: #d23a3a;
+      --navy: #0a1f4a;
+      --ai: #6938e0;
+      --ai-soft: #f3f0ff;
+      --ok: #166534;
+      --ok-soft: #ecfaf0;
+      --warn: #a14a07;
+      --warn-soft: #fdf3e7;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    button { font: inherit; cursor: pointer; }
+    a { color: inherit; }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--rule);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .topbar a.back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .topbar a.back:hover { color: var(--ink); }
+    .topbar .proto-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 4px 10px;
+      border: 1px solid #f3d7d7;
+      border-radius: 999px;
+      background: #fdecec;
+    }
+    .lang-switch {
+      display: inline-flex;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .lang-switch button {
+      appearance: none;
+      background: transparent;
+      border: 0;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 5px 10px;
+      transition: all 0.15s ease;
+    }
+    .lang-switch button.is-active {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    /* Portfolio snapshot */
+    .snapshot {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 18px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+    .snapshot-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .snapshot-head h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+    .snapshot-head h1 .sub {
+      display: block;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0;
+      margin-top: 4px;
+    }
+    .country-picker {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      background: var(--panel);
+      border-radius: 999px;
+      font-size: 12px;
+    }
+    .country-picker button {
+      background: transparent;
+      border: 0;
+      padding: 5px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      transition: all 0.15s ease;
+    }
+    .country-picker button.is-active {
+      background: var(--ink);
+      color: #fff;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .stat .label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .stat .value {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat .value.small { font-size: 15px; font-weight: 600; }
+    .stat .sub {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    /* Mode tabs */
+    .mode-tabs {
+      display: inline-flex;
+      gap: 2px;
+      background: var(--panel);
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    .mode-tab {
+      background: transparent;
+      border: 0;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: all 0.18s ease;
+    }
+    .mode-tab.is-active {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .mode-tab .badge {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      color: var(--ai);
+      background: var(--ai-soft);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Views */
+    .view { display: none; }
+    .view.is-active { display: block; }
+
+    /* Chat view */
+    .chat-card {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 540px;
+    }
+    .chat-history {
+      flex: 1;
+      padding: 28px 32px;
+      overflow-y: auto;
+      max-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .empty-state {
+      max-width: 480px;
+      margin: auto;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .empty-state .glyph {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: var(--ai-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--ai);
+    }
+    .empty-state h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    .empty-state p {
+      color: var(--muted);
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .suggested-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    .chip {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: var(--ink);
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+    .chip:hover {
+      border-color: var(--ink);
+      transform: translateY(-1px);
+    }
+    .chip.tricky {
+      border-color: #f3d7d7;
+      color: var(--accent);
+      background: #fdecec;
+    }
+    .chip.tricky:hover {
+      border-color: var(--accent);
+    }
+
+    /* Messages */
+    .msg {
+      display: flex;
+      animation: slideIn 0.25s ease-out;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .msg.user { justify-content: flex-end; }
+    .msg.ai   { justify-content: flex-start; }
+    .bubble {
+      max-width: 76%;
+      border-radius: 16px;
+      padding: 14px 18px;
+      line-height: 1.5;
+      font-size: 14.5px;
+    }
+    .msg.user .bubble {
+      background: var(--navy);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg.ai .bubble {
+      background: var(--panel);
+      color: var(--ink);
+      border: 1px solid var(--rule);
+      border-bottom-left-radius: 4px;
+    }
+    .ai-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ai);
+      margin-bottom: 8px;
+    }
+    .ai-content strong { font-weight: 600; }
+    .ai-math {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--rule);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .ai-math::before {
+      content: "Math · ";
+      color: var(--ai);
+      letter-spacing: 0.04em;
+    }
+    .followups {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+    .followup {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 12px;
+      color: var(--muted);
+      transition: all 0.15s ease;
+    }
+    .followup:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    /* Typing indicator */
+    .typing .bubble {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .typing .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--soft);
+      border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+    .typing .dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink {
+      0%, 60%, 100% { opacity: 0.3; }
+      30%           { opacity: 1; }
+    }
+
+    /* Chat input */
+    .chat-input-area {
+      border-top: 1px solid var(--rule);
+      padding: 18px 24px;
+      background: var(--surface);
+    }
+    .chat-form {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .chat-form input {
+      flex: 1;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      padding: 12px 18px;
+      font: inherit;
+      font-size: 14.5px;
+      background: var(--bg);
+      transition: border-color 0.15s ease;
+    }
+    .chat-form input:focus {
+      outline: none;
+      border-color: var(--ink);
+      background: var(--surface);
+    }
+    .chat-form button {
+      background: var(--ink);
+      color: #fff;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 22px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: opacity 0.15s ease;
+    }
+    .chat-form button:hover { opacity: 0.9; }
+    .chat-form button:disabled {
+      background: var(--soft);
+      cursor: not-allowed;
+    }
+    .chat-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .disclaimer {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .disclaimer::before {
+      content: "ℹ";
+      color: var(--ai);
+    }
+    .reset-btn {
+      background: transparent;
+      border: 0;
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: underline;
+      padding: 0;
+    }
+    .reset-btn:hover { color: var(--ink); }
+
+    /* Slider view */
+    .slider-card {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 18px;
+      padding: 32px;
+    }
+    .slider-head {
+      margin-bottom: 32px;
+    }
+    .slider-head h2 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .slider-head p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .price-display {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .price-display .from {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .price-display .to-price {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+    .price-display .delta {
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .price-display .delta.up   { background: var(--ok-soft); color: var(--ok); }
+    .price-display .delta.down { background: #fdecec; color: var(--accent); }
+    .price-display .delta.flat { background: var(--panel); color: var(--muted); }
+    .range-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      background: var(--rule);
+      border-radius: 999px;
+      outline: none;
+      margin: 16px 0 24px;
+    }
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      background: var(--ink);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+    .range-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
+    .range-slider::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      background: var(--ink);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 0;
+    }
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+    }
+    .scenario {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .scenario .scenario-label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .scenario .scenario-value {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+    .scenario .scenario-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .scenario.net .scenario-value { color: var(--ai); }
+    .slider-explain {
+      margin-top: 24px;
+      padding: 16px 20px;
+      background: var(--ai-soft);
+      border-radius: 12px;
+      font-size: 13px;
+      color: var(--ai);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .slider-explain strong { color: #4a25a0; }
+    .slider-explain::before {
+      content: "✦";
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+
+    /* Annotation drawer — shows the design thinking */
+    .annotation {
+      max-width: 1080px;
+      margin: 32px auto 0;
+      padding: 0 32px;
+    }
+    .annotation details {
+      background: var(--panel-warm);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 0;
+      overflow: hidden;
+    }
+    .annotation summary {
+      cursor: pointer;
+      padding: 16px 22px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      list-style: none;
+    }
+    .annotation summary::-webkit-details-marker { display: none; }
+    .annotation summary::after {
+      content: "+";
+      font-size: 20px;
+      color: var(--muted);
+      transition: transform 0.2s ease;
+    }
+    .annotation details[open] summary::after { transform: rotate(45deg); }
+    .annotation summary:hover { color: var(--ink); }
+    .annotation .design-notes {
+      padding: 0 22px 22px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .design-note {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .design-note .tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .design-note .tag.ai        { color: var(--ai); background: var(--ai-soft); }
+    .design-note .tag.problem   { color: #2f6b66; background: #ebf6f5; }
+    .design-note .tag.strategic { color: var(--warn); background: var(--warn-soft); }
+    .design-note .tag.built     { color: var(--ok); background: var(--ok-soft); }
+    .design-note h4 {
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+    .design-note p {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* Responsive */
+    @media (max-width: 760px) {
+      main { padding: 20px; }
+      .topbar { padding: 14px 20px; }
+      .snapshot { padding: 22px 20px; }
+      .snapshot-head h1 { font-size: 18px; }
+      .stat-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .stat .value { font-size: 17px; }
+      .chat-history { padding: 20px; max-height: 50vh; }
+      .bubble { max-width: 88%; font-size: 14px; }
+      .chat-input-area { padding: 14px 18px; }
+      .chat-form input { padding: 11px 16px; font-size: 14px; }
+      .chat-form button { padding: 11px 18px; font-size: 13px; }
+      .annotation { padding: 0 20px; }
+      .annotation .design-notes { grid-template-columns: 1fr; }
+      .scenario-grid { grid-template-columns: 1fr; gap: 14px; }
+      .price-display .to-price { font-size: 28px; }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="share-simulator.html" class="back" data-en="← Back to case study" data-no="← Tilbake til caset">← Back to case study</a>
+    <span class="proto-label" data-en="Live prototype · mock data" data-no="Live prototype · testdata">Live prototype · mock data</span>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true" class="is-active">EN</button>
+      <button type="button" data-lang="no" aria-pressed="false">NO</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Portfolio snapshot -->
+    <section class="snapshot" aria-label="Your share programme">
+      <div class="snapshot-head">
+        <h1>
+          <span data-en="Andrea's share programme" data-no="Andreas aksjeprogram">Andrea's share programme</span>
+          <span class="sub" data-en="Optio demo account · RSU grant from June 2025"
+                            data-no="Optio-demokonto · RSU-tildeling fra juni 2025">Optio demo account · RSU grant from June 2025</span>
+        </h1>
+        <div class="country-picker" role="group" aria-label="Tax country">
+          <span class="sr-only" data-en="Tax country" data-no="Skatteland">Tax country</span>
+          <button type="button" data-country="NO" class="is-active">🇳🇴 NO</button>
+          <button type="button" data-country="UK">🇬🇧 UK</button>
+          <button type="button" data-country="DE">🇩🇪 DE</button>
+        </div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat">
+          <span class="label" data-en="Total grant" data-no="Total tildeling">Total grant</span>
+          <span class="value">4 000</span>
+          <span class="sub" data-en="RSUs · 4-year vest" data-no="RSU-er · 4 års opptjening">RSUs · 4-year vest</span>
+        </div>
+        <div class="stat">
+          <span class="label" data-en="Unlocked today" data-no="Låst opp i dag">Unlocked today</span>
+          <span class="value">1 000</span>
+          <span class="sub" data-en="1-year cliff hit June 2026"
+                            data-no="1-års cliff nådd juni 2026">1-year cliff hit June 2026</span>
+        </div>
+        <div class="stat">
+          <span class="label" data-en="Next unlock" data-no="Neste opplåsing">Next unlock</span>
+          <span class="value small">+250</span>
+          <span class="sub" data-en="in ~90 days (quarterly)"
+                            data-no="om ~90 dager (kvartalsvis)">in ~90 days (quarterly)</span>
+        </div>
+        <div class="stat">
+          <span class="label" data-en="Share price" data-no="Aksjekurs">Share price</span>
+          <span class="value" id="snapshot-price">€10.00</span>
+          <span class="sub" data-en="as of today" data-no="per i dag">as of today</span>
+        </div>
+        <div class="stat">
+          <span class="label" data-en="Tax country" data-no="Skatteland">Tax country</span>
+          <span class="value small" id="snapshot-country">Norway</span>
+          <span class="sub" id="snapshot-tax-sub" data-en="~27% on unlock"
+                            data-no="~27 % ved opplåsing">~27% on unlock</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mode tabs -->
+    <div class="mode-tabs" role="tablist" aria-label="Simulator mode">
+      <button class="mode-tab is-active" data-mode="chat" role="tab" aria-selected="true">
+        <span data-en="Ask the co-pilot" data-no="Spør medpiloten">Ask the co-pilot</span>
+        <span class="badge">NEW</span>
+      </button>
+      <button class="mode-tab" data-mode="slider" role="tab" aria-selected="false">
+        <span data-en="What-if slider" data-no="Hva-hvis-glider">What-if slider</span>
+      </button>
+    </div>
+
+    <!-- Chat view -->
+    <section id="chat-view" class="view is-active" role="tabpanel">
+      <div class="chat-card">
+        <div class="chat-history" id="chat-history" aria-live="polite" aria-label="Conversation">
+          <!-- Empty state injected by JS -->
+        </div>
+        <div class="chat-input-area">
+          <form class="chat-form" id="chat-form" autocomplete="off">
+            <label for="chat-input" class="sr-only" data-en="Ask anything about your shares"
+                                                    data-no="Spør hva som helst om aksjene dine">Ask anything about your shares</label>
+            <input id="chat-input"
+                   type="text"
+                   data-en-placeholder="Ask anything about your shares…"
+                   data-no-placeholder="Spør hva som helst om aksjene dine…"
+                   placeholder="Ask anything about your shares…" />
+            <button type="submit" id="chat-submit"
+                    data-en="Ask" data-no="Spør">Ask</button>
+          </form>
+          <div class="chat-footer">
+            <span class="disclaimer"
+                  data-en="The co-pilot explains. It never recommends. Not financial advice."
+                  data-no="Medpiloten forklarer. Den anbefaler aldri. Ikke finansiell rådgivning.">
+              The co-pilot explains. It never recommends. Not financial advice.
+            </span>
+            <button type="button" class="reset-btn" id="reset-chat"
+                    data-en="Reset conversation" data-no="Nullstill samtalen">Reset conversation</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slider view -->
+    <section id="slider-view" class="view" role="tabpanel">
+      <div class="slider-card">
+        <div class="slider-head">
+          <h2 data-en="What if the share price changes?"
+              data-no="Hva om aksjekursen endrer seg?">What if the share price changes?</h2>
+          <p data-en="The old front door of the simulator. Still here for the people who actually think in percentages."
+             data-no="Den gamle inngangsporten til simulatoren. Fortsatt her for dem som faktisk tenker i prosenter.">
+            The old front door of the simulator. Still here for the people who actually think in percentages.
+          </p>
+        </div>
+        <div class="price-display">
+          <span class="from"
+                data-en="From €10.00 today →"
+                data-no="Fra €10,00 i dag →">From €10.00 today →</span>
+          <span class="to-price" id="slider-price">€10.00</span>
+          <span class="delta flat" id="slider-delta">0%</span>
+        </div>
+        <input type="range" id="price-slider"
+               class="range-slider"
+               min="-80" max="200" step="5" value="0"
+               aria-label="Price change percent" />
+        <div class="scenario-grid">
+          <div class="scenario">
+            <span class="scenario-label" data-en="Your 1 000 unlocked" data-no="Dine 1 000 låst opp">Your 1 000 unlocked</span>
+            <span class="scenario-value" id="slider-gross">€10 000</span>
+            <span class="scenario-sub" data-en="gross at the new price" data-no="brutto til ny kurs">gross at the new price</span>
+          </div>
+          <div class="scenario">
+            <span class="scenario-label" data-en="Tax taken" data-no="Skatt trukket">Tax taken</span>
+            <span class="scenario-value" id="slider-tax">−€2 700</span>
+            <span class="scenario-sub" id="slider-tax-sub" data-en="Norwegian rate (~27%)"
+                                                          data-no="Norsk sats (~27 %)">Norwegian rate (~27%)</span>
+          </div>
+          <div class="scenario net">
+            <span class="scenario-label" data-en="In your pocket" data-no="I lomma">In your pocket</span>
+            <span class="scenario-value" id="slider-net">€7 300</span>
+            <span class="scenario-sub" data-en="after tax, at the new price" data-no="etter skatt, til ny kurs">after tax, at the new price</span>
+          </div>
+        </div>
+        <div class="slider-explain"
+             data-en-html="<span><strong>This is the calculator, not the simulator.</strong> The number is right, but it doesn't tell you when you can sell, what the lock-up does, or what happens if you leave. That's what the co-pilot is for.</span>"
+             data-no-html="<span><strong>Dette er kalkulatoren, ikke simulatoren.</strong> Tallet er riktig, men det forteller deg ikke når du kan selge, hva lock-up gjør, eller hva som skjer hvis du slutter. Det er det medpiloten er for.</span>">
+          <span><strong>This is the calculator, not the simulator.</strong> The number is right, but it doesn't tell you when you can sell, what the lock-up does, or what happens if you leave. That's what the co-pilot is for.</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Design thinking drawer (closed by default) -->
+  <section class="annotation">
+    <details>
+      <summary data-en="Why this prototype looks the way it does — design notes"
+               data-no="Hvorfor denne prototypen ser ut som den gjør — designnoter">
+        Why this prototype looks the way it does — design notes
+      </summary>
+      <div class="design-notes">
+        <div class="design-note">
+          <span class="tag ai" data-en="AI fluency" data-no="AI-flyt">AI fluency</span>
+          <h4 data-en="Math is shown, not hidden" data-no="Mattefiler vises, ikke gjemmes">Math is shown, not hidden</h4>
+          <p data-en="Every co-pilot answer ends with the calculation it used. If the user disagrees with the number, they can disagree with the math — not the opaque output."
+             data-no="Hvert svar fra medpiloten slutter med beregningen som ble brukt. Hvis brukeren er uenig i tallet, kan de være uenige i matten — ikke i en ugjennomsiktig output.">
+            Every co-pilot answer ends with the calculation it used. If the user disagrees with the number, they can disagree with the math — not the opaque output.
+          </p>
+        </div>
+        <div class="design-note">
+          <span class="tag strategic" data-en="Risk mitigated" data-no="Risiko redusert">Risk mitigated</span>
+          <h4 data-en="Ask “should I sell?” and watch what happens"
+              data-no="Spør «bør jeg selge?» og se hva som skjer">Ask "should I sell?" and watch what happens</h4>
+          <p data-en="The co-pilot won't answer. It explains what it can do instead, and offers concrete comparison questions. The risk of an AI giving wrong financial advice is too high."
+             data-no="Medpiloten vil ikke svare. Den forklarer hva den kan gjøre i stedet, og tilbyr konkrete sammenligningsspørsmål. Risikoen for at en AI gir feil økonomiske råd er for høy.">
+            The co-pilot won't answer. It explains what it can do instead, and offers concrete comparison questions. The risk of an AI giving wrong financial advice is too high.
+          </p>
+        </div>
+        <div class="design-note">
+          <span class="tag problem" data-en="Problem reframed" data-no="Problem omformulert">Problem reframed</span>
+          <h4 data-en="The slider is the second tab, not the first"
+              data-no="Glideren er den andre fanen, ikke den første">The slider is the second tab, not the first</h4>
+          <p data-en="The old simulator opened on a slider. People who think in percentages still get one. People who think in life events get the chat — and that's most people."
+             data-no="Den gamle simulatoren åpnet på en glider. Folk som tenker i prosenter får fortsatt en. Folk som tenker i livshendelser får chatten — og det er de fleste.">
+            The old simulator opened on a slider. People who think in percentages still get one. People who think in life events get the chat — and that's most people.
+          </p>
+        </div>
+        <div class="design-note">
+          <span class="tag built" data-en="Built unprompted" data-no="Bygget uten oppdrag">Built unprompted</span>
+          <h4 data-en="Country picker — same programme, different math"
+              data-no="Landvelger — samme program, ulik matte">Country picker — same programme, different math</h4>
+          <p data-en="Switch Norway / UK / Germany at the top. The numbers re-calculate. Same RSUs, different tax rules — the case for AI in the explanation, not just the calculation."
+             data-no="Bytt Norge / Storbritannia / Tyskland øverst. Tallene regnes om. Samme RSU-er, ulike skatteregler — argumentet for AI i forklaringen, ikke bare i beregningen.">
+            Switch Norway / UK / Germany at the top. The numbers re-calculate. Same RSUs, different tax rules — the case for AI in the explanation, not just the calculation.
+          </p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <script>
+    /* ====================================================================
+       i18n
+       ==================================================================== */
+    const I18N_KEY = "shareSim.lang";
+    function getLang() {
+      const stored = localStorage.getItem(I18N_KEY);
+      if (stored === "en" || stored === "no") return stored;
+      const nav = (navigator.language || "en").slice(0,2).toLowerCase();
+      return (nav === "no" || nav === "nb" || nav === "nn") ? "no" : "en";
+    }
+    function applyLang(lang) {
+      document.documentElement.lang = lang === "no" ? "nb" : "en";
+      document.querySelectorAll("[data-en]").forEach(el => {
+        const t = el.dataset[lang] || el.dataset.en;
+        if (t != null) el.textContent = t;
+      });
+      document.querySelectorAll("[data-en-html]").forEach(el => {
+        const h = el.dataset[lang + "Html"] || el.dataset.enHtml;
+        if (h != null) el.innerHTML = h;
+      });
+      document.querySelectorAll("[data-en-placeholder]").forEach(el => {
+        const p = el.dataset[lang + "Placeholder"] || el.dataset.enPlaceholder;
+        if (p != null) el.placeholder = p;
+      });
+      document.querySelectorAll(".lang-switch button").forEach(btn => {
+        const active = btn.dataset.lang === lang;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+    }
+    function setLang(lang) {
+      if (lang !== "en" && lang !== "no") lang = "en";
+      localStorage.setItem(I18N_KEY, lang);
+      currentLang = lang;
+      applyLang(lang);
+      renderEmptyStateIfNeeded();
+      // Re-render last AI message and any open slider values in new lang
+      updateSnapshotPrice();
+      updateSliderView();
+      updateCountryDisplay();
+    }
+    let currentLang = getLang();
+
+    /* ====================================================================
+       Mock portfolio data + tax rules per country
+       ==================================================================== */
+    const portfolio = {
+      name: "Andrea",
+      totalGrant: 4000,
+      vestedNow: 1000,
+      perQuarter: 250,      // after the cliff
+      quartersSinceCliff: 0, // start of year 2
+      priceNow: 10.00,
+      grantDate: "2025-06-03",
+      cliffDate: "2026-06-03",
+      nextVestDays: 90,
+      lockUpDays: 90,
+      country: "NO",
+    };
+
+    const taxRules = {
+      NO: {
+        name:   { en: "Norway",         no: "Norge" },
+        rate:   0.27,
+        note:   { en: "Tax happens at unlock — at your income-tax rate (~27% blended).",
+                  no: "Skatten skjer ved opplåsing — til inntektsskatten din (~27 % snitt)." },
+        timing: "unlock",
+        lockUp: { en: "90-day lock-up window after each unlock.",
+                  no: "90 dager lock-up etter hver opplåsing." }
+      },
+      UK: {
+        name:   { en: "United Kingdom", no: "Storbritannia" },
+        rate:   0.20,
+        note:   { en: "Tax happens at sale — capital gains, ~20% for higher-rate band on the gain above the annual allowance.",
+                  no: "Skatten skjer ved salg — kapitalgevinst, ~20 % for høy sats på gevinsten over årlig fribeløp." },
+        timing: "sale",
+        lockUp: { en: "Same 90-day lock-up after each unlock.",
+                  no: "Samme 90-dagers lock-up etter hver opplåsing." }
+      },
+      DE: {
+        name:   { en: "Germany",        no: "Tyskland" },
+        rate:   0.42,
+        note:   { en: "Tax happens at unlock — at your income-tax rate, up to 42% in the top bracket.",
+                  no: "Skatten skjer ved opplåsing — til inntektsskatten din, opptil 42 % i øverste trinn." },
+        timing: "unlock",
+        lockUp: { en: "Same 90-day lock-up after each unlock.",
+                  no: "Samme 90-dagers lock-up etter hver opplåsing." }
+      }
+    };
+
+    /* ====================================================================
+       Helpers — formatting + vesting math
+       ==================================================================== */
+    function fmtMoney(n) {
+      const sign = n < 0 ? "−" : "";
+      const abs = Math.abs(n);
+      // EU spacing
+      return sign + "€" + abs.toLocaleString("en-US", { maximumFractionDigits: 0 }).replace(/,/g, " ");
+    }
+    function fmtNum(n) {
+      return n.toLocaleString("en-US").replace(/,/g, " ");
+    }
+    function fmtPct(n) {
+      return (n >= 0 ? "+" : "") + n.toFixed(0) + "%";
+    }
+    function fmtPrice(n) {
+      return "€" + n.toFixed(2);
+    }
+    // How many shares are unlocked X months from today
+    function vestedAtMonths(months) {
+      if (months <= 0) return portfolio.vestedNow;
+      const quarters = Math.floor(months / 3);
+      const extra = quarters * portfolio.perQuarter;
+      return Math.min(portfolio.totalGrant, portfolio.vestedNow + extra);
+    }
+    // Extract a number of months from a free-text question
+    function extractMonths(q) {
+      const lower = q.toLowerCase();
+      // X years
+      const y = lower.match(/(\d+(?:\.\d+)?)\s*(?:year|yr|års?)/);
+      if (y) return Math.round(parseFloat(y[1]) * 12);
+      // X months
+      const m = lower.match(/(\d+)\s*(?:month|måned)/);
+      if (m) return parseInt(m[1], 10);
+      // "in 18" without unit — assume months
+      const generic = lower.match(/in\s+(\d+)\b/);
+      if (generic) return parseInt(generic[1], 10);
+      // "now", "today" → 0
+      if (/\b(now|today|i dag|nå)\b/.test(lower)) return 0;
+      // "next year" → 12
+      if (/(next year|neste år|om et år)/.test(lower)) return 12;
+      // "two years", "three years"
+      const word = lower.match(/(one|two|three|four|five|six|ett?|to|tre|fire|fem|seks)\s+(year|years|års?|måneder|months?)/);
+      if (word) {
+        const n = { one:1, two:2, three:3, four:4, five:5, six:6,
+                    en:1, ett:1, et:1, to:2, tre:3, fire:4, fem:5, seks:6 }[word[1]] || 1;
+        const isYears = /year|års?/.test(word[2]);
+        return n * (isYears ? 12 : 1);
+      }
+      return null;
+    }
+    // Extract a percentage from price-change questions
+    function extractPct(q) {
+      const lower = q.toLowerCase();
+      const m = lower.match(/(-?\d+(?:\.\d+)?)\s*%/);
+      if (m) {
+        let pct = parseFloat(m[1]);
+        if (/(?:drop|fall|down|crash|loses?|tap|faller|går ned)/.test(lower) && pct > 0) pct = -pct;
+        return pct;
+      }
+      // "doubles" → +100
+      if (/(double|dobler)/.test(lower)) return 100;
+      // "halves" → -50
+      if (/(halve|halver|halv)/.test(lower)) return -50;
+      return null;
+    }
+    // Extract a target price like "€15" or "15 euro"
+    function extractTargetPrice(q) {
+      const m = q.match(/€?\s*(\d+(?:\.\d+)?)\s*(?:€|euro|eur)?/i);
+      if (!m) return null;
+      const v = parseFloat(m[1]);
+      // ignore tiny numbers (might be months or years)
+      if (v < 2 || v > 1000) return null;
+      return v;
+    }
+
+    /* ====================================================================
+       Co-pilot response engine — pattern matching, intent-first
+       ==================================================================== */
+    function rule(test, handle) { return { test, handle }; }
+    const rules = [
+
+      // 1. ADVICE / RECOMMENDATION — refuse, redirect
+      rule(
+        q => /\b(should i|shall i|ought i|recommend|advice|what would you do|bør jeg|skal jeg|anbefal)/i.test(q),
+        (q) => ({
+          text: {
+            en: "I can't recommend — that's a decision you (and a financial advisor) make. <strong>I can compare scenarios for you.</strong> Try one of these:",
+            no: "Jeg kan ikke anbefale — det er en beslutning du (og en finansrådgiver) tar. <strong>Jeg kan sammenligne scenarier for deg.</strong> Prøv en av disse:"
+          },
+          followUps: {
+            en: ["Compare selling now vs in 6 months", "What if I leave in 18 months?", "What happens at the next blackout window?"],
+            no: ["Sammenlign å selge nå vs om 6 måneder", "Hva om jeg slutter om 18 måneder?", "Hva skjer i neste blackout-vindu?"]
+          }
+        })
+      ),
+
+      // 2. LEAVE — what happens if I leave in X months / years
+      rule(
+        q => /\b(leave|quit|resign|when i go|move on|hvis jeg slutter|når jeg slutter|sier opp)/i.test(q),
+        (q) => {
+          const months = extractMonths(q);
+          if (months === null) {
+            return {
+              text: {
+                en: "When are you thinking of leaving? <strong>Now, in 6 months, in 18 months, in 3 years?</strong> The answer depends on how many shares have unlocked by then.",
+                no: "Når tenker du å slutte? <strong>Nå, om 6 måneder, om 18 måneder, om 3 år?</strong> Svaret avhenger av hvor mange aksjer som er låst opp da."
+              },
+              followUps: {
+                en: ["What if I leave now?", "What if I leave in 18 months?", "What if I leave at full vest?"],
+                no: ["Hva om jeg slutter nå?", "Hva om jeg slutter om 18 måneder?", "Hva om jeg slutter ved full opptjening?"]
+              }
+            };
+          }
+          const vested = vestedAtMonths(months);
+          const forfeited = portfolio.totalGrant - vested;
+          const gross = vested * portfolio.priceNow;
+          const tax = gross * taxRules[portfolio.country].rate;
+          const net = gross - tax;
+          const cName = taxRules[portfolio.country].name;
+          return {
+            text: {
+              en: `In ${months} months, <strong>${fmtNum(vested)}</strong> of your ${fmtNum(portfolio.totalGrant)} shares would be unlocked. If you left then, you'd keep those — the remaining ${fmtNum(forfeited)} would go back to the company. At today's price (${fmtPrice(portfolio.priceNow)}) and ${cName.en} tax rules, that's roughly <strong>${fmtMoney(net)}</strong> in your pocket after tax.`,
+              no: `Om ${months} måneder ville <strong>${fmtNum(vested)}</strong> av dine ${fmtNum(portfolio.totalGrant)} aksjer vært låst opp. Hvis du sluttet da, ville du beholdt dem — de resterende ${fmtNum(forfeited)} ville gått tilbake til selskapet. Med dagens kurs (${fmtPrice(portfolio.priceNow)}) og ${cName.no}s skatteregler er det grovt regnet <strong>${fmtMoney(net)}</strong> i lomma etter skatt.`
+            },
+            math: {
+              en: `${fmtNum(vested)} shares × ${fmtPrice(portfolio.priceNow)} = ${fmtMoney(gross)} gross. ${(taxRules[portfolio.country].rate*100).toFixed(0)}% tax: ${fmtMoney(tax)}. Net: ${fmtMoney(net)}.`,
+              no: `${fmtNum(vested)} aksjer × ${fmtPrice(portfolio.priceNow)} = ${fmtMoney(gross)} brutto. ${(taxRules[portfolio.country].rate*100).toFixed(0)} % skatt: ${fmtMoney(tax)}. Netto: ${fmtMoney(net)}.`
+            },
+            followUps: {
+              en: ["What if I left a year later instead?", "What's my tax exactly?", "When does the next chunk unlock?"],
+              no: ["Hva om jeg slutter et år senere?", "Hva er skatten min nøyaktig?", "Når låses neste bolk opp?"]
+            }
+          };
+        }
+      ),
+
+      // 3. PRICE CHANGE — what if price goes up/down X% (or to €Y)
+      rule(
+        q => /(price|kurs|share value|aksjekurs|aksjeverdi).*(up|down|rise|fall|drop|crash|hit|gain|reach|opp|ned|stiger|faller|når)|drops?\s*\d|goes? up|går opp|går ned|doubles|halves|halv/i.test(q),
+        (q) => {
+          let pct = extractPct(q);
+          const target = extractTargetPrice(q);
+          if (pct === null && target !== null) {
+            pct = ((target - portfolio.priceNow) / portfolio.priceNow) * 100;
+          }
+          if (pct === null) {
+            return {
+              text: {
+                en: "By how much? <strong>+20%? −30%? Doubles?</strong> Pick a change and I'll show you what your unlocked shares would be worth.",
+                no: "Hvor mye? <strong>+20 %? −30 %? Dobler seg?</strong> Velg en endring og jeg viser hva dine opplåste aksjer ville vært verdt."
+              },
+              followUps: {
+                en: ["What if the price doubles?", "What if it drops 30%?", "What if it hits €15?"],
+                no: ["Hva om kursen dobler seg?", "Hva om den faller 30 %?", "Hva om den når €15?"]
+              }
+            };
+          }
+          const newPrice = portfolio.priceNow * (1 + pct / 100);
+          const gross = portfolio.vestedNow * newPrice;
+          const tax = gross * taxRules[portfolio.country].rate;
+          const net = gross - tax;
+          const dir = pct > 0 ? (currentLang === "no" ? "stiger" : "rises") : (currentLang === "no" ? "faller" : "falls");
+          const dirEn = pct > 0 ? "rises" : "falls";
+          const dirNo = pct > 0 ? "stiger" : "faller";
+          return {
+            text: {
+              en: `If the price ${dirEn} to <strong>${fmtPrice(newPrice)}</strong> (${fmtPct(pct)}), your <strong>1 000 unlocked</strong> shares would be worth about <strong>${fmtMoney(gross)}</strong> gross — roughly <strong>${fmtMoney(net)}</strong> after tax. Your unvested shares would move with the price too, but you don't own them yet.`,
+              no: `Hvis kursen ${dirNo} til <strong>${fmtPrice(newPrice)}</strong> (${fmtPct(pct)}), ville dine <strong>1 000 opplåste</strong> aksjer vært verdt rundt <strong>${fmtMoney(gross)}</strong> brutto — grovt <strong>${fmtMoney(net)}</strong> etter skatt. De uopplåste aksjene ville fulgt kursen også, men du eier dem ikke ennå.`
+            },
+            math: {
+              en: `1 000 × ${fmtPrice(newPrice)} = ${fmtMoney(gross)} gross. ${(taxRules[portfolio.country].rate*100).toFixed(0)}% tax: ${fmtMoney(tax)}. Net: ${fmtMoney(net)}.`,
+              no: `1 000 × ${fmtPrice(newPrice)} = ${fmtMoney(gross)} brutto. ${(taxRules[portfolio.country].rate*100).toFixed(0)} % skatt: ${fmtMoney(tax)}. Netto: ${fmtMoney(net)}.`
+            },
+            followUps: {
+              en: ["What if I waited 1 year at this price?", "What about my next unlock?", "Compare to a 50% drop"],
+              no: ["Hva om jeg ventet 1 år til denne kursen?", "Hva med neste opplåsing?", "Sammenlign med 50 % fall"]
+            }
+          };
+        }
+      ),
+
+      // 4. TAX — what's my tax / why different
+      rule(
+        q => /(tax|skatt|how much.*tax|hvor mye skatt|tax rule|skatteregler)/i.test(q),
+        (q) => {
+          // "different from colleague" → comparison case
+          if (/(colleague|coworker|friend|other|else|kollega|annen|andre)/i.test(q)) {
+            return {
+              text: {
+                en: "Same programme, different countries, different timing. <strong>Norway</strong>: tax happens when each share unlocks, at your income-tax rate. <strong>UK</strong>: tax only when you sell, at the capital-gains rate. <strong>Germany</strong>: tax at unlock, but the top bracket is higher. Switch country at the top to see your numbers re-calculate.",
+                no: "Samme program, ulike land, ulik timing. <strong>Norge</strong>: skatt ved opplåsing, til inntektsskatten din. <strong>Storbritannia</strong>: skatt først ved salg, til kapitalgevinst. <strong>Tyskland</strong>: skatt ved opplåsing, men øvre trinn er høyere. Bytt land øverst for å se tallene regnes om."
+              },
+              followUps: {
+                en: ["Switch country to UK", "What if I move country before vesting?", "What's the timing in Norway exactly?"],
+                no: ["Bytt til Storbritannia", "Hva om jeg flytter før opptjening?", "Hva er timingen i Norge nøyaktig?"]
+              }
+            };
+          }
+          const r = taxRules[portfolio.country];
+          return {
+            text: {
+              en: `Under <strong>${r.name.en}</strong> rules: ${r.note.en} For 1 000 unlocked shares at ${fmtPrice(portfolio.priceNow)}, that's about <strong>${fmtMoney(1000 * portfolio.priceNow * r.rate)}</strong> in tax — leaving <strong>${fmtMoney(1000 * portfolio.priceNow * (1 - r.rate))}</strong> after tax.`,
+              no: `Under <strong>${r.name.no}</strong> regler: ${r.note.no} For 1 000 opplåste aksjer til ${fmtPrice(portfolio.priceNow)} er det rundt <strong>${fmtMoney(1000 * portfolio.priceNow * r.rate)}</strong> i skatt — som etterlater <strong>${fmtMoney(1000 * portfolio.priceNow * (1 - r.rate))}</strong> etter skatt.`
+            },
+            math: {
+              en: `1 000 × ${fmtPrice(portfolio.priceNow)} × ${(r.rate*100).toFixed(0)}% = ${fmtMoney(1000 * portfolio.priceNow * r.rate)} tax.`,
+              no: `1 000 × ${fmtPrice(portfolio.priceNow)} × ${(r.rate*100).toFixed(0)} % = ${fmtMoney(1000 * portfolio.priceNow * r.rate)} skatt.`
+            },
+            followUps: {
+              en: ["Compare to UK tax", "Why is my tax different from my colleague's?", "What about the next unlock?"],
+              no: ["Sammenlign med britisk skatt", "Hvorfor er skatten min annerledes enn en kollegas?", "Hva med neste opplåsing?"]
+            }
+          };
+        }
+      ),
+
+      // 5. VESTING / UNLOCK / SCHEDULE
+      rule(
+        q => /(unlock|vest|when.*get|hvor mange|når får|neste vest|when do)/i.test(q),
+        () => ({
+          text: {
+            en: "You have <strong>1 000 shares unlocked today</strong> (the 1-year cliff hit in June 2026). The next <strong>250</strong> unlock in about 90 days, and then 250 every quarter after that until the full 4 000 are yours — June 2029.",
+            no: "Du har <strong>1 000 aksjer låst opp i dag</strong> (1-års cliff ble nådd i juni 2026). De neste <strong>250</strong> låses opp om ca. 90 dager, og deretter 250 hvert kvartal til alle 4 000 er dine — juni 2029."
+          },
+          math: {
+            en: "4 × 250 per year × 4 years = 4 000 total. 1 000 vested at the cliff + 250/quarter after.",
+            no: "4 × 250 per år × 4 år = 4 000 totalt. 1 000 ved cliff + 250/kvartal etter."
+          },
+          followUps: {
+            en: ["What's my next unlock worth?", "What if I leave at full vest?", "What's the lock-up window?"],
+            no: ["Hva er neste opplåsing verdt?", "Hva om jeg slutter ved full opptjening?", "Hva er lock-up-vinduet?"]
+          }
+        })
+      ),
+
+      // 6. LOCK-UP / BLACKOUT
+      rule(
+        q => /(lock[- ]?up|blackout|sell|sale|selge|salg|when can i sell)/i.test(q),
+        () => ({
+          text: {
+            en: "After each unlock there's a <strong>90-day lock-up</strong> — you can hold but not sell. Outside that, you can sell in any window the company isn't in earnings-blackout. The next earnings window opens in about 45 days.",
+            no: "Etter hver opplåsing er det en <strong>90-dagers lock-up</strong> — du kan eie men ikke selge. Utenfor det kan du selge i alle vinduer selskapet ikke er i resultatfremlegging. Neste vindu åpner om ca. 45 dager."
+          },
+          followUps: {
+            en: ["What's the soonest I can sell?", "What if I want to sell at the next earnings window?", "Compare selling now vs waiting"],
+            no: ["Hvor tidlig kan jeg selge?", "Hva hvis jeg selger ved neste resultatfremlegging?", "Sammenlign å selge nå vs å vente"]
+          }
+        })
+      ),
+
+      // 7. HELP / CAPABILITIES
+      rule(
+        q => /\b(help|what can you|hva kan du|hjelp|capabilities|guide)/i.test(q),
+        () => ({
+          text: {
+            en: "I can do four things: explain your <strong>tax</strong> under your country's rules, show what happens if you <strong>leave</strong> at any point, calculate what your shares are worth if the <strong>price changes</strong>, and tell you when you can actually <strong>sell</strong>. I won't tell you what to do — that's yours.",
+            no: "Jeg kan fire ting: forklare <strong>skatten</strong> din under landets regler, vise hva som skjer hvis du <strong>slutter</strong> på et tidspunkt, regne ut hva aksjene dine er verdt hvis <strong>kursen endrer seg</strong>, og fortelle deg når du faktisk kan <strong>selge</strong>. Jeg vil ikke si hva du skal gjøre — det er ditt valg."
+          },
+          followUps: {
+            en: ["What happens if I leave in 18 months?", "What's my tax?", "What if the price drops 30%?", "When can I sell my 1 000?"],
+            no: ["Hva om jeg slutter om 18 måneder?", "Hva er skatten min?", "Hva om kursen faller 30 %?", "Når kan jeg selge mine 1 000?"]
+          }
+        })
+      ),
+
+      // 8. GREETING
+      rule(
+        q => /^\s*(hi|hello|hey|yo|hei|hallo|halla|god dag)\b/i.test(q),
+        () => ({
+          text: {
+            en: "Hi Andrea. Ask anything about your share programme — I'll explain in plain words. Try one of these to start:",
+            no: "Hei Andrea. Spør hva som helst om aksjeprogrammet ditt — jeg forklarer med vanlige ord. Prøv en av disse for å starte:"
+          },
+          followUps: {
+            en: ["What happens if I leave in 18 months?", "What's my tax?", "When do my next shares unlock?"],
+            no: ["Hva om jeg slutter om 18 måneder?", "Hva er skatten min?", "Når låses neste aksjer opp?"]
+          }
+        })
+      ),
+
+      // 9. PRICE / VALUE NOW
+      rule(
+        q => /(today|now|i dag|nå|current|today's|today.*worth|hva er aksj|verdt nå|now worth)/i.test(q),
+        () => {
+          const r = taxRules[portfolio.country];
+          return {
+            text: {
+              en: `Today, the share price is <strong>${fmtPrice(portfolio.priceNow)}</strong>. Your <strong>1 000 unlocked</strong> shares are worth <strong>${fmtMoney(1000 * portfolio.priceNow)}</strong> gross — about <strong>${fmtMoney(1000 * portfolio.priceNow * (1 - r.rate))}</strong> after ${r.name.en} tax.`,
+              no: `I dag er aksjekursen <strong>${fmtPrice(portfolio.priceNow)}</strong>. Dine <strong>1 000 opplåste</strong> aksjer er verdt <strong>${fmtMoney(1000 * portfolio.priceNow)}</strong> brutto — rundt <strong>${fmtMoney(1000 * portfolio.priceNow * (1 - r.rate))}</strong> etter ${r.name.no}s skatt.`
+            },
+            math: {
+              en: `1 000 × ${fmtPrice(portfolio.priceNow)} = ${fmtMoney(1000 * portfolio.priceNow)} gross. After ${(r.rate*100).toFixed(0)}% tax: ${fmtMoney(1000 * portfolio.priceNow * (1 - r.rate))}.`,
+              no: `1 000 × ${fmtPrice(portfolio.priceNow)} = ${fmtMoney(1000 * portfolio.priceNow)} brutto. Etter ${(r.rate*100).toFixed(0)} % skatt: ${fmtMoney(1000 * portfolio.priceNow * (1 - r.rate))}.`
+            },
+            followUps: {
+              en: ["What if I sell now?", "What's the lock-up?", "What if the price drops first?"],
+              no: ["Hva om jeg selger nå?", "Hva er lock-up?", "Hva om kursen faller først?"]
+            }
+          };
+        }
+      )
+    ];
+
+    // Fallback for anything we can't match
+    const fallback = () => ({
+      text: {
+        en: "I can only help with questions about <strong>your shares</strong> — tax, vesting, selling, what happens if you leave, and what happens if the price changes. Try one of these:",
+        no: "Jeg kan bare hjelpe med spørsmål om <strong>aksjene dine</strong> — skatt, opptjening, salg, hva som skjer om du slutter, og hva som skjer hvis kursen endrer seg. Prøv en av disse:"
+      },
+      followUps: {
+        en: ["What happens if I leave in 18 months?", "What's my tax?", "What if the price drops 30%?", "Help — what can you do?"],
+        no: ["Hva om jeg slutter om 18 måneder?", "Hva er skatten min?", "Hva om kursen faller 30 %?", "Hjelp — hva kan du gjøre?"]
+      }
+    });
+
+    function answerFor(q) {
+      for (const r of rules) {
+        if (r.test(q)) return r.handle(q);
+      }
+      return fallback();
+    }
+
+    /* ====================================================================
+       Render — empty state, messages, typing
+       ==================================================================== */
+    const history = document.getElementById("chat-history");
+    const form    = document.getElementById("chat-form");
+    const input   = document.getElementById("chat-input");
+    const submit  = document.getElementById("chat-submit");
+
+    function renderEmptyState() {
+      const en = {
+        title: "Ask anything about your shares",
+        desc: "Plain words, not finance-speak. The co-pilot explains the numbers — it never tells you what to do.",
+        chips: [
+          { text: "What happens if I leave in 18 months?", tricky: false },
+          { text: "What's my tax exactly?",                tricky: false },
+          { text: "What if the price drops 30%?",          tricky: false },
+          { text: "When can I actually sell?",             tricky: false },
+          { text: "Should I sell now?",                    tricky: true }
+        ]
+      };
+      const no = {
+        title: "Spør hva som helst om aksjene dine",
+        desc: "Vanlige ord, ikke finansspråk. Medpiloten forklarer tallene — den sier aldri hva du skal gjøre.",
+        chips: [
+          { text: "Hva om jeg slutter om 18 måneder?", tricky: false },
+          { text: "Hva er skatten min nøyaktig?",      tricky: false },
+          { text: "Hva om kursen faller 30 %?",        tricky: false },
+          { text: "Når kan jeg faktisk selge?",        tricky: false },
+          { text: "Bør jeg selge nå?",                  tricky: true }
+        ]
+      };
+      const t = currentLang === "no" ? no : en;
+      history.innerHTML = `
+        <div class="empty-state">
+          <div class="glyph" aria-hidden="true">✦</div>
+          <h2>${t.title}</h2>
+          <p>${t.desc}</p>
+          <div class="suggested-chips">
+            ${t.chips.map(c => `<button class="chip${c.tricky ? ' tricky' : ''}" data-q="${c.text.replace(/"/g,'&quot;')}">${c.text}</button>`).join("")}
+          </div>
+        </div>`;
+      history.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => ask(b.dataset.q)));
+    }
+
+    function renderEmptyStateIfNeeded() {
+      if (!history.querySelector(".msg")) renderEmptyState();
+    }
+
+    function pushUser(text) {
+      const empty = history.querySelector(".empty-state");
+      if (empty) empty.remove();
+      const el = document.createElement("div");
+      el.className = "msg user";
+      el.innerHTML = `<div class="bubble">${escape(text)}</div>`;
+      history.appendChild(el);
+      history.scrollTop = history.scrollHeight;
+    }
+
+    function pushTyping() {
+      const el = document.createElement("div");
+      el.className = "msg ai typing";
+      el.id = "typing";
+      el.innerHTML = `<div class="bubble"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>`;
+      history.appendChild(el);
+      history.scrollTop = history.scrollHeight;
+    }
+    function removeTyping() {
+      const t = document.getElementById("typing");
+      if (t) t.remove();
+    }
+
+    function pushAI(resp) {
+      const label = currentLang === "no" ? "Medpilot" : "Co-pilot";
+      const text  = (resp.text && (resp.text[currentLang] || resp.text.en)) || resp.text || "";
+      const math  = (resp.math && (resp.math[currentLang] || resp.math.en)) || resp.math || "";
+      const fups  = (resp.followUps && (resp.followUps[currentLang] || resp.followUps.en)) || [];
+      const followups = fups.length
+        ? `<div class="followups">${fups.map(f => `<button class="followup" data-q="${f.replace(/"/g,'&quot;')}">${f}</button>`).join("")}</div>`
+        : "";
+      const el = document.createElement("div");
+      el.className = "msg ai";
+      el.innerHTML = `
+        <div class="bubble">
+          <div class="ai-label">${label}</div>
+          <div class="ai-content">${text}</div>
+          ${math ? `<div class="ai-math">${math}</div>` : ""}
+          ${followups}
+        </div>`;
+      history.appendChild(el);
+      el.querySelectorAll(".followup").forEach(b => b.addEventListener("click", () => ask(b.dataset.q)));
+      history.scrollTop = history.scrollHeight;
+    }
+
+    function escape(s) {
+      return s.replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+    }
+
+    function ask(text) {
+      const q = (text || input.value || "").trim();
+      if (!q) return;
+      input.value = "";
+      pushUser(q);
+      submit.disabled = true;
+      pushTyping();
+      // Simulate thinking; AI never feels instantaneous
+      setTimeout(() => {
+        removeTyping();
+        pushAI(answerFor(q));
+        submit.disabled = false;
+        input.focus();
+      }, 500 + Math.random() * 350);
+    }
+
+    /* ====================================================================
+       Slider mode
+       ==================================================================== */
+    const slider     = document.getElementById("price-slider");
+    const sliderPrice= document.getElementById("slider-price");
+    const sliderDelta= document.getElementById("slider-delta");
+    const sliderGross= document.getElementById("slider-gross");
+    const sliderTax  = document.getElementById("slider-tax");
+    const sliderNet  = document.getElementById("slider-net");
+    const sliderTaxSub= document.getElementById("slider-tax-sub");
+
+    function updateSliderView() {
+      if (!slider) return;
+      const pct = parseFloat(slider.value);
+      const newPrice = portfolio.priceNow * (1 + pct/100);
+      const r = taxRules[portfolio.country];
+      const gross = 1000 * newPrice;
+      const tax   = gross * r.rate;
+      const net   = gross - tax;
+      sliderPrice.textContent = fmtPrice(newPrice);
+      sliderDelta.textContent = fmtPct(pct);
+      sliderDelta.className = "delta " + (pct > 0 ? "up" : pct < 0 ? "down" : "flat");
+      sliderGross.textContent = fmtMoney(gross);
+      sliderTax.textContent   = "−" + fmtMoney(tax);
+      sliderNet.textContent   = fmtMoney(net);
+      sliderTaxSub.textContent = currentLang === "no"
+        ? `${r.name.no}s sats (~${(r.rate*100).toFixed(0)} %)`
+        : `${r.name.en} rate (~${(r.rate*100).toFixed(0)}%)`;
+    }
+    if (slider) slider.addEventListener("input", updateSliderView);
+
+    /* ====================================================================
+       Country picker
+       ==================================================================== */
+    function updateCountryDisplay() {
+      const r = taxRules[portfolio.country];
+      const cName = currentLang === "no" ? r.name.no : r.name.en;
+      const cs = document.getElementById("snapshot-country");
+      if (cs) cs.textContent = cName;
+      const cs2 = document.getElementById("snapshot-tax-sub");
+      if (cs2) cs2.textContent = currentLang === "no"
+        ? `~${(r.rate*100).toFixed(0)} % ${r.timing === "unlock" ? "ved opplåsing" : "ved salg"}`
+        : `~${(r.rate*100).toFixed(0)}% on ${r.timing}`;
+    }
+    document.querySelectorAll(".country-picker button").forEach(b => {
+      b.addEventListener("click", () => {
+        document.querySelectorAll(".country-picker button").forEach(x => x.classList.remove("is-active"));
+        b.classList.add("is-active");
+        portfolio.country = b.dataset.country;
+        updateCountryDisplay();
+        updateSliderView();
+      });
+    });
+
+    function updateSnapshotPrice() {
+      const sp = document.getElementById("snapshot-price");
+      if (sp) sp.textContent = fmtPrice(portfolio.priceNow);
+    }
+
+    /* ====================================================================
+       Mode tabs
+       ==================================================================== */
+    document.querySelectorAll(".mode-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".mode-tab").forEach(t => {
+          t.classList.remove("is-active");
+          t.setAttribute("aria-selected", "false");
+        });
+        tab.classList.add("is-active");
+        tab.setAttribute("aria-selected", "true");
+        const mode = tab.dataset.mode;
+        document.querySelectorAll(".view").forEach(v => v.classList.remove("is-active"));
+        document.getElementById(mode + "-view").classList.add("is-active");
+        if (mode === "chat") input.focus();
+      });
+    });
+
+    /* ====================================================================
+       Wire up form, language, reset
+       ==================================================================== */
+    form.addEventListener("submit", (e) => { e.preventDefault(); ask(); });
+    document.getElementById("reset-chat").addEventListener("click", () => {
+      history.innerHTML = "";
+      renderEmptyState();
+      input.focus();
+    });
+    document.querySelectorAll(".lang-switch button").forEach(btn => {
+      btn.addEventListener("click", () => setLang(btn.dataset.lang));
+    });
+
+    /* ====================================================================
+       Boot
+       ==================================================================== */
+    applyLang(currentLang);
+    updateCountryDisplay();
+    updateSnapshotPrice();
+    updateSliderView();
+    renderEmptyState();
+    input.focus();
+  </script>
+</body>
+</html>

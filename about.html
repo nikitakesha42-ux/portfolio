@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About me — Anastasiia Nikitina</title>
+  <meta name="description" content="Product Designer in Oslo, 5+ years on complex B2B SaaS. Background in information security; most recently Optio Incentives." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main" data-en="Skip to main content" data-no="Hopp til hovedinnhold">Skip to main content</a>
+
+  <header class="site-header is-home">
+    <a class="brand-mark" href="index.html" aria-label="Anastasiia Nikitina — home">
+      <span class="mark" aria-hidden="true">AN</span>
+      <span class="name">Anastasiia Nikitina</span>
+    </a>
+    <div class="header-right">
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="index.html#selected-work" data-en="Work" data-no="Arbeid">Work</a>
+        <a href="about.html" class="is-current" data-en="About" data-no="Om meg">About</a>
+      </nav>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="no" aria-pressed="false">NO</button>
+      </div>
+      <a class="cta-pill-dark" href="#contact">
+        <span class="spark" aria-hidden="true">✦</span>
+        <span data-en="Let's talk" data-no="La oss snakke">Let's talk</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+
+    <!-- HERO -->
+    <section class="about-hero">
+      <div class="about-hero-grid">
+        <div>
+          <span class="eyebrow" data-en="About me" data-no="Om meg">About me</span>
+          <h1 data-en="An information-security graduate who ended up making rule-heavy products kinder."
+              data-no="En informasjonssikkerhets-utdannet som endte opp med å gjøre regeltunge produkter snillere.">
+            An information-security graduate who ended up making rule-heavy products kinder.
+          </h1>
+          <div class="hero-bio"
+               data-en-html="<p>I'm Anastasiia. I'm a product designer in Oslo with 5+ years of design behind me — most of them spent on <strong>Optio Incentives</strong>, a B2B SaaS for employee share and option programs serving 300+ corporate customers in 130+ countries. I was the first in-house product designer on the product side and owned UX end-to-end.</p><p>My degree is in information &amp; communication systems security (National Aviation University, Kyiv). I don't write policy or pentest things — but I do think in roles, permissions and rule-based interfaces, which turns out to be exactly the territory of equity, transactions and financial reporting.</p><p>Outside the deep finance work: e-commerce UX before Optio, accessibility-first work for a school for children with special needs in Kyiv, and — currently — AI design and AI coding workflows with Cursor, Claude Code and Figma Make.</p>"
+               data-no-html="<p>Jeg er Anastasiia. Jeg er produktdesigner i Oslo med 5+ års designerfaring — det meste hos <strong>Optio Incentives</strong>, en B2B SaaS for aksje- og opsjonsprogrammer for ansatte med 300+ bedriftskunder i 130+ land. Jeg var den første interne produktdesigneren på produktsiden og eide UX ende-til-ende.</p><p>Graden min er i informasjons- og kommunikasjonssystemsikkerhet (National Aviation University, Kyiv). Jeg verken skriver policy eller pentester ting — men jeg tenker i roller, tillatelser og regelbaserte grensesnitt, og det viser seg å være nettopp territoriet til aksjer, transaksjoner og finansiell rapportering.</p><p>Utenfor det tunge finansarbeidet: e-handels-UX før Optio, tilgjengelighetsledet arbeid for en skole for barn med spesielle behov i Kyiv, og — for tiden — AI-design og AI-koding med Cursor, Claude Code og Figma Make.</p>">
+            <p>I'm Anastasiia. I'm a product designer in Oslo with 5+ years of design behind me — most of them spent on <strong>Optio Incentives</strong>, a B2B SaaS for employee share and option programs serving 300+ corporate customers in 130+ countries. I was the first in-house product designer on the product side and owned UX end-to-end.</p>
+            <p>My degree is in information &amp; communication systems security (National Aviation University, Kyiv). I don't write policy or pentest things — but I do think in roles, permissions and rule-based interfaces, which turns out to be exactly the territory of equity, transactions and financial reporting.</p>
+            <p>Outside the deep finance work: e-commerce UX before Optio, accessibility-first work for a school for children with special needs in Kyiv, and — currently — AI design and AI coding workflows with Cursor, Claude Code and Figma Make.</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn-pill-light" href="#contact">
+              <span data-en="Let's chat" data-no="La oss prate">Let's chat</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a class="hero-email" href="mailto:nikitakesha42@gmail.com">nikitakesha42@gmail.com</a>
+          </div>
+        </div>
+        <div class="about-photo about-photo-video">
+          <video
+            src="assets/portrait-video.m4v"
+            poster="assets/portrait-video-poster.jpg"
+            controls
+            playsinline
+            preload="metadata"
+            aria-label="Short video introduction by Anastasiia Nikitina"
+          ></video>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOP SKILLS — superpowers -->
+    <section class="about-skills">
+      <span class="tpl-section-label" data-en="Top skills" data-no="Hovedstyrker">Top skills</span>
+      <div class="superpower-grid">
+
+        <article class="superpower">
+          <h3 data-en="Making AI part of how I design — not a side experiment"
+              data-no="Å gjøre AI til en del av designarbeidet — ikke et sideeksperiment">
+            Making AI part of how I design — not a side experiment
+          </h3>
+          <p data-en="I built a Supabase-backed prompt library in Figma Make so AI helps me where it actually helps — synthesis, copy, IA pressure-tests — instead of replacing the judgment call."
+             data-no="Jeg bygde et prompt-bibliotek på Supabase i Figma Make slik at AI hjelper meg der den faktisk hjelper — syntese, copy, IA-stresstester — i stedet for å erstatte vurderingen.">
+            I built a Supabase-backed prompt library in Figma Make so AI helps me where it actually helps — synthesis, copy, IA pressure-tests — instead of replacing the judgment call.
+          </p>
+          <figure class="superpower-thumb">
+            <img src="assets/prompt-library.png" alt="" />
+          </figure>
+          <div>
+            <a class="btn-pill-light" href="prompt-library.html">
+              <span data-en="Check this project" data-no="Se prosjektet">Check this project</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="superpower">
+          <h3 data-en="Designing for people who don't want to learn finance"
+              data-no="Design for folk som ikke vil lære finans">
+            Designing for people who don't want to learn finance
+          </h3>
+          <p data-en="The financial reporting redesign replaced Customer Success's manual Excel exports with guided self-serve flows — across IFRS, audit, period-close and ad hoc reports — cutting prep time from days to hours."
+             data-no="Redesignet av finansiell rapportering erstattet Customer Success sine manuelle Excel-eksporter med veiledede selvbetjente flyter — på tvers av IFRS, revisjon, periodeavslutning og ad hoc-rapporter — og kuttet forberedelsestid fra dager til timer.">
+            The financial reporting redesign replaced Customer Success's manual Excel exports with guided self-serve flows — across IFRS, audit, period-close and ad hoc reports — cutting prep time from days to hours.
+          </p>
+          <figure class="superpower-thumb">
+            <img src="assets/case/fr-hero.png" alt="" />
+          </figure>
+          <div>
+            <a class="btn-pill-light" href="financial-reporting.html">
+              <span data-en="Check this project" data-no="Se prosjektet">Check this project</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section class="about-history">
+      <div class="history-grid">
+        <div class="history-col">
+          <span class="tpl-section-label" data-en="Experience" data-no="Erfaring">Experience</span>
+
+          <div class="history-row">
+            <div class="row-year" data-en="Apr 2022 — Dec 2025" data-no="apr. 2022 — des. 2025">Apr 2022 — Dec 2025</div>
+            <div class="row-role-block">
+              <span class="role" data-en="Product Designer · Optio Incentives" data-no="Produktdesigner · Optio Incentives">Product Designer · Optio Incentives</span>
+              <span class="sector" data-en="First in-house product designer · UX end-to-end across 1 000+ equity programs and 130+ jurisdictions." data-no="Første interne produktdesigner · UX ende-til-ende på 1 000+ aksjeprogrammer og 130+ jurisdiksjoner.">First in-house product designer · UX end-to-end across 1 000+ equity programs and 130+ jurisdictions.</span>
+            </div>
+          </div>
+
+          <div class="history-row">
+            <div class="row-year" data-en="Oct 2020 — Mar 2022" data-no="okt. 2020 — mars 2022">Oct 2020 — Mar 2022</div>
+            <div class="row-role-block">
+              <span class="role" data-en="UI/UX Designer, freelance · E-commerce" data-no="UI/UX-designer, frilans · E-handel">UI/UX Designer, freelance · E-commerce</span>
+              <span class="sector" data-en="End-to-end UX/UI for 5+ e-commerce sites — research, IA, responsive UI, dev handoff." data-no="Ende-til-ende UX/UI for 5+ e-handelsnettsteder — research, IA, responsiv UI, overlevering til utviklere.">End-to-end UX/UI for 5+ e-commerce sites — research, IA, responsive UI, dev handoff.</span>
+            </div>
+          </div>
+
+          <div class="history-row">
+            <div class="row-year" data-en="Sep 2020 — May 2021" data-no="sept. 2020 — mai 2021">Sep 2020 — May 2021</div>
+            <div class="row-role-block">
+              <span class="role" data-en="IT Consultant · Supportlab LLC, Ukraine" data-no="IT-konsulent · Supportlab LLC, Ukraina">IT Consultant · Supportlab LLC, Ukraine</span>
+              <span class="sector" data-en="Root-cause analysis on user-reported production issues — the seed of how I approach UX now." data-no="Rotårsaksanalyse på brukerrapporterte produksjonsfeil — frøet til måten jeg jobber med UX på i dag.">Root-cause analysis on user-reported production issues — the seed of how I approach UX now.</span>
+            </div>
+          </div>
+
+          <div class="history-row">
+            <div class="row-year" data-en="2019 — 2020" data-no="2019 — 2020">2019 — 2020</div>
+            <div class="row-role-block">
+              <span class="role" data-en="UI/UX Designer · ClickToSchool" data-no="UI/UX-designer · ClickToSchool">UI/UX Designer · ClickToSchool</span>
+              <span class="sector" data-en="IT Ukraine Association pilot · accessibility-first redesign for School &amp; Rehabilitation Centre №17, Kyiv." data-no="Pilotprogram fra IT Ukraine Association · tilgjengelighetsledet redesign for Skole og Rehabiliteringssenter nr. 17, Kyiv.">IT Ukraine Association pilot · accessibility-first redesign for School &amp; Rehabilitation Centre №17, Kyiv.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="history-col">
+          <span class="tpl-section-label" data-en="Education &amp; craft" data-no="Utdanning og håndverk">Education &amp; craft</span>
+
+          <div class="history-row">
+            <div class="row-year" data-en="Feb 2026 — ongoing" data-no="feb. 2026 — pågående">Feb 2026 — ongoing</div>
+            <div class="row-role-block">
+              <span class="role" data-en="AI Design + AI Coding for designers · Memorisely" data-no="AI Design + AI Coding for designere · Memorisely">AI Design + AI Coding for designers · Memorisely</span>
+              <span class="sector" data-en="Cursor, Claude Code, prompt design — paired with the Figma Make prompt library in this portfolio." data-no="Cursor, Claude Code, prompt-design — koblet til Figma Make prompt-biblioteket i denne porteføljen.">Cursor, Claude Code, prompt design — paired with the Figma Make prompt library in this portfolio.</span>
+            </div>
+          </div>
+
+          <div class="history-row">
+            <div class="row-year" data-en="Mar — Aug 2019" data-no="mars — aug. 2019">Mar — Aug 2019</div>
+            <div class="row-role-block">
+              <span class="role" data-en="Interaction Design (UI/UX) · DAN.IT Education" data-no="Interaksjonsdesign (UI/UX) · DAN.IT Education">Interaction Design (UI/UX) · DAN.IT Education</span>
+              <span class="sector" data-en="End-to-end UI/UX in Figma — research, wireframing, prototyping, interface design." data-no="Ende-til-ende UI/UX i Figma — research, wireframing, prototyping, grensesnittdesign.">End-to-end UI/UX in Figma — research, wireframing, prototyping, interface design.</span>
+            </div>
+          </div>
+
+          <div class="history-row">
+            <div class="row-year" data-en="2013 — 2018" data-no="2013 — 2018">2013 — 2018</div>
+            <div class="row-role-block">
+              <span class="role" data-en="BA, Information &amp; Communication Systems Security" data-no="Bachelor, sikkerhet i informasjons- og kommunikasjonssystemer">BA, Information &amp; Communication Systems Security</span>
+              <span class="sector" data-en="National Aviation University, Kyiv · the systematic foundation behind how I read roles, permissions and rule-based interfaces." data-no="National Aviation University, Kyiv · det systematiske grunnlaget bak hvordan jeg leser roller, tillatelser og regelbaserte grensesnitt.">National Aviation University, Kyiv · the systematic foundation behind how I read roles, permissions and rule-based interfaces.</span>
+            </div>
+          </div>
+
+          <div class="history-row">
+            <div class="row-year" data-en="Languages" data-no="Språk">Languages</div>
+            <div class="row-role-block">
+              <span class="role">EN · NO · UK · DE</span>
+              <span class="sector" data-en="English (fluent) · Norwegian (professional) · Ukrainian (native) · German (advanced)." data-no="Engelsk (flytende) · Norsk (profesjonell) · Ukrainsk (morsmål) · Tysk (avansert).">English (fluent) · Norwegian (professional) · Ukrainian (native) · German (advanced).</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO PROMISES -->
+    <section class="promises-block">
+      <span class="tpl-section-label" data-en="What this portfolio is meant to show" data-no="Hva denne porteføljen skal vise">What this portfolio is meant to show</span>
+      <h2 data-en="Six signals, four cases. What to look for, and where it lives."
+          data-no="Seks signaler, fire prosjekter. Hva du skal se etter, og hvor det bor.">
+        Six signals, four cases. What to look for, and where it lives.
+      </h2>
+      <p class="promises-lede"
+         data-en="If you're hiring, these are the things I want this portfolio to evidence — paired with the specific case-study moment that proves each one."
+         data-no="Hvis du rekrutterer, er dette tingene jeg vil at denne porteføljen skal vise — koblet til det konkrete case-øyeblikket som dokumenterer hver enkelt.">
+        If you're hiring, these are the things I want this portfolio to evidence — paired with the specific case-study moment that proves each one.
+      </p>
+
+      <div class="promises-grid">
+        <article class="promise-card">
+          <span class="promise-tag" data-en="Promise 01" data-no="Løfte 01">Promise 01</span>
+          <h3 data-en="Strong visual design skills" data-no="Sterke ferdigheter i visuell design">Strong visual design skills</h3>
+          <p data-en="Care in every detail. Intentional typography, confident colour, sharp screenshots and consistent hierarchy across surfaces."
+             data-no="Omtanke i hver detalj. Intensjonell typografi, trygge fargevalg, skarpe skjermbilder og konsistent hierarki på tvers av flater.">
+            Care in every detail. Intentional typography, confident colour, sharp screenshots and consistent hierarchy across surfaces.
+          </p>
+          <p class="where" data-en-html="Where to look: <a href='financial-reporting.html#solutions'>Financial reporting modules</a> and the dashboard surfaces in the <a href='employee-portal.html#solutions'>Employee Portal</a>."
+                         data-no-html="Se etter: <a href='financial-reporting.html#solutions'>rapporteringsmodulene</a> og dashbord-flatene i <a href='employee-portal.html#solutions'>Deltakerportalen</a>.">
+            Where to look: <a href="financial-reporting.html#solutions">Financial reporting modules</a> and the dashboard surfaces in the <a href="employee-portal.html#solutions">Employee Portal</a>.
+          </p>
+        </article>
+
+        <article class="promise-card">
+          <span class="promise-tag" data-en="Promise 02" data-no="Løfte 02">Promise 02</span>
+          <h3 data-en="Strong problem-solving skills" data-no="Sterke problemløsningsevner">Strong problem-solving skills</h3>
+          <p data-en="A problem reframed, the right problem worked instead of the asked one, the constraint that shaped the work."
+             data-no="Et problem omformulert, det riktige problemet løst i stedet for det forespurte, og rammen som formet arbeidet.">
+            A problem reframed, the right problem worked instead of the asked one, the constraint that shaped the work.
+          </p>
+          <p class="where" data-en-html="Where to look: the <a href='employee-portal.html#overview'>stock-options-only → multi-instrument reframe</a> and the <a href='financial-reporting.html#solutions'>self-service reframe</a> that took reporting out of Customer Success."
+                         data-no-html="Se etter: <a href='employee-portal.html#overview'>omrammingen fra kun aksjeopsjoner til multi-instrument</a> og <a href='financial-reporting.html#solutions'>selvbetjenings-omrammingen</a> som tok rapporteringen ut av Customer Success.">
+            Where to look: the <a href="employee-portal.html#overview">stock-options-only → multi-instrument reframe</a> and the <a href="financial-reporting.html#solutions">self-service reframe</a> that took reporting out of Customer Success.
+          </p>
+        </article>
+
+        <article class="promise-card">
+          <span class="promise-tag" data-en="Promise 03" data-no="Løfte 03">Promise 03</span>
+          <h3 data-en="Strong strategic thinking skills" data-no="Sterk strategisk tenkning">Strong strategic thinking skills</h3>
+          <p data-en="A trade-off named, a risk mitigated, an opportunity spotted, metrics tied to the decision — my take, not just the result."
+             data-no="En avveining navngitt, en risiko begrenset, en mulighet sett, metrikker koblet til valget — mitt syn, ikke bare resultatet.">
+            A trade-off named, a risk mitigated, an opportunity spotted, metrics tied to the decision — my take, not just the result.
+          </p>
+          <p class="where" data-en-html="Where to look: the <a href='financial-reporting.html#solutions'>upsell-aware access rules trade-off</a>, the ~1 000 h/yr Excel savings, and the <a href='financial-reporting.html#outcomes'>“highest value-producing team” outcome</a>."
+                         data-no-html="Se etter: <a href='financial-reporting.html#solutions'>mersalg-bevisste tilgangsregler</a>, ~1 000 t/år Excel-besparelser, og <a href='financial-reporting.html#outcomes'>«mest verdiproduserende team»-resultatet</a>.">
+            Where to look: the <a href="financial-reporting.html#solutions">upsell-aware access rules trade-off</a>, the ~1 000 h/yr Excel savings, and the <a href="financial-reporting.html#outcomes">"highest value-producing team" outcome</a>.
+          </p>
+        </article>
+
+        <article class="promise-card">
+          <span class="promise-tag" data-en="Promise 04" data-no="Løfte 04">Promise 04</span>
+          <h3 data-en="Strong AI fluency skills" data-no="Sterk AI-flyt">Strong AI fluency skills</h3>
+          <p data-en="A workflow I redesigned with AI, a decision I made with AI, an AI output I rejected, the part I keep by hand — and how I actually use AI in a UX week."
+             data-no="En arbeidsflyt jeg har redesignet med AI, et valg jeg har tatt med AI, et AI-resultat jeg har avvist, delen jeg gjør for hånd — og hvordan jeg faktisk bruker AI i en UX-uke.">
+            A workflow I redesigned with AI, a decision I made with AI, an AI output I rejected, the part I keep by hand — and how I actually use AI in a UX week.
+          </p>
+          <p class="where" data-en-html="Where to look: the <a href='prompt-library.html'>Prompt Library</a> case — five categories where AI earns its keep, plus the “drafts only; a human reviews every line that ships” discipline."
+                         data-no-html="Se etter: <a href='prompt-library.html'>Prompt-bibliotek</a>-caset — fem kategorier der AI bidrar, pluss «kun utkast; et menneske gjennomgår hver linje som lanseres»-disiplinen.">
+            Where to look: the <a href="prompt-library.html">Prompt Library</a> case — five categories where AI earns its keep, plus the "drafts only; a human reviews every line that ships" discipline.
+          </p>
+        </article>
+
+        <article class="promise-card">
+          <span class="promise-tag" data-en="Tip 05" data-no="Tips 05">Tip 05</span>
+          <h3 data-en="Show what I built without being asked" data-no="Vis det jeg har bygget uten oppdrag">Show what I built without being asked</h3>
+          <p data-en="The tool, the template, the workflow I made for the team or myself before anyone told me to."
+             data-no="Verktøyet, malen, arbeidsflyten jeg har laget for teamet eller meg selv før noen ba om det.">
+            The tool, the template, the workflow I made for the team or myself before anyone told me to.
+          </p>
+          <p class="where" data-en-html="Where to look: the <a href='financial-reporting.html#solutions'>Custom Overviews / Configurable Grouping</a> at Optio (~1 000 h/yr), the <a href='employee-portal.html#solutions'>in-portal feedback widget</a>, and the <a href='prompt-library.html'>Prompt Library</a> on my own time."
+                         data-no-html="Se etter: <a href='financial-reporting.html#solutions'>Egendefinerte oversikter</a> hos Optio (~1 000 t/år), <a href='employee-portal.html#solutions'>den innebygde tilbakemeldings-widgeten</a>, og <a href='prompt-library.html'>Prompt-biblioteket</a> på min egen tid.">
+            Where to look: the <a href="financial-reporting.html#solutions">Custom Overviews / Configurable Grouping</a> at Optio (~1 000 h/yr), the <a href="employee-portal.html#solutions">in-portal feedback widget</a>, and the <a href="prompt-library.html">Prompt Library</a> on my own time.
+          </p>
+        </article>
+
+        <article class="promise-card">
+          <span class="promise-tag" data-en="Tip 06" data-no="Tips 06">Tip 06</span>
+          <h3 data-en="Show what I brought to the team" data-no="Vis det jeg har tatt med tilbake til teamet">Show what I brought to the team</h3>
+          <p data-en="A skill I went out to learn, then brought back into the work."
+             data-no="En ferdighet jeg gikk ut for å lære, og tok med inn i arbeidet etterpå.">
+            A skill I went out to learn, then brought back into the work.
+          </p>
+          <p class="where" data-en-html="Where to look: <a href='about.html#contact'>Memorisely AI Design + AI Coding</a> → the <a href='prompt-library.html'>Prompt Library</a> → the upcoming Share Simulator redesign that takes AI from my week into a user-facing surface."
+                         data-no-html="Se etter: <a href='about.html#contact'>Memorisely AI Design + AI Coding</a> → <a href='prompt-library.html'>Prompt-biblioteket</a> → det kommende Share Simulator-redesignet som flytter AI fra min uke til en brukerflate.">
+            Where to look: <a href="about.html#contact">Memorisely AI Design + AI Coding</a> → the <a href="prompt-library.html">Prompt Library</a> → the upcoming Share Simulator redesign that takes AI from my week into a user-facing surface.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CLOSING -->
+    <section id="contact" class="about-closing">
+      <h2 data-en="If any of this overlaps with what you're hiring for, I'd love a conversation."
+          data-no="Hvis noe av dette overlapper med det du rekrutterer til, tar jeg gjerne en prat.">
+        If any of this overlaps with what you're hiring for, I'd love a conversation.
+      </h2>
+      <p data-en="I'm currently open to senior and lead product design roles in Oslo, hybrid, or remote within EU — ideally in fintech, compliance-heavy SaaS, or anywhere a rule-based interface needs to feel kind. Quiet outreach is welcome."
+         data-no="Jeg er for tiden åpen for senior- og lead-roller innen produktdesign i Oslo, hybrid eller remote i EU — gjerne i fintech, compliance-tung SaaS, eller andre steder der et regelbasert grensesnitt trenger å føles vennlig. Lavmælt henvendelse er fint.">
+        I'm currently open to senior and lead product design roles in Oslo, hybrid, or remote within EU — ideally in fintech, compliance-heavy SaaS, or anywhere a rule-based interface needs to feel kind. Quiet outreach is welcome.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-pill-light" href="mailto:nikitakesha42@gmail.com">
+          <span data-en="Email me" data-no="Send e-post">Email me</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a class="hero-email" href="https://www.linkedin.com/in/nikitina-anastasia/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="hero-email" href="https://www.behance.net/anastasiianikitina" target="_blank" rel="noopener">Behance</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <span>© 2026 Anastasiia Nikitina</span>
+    <span data-en="Designed and built with care" data-no="Designet og bygget med omtanke">Designed and built with care</span>
+  </footer>
+
+  <script src="i18n.js"></script>
+</body>
+</html>

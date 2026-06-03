@@ -3,16 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>From spreadsheets to self-serve IFRS reporting · Portfolio Nikitina A.</title>
+  <title>Financial reporting · Optio · Anastasiia Nikitina</title>
+  <meta name="description" content="Taking monthly share-program reports out of Excel and putting them inside the product, so finance teams could stop rebuilding the same spreadsheet every month." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <a class="skip-link" href="#main" data-en="Skip to main content" data-no="Hopp til hovedinnhold">Skip to main content</a>
+
   <header class="case-header">
     <a href="index.html" data-en="← All work" data-no="← Alt arbeid">← All work</a>
     <div class="header-right">
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="index.html#selected-work" data-en="Work" data-no="Arbeid">Work</a>
+        <a href="about.html" data-en="About" data-no="Om meg">About</a>
+      </nav>
       <div class="lang-switch" role="group" aria-label="Language">
         <button type="button" data-lang="en" aria-pressed="true">EN</button>
         <button type="button" data-lang="no" aria-pressed="false">NO</button>
@@ -20,266 +27,253 @@
     </div>
   </header>
 
-  <div class="case-banner">
-    <img src="assets/case/fr-hero.png" alt="Optio financial reporting redesign" />
-  </div>
+  <figure class="case-banner">
+    <img src="assets/case/fr-hero.png" alt="Financial reporting — the new in-product reports surface at Optio" />
+    <figcaption data-en="The reports surface inside the product — finance teams build their monthly file here instead of in Excel."
+                data-no="Rapportflaten inne i produktet — finansteam bygger den månedlige filen her i stedet for i Excel.">
+      The reports surface inside the product — finance teams build their monthly file here instead of in Excel.
+    </figcaption>
+  </figure>
 
-  <main class="case wide">
-    <span class="eyebrow" data-en="case study 01 · b2b finance" data-no="case-studie 01 · b2b-finans">case study 01 · b2b finance</span>
-    <p class="lede" style="margin-bottom: 32px; font-size: 22px; line-height: 1.4"
-       data-en="A self-serve reporting flow that finance teams can actually own — from a process that used to take days of manual prep, Slack threads and re-exported spreadsheets, to one that fits inside the product."
-       data-no="En selvbetjent rapporteringsflyt finansteam faktisk kan eie — fra en prosess som tok dager med manuelt arbeid, Slack-tråder og re-eksporterte regneark, til én som lever inne i produktet.">
-      A self-serve reporting flow that finance teams can actually own — from a process that used to take days of manual prep, Slack threads and re-exported spreadsheets, to one that fits inside the product.
-    </p>
+  <main id="main" class="case wide">
 
-    <div class="chips" data-en-html="<span><strong>Project:</strong> Optio · Financial reporting</span><span><strong>Role:</strong> Lead Product Designer</span><span><strong>Team:</strong> 2 finance experts, 4 engineers, 1 PM, CS</span><span><strong>Duration:</strong> 2 years, shipped in releases</span><span><strong>Year:</strong> 2024</span>"
-         data-no-html="<span><strong>Prosjekt:</strong> Optio · Finansiell rapportering</span><span><strong>Rolle:</strong> Lead produktdesigner</span><span><strong>Team:</strong> 2 finanseksperter, 4 utviklere, 1 PM, CS</span><span><strong>Varighet:</strong> 2 år, levert i releaser</span><span><strong>År:</strong> 2024</span>">
-      <span><strong>Project:</strong> Optio · Financial reporting</span><span><strong>Role:</strong> Lead Product Designer</span><span><strong>Team:</strong> 2 finance experts, 4 engineers, 1 PM, CS</span><span><strong>Duration:</strong> 2 years, shipped in releases</span><span><strong>Year:</strong> 2024</span>
+    <span class="case-eyebrow brand" data-en="Optio Incentives · 2023 — 2025" data-no="Optio Incentives · 2023 — 2025">Optio Incentives · 2023 — 2025</span>
+    <h1 class="case-h1"
+        data-en="Taking monthly share-program reports out of Excel and putting them inside the product"
+        data-no="Månedlige aksjeprogramrapporter ut av Excel og inn i produktet">
+      Taking monthly share-program reports out of Excel and putting them inside the product
+    </h1>
+
+    <nav class="case-toc-pills" aria-label="On this page">
+      <a href="#problem"><span class="num">01</span> <span data-en="Problem" data-no="Problem">Problem</span></a>
+      <a href="#decisions"><span class="num">02</span> <span data-en="Decisions" data-no="Valg">Decisions</span></a>
+      <a href="#ai"><span class="num">03</span> <span data-en="How AI fit" data-no="Hvor AI passet inn">How AI fit</span></a>
+      <a href="#tradeoff"><span class="num">04</span> <span data-en="Trade-off" data-no="Avveining">Trade-off</span></a>
+      <a href="#impact"><span class="num">05</span> <span data-en="Impact" data-no="Effekt">Impact</span></a>
+    </nav>
+
+    <!-- SNAPSHOT ROW -->
+    <div class="snap-row">
+      <div class="cell">
+        <span class="label" data-en="Years" data-no="År">Years</span>
+        <span class="value">
+          <strong>2023 — 2025</strong>
+          <span class="aside" data-en="in parallel with the Employee Portal (2022 — 2024)" data-no="parallelt med Deltakerportalen (2022 — 2024)">in parallel with the Employee Portal (2022 — 2024)</span>
+        </span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="Company" data-no="Selskap">Company</span>
+        <span class="value">Optio Incentives</span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="My role" data-no="Min rolle">My role</span>
+        <span class="value" data-en="Product Designer · UX end-to-end" data-no="Produktdesigner · UX ende-til-ende">Product Designer · UX end-to-end</span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="In one line" data-no="På én linje">In one line</span>
+        <span class="value" data-en="The monthly report stopped being an email attachment and became a screen finance teams own."
+                            data-no="Den månedlige rapporten sluttet å være et e-postvedlegg og ble en skjerm finansteam eier selv.">The monthly report stopped being an email attachment and became a screen finance teams own.</span>
+      </div>
     </div>
 
-    <div class="impact-row">
-      <div class="impact-stat">
-        <div class="num">2 yrs</div>
-        <div class="caption" data-en="From scoping to last release — shipped in incremental chunks across the roadmap." data-no="Fra scoping til siste release — levert i biter på tvers av roadmappen.">From scoping to last release — shipped in incremental chunks across the roadmap.</div>
-      </div>
-      <div class="impact-stat">
-        <div class="num">4 → 1</div>
-        <div class="caption" data-en="Tools the workflow used to span (spreadsheets, email, Slack, product), reduced to one configurable surface." data-no="Verktøy arbeidsflyten spente over (regneark, e-post, Slack, produkt), redusert til én konfigurerbar flate.">Tools the workflow used to span (spreadsheets, email, Slack, product), reduced to one configurable surface.</div>
-      </div>
-      <div class="impact-stat">
-        <div class="num small">days → hours</div>
-        <div class="caption" data-en="Finance leads' reporting prep, measured against the audit-ready output." data-no="Finanslederes forberedelsestid, målt mot revisjonsklar leveranse.">Finance leads' reporting prep, measured against the audit-ready output.</div>
-      </div>
-      <div class="impact-stat">
-        <div class="num">0</div>
-        <div class="caption" data-en="Engineering tickets needed to add a new country-specific FX or turnover rule." data-no="Utviklersaker som trengs for å legge til en ny landspesifikk FX- eller omsetningsregel.">Engineering tickets needed to add a new country-specific FX or turnover rule.</div>
-      </div>
-    </div>
-
-    <div class="divider"><span class="eyebrow muted" data-en="01 · the problem" data-no="01 · problemet">01 · the problem</span><div class="line"></div></div>
-    <section>
-      <h2 data-en="The problem hiding under the brief" data-no="Problemet som lå skjult under briefen">The problem hiding under the brief</h2>
-      <p data-en="The brief looked like a redesign. The reality was that reporting at Optio didn't really live in the product. It lived in shared spreadsheets, Slack threads and email exports between the finance team, Customer Success and the client's auditor."
-         data-no="Briefen så ut som et redesign. Realiteten var at rapportering hos Optio egentlig ikke lå i produktet. Den lå i delte regneark, Slack-tråder og e-posteksporter mellom finansteamet, Customer Success og kundens revisor.">
-        The brief looked like a redesign. The reality was that reporting at Optio didn't really live in the product. It lived in shared spreadsheets, Slack threads and email exports between the finance team, Customer Success and the client's auditor.
-      </p>
-      <p data-en="That meant every report carried the same shape of risk: a number was wrong because a formatting rule drifted, a column got pasted into the wrong tab, a currency rule was out of date. Each fix triggered another review cycle. The closer a deadline got, the more brittle the whole thing felt."
-         data-no="Det betydde at hver rapport bar den samme typen risiko: et tall var feil fordi en formateringsregel hadde sklidd, en kolonne ble limt inn i feil fane, en valutaregel var utdatert. Hver retting utløste enda en gjennomgang. Jo nærmere fristen kom, jo skjørere føltes hele greia.">
-        That meant every report carried the same shape of risk: a number was wrong because a formatting rule drifted, a column got pasted into the wrong tab, a currency rule was out of date. Each fix triggered another review cycle. The closer a deadline got, the more brittle the whole thing felt.
-      </p>
-      <p data-en="The cost wasn't just time. Finance leads stopped trusting their own numbers until two other people had checked them. That's not a UI problem."
-         data-no="Kostnaden var ikke bare tid. Finansledere sluttet å stole på sine egne tall før to andre hadde sjekket dem. Det er ikke et UI-problem.">
-        The cost wasn't just time. Finance leads stopped trusting their own numbers until two other people had checked them. That's not a UI problem.
+    <!-- 01 PROBLEM -->
+    <section id="problem" class="sf-section">
+      <span class="case-eyebrow" data-en="01 · Problem" data-no="01 · Problem">01 · Problem</span>
+      <h2 data-en="Every month, finance teams rebuilt the same spreadsheet by hand"
+          data-no="Hver måned bygde finansteamene det samme regnearket på nytt for hånd">
+        Every month, finance teams rebuilt the same spreadsheet by hand
+      </h2>
+      <p data-en="Finance teams at our client companies had to file a report on their share programs every month. The numbers lived in the product. The reporting work didn't. People would export the data, paste it into Excel, apply the rules by hand, and send the file out. One missed value held up the whole month. Customer Success was on call to rebuild the spreadsheet every time something changed."
+         data-no="Finansteam hos kundene våre måtte sende en månedlig rapport om aksjeprogrammene sine. Tallene lå i produktet. Rapporteringsarbeidet gjorde ikke. Folk eksporterte dataene, limte dem inn i Excel, anvendte reglene for hånd, og sendte filen ut. Én glemt verdi stoppet hele måneden. Customer Success var på vakt for å bygge regnearket på nytt hver gang noe endret seg.">
+        Every month, finance teams at our client companies had to file a report on their share programs. The numbers lived in the product. The reporting work didn't. People would export the data, paste it into Excel, apply the rules by hand, and send the file out. One missed value held up the whole month. Customer Success was on call to rebuild the spreadsheet every time something changed.
       </p>
     </section>
 
-    <div class="divider"><span class="eyebrow muted" data-en="02 · framing" data-no="02 · innramming">02 · framing</span><div class="line"></div></div>
-    <section>
-      <h2 data-en="How I framed it before opening Figma" data-no="Hvordan jeg rammet det inn før Figma ble åpnet">How I framed it before opening Figma</h2>
-      <p data-en="I split the reporting cycle into two halves and used that split as the project's design principle:"
-         data-no="Jeg delte rapporteringssyklusen i to og brukte det skillet som designprinsipp for prosjektet:">
-        I split the reporting cycle into two halves and used that split as the project's design principle:
+    <!-- THE SHIFT — verbatim italic rule -->
+    <section class="sf-section" style="margin-bottom: 48px;">
+      <span class="case-eyebrow" data-en="The rule I designed against" data-no="Regelen jeg designet mot">The rule I designed against</span>
+      <p class="shift-quote" data-en="“If a screen is asking a finance team to do mechanical work the system could do, the design isn't finished.”"
+                             data-no="“Hvis en skjerm ber et finansteam gjøre mekanisk arbeid systemet kunne gjort, er designet ikke ferdig.”">
+        “If a screen is asking a finance team to do mechanical work the system could do, the design isn't finished.”
       </p>
-      <ul>
-        <li data-en="Mechanical work — data assembly, formatting, validation, FX, turnover — belongs to the product." data-no="Mekanisk arbeid — datasamling, formatering, validering, FX, omsetning — hører hjemme i produktet.">Mechanical work — data assembly, formatting, validation, FX, turnover — belongs to the product.</li>
-        <li data-en="Judgemental work — interpretation, exceptions, narrative — stays with finance, but the product gives them better context to make those calls." data-no="Skjønnsmessig arbeid — tolkning, unntak, narrativ — blir hos finans, men produktet gir dem bedre kontekst å handle på.">Judgemental work — interpretation, exceptions, narrative — stays with finance, but the product gives them better context to make those calls.</li>
+    </section>
+
+    <!-- 02 DECISIONS -->
+    <section id="decisions" class="sf-section">
+      <span class="case-eyebrow" data-en="02 · What I did" data-no="02 · Det jeg gjorde">02 · What I did</span>
+      <h2 data-en="Four decisions that moved the work out of Excel"
+          data-no="Fire valg som flyttet arbeidet ut av Excel">
+        Four decisions that moved the work out of Excel
+      </h2>
+
+      <div class="sf-decisions four">
+        <article class="sf-decision">
+          <span class="signal-tag problem" data-en="Decision" data-no="Valg">Decision</span>
+          <h3 data-en="A guided report flow built into the product" data-no="En veiledet rapportflyt bygget inn i produktet">A guided report flow built into the product</h3>
+          <p data-en="Finance picks the period and the system fills the rest — values, rules, breakdowns. The same surface handles every report type the team has to file."
+             data-no="Finans velger perioden, og systemet fyller ut resten — verdier, regler, oppdelinger. Den samme flaten håndterer hver rapporttype teamet må sende.">
+            Finance picks the period and the system fills the rest — values, rules, breakdowns. The same surface handles every report type the team has to file.
+          </p>
+          <figure><img src="assets/images/reporting after-1.png" alt="" /></figure>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag built" data-en="Built unprompted" data-no="Bygget uten oppdrag">Built unprompted</span>
+          <h3 data-en="Reusable grouping — set it up once, every future report inherits it" data-no="Gjenbrukbar gruppering — sett opp én gang, hver fremtidig rapport arver den">Reusable grouping — set it up once, every future report inherits it</h3>
+          <p data-en="Each client groups their report differently. The old workflow handled this in Excel. I designed a grouping pattern that lives in the product, so the same setup carries across every month. Removed about 1 000 hours/year of manual Excel work."
+             data-no="Hver kunde grupperer rapporten sin ulikt. Den gamle prosessen håndterte dette i Excel. Jeg designet et grupperingsmønster som lever i produktet, slik at samme oppsett gjelder hver måned. Fjernet rundt 1 000 timer/år med manuelt Excel-arbeid.">
+            Each client groups their report differently. The old workflow handled this in Excel. I designed a grouping pattern that lives in the product, so the same setup carries across every month. Removed about 1 000 hours/year of manual Excel work.
+          </p>
+          <figure><img src="assets/images/Configurable Grouping aka Custom Overviews.png" alt="" /></figure>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag strategic" data-en="Strategic" data-no="Strategisk">Strategic</span>
+          <h3 data-en="Currency rules — configurable inside the product, not patched in Excel" data-no="Valutaregler — konfigurerbare i produktet, ikke lappet i Excel">Currency rules — configurable inside the product, not patched in Excel</h3>
+          <p data-en="Custom currency rates and country-specific overrides used to be fixed by hand. I designed a permission-aware setup with validation and safe defaults, so finance can change a rate without opening a spreadsheet."
+             data-no="Tilpassede valutakurser og landspesifikke overstyringer ble før rettet for hånd. Jeg designet et oppsett med rettighetsstyring, validering og trygge default-verdier, slik at finans kan endre en kurs uten å åpne et regneark.">
+            Custom currency rates and country-specific overrides used to be fixed by hand. I designed a permission-aware setup with validation and safe defaults, so finance can change a rate without opening a spreadsheet.
+          </p>
+          <figure><img src="assets/images/FX and Turnover rates flexibility-2.png" alt="" /></figure>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag problem" data-en="Problem reframed" data-no="Problem omformulert">Problem reframed</span>
+          <h3 data-en="Fair value valuation — guided in the product, not outsourced to an external expert"
+              data-no="Fair value-verdsettelse — veiledet i produktet, ikke satt ut til en ekstern ekspert">Fair value valuation — guided in the product, not outsourced to an external expert</h3>
+          <p data-en="Working out what shares are worth on paper used to mean hiring an outside expert. I designed a guided flow with inline explanations, visible formulas, and history/comparison views — so company admins can run it themselves and trust the result."
+             data-no="Å finne ut hva aksjer er verdt på papir pleide å bety å hyre en ekstern ekspert. Jeg designet en veiledet flyt med inline-forklaringer, synlige formler, og historikk-/sammenligningsvisninger — slik at admins kan kjøre den selv og stole på resultatet.">
+            Working out what shares are worth on paper used to mean hiring an outside expert. I designed a guided flow with inline explanations, visible formulas, and history/comparison views — so company admins can run it themselves and trust the result.
+          </p>
+          <figure><img src="assets/images/Integrated Valuation service.png" alt="" /></figure>
+        </article>
+      </div>
+    </section>
+
+    <!-- 03 HOW AI FIT -->
+    <section id="ai" class="sf-section">
+      <span class="case-eyebrow ai" data-en="03 · How AI fit into this project" data-no="03 · Hvor AI passet inn">03 · How AI fit into this project</span>
+      <h2 data-en="AI didn't replace the finance experts. It shortened the distance to them."
+          data-no="AI erstattet ikke finansekspertene. Den kortet ned avstanden til dem.">
+        AI didn't replace the finance experts. It shortened the distance to them.
+      </h2>
+
+      <ul class="sf-ai-list"
+          data-en-html="<li><strong>Prototyping in v0.</strong> I used v0 to sketch a new currency-rate setup directly in code, not static frames — and walked into the engineering review with a working flow. <a href='https://v0.app/nikitakesha42-5513/chat/custom-fx-rate-setup-kTmPuiOsKOZ' target='_blank' rel='noopener'>See the v0 conversation ↗</a></li><li><strong>First-pass tooltip and validation copy.</strong> AI drafted the wording in finance-correct language. A finance expert and I edited every line before it shipped.</li><li><strong>Stress-testing my own thinking.</strong> Before scheduling the real review, I'd ask AI what an auditor would object to in a flow. Two rounds out of three were noise. The third caught a real hole.</li>"
+          data-no-html="<li><strong>Prototyping i v0.</strong> Jeg brukte v0 til å skissere et nytt valutakurs-oppsett direkte i kode, ikke statiske rammer — og kom inn i ingeniørgjennomgangen med en fungerende flyt. <a href='https://v0.app/nikitakesha42-5513/chat/custom-fx-rate-setup-kTmPuiOsKOZ' target='_blank' rel='noopener'>Se v0-samtalen ↗</a></li><li><strong>Førsteutkast av tooltip- og valideringscopy.</strong> AI skrev utkast på finans-korrekt språk. En finansekspert og jeg redigerte hver linje før lansering.</li><li><strong>Stresstest av min egen tankegang.</strong> Før den ekte gjennomgangen spurte jeg AI hva en revisor ville protestert mot. To av tre runder var støy. Den tredje fanget et reelt hull.</li>">
+        <li><strong>Prototyping in v0.</strong> I used v0 to sketch a new currency-rate setup directly in code, not static frames — and walked into the engineering review with a working flow. <a href="https://v0.app/nikitakesha42-5513/chat/custom-fx-rate-setup-kTmPuiOsKOZ" target="_blank" rel="noopener">See the v0 conversation ↗</a></li>
+        <li><strong>First-pass tooltip and validation copy.</strong> AI drafted the wording in finance-correct language. A finance expert and I edited every line before it shipped.</li>
+        <li><strong>Stress-testing my own thinking.</strong> Before scheduling the real review, I'd ask AI what an auditor would object to in a flow. Two rounds out of three were noise. The third caught a real hole.</li>
       </ul>
-
-      <blockquote class="pull-quote"
-         data-en="“If a screen is asking a finance team to do mechanical work the system could do, the design isn't finished.”"
-         data-no="«Hvis en skjerm ber et finansteam om å gjøre mekanisk arbeid systemet kunne ta, er designet ikke ferdig.»">
-        "If a screen is asking a finance team to do mechanical work the system could do, the design isn't finished."
-        <cite data-en="— the design principle I used to defend every later decision" data-no="— designprinsippet jeg brukte til å forsvare hvert senere valg">— the design principle I used to defend every later decision</cite>
-      </blockquote>
-    </section>
-
-    <div class="divider"><span class="eyebrow muted" data-en="03 · design decisions" data-no="03 · designvalg">03 · design decisions</span><div class="line"></div></div>
-    <section>
-      <h2 data-en="Four changes that shifted the workflow" data-no="Fire endringer som flyttet arbeidsflyten">Four changes that shifted the workflow</h2>
-
-      <article class="decision-card">
-        <span class="eyebrow" data-en="design decision 01 · problem solving" data-no="designvalg 01 · problemløsning">design decision 01 · problem solving</span>
-        <h3 data-en="A guided creation flow, not a settings panel" data-no="En guidet opprettelsesflyt — ikke et innstillingspanel">A guided creation flow, not a settings panel</h3>
-        <p data-en="The original idea was a long form: pick everything up front, click generate. I argued for the opposite — an ordered conversation where each decision shows its consequence inline before you confirm it. Defaults are safe; the easy path is also the audit-safe one."
-           data-no="Den opprinnelige ideen var et langt skjema: velg alt på forhånd, klikk generér. Jeg argumenterte for det motsatte — en sekvensiell samtale der hvert valg viser konsekvensen inline før du bekrefter. Standardene er trygge; den enkle veien er også den revisjons-trygge.">
-          The original idea was a long form: pick everything up front, click generate. I argued for the opposite — an ordered conversation where each decision shows its consequence inline before you confirm it. Defaults are safe; the easy path is also the audit-safe one.
-        </p>
-        <figure class="figure">
-          <img src="assets/case/fr-self-service.png" alt="Guided report creation flow" />
-          <figcaption data-en="The flow steps the user through period, configuration and validation, with the consequence of each choice visible inline."
-                      data-no="Flyten leder brukeren gjennom periode, konfigurasjon og validering, med konsekvensen av hvert valg synlig inline.">
-            The flow steps the user through period, configuration and validation, with the consequence of each choice visible inline.
-          </figcaption>
-        </figure>
-        <div class="learnings">
-          <div class="learning">
-            <span class="label" data-en="learning 01" data-no="læring 01">learning 01</span>
-            <span class="text" data-en="Users got nervous when they couldn't see what a setting would do until after they'd generated the report — explanation has to lead the input, not follow it." data-no="Brukere ble nervøse når de ikke kunne se hva en innstilling ville gjøre før etter at rapporten var generert — forklaring må lede inputen, ikke følge etter.">Users got nervous when they couldn't see what a setting would do until after they'd generated the report — explanation has to lead the input, not follow it.</span>
-          </div>
-          <div class="learning">
-            <span class="label" data-en="learning 02" data-no="læring 02">learning 02</span>
-            <span class="text" data-en="Safe defaults don't have to be invisible — calling them out as recommended choices made admins more confident, not less curious." data-no="Trygge standarder trenger ikke være usynlige — å markere dem som anbefalte valg gjorde admins tryggere, ikke mindre nysgjerrige.">Safe defaults don't have to be invisible — calling them out as recommended choices made admins more confident, not less curious.</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="decision-card">
-        <span class="eyebrow" data-en="design decision 02 · risk mitigation" data-no="designvalg 02 · risikohåndtering">design decision 02 · risk mitigation</span>
-        <h3 data-en="Fair value calculations that explain themselves" data-no="Fair value-beregninger som forklarer seg selv">Fair value calculations that explain themselves</h3>
-        <p data-en="Fair value was the most expensive thing to get wrong. The temptation was to expose every parameter as a form field. I pushed back: anything an admin shouldn't change without thinking should not look like a quick edit."
-           data-no="Fair value var det dyreste å gjøre feil. Fristelsen var å eksponere hver parameter som et skjemafelt. Jeg sa imot: alt en admin ikke burde endre uten å tenke, bør ikke se ut som en rask redigering.">
-          Fair value was the most expensive thing to get wrong. The temptation was to expose every parameter as a form field. I pushed back: anything an admin shouldn't change without thinking should not look like a quick edit.
-        </p>
-        <p data-en="Instead, the flow walks the user through inputs in order, with the formula and the assumption visible at the same time. History and comparison views sit next to the current scenario, so an admin can see how this run differs from the last one — and so can the auditor."
-           data-no="I stedet leder flyten brukeren gjennom innspill i rekkefølge, med formelen og antakelsen synlige samtidig. Historikk- og sammenlignings-visninger ligger ved siden av det nåværende scenarioet, slik at en admin kan se hvordan denne kjøringen skiller seg fra den forrige — og det kan revisoren også.">
-          Instead, the flow walks the user through inputs in order, with the formula and the assumption visible at the same time. History and comparison views sit next to the current scenario, so an admin can see how this run differs from the last one — and so can the auditor.
-        </p>
-        <figure class="figure">
-          <img src="assets/case/fr-valuation.png" alt="Fair value flow" />
-          <figcaption data-en="Inputs, formula and assumption in the same view; history and comparison stay one tab away."
-                      data-no="Innspill, formel og antakelse i samme visning; historikk og sammenligning ligger én fane unna.">
-            Inputs, formula and assumption in the same view; history and comparison stay one tab away.
-          </figcaption>
-        </figure>
-      </article>
-
-      <article class="decision-card">
-        <span class="eyebrow" data-en="design decision 03 · systems thinking" data-no="designvalg 03 · systemtenkning">design decision 03 · systems thinking</span>
-        <h3 data-en="Custom overviews that don't turn into a generic builder" data-no="Tilpassede oversikter — uten å bli en generisk builder">Custom overviews that don't turn into a generic builder</h3>
-        <p data-en="Different clients wanted different breakdowns — by tier, by entity, by country. The old answer was custom development per client, which doesn't scale. The new question was: can one component handle every grouping a finance team can come up with, without becoming a generic spreadsheet?"
-           data-no="Ulike kunder ville ha ulike inndelinger — etter nivå, etter entitet, etter land. Det gamle svaret var tilpasset utvikling per kunde, noe som ikke skalerer. Det nye spørsmålet ble: kan én komponent håndtere enhver gruppering et finansteam kan finne på, uten å bli et generisk regneark?">
-          Different clients wanted different breakdowns — by tier, by entity, by country. The old answer was custom development per client, which doesn't scale. The new question was: can one component handle every grouping a finance team can come up with, without becoming a generic spreadsheet?
-        </p>
-        <p data-en="I designed the overview as a composable surface — a few well-defined dimensions, drag-to-reorder structure, live preview. The constraint kept it from becoming an open-ended builder. The live preview kept it from feeling like configuration."
-           data-no="Jeg designet oversikten som en sammensetbar flate — noen få veldefinerte dimensjoner, dra-for-å-omorganisere struktur, live preview. Begrensningen hindret den i å bli en åpen builder. Live-forhåndsvisningen hindret den i å føles som konfigurasjon.">
-          I designed the overview as a composable surface — a few well-defined dimensions, drag-to-reorder structure, live preview. The constraint kept it from becoming an open-ended builder. The live preview kept it from feeling like configuration.
-        </p>
-        <figure class="figure">
-          <img src="assets/case/custom-overviews.png" alt="Configurable overview" />
-          <figcaption data-en="Admins compose overviews from a fixed set of dimensions; a live preview shows the resulting report in place."
-                      data-no="Admins komponerer oversikter fra et fast sett dimensjoner; en live preview viser den ferdige rapporten på plass.">
-            Admins compose overviews from a fixed set of dimensions; a live preview shows the resulting report in place.
-          </figcaption>
-        </figure>
-      </article>
-
-      <article class="decision-card">
-        <span class="eyebrow" data-en="design decision 04 · business judgment" data-no="designvalg 04 · forretningsskjønn">design decision 04 · business judgment</span>
-        <h3 data-en="FX and turnover rules an admin can edit safely" data-no="FX- og omsetningsregler en admin kan redigere trygt">FX and turnover rules an admin can edit safely</h3>
-        <p data-en="These rules used to live in code, so every country-specific edge case became an engineering ticket. Moving them into the product only made sense if the design stopped admins from quietly breaking the calculation."
-           data-no="Disse reglene levde i koden, så hvert landspesifikt kanttilfelle ble en utviklersak. Å flytte dem inn i produktet ga bare mening hvis designet hindret admins i å bryte beregningen i det stille.">
-          These rules used to live in code, so every country-specific edge case became an engineering ticket. Moving them into the product only made sense if the design stopped admins from quietly breaking the calculation.
-        </p>
-        <p data-en="The editor frames every change as a scoped, validated commit. Invalid currency pairs and overlapping turnover steps get caught at edit time, not at report time. The reasoning here came from Customer Success: their hardest tickets weren't about missing features, they were about admins changing the right thing in the wrong place."
-           data-no="Editoren rammer hver endring inn som en scoped, validert commit. Ugyldige valutapar og overlappende omsetningstrinn fanges når du redigerer, ikke når rapporten kjøres. Resonnementet kom fra Customer Success: de vanskeligste sakene deres handlet ikke om manglende funksjoner, men om admins som endret riktig ting på feil sted.">
-          The editor frames every change as a scoped, validated commit. Invalid currency pairs and overlapping turnover steps get caught at edit time, not at report time. The reasoning here came from Customer Success: their hardest tickets weren't about missing features, they were about admins changing the right thing in the wrong place.
-        </p>
-        <figure class="figure">
-          <img src="assets/case/fr-fx-rules.png" alt="FX and turnover rules editor" />
-        </figure>
-      </article>
-    </section>
-
-    <div class="ai-block">
-      <span class="eyebrow" data-en="ai in the loop" data-no="ai i sløyfen">ai in the loop</span>
-      <h2 data-en="How AI fit into this project" data-no="Hvordan AI fant sin plass i prosjektet">How AI fit into this project</h2>
-      <p data-en="Finance domain is dense — IFRS, fair value modelling, FX rules, country-specific reporting — and I'm not a finance expert. AI didn't replace that expertise; it shortened the distance to it."
-         data-no="Finansdomenet er tett — IFRS, fair value-modellering, FX-regler, landspesifikk rapportering — og jeg er ikke finansekspert. AI erstattet ikke den ekspertisen; det forkortet avstanden til den.">
-        Finance domain is dense — IFRS, fair value modelling, FX rules, country-specific reporting — and I'm not a finance expert. AI didn't replace that expertise; it shortened the distance to it.
-      </p>
-      <p data-en="Three places it earned its keep:"
-         data-no="Tre steder den gjorde nytte for seg:">
-        Three places it earned its keep:
-      </p>
-      <ul>
-        <li data-en="Synthesising research notes from finance partners — twenty hours of session transcripts turned into a tagged map of frictions overnight, which I then verified against the source clips. I trusted the structure; I never trusted the summary." data-no="Syntese av research-notater fra finanspartnere — tjue timer transkripsjoner ble til et tagget kart over friksjoner over natten, som jeg deretter verifiserte mot kildeklippene. Jeg stolte på strukturen; jeg stolte aldri på sammendraget.">Synthesising research notes from finance partners — twenty hours of session transcripts turned into a tagged map of frictions overnight, which I then verified against the source clips. I trusted the structure; I never trusted the summary.</li>
-        <li data-en="First-pass tooltip and validation copy — AI wrote drafts in IFRS-correct language; a finance expert and I edited every line. Saved a week of writing; cost an hour of editing per tooltip." data-no="Førsteutkast for tooltip- og valideringscopy — AI skrev utkast på IFRS-korrekt språk; en finansekspert og jeg redigerte hver linje. Sparte en uke med skriving; kostet en time redigering per tooltip.">First-pass tooltip and validation copy — AI wrote drafts in IFRS-correct language; a finance expert and I edited every line. Saved a week of writing; cost an hour of editing per tooltip.</li>
-        <li data-en="Stress-testing my own thinking — I'd paste a half-finished design rationale into the chat and ask for the strongest objections a CFO would raise. Two out of three rounds were noise; the third caught a real hole." data-no="Stresstesting av min egen tenkning — jeg limte inn et halvferdig design-rasjonale i chatten og ba om de sterkeste innvendingene en CFO ville reise. To av tre runder var støy; den tredje fant et reelt hull.">Stress-testing my own thinking — I'd paste a half-finished design rationale into the chat and ask for the strongest objections a CFO would raise. Two out of three rounds were noise; the third caught a real hole.</li>
-      </ul>
-      <p data-en="What I rejected: AI-generated UI explorations. In a domain where a misnamed field can mis-state a balance sheet, the cost of a wrong label is bigger than the time AI saved drawing it."
-         data-no="Det jeg avviste: AI-genererte UI-utforskninger. I et domene der et feilnavngitt felt kan feilrapportere en balanse, er kostnaden av en feil etikett større enn tiden AI sparte ved å tegne den.">
-        What I rejected: AI-generated UI explorations. In a domain where a misnamed field can mis-state a balance sheet, the cost of a wrong label is bigger than the time AI saved drawing it.
-      </p>
-    </div>
-
-    <div class="divider"><span class="eyebrow muted" data-en="04 · trade-off" data-no="04 · avveining">04 · trade-off</span><div class="line"></div></div>
-    <section>
-      <h2 data-en="A trade-off I'd make differently today" data-no="En avveining jeg ville tatt annerledes i dag">A trade-off I'd make differently today</h2>
-      <p data-en="The reports list was a fork in the road. The original surface used a third-party table component that sat outside the design system. It was powerful — sortable columns, dense rows, the medium a finance administrator actually thinks in."
-         data-no="Rapportlisten var en korsvei. Den opprinnelige flaten brukte en tredjeparts-tabellkomponent som lå utenfor designsystemet. Den var kraftig — sorterbare kolonner, tette rader, mediet en finansadministrator faktisk tenker i.">
-        The reports list was a fork in the road. The original surface used a third-party table component that sat outside the design system. It was powerful — sortable columns, dense rows, the medium a finance administrator actually thinks in.
-      </p>
-      <p data-en="I replaced it with cards. Cards were the pattern the rest of the product used, and consistency felt like the responsible call. I argued for it, the team agreed, we shipped it."
-         data-no="Jeg erstattet den med kort. Kort var mønsteret resten av produktet brukte, og konsistens føltes som det ansvarlige valget. Jeg argumenterte for det, teamet var enig, vi lanserte.">
-        I replaced it with cards. Cards were the pattern the rest of the product used, and consistency felt like the responsible call. I argued for it, the team agreed, we shipped it.
-      </p>
-      <div class="figure-grid">
-        <figure>
-          <img src="assets/case/fr-before.png" alt="Reports list, original table layout" />
-          <figcaption class="label" data-en="Original — third-party table" data-no="Originalen — tredjeparts-tabell">Original — third-party table</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/case/fr-after.png" alt="Reports list, redesigned card layout" />
-          <figcaption class="label" data-en="My redesign — design-system cards" data-no="Mitt redesign — kort fra designsystemet">My redesign — design-system cards</figcaption>
-        </figure>
-      </div>
-      <p data-en="In retrospect, I optimised for the wrong thing. The audience for this screen is admin super-users who live in tables. They don't want a friendly card; they want to sort five columns, scan twenty rows and act. Consistency mattered less to them than power."
-         data-no="I etterpåklokskap optimerte jeg for feil ting. Målgruppen for denne skjermen er admin-super-brukere som lever i tabeller. De vil ikke ha et vennlig kort; de vil sortere fem kolonner, skanne tjue rader og handle. Konsistens betydde mindre for dem enn kraft.">
-        In retrospect, I optimised for the wrong thing. The audience for this screen is admin super-users who live in tables. They don't want a friendly card; they want to sort five columns, scan twenty rows and act. Consistency mattered less to them than power.
-      </p>
-      <p data-en="The right call would have been to keep the table, absorb the design-system inconsistency, and write a focused exception in the system documentation explaining why. That's the move I'd make today. It's also the lens I now apply earlier in projects: which audience am I about to optimise against, and does the consistent pattern actually serve them?"
-         data-no="Det riktige valget hadde vært å beholde tabellen, akseptere inkonsistensen i designsystemet, og skrive et fokusert unntak i system-dokumentasjonen som forklarer hvorfor. Det er valget jeg ville tatt i dag. Det er også linsen jeg nå legger på tidligere i prosjekter: hvilken målgruppe er jeg i ferd med å optimere mot, og tjener det konsistente mønsteret dem egentlig?">
-        The right call would have been to keep the table, absorb the design-system inconsistency, and write a focused exception in the system documentation explaining why. That's the move I'd make today. It's also the lens I now apply earlier in projects: which audience am I about to optimise against, and does the consistent pattern actually serve them?
+      <p class="rejected" data-en="What I rejected — AI-drawn UI explorations. In a domain where a misnamed field can break a report, the cost of a wrong label was bigger than the time AI saved drawing it."
+                          data-no="Det jeg avviste — AI-tegnede UI-utforskninger. I et domene der et feilnavngitt felt kan ødelegge en rapport, var kostnaden ved feil etikett større enn tiden AI sparte ved å tegne den.">
+        What I rejected — AI-drawn UI explorations. In a domain where a misnamed field can break a report, the cost of a wrong label was bigger than the time AI saved drawing it.
       </p>
     </section>
 
-    <div class="divider"><span class="eyebrow muted" data-en="05 · the shift" data-no="05 · skiftet">05 · the shift</span><div class="line"></div></div>
-    <section>
-      <h2 data-en="What shifted, in their own words" data-no="Det som flyttet seg — med deres egne ord">What shifted, in their own words</h2>
-      <p data-en="The clearest evidence wasn't a metric, it was the change in tone. Finance leads stopped opening tickets with 'sorry to bother you' and started filing them as feature requests. That's a small word change that reflects a big shift in confidence."
-         data-no="Det tydeligste beviset var ikke en metrikk, men endringen i tone. Finansledere sluttet å åpne saker med «beklager bryderiet» og begynte å sende dem som funksjonsønsker. Det er en liten endring i ordvalg som speiler et stort skifte i trygghet.">
-        The clearest evidence wasn't a metric, it was the change in tone. Finance leads stopped opening tickets with "sorry to bother you" and started filing them as feature requests. That's a small word change that reflects a big shift in confidence.
+    <!-- 04 TRADE-OFF -->
+    <section id="tradeoff" class="sf-section">
+      <span class="case-eyebrow strategic" data-en="04 · A trade-off I'd make differently today" data-no="04 · En avveining jeg ville tatt annerledes i dag">04 · A trade-off I'd make differently today</span>
+      <h2 data-en="I shipped cards where the audience needed a table"
+          data-no="Jeg sendte kort der publikum trengte en tabell">
+        I shipped cards where the audience needed a table
+      </h2>
+      <p data-en="The reports list could have used a third-party table — sortable columns, dense rows, the format finance admins live in. I replaced it with cards instead. Cards matched the rest of the product, and consistency felt like the responsible choice."
+         data-no="Rapportlisten kunne brukt en tredjeparts tabell — sorterbare kolonner, tette rader, formatet finansadmins lever i. Jeg erstattet den med kort i stedet. Kort matchet resten av produktet, og konsistens føltes som det ansvarlige valget.">
+        The reports list could have used a third-party table — sortable columns, dense rows, the format finance admins live in. I replaced it with cards instead. Cards matched the rest of the product, and consistency felt like the responsible choice.
       </p>
-    </section>
-
-    <div class="divider"><span class="eyebrow muted" data-en="06 · team" data-no="06 · teamet">06 · team</span><div class="line"></div></div>
-    <section>
-      <h2 data-en="What it shifted for the team" data-no="Det som endret seg for teamet">What it shifted for the team</h2>
-      <p data-en="Customer Success spent less time walking clients through how to format a report and more time on the questions only people can answer. Sales stopped using 'we'll customise it' as a default answer in demos — they started showing the configuration in product instead."
-         data-no="Customer Success brukte mindre tid på å lede kundene gjennom hvordan en rapport skulle formateres, og mer tid på spørsmålene bare mennesker kan svare på. Salg sluttet å bruke «vi skreddersyr» som standardsvar i demoer — de begynte å vise konfigurasjonen i produktet i stedet.">
-        Customer Success spent less time walking clients through how to format a report and more time on the questions only people can answer. Sales stopped using "we'll customise it" as a default answer in demos — they started showing the configuration in product instead.
-      </p>
-      <p data-en="Internally, the team kept a wall of notes from clients and colleagues across the project. That ritual mattered more than the wall itself — it made the design decisions feel earned, not invented."
-         data-no="Internt holdt teamet en vegg med notater fra kunder og kolleger gjennom prosjektet. Det ritualet betydde mer enn selve veggen — det fikk designvalgene til å føles fortjent, ikke oppfunnet.">
-        Internally, the team kept a wall of notes from clients and colleagues across the project. That ritual mattered more than the wall itself — it made the design decisions feel earned, not invented.
+      <p data-en="I was optimising for the wrong thing. The audience here is admin super-users who work in tables all day. They needed capability over consistency — sort columns, scan rows, act. The right call would have been to keep the table, accept the design-system deviation, and document the exception. That's the decision I'd make now."
+         data-no="Jeg optimaliserte for feil ting. Publikum her er admin-superbrukere som lever i tabeller hele dagen. De trengte kapasitet over konsistens — sortere kolonner, skanne rader, handle. Det riktige valget hadde vært å beholde tabellen, akseptere avviket fra designsystemet, og dokumentere unntaket. Det er valget jeg ville tatt i dag.">
+        I was optimising for the wrong thing. The audience here is admin super-users who work in tables all day. They needed capability over consistency — sort columns, scan rows, act. The right call would have been to keep the table, accept the design-system deviation, and document the exception. That's the decision I'd make now.
       </p>
       <figure class="figure">
-        <img src="assets/case/fr-team.png" alt="Team notes from the project" />
-      </figure>
-      <figure class="figure feedback">
-        <img src="assets/case/fr-feedback-2.png" alt="Slack message from Sebastian, engineer" />
-        <figcaption data-en="A note from Sebastian, engineer on the reporting team — the kind of comment that tells you the shared language is working."
-                    data-no="En melding fra Sebastian, utvikler på rapporteringsteamet — den typen kommentar som forteller deg at det felles språket fungerer.">
-          A note from Sebastian, engineer on the reporting team — the kind of comment that tells you the shared language is working.
+        <img src="assets/case/fr-after.png" alt="" />
+        <figcaption data-en="The cards layout I shipped — consistent with the system, but the audience would have been better served by a table."
+                    data-no="Kort-layouten jeg leverte — konsistent med systemet, men publikum ville vært bedre tjent med en tabell.">
+          The cards layout I shipped — consistent with the system, but the audience would have been better served by a table.
         </figcaption>
       </figure>
     </section>
 
-    <div class="divider"><span class="eyebrow muted" data-en="07 · what I'd carry forward" data-no="07 · det jeg tar med videre">07 · what I'd carry forward</span><div class="line"></div></div>
-    <section>
-      <h2 data-en="What I'd carry into the next finance product" data-no="Det jeg tar med videre">What I'd carry into the next finance product</h2>
-      <ul>
-        <li data-en="A configurable flow beats a configurable form. Order and inline explanation do more for trust than any tooltip." data-no="En konfigurerbar flyt slår et konfigurerbart skjema. Rekkefølge og innebygd forklaring gjør mer for tillit enn noen tooltip.">A configurable flow beats a configurable form. Order and inline explanation do more for trust than any tooltip.</li>
-        <li data-en="If a screen is asking a finance team to do mechanical work, the design isn't finished." data-no="Hvis en skjerm ber et finansteam om å gjøre mekanisk arbeid, er designet ikke ferdig.">If a screen is asking a finance team to do mechanical work, the design isn't finished.</li>
-        <li data-en="Customer Success is the best research panel a designer can have in B2B finance — they hear the problem in its first sentence." data-no="Customer Success er det beste research-panelet en designer kan ha i B2B-finans — de hører problemet i den første setningen.">Customer Success is the best research panel a designer can have in B2B finance — they hear the problem in its first sentence.</li>
-        <li data-en="Design-system consistency is a means, not an end. When the audience is super-users, the power they need can be worth the inconsistency it costs." data-no="Designsystem-konsistens er et middel, ikke et mål. Når målgruppen er super-brukere, kan den kraften de trenger være verdt den inkonsistensen det koster.">Design-system consistency is a means, not an end. When the audience is super-users, the power they need can be worth the inconsistency it costs.</li>
-      </ul>
+    <!-- 05 IMPACT -->
+    <section id="impact" class="sf-section">
+      <span class="case-eyebrow" data-en="05 · Impact" data-no="05 · Effekt">05 · Impact</span>
+      <figure class="sf-figure">
+        <img src="assets/images/350+ hours of client-driven research and testing-2.png" alt="" />
+        <figcaption data-en="350+ hours of client-driven research and testing fed every decision above — coded session signals across hundreds of sessions."
+                    data-no="350+ timer kundedrevet research og testing matet hvert valg over — kodede øktsignaler på tvers av hundrevis av økter.">
+          350+ hours of client-driven research and testing fed every decision above — coded session signals across hundreds of sessions.
+        </figcaption>
+      </figure>
+      <h2 data-en="Research that fed every decision"
+          data-no="Research som matet hvert valg">
+        Research that fed every decision
+      </h2>
+
+      <div class="sf-impact">
+        <div>
+          <span class="pillar-label" data-en="Product" data-no="Produkt">Product</span>
+          <div class="impact-num">4</div>
+          <p class="impact-desc" data-en="New reporting tools live across the platform — built in the product, not in Excel."
+                                data-no="Nye rapporteringsverktøy live på plattformen — bygd i produktet, ikke i Excel.">
+            New reporting tools live across the platform — built in the product, not in Excel.
+          </p>
+        </div>
+        <div>
+          <span class="pillar-label" data-en="Process" data-no="Prosess">Process</span>
+          <div class="impact-num small">~1 000 h/yr</div>
+          <p class="impact-desc" data-en="Manual Excel work removed by reusable grouping — measured by an in-product time-saved chart since Dec 2024."
+                                data-no="Manuelt Excel-arbeid fjernet av gjenbrukbar gruppering — målt av en innebygd «tid spart»-graf siden des. 2024.">
+            Manual Excel work removed by reusable grouping — measured by an in-product time-saved chart since Dec 2024.
+          </p>
+        </div>
+        <div>
+          <span class="pillar-label" data-en="People" data-no="Mennesker">People</span>
+          <div class="impact-num small">48.85%</div>
+          <p class="impact-desc" data-en="Average time per process saved on adjacent Customer Success backoffice work."
+                                data-no="Gjennomsnittlig tid per prosess spart på tilstøtende Customer Success-backoffice-arbeid.">
+            Average time per process saved on adjacent Customer Success backoffice work.
+          </p>
+        </div>
+      </div>
     </section>
+
+    <!-- REAL QUOTE -->
+    <section class="sf-section">
+      <span class="case-eyebrow team" data-en="Brought back to the team" data-no="Tatt med tilbake til teamet">Brought back to the team</span>
+      <div class="sf-figure-row">
+        <figure>
+          <img src="assets/images/feedback 2-1.png" alt="" />
+          <figcaption data-en="The actual Slack message from Sebastian during the OKR R&amp;R review."
+                      data-no="Den faktiske Slack-meldingen fra Sebastian under OKR R&amp;R-gjennomgangen.">
+            The actual Slack message from Sebastian during the OKR R&amp;R review.
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="assets/images/Dream team-2.png" alt="" />
+          <figcaption data-en="Dream team — the engineers, PM and Customer Success partners who shipped this together."
+                      data-no="Dream team — utviklerne, PM-en og Customer Success-partnerne som leverte dette sammen.">
+            Dream team — the engineers, PM and Customer Success partners who shipped this together.
+          </figcaption>
+        </figure>
+      </div>
+      <div class="real-quote">
+        <span class="avatar" aria-hidden="true">SE</span>
+        <div>
+          <p class="body" data-en="“I just wanted to say that you did an incredible progress with the quality of gathering feedback, sessions with business people, understanding the feature, and really robust and pragmatic UI and UX designs. I've heard from them a lot of positives — nice one, Anastasiia.”"
+                          data-no="“Jeg vil bare si at du har gjort en utrolig fremgang med kvaliteten på tilbakemeldingsinnsamling, økter med business-folk, forståelse av funksjonen, og virkelig solide og pragmatiske UI- og UX-design. Jeg har hørt mange positive ting fra dem — nydelig jobbet, Anastasiia.”">
+            “I just wanted to say that you did an incredible progress with the quality of gathering feedback, sessions with business people, understanding the feature, and really robust and pragmatic UI and UX designs. I've heard from them a lot of positives — nice one, Anastasiia.”
+          </p>
+          <span class="meta" data-en="Sebastian · Engineer, Reporting team · OKR R&amp;R review"
+                            data-no="Sebastian · Utvikler, Rapporteringsteam · OKR R&amp;R-gjennomgang">
+            Sebastian · Engineer, Reporting team · OKR R&amp;R review
+          </span>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <div class="case-end">
-    <h2 data-en="Financial reporting" data-no="Finansiell rapportering">Financial reporting</h2>
-    <a href="#" data-en="Back to the top" data-no="Tilbake til toppen">Back to the top</a>
+    <h2 data-en="Next: Employee Portal" data-no="Neste: Deltakerportal">Next: Employee Portal</h2>
+    <a href="employee-portal.html" data-en="Read the case →" data-no="Les caset →">Read the case →</a>
   </div>
 
   <script src="i18n.js"></script>
