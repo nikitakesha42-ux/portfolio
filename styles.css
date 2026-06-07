@@ -2579,6 +2579,12 @@ footer.site {
 }
 .other-snap .snap-image img {
   aspect-ratio: 16 / 10;
+  border: 1px solid var(--rule);
+  box-shadow: 0 2px 12px -4px rgba(10, 31, 74, 0.06);
+  transition: box-shadow 0.25s ease;
+}
+.other-snap .snap-image:hover img {
+  box-shadow: 0 4px 16px -4px rgba(10, 31, 74, 0.10);
 }
 .other-snap .pill-row { margin-top: 4px; display: flex; flex-wrap: wrap; gap: 6px; }
 .other-snap .status-pill.tool { color: var(--ink); border-color: var(--rule); background: #fff; }
@@ -2858,4 +2864,151 @@ footer.site {
   .about-closing h2 { font-size: 24px; }
   .primary-nav { gap: 16px; font-size: 13px; }
   .primary-nav a[data-hide-mobile] { display: none; }
+}
+
+/* ============================================================
+   RESPONSIVE POLISH — global safety + tablet + narrow mobile
+   ============================================================ */
+
+/* Belt-and-suspenders against accidental horizontal scroll */
+html { overflow-x: clip; }
+body { overflow-x: clip; }
+
+/* Every image stays inside its container */
+img, video { max-width: 100%; height: auto; }
+
+/* Grid + flex items must be allowed to shrink below their min-content
+   so long words and stretched children don't blow the viewport open */
+.about-hero-grid > div,
+.tpl-hero-grid > div,
+.tpl-hero-grid > aside,
+.project-snapshot > .snap-text,
+.project-snapshot > .snap-image,
+.now-grid > article,
+.sf-decisions > article,
+.snap-row .cell,
+.case-context-grid .ctx-row > * {
+  min-width: 0;
+}
+
+/* Word-break safety on long-form bio + paragraph text */
+.about-hero .hero-bio,
+.about-hero .hero-bio p,
+.home-hero-ref .hero-bio,
+.home-hero-ref .hero-bio p,
+.tpl-hero .hero-aside,
+.tpl-hero .hero-aside p,
+.snap-row .cell .value,
+.snap-row .cell .aside,
+.now-card p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  min-width: 0;
+}
+
+/* Three-column sf-figure-row variant that collapses cleanly */
+.sf-figure-row.sf-figure-row-three { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 880px) {
+  .sf-figure-row.sf-figure-row-three { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .sf-figure-row.sf-figure-row-three { grid-template-columns: 1fr; }
+}
+
+/* Tablet (≤960px) — case banners shouldn't dominate, TOC pills breathe */
+@media (max-width: 960px) {
+  .case-banner img { max-height: 320px; object-fit: cover; }
+  .case-toc-pills { padding: 12px 0; }
+  .snap-row { grid-template-columns: 1fr 1fr; gap: 18px; }
+}
+
+/* Mobile (≤640px) — every page reflows cleanly */
+@media (max-width: 640px) {
+  /* Cases ------------------------------------------------------- */
+  .case { padding: 36px 20px 64px; }
+  .case-banner img { max-height: 220px; }
+  .case-banner figcaption { padding: 0 20px; font-size: 12.5px; }
+  .case-h1 { font-size: 26px; max-width: none; }
+  .case-eyebrow.brand { font-size: 11px; }
+  .case-toc-pills { gap: 6px; padding: 10px 0; margin-bottom: 28px; }
+  .case-toc-pills a { font-size: 10.5px; padding: 5px 9px; }
+  .case-section-h2 { font-size: 19px; }
+  .sf-section > h2 { font-size: 19px; }
+  .shift-quote { font-size: 17px; padding-left: 14px; max-width: none; }
+  .snap-row { grid-template-columns: 1fr; gap: 14px; padding: 18px 0; margin-bottom: 28px; }
+  .snap-row .cell { border-bottom: 1px solid var(--rule); padding-bottom: 14px; }
+  .snap-row .cell:last-child { border-bottom: 0; padding-bottom: 0; }
+  .sf-decisions { grid-template-columns: 1fr; }
+  .sf-decisions.four { grid-template-columns: 1fr; }
+  .sf-decisions.two  { grid-template-columns: 1fr; }
+  .sf-decision { padding: 20px 22px; }
+  .sf-figure-row { grid-template-columns: 1fr; gap: 14px; }
+  .sf-impact { grid-template-columns: 1fr; gap: 20px; }
+  .real-quote { padding: 18px 20px; gap: 12px; flex-direction: column; }
+  .real-quote .avatar { width: 32px; height: 32px; }
+  .real-quote .body { font-size: 14px; }
+  .ctx-row { grid-template-columns: 100px 1fr; gap: 12px 16px; }
+  .creds .row { grid-template-columns: 88px 1fr; gap: 12px; }
+  .creds .row code, .creds .row a { font-size: 12px; word-break: break-all; }
+
+  /* Home — reference hero --------------------------------------- */
+  .home-hero-ref { padding: 8px 0 0; margin-bottom: 36px; }
+  .home-hero-ref h1 { font-size: 32px; line-height: 1.08; margin-bottom: 20px; }
+  .home-hero-ref .portrait-wrap {
+    float: none;
+    width: 65%;
+    max-width: 240px;
+    margin: 0 auto 20px;
+  }
+  .home-hero-ref .meet-badge { width: 62px; height: 62px; right: -14px; bottom: -14px; }
+  .home-hero-ref .meet-badge svg { width: 62px; height: 62px; }
+  .home-hero-ref .hero-bio { font-size: 15.5px; }
+  .home-hero-ref .hero-cta-row { margin-top: 24px; gap: 12px; }
+  .home-hero-ref .work-label { margin-top: 40px; font-size: 17px; }
+  .cta-pill-dark { padding: 10px 16px; font-size: 13px; gap: 8px; }
+  .cta-pill-dark .spark { font-size: 12px; width: 12px; height: 12px; }
+
+  /* Home — site header keeps CTA visible on phones */
+  .site-header.is-home { padding: 14px 20px; gap: 10px; flex-wrap: wrap; }
+  .site-header .brand-mark .mark { width: 32px; height: 32px; font-size: 11px; }
+  .site-header .brand-mark .name { font-size: 13px; }
+  .site-header .header-right { gap: 10px; }
+
+  /* About page — bio paragraphs never overflow */
+  .about-hero-grid { gap: 24px; }
+  .about-hero h1 { font-size: 26px; }
+  .about-hero .hero-bio { font-size: 15px; word-wrap: break-word; overflow-wrap: anywhere; }
+  .about-hero .hero-bio a { word-break: break-word; }
+  .about-photo { aspect-ratio: 5 / 6; max-width: 320px; margin: 0 auto; }
+  .about-photo-video { aspect-ratio: 9 / 16; max-width: 300px; }
+  .history-row { grid-template-columns: 92px 1fr; gap: 12px; }
+  .history-row .row-year { font-size: 12.5px; }
+  .history-row .row-role-block .role { font-size: 13.5px; }
+  .history-row .row-role-block .sector { font-size: 12px; }
+
+  /* About — In the studio block */
+  .now-block h2 { font-size: 22px; }
+  .now-grid { grid-template-columns: 1fr; gap: 14px; }
+  .now-card { padding: 22px 22px; }
+  .tools-list li { font-size: 11.5px; padding: 5px 11px; }
+
+  /* Other snapshots on home stay readable */
+  .other-snapshots-grid { grid-template-columns: 1fr; gap: 28px; }
+
+  /* Behance band stacks gracefully */
+  .behance-band { flex-direction: column; align-items: flex-start; padding: 20px 0; }
+  .behance-band p { margin: 6px 0 0; flex: none; }
+}
+
+/* Extra-narrow (≤400px) — small phones, last polish */
+@media (max-width: 400px) {
+  .wrap { padding: 24px 16px 56px; }
+  .case { padding: 28px 16px 56px; }
+  .case-h1 { font-size: 23px; }
+  .home-hero-ref h1 { font-size: 28px; }
+  .about-hero h1 { font-size: 23px; }
+  .case-toc-pills a { font-size: 10px; padding: 4px 8px; }
+  .case-banner figcaption { padding: 0 16px; }
+  .snap-row { padding: 14px 0; }
+  .now-block h2 { font-size: 20px; }
 }

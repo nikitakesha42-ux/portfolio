@@ -288,5 +288,6 @@
   </footer>
 
   <script src="i18n.js"></script>
+<script>setTimeout(()=>{const vw=window.innerWidth;const wide=[];document.querySelectorAll("*").forEach(el=>{const r=el.getBoundingClientRect();if(r.right>vw+2){const isInside=wide.some(w=>w.el.contains(el));if(!isInside)wide.push({tag:el.tagName,cls:String(el.className||"").slice(0,40),right:Math.round(r.right),w:Math.round(r.width),el:el});}});const out=document.createElement("div");out.style.cssText="position:fixed;top:0;left:0;right:0;background:#fee;color:#900;padding:8px;font:11px monospace;z-index:99999;white-space:pre-wrap;border-bottom:2px solid red;max-height:50vh;overflow:auto";out.textContent="vw="+vw+" scrollW="+document.documentElement.scrollWidth+"\nOVERFLOWING("+wide.length+"):\n"+wide.slice(0,20).map(x=>x.tag+"."+x.cls+" right="+x.right+" w="+x.w).join("\n");document.body.prepend(out);},800);</script>
 </body>
 </html>
