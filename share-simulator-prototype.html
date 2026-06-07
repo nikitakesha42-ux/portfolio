@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1f4a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
   <title>Share simulator — prototype · Anastasiia Nikitina</title>
   <meta name="description" content="Interactive prototype of the rebuilt share simulator. Ask the co-pilot anything about a mock share programme — or switch to the what-if slider." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -408,7 +412,7 @@
       border-radius: 999px;
       padding: 12px 18px;
       font: inherit;
-      font-size: 14.5px;
+      font-size: 16px;
       background: var(--bg);
       transition: border-color 0.15s ease;
     }
@@ -668,7 +672,7 @@
       .chat-history { padding: 20px; max-height: 50vh; }
       .bubble { max-width: 88%; font-size: 14px; }
       .chat-input-area { padding: 14px 18px; }
-      .chat-form input { padding: 11px 16px; font-size: 14px; }
+      .chat-form input { padding: 12px 16px; font-size: 16px; }
       .chat-form button { padding: 11px 18px; font-size: 13px; }
       .annotation { padding: 0 20px; }
       .annotation .design-notes { grid-template-columns: 1fr; }
@@ -685,6 +689,65 @@
       overflow: hidden;
       clip: rect(0, 0, 0, 0);
       border: 0;
+    }
+
+    /* iOS HIG polish */
+    * { -webkit-tap-highlight-color: transparent; }
+    button, .mode-tab, .chip, .followup, .reset-btn, .lang-switch button, .country-picker button {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    input { -webkit-user-select: text; user-select: text; }
+
+    /* Safe-area insets for notch + home indicator */
+    .topbar {
+      padding-left: max(32px, env(safe-area-inset-left));
+      padding-right: max(32px, env(safe-area-inset-right));
+      padding-top: max(18px, env(safe-area-inset-top));
+    }
+    main {
+      padding-left: max(32px, env(safe-area-inset-left));
+      padding-right: max(32px, env(safe-area-inset-right));
+    }
+    .chat-input-area {
+      padding-bottom: max(18px, calc(18px + env(safe-area-inset-bottom)));
+    }
+    .annotation { padding-bottom: max(48px, calc(48px + env(safe-area-inset-bottom))); }
+
+    /* Touch-only quality: 44pt tap targets + active feedback */
+    @media (hover: none) and (pointer: coarse) {
+      .mode-tab { min-height: 44px; padding: 11px 18px; }
+      .country-picker button { min-height: 36px; padding: 8px 14px; }
+      .lang-switch button { min-height: 36px; padding: 9px 14px; }
+      .chip { min-height: 44px; padding: 11px 16px; }
+      .followup { min-height: 36px; padding: 8px 14px; }
+      .reset-btn { padding: 10px 0; min-height: 32px; }
+      .chat-form button { min-height: 44px; padding: 12px 22px; }
+
+      .chat-form button, .mode-tab, .chip, .followup, .country-picker button, .lang-switch button {
+        transition: transform 0.08s ease, opacity 0.15s ease;
+      }
+      .chat-form button:active, .mode-tab:active, .chip:active,
+      .followup:active, .country-picker button:active, .lang-switch button:active {
+        transform: scale(0.97);
+      }
+    }
+
+    /* iOS Safari 100vh bug — use dynamic viewport height where supported */
+    @supports (height: 100dvh) {
+      .chat-history { max-height: 60dvh; }
+    }
+
+    /* No rubber-band scroll on the body */
+    @supports (overscroll-behavior-y: contain) {
+      body { overscroll-behavior-y: none; }
+    }
+
+    /* Keyboard focus visibility */
+    a:focus-visible, button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 3px;
     }
   </style>
 </head>
@@ -1075,6 +1138,79 @@
         })
       ),
 
+      // 1.5 COMPARE — handle "Compare X vs Y" with a real side-by-side answer
+      rule(
+        q => /\b(compare|versus|vs\.?|sammenlign)\b/i.test(q),
+        (q) => {
+          const r = taxRules[portfolio.country];
+
+          // Compare selling now vs (in X months / later / waiting)
+          if (/(sell|sale|selge|salg)/i.test(q) && /(wait|later|month|now|nå|måned|vent|senere|after|window|vindu)/i.test(q)) {
+            const months = extractMonths(q) || 6;
+            const futureVested = vestedAtMonths(months);
+            const futureGross = futureVested * portfolio.priceNow;
+            const futureNet = futureGross * (1 - r.rate);
+            return {
+              text: {
+                en: `<strong>Selling now:</strong> not possible yet — your 1 000 unlocked shares are inside the 90-day lock-up. <strong>In ${months} months:</strong> the lock-up has cleared and you'd have <strong>${fmtNum(futureVested)} shares</strong> unlocked, worth about <strong>${fmtMoney(futureNet)}</strong> after tax (at today's price). Waiting only beats selling-now if the price holds or rises — and you stay long enough to vest more.`,
+                no: `<strong>Selge nå:</strong> ikke mulig ennå — dine 1 000 opplåste aksjer er inne i 90-dagers lock-up. <strong>Om ${months} måneder:</strong> lock-up er over og du har <strong>${fmtNum(futureVested)} aksjer</strong> låst opp, verdt rundt <strong>${fmtMoney(futureNet)}</strong> etter skatt (med dagens kurs). Å vente lønner seg bare hvis kursen holder eller stiger — og du blir lenge nok til at flere låses opp.`
+              },
+              followUps: {
+                en: ["What if the price drops 20% in 6 months?", "What if I leave instead?", "When's the next earnings window?"],
+                no: ["Hva om kursen faller 20 % på 6 måneder?", "Hva om jeg slutter i stedet?", "Når er neste resultat-vindu?"]
+              }
+            };
+          }
+
+          // Compare countries / tax
+          if (/(tax|skatt|norway|uk|britain|britisk|germany|tyskland|norge|country|land)/i.test(q)) {
+            const noTax = 1000 * portfolio.priceNow * taxRules.NO.rate;
+            const ukTax = 1000 * portfolio.priceNow * taxRules.UK.rate;
+            const deTax = 1000 * portfolio.priceNow * taxRules.DE.rate;
+            return {
+              text: {
+                en: `Same 1 000 unlocked shares at ${fmtPrice(portfolio.priceNow)}. <strong>Norway</strong> ~${fmtMoney(noTax)} tax (at unlock, income rate). <strong>UK</strong> ~${fmtMoney(ukTax)} tax (at sale, CGT). <strong>Germany</strong> ~${fmtMoney(deTax)} tax (at unlock, higher top bracket). The biggest difference isn't the rate — it's <strong>when</strong> you pay.`,
+                no: `Samme 1 000 opplåste aksjer til ${fmtPrice(portfolio.priceNow)}. <strong>Norge</strong> ~${fmtMoney(noTax)} skatt (ved opplåsing, inntektsskatt). <strong>Storbritannia</strong> ~${fmtMoney(ukTax)} skatt (ved salg, CGT). <strong>Tyskland</strong> ~${fmtMoney(deTax)} skatt (ved opplåsing, høyere toppsats). Største forskjell er ikke satsen — det er <strong>når</strong> du betaler.`
+              },
+              followUps: {
+                en: ["What if I move country before vesting?", "Why is my tax different from my colleague's?", "Switch country to UK"],
+                no: ["Hva om jeg flytter før opptjening?", "Hvorfor er skatten min annerledes enn en kollegas?", "Bytt til Storbritannia"]
+              }
+            };
+          }
+
+          // Compare leaving at different points
+          if (/(leave|quit|slutte|sier opp|vesting|opptjen)/i.test(q)) {
+            const v6 = vestedAtMonths(6);
+            const v18 = vestedAtMonths(18);
+            const v36 = vestedAtMonths(36);
+            const net = (n) => fmtMoney(n * portfolio.priceNow * (1 - r.rate));
+            return {
+              text: {
+                en: `<strong>Leave in 6 months:</strong> ${fmtNum(v6)} shares vested → ~${net(v6)} after tax. <strong>Leave in 18 months:</strong> ${fmtNum(v18)} → ~${net(v18)}. <strong>Leave at 3 years:</strong> ${fmtNum(v36)} → ~${net(v36)}. The longer you stay, the more shares you keep — but the math doesn't tell you the rest of the story.`,
+                no: `<strong>Slutte om 6 måneder:</strong> ${fmtNum(v6)} aksjer opptjent → ~${net(v6)} etter skatt. <strong>Slutte om 18 måneder:</strong> ${fmtNum(v18)} → ~${net(v18)}. <strong>Slutte om 3 år:</strong> ${fmtNum(v36)} → ~${net(v36)}. Jo lenger du blir, desto flere beholder du — men matten forteller ikke resten av historien.`
+              },
+              followUps: {
+                en: ["What if the price drops while I wait?", "What's my tax exactly?", "Compare to staying full term"],
+                no: ["Hva om kursen faller mens jeg venter?", "Hva er skatten min nøyaktig?", "Sammenlign med å bli ut hele perioden"]
+              }
+            };
+          }
+
+          // Generic compare prompt — ask which axis
+          return {
+            text: {
+              en: "What would you like to compare? <strong>Selling now vs waiting, two countries' tax rules, leaving early vs staying full term</strong> — pick one and I'll show you both sides.",
+              no: "Hva vil du sammenligne? <strong>Selge nå vs å vente, to lands skatteregler, slutte tidlig vs å bli ut</strong> — velg en og jeg viser deg begge sider."
+            },
+            followUps: {
+              en: ["Compare selling now vs in 6 months", "Compare Norwegian vs UK tax", "Compare leaving at 6 months vs 18 months"],
+              no: ["Sammenlign å selge nå vs om 6 måneder", "Sammenlign norsk vs britisk skatt", "Sammenlign å slutte om 6 vs 18 måneder"]
+            }
+          };
+        }
+      ),
+
       // 2. LEAVE — what happens if I leave in X months / years
       rule(
         q => /\b(leave|quit|resign|when i go|move on|hvis jeg slutter|når jeg slutter|sier opp)/i.test(q),
@@ -1212,6 +1348,26 @@
             no: ["Hva er neste opplåsing verdt?", "Hva om jeg slutter ved full opptjening?", "Hva er lock-up-vinduet?"]
           }
         })
+      ),
+
+      // 5.5 EARNINGS WINDOW — specific question about the next earnings/blackout window
+      rule(
+        q => /(earnings.*window|next earnings|earnings.*open|next blackout|blackout.*window|next window|resultat.*vindu|neste resultat|neste vindu)/i.test(q),
+        () => {
+          const r = taxRules[portfolio.country];
+          const grossNow = 1000 * portfolio.priceNow;
+          const netNow = grossNow * (1 - r.rate);
+          return {
+            text: {
+              en: `The next earnings window opens in about <strong>45 days</strong> — by then your 1 000 unlocked shares are out of the 90-day lock-up. Selling at the open at today's price gives you about <strong>${fmtMoney(netNow)}</strong> after tax. The price will have moved by then — could be more, could be less.`,
+              no: `Neste resultat-vindu åpner om ca. <strong>45 dager</strong> — innen da er dine 1 000 opplåste aksjer ute av 90-dagers lock-up. Å selge ved åpningen til dagens kurs gir deg rundt <strong>${fmtMoney(netNow)}</strong> etter skatt. Kursen har beveget seg da — kan bli mer, kan bli mindre.`
+            },
+            followUps: {
+              en: ["What if the price drops before then?", "Compare selling now vs at the window", "What about the window after that?"],
+              no: ["Hva om kursen faller før det?", "Sammenlign å selge nå vs ved vinduet", "Hva med vinduet etter det?"]
+            }
+          };
+        }
       ),
 
       // 6. LOCK-UP / BLACKOUT

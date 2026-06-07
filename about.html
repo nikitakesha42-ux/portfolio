@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1f4a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
   <title>About me — Anastasiia Nikitina</title>
   <meta name="description" content="Product Designer in Oslo, 5+ years on complex B2B SaaS. Background in information security; most recently Optio Incentives." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,7 +46,7 @@
         <div>
           <span class="eyebrow" data-en="About me" data-no="Om meg">About me</span>
           <h1 data-en="An information-security graduate who ended up making rule-heavy products kinder."
-              data-no="En informasjonssikkerhets-utdannet som endte opp med å gjøre regeltunge produkter snillere.">
+              data-no="En informasjons­sikkerhets-utdannet som endte opp med å gjøre regeltunge produkter snillere.">
             An information-security graduate who ended up making rule-heavy products kinder.
           </h1>
           <div class="hero-bio"
@@ -288,6 +292,5 @@
   </footer>
 
   <script src="i18n.js"></script>
-<script>setTimeout(()=>{const vw=window.innerWidth;const wide=[];document.querySelectorAll("*").forEach(el=>{const r=el.getBoundingClientRect();if(r.right>vw+2){const isInside=wide.some(w=>w.el.contains(el));if(!isInside)wide.push({tag:el.tagName,cls:String(el.className||"").slice(0,40),right:Math.round(r.right),w:Math.round(r.width),el:el});}});const out=document.createElement("div");out.style.cssText="position:fixed;top:0;left:0;right:0;background:#fee;color:#900;padding:8px;font:11px monospace;z-index:99999;white-space:pre-wrap;border-bottom:2px solid red;max-height:50vh;overflow:auto";out.textContent="vw="+vw+" scrollW="+document.documentElement.scrollWidth+"\nOVERFLOWING("+wide.length+"):\n"+wide.slice(0,20).map(x=>x.tag+"."+x.cls+" right="+x.right+" w="+x.w).join("\n");document.body.prepend(out);},800);</script>
 </body>
 </html>
