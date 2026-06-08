@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Report — Share price simulator · PRIME</title>
+<meta name="description" content="Research report for the Share price simulator rebuild discovery sprint. PRIME framework synthesis of stakeholder interview, user interviews, survey responses, and usability testing." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F1F0ED;
+    --ink: #0D0D0D;
+    --muted: #666666;
+    --accent: #A6A295;
+    --card: #FFFFFF;
+    --rule: #E2E0DA;
+    --green: #5C8C5A;
+    --green-soft: #D9E5D7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 32px; }
+  body {
+    background: var(--bg);
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .back-link {
+    position: fixed; top: 24px; left: 28px; z-index: 10;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--accent); text-decoration: none; letter-spacing: 0.06em;
+  }
+  .back-link:hover { color: var(--ink); }
+
+  .frame { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+
+  .sidebar {
+    background: var(--bg); border-right: 1px solid var(--rule);
+    padding: 60px 28px 36px; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  .sb-kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
+  .sb-title { font-size: 18px; font-weight: 700; line-height: 1.3; color: var(--ink); margin-bottom: 8px; }
+  .sb-desc { font-size: 13px; line-height: 1.55; color: var(--muted); margin-bottom: 24px; }
+
+  .sb-toc-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; padding-top: 18px; border-top: 1px solid var(--rule); }
+  .sb-toc { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .sb-toc a {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; color: var(--muted);
+    font-size: 14px; padding: 9px 12px; border-radius: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .sb-toc a:hover { background: var(--card); color: var(--ink); }
+  .sb-toc a.is-active { background: var(--card); color: var(--ink); font-weight: 500; }
+  .sb-toc .letter {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent);
+    width: 18px; flex: none; font-weight: 600;
+  }
+  .sb-toc a.is-active .letter { color: var(--ink); }
+  .sb-toc .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rule); margin-right: 8px; flex: none; }
+  .sb-toc a.is-active .dot { background: var(--ink); }
+
+  .main { padding: 60px 64px 120px; max-width: 980px; }
+  .doc-kicker { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-size: 36px; font-weight: 700; line-height: 1.18; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 12px; }
+  .doc-subtitle { font-size: 15px; color: var(--muted); margin-bottom: 56px; max-width: 60ch; line-height: 1.55; }
+
+  section { margin-top: 56px; padding-top: 8px; }
+  .section-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+  h2 { font-size: 28px; font-weight: 700; line-height: 1.2; letter-spacing: -0.018em; color: var(--ink); margin-bottom: 14px; }
+  .lead { font-size: 15px; line-height: 1.7; color: var(--muted); margin-bottom: 28px; max-width: 65ch; }
+  p { font-size: 15px; line-height: 1.7; color: var(--ink); margin-bottom: 16px; max-width: 65ch; }
+  .divider { height: 1px; background: var(--rule); margin: 24px 0; }
+
+  /* Evidence cards */
+  .evidence {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    margin: 28px 0;
+  }
+  .ev-card {
+    background: var(--card); border: 1px solid var(--rule);
+    border-radius: 12px; padding: 24px 24px;
+  }
+  .ev-num { font-size: 32px; font-weight: 700; line-height: 1; color: var(--ink); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .ev-desc { font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+
+  /* Chart */
+  .chart-card {
+    background: var(--card); border: 1px solid var(--rule);
+    border-radius: 12px; padding: 24px 28px; margin: 28px 0;
+  }
+  .chart-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .chart-legend { display: flex; gap: 16px; margin-bottom: 18px; font-size: 12px; color: var(--muted); }
+  .chart-legend .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+  .chart-legend .green { background: var(--green); }
+  .chart-legend .grey { background: var(--rule); }
+  .chart-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; align-items: end;
+    height: 200px; border-bottom: 1px solid var(--rule); padding: 0 8px 4px;
+    position: relative;
+  }
+  .chart-grid::before, .chart-grid::after { content: ""; position: absolute; left: 0; right: 0; height: 1px; background: var(--rule); opacity: 0.5; }
+  .chart-grid::before { top: 25%; }
+  .chart-grid::after { top: 50%; }
+  .chart-col { display: flex; gap: 6px; align-items: end; height: 100%; justify-content: center; }
+  .bar { width: 28px; border-radius: 3px 3px 0 0; min-height: 4px; }
+  .bar.need { background: var(--green); }
+  .bar.have { background: var(--rule); }
+  .chart-labels {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;
+    margin-top: 10px; padding: 0 8px;
+  }
+  .chart-labels span { font-size: 12px; color: var(--muted); text-align: center; }
+
+  /* Quote */
+  blockquote {
+    background: var(--card); border-left: 3px solid var(--accent);
+    padding: 20px 24px; border-radius: 0 10px 10px 0;
+    margin: 24px 0;
+    max-width: 65ch;
+  }
+  blockquote p {
+    font-size: 16px; font-style: italic; line-height: 1.6; color: var(--ink);
+    margin-bottom: 8px;
+  }
+  blockquote cite {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--accent); font-style: normal; letter-spacing: 0.06em;
+  }
+
+  /* Insight cards */
+  .insights { display: flex; flex-direction: column; gap: 14px; margin: 24px 0; }
+  .insight {
+    background: var(--card); border: 1px solid var(--rule);
+    border-radius: 12px; padding: 22px 24px;
+  }
+  .insight-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+    color: var(--accent); letter-spacing: 0.06em; margin-bottom: 8px;
+  }
+  .insight h3 { font-size: 17px; font-weight: 600; line-height: 1.35; margin-bottom: 8px; color: var(--ink); }
+  .insight p { font-size: 14px; line-height: 1.6; color: var(--muted); margin-bottom: 0; max-width: none; }
+
+  /* Execution list */
+  .exec { list-style: none; padding: 0; }
+  .exec li {
+    background: var(--card); border: 1px solid var(--rule);
+    border-radius: 12px; padding: 18px 22px;
+    margin-bottom: 12px;
+    display: grid; grid-template-columns: auto 1fr; gap: 16px;
+    align-items: start;
+  }
+  .exec-priority {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 999px;
+    color: var(--card); background: var(--ink);
+    letter-spacing: 0.06em;
+  }
+  .exec-priority.p2 { background: var(--accent); }
+  .exec-priority.p3 { background: var(--rule); color: var(--ink); }
+  .exec-text { font-size: 14.5px; line-height: 1.55; color: var(--ink); }
+
+  @media (max-width: 900px) {
+    .frame { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); padding: 60px 24px 28px; }
+    .main { padding: 32px 24px 120px; }
+    h1 { font-size: 26px; }
+    .evidence { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<a class="back-link" href="research-with-ai.html">← Back to case</a>
+
+<div class="frame">
+  <aside class="sidebar">
+    <div class="sb-kicker">Optio UX Research · 2026</div>
+    <div class="sb-title">Share price simulator — Discovery sprint</div>
+    <p class="sb-desc">A synthesis of one stakeholder interview, six user interviews, sixteen survey responses, and four usability sessions on the rebuilt simulator co-pilot.</p>
+
+    <div class="sb-toc-label">Contents</div>
+    <ul class="sb-toc" id="toc">
+      <li><a href="#problem" data-section="problem"><span class="letter">P</span>Problem</a></li>
+      <li><a href="#research" data-section="research"><span class="letter">R</span>Research</a></li>
+      <li><a href="#insights" data-section="insights"><span class="letter">I</span>Insights</a></li>
+      <li><a href="#material" class="is-active" data-section="material"><span class="letter">M</span>Material</a></li>
+      <li><a href="#execution" data-section="execution"><span class="letter">E</span>Execution</a></li>
+      <li><a href="#summary" data-section="summary"><span class="letter"> </span>Summary</a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+    <div class="doc-kicker">Research report · PRIME framework</div>
+    <h1>Share price simulator — discovery sprint</h1>
+    <p class="doc-subtitle">What we set out to solve, how we approached it, what the evidence revealed, and the moves the team is making next.</p>
+
+    <!-- PROBLEM -->
+    <section id="problem">
+      <div class="section-tag">P — Problem</div>
+      <h2>People open the simulator twice a year and walk away with more questions</h2>
+      <p class="lead">The current simulator answers one question — “what if the share price moves X%?” — but participants arrive with five. They want to know when they can sell, what tax looks like, what happens if they leave, how much of their grant is real today, and whether to act now or wait. The slider front door doesn't fit the way people think.</p>
+      <blockquote>
+        <p>“I open it, look at the slider, and immediately go ask HR what it means for me. I don't think the tool was meant for me.”</p>
+        <cite>— Participant 03, Norway, 2 years tenure</cite>
+      </blockquote>
+    </section>
+
+    <!-- RESEARCH -->
+    <section id="research">
+      <div class="section-tag">R — Research</div>
+      <h2>Five inputs, twenty-seven participants, one transaction-list-style synthesis</h2>
+      <p>The discovery sprint ran for two weeks across April 2026. One stakeholder interview opened the sprint with the product lead on the Equity Platform. Six user interviews followed the BGOALC framework, scoped to Norway, UK, and Germany participants with one to four years tenure. A sixteen-response survey validated the behavioural patterns surfaced in interviews. Four usability test sessions tested the rebuilt co-pilot prototype against the four most-asked questions: what's it worth, when can I sell, what if I leave, and should I sell.</p>
+    </section>
+
+    <!-- INSIGHTS -->
+    <section id="insights">
+      <div class="section-tag">I — Insights</div>
+      <h2>Three patterns the evidence keeps returning to</h2>
+      <div class="insights">
+        <article class="insight">
+          <div class="insight-num">Insight 01</div>
+          <h3>The slider front door makes people feel like the wrong audience</h3>
+          <p>Participants don't think in percentages — they think in life events (“when can I sell?”, “what if I leave?”). The first interaction asking for a percentage signals “you're not the user we built this for,” which is why people close the tab.</p>
+        </article>
+        <article class="insight">
+          <div class="insight-num">Insight 02</div>
+          <h3>“Twice a year” means zero memory of how the tool works</h3>
+          <p>Recall between sessions is near-zero. Every visit is a cold start. Tooltips and onboarding don't survive the gap. The tool has to make sense without prior knowledge each time.</p>
+        </article>
+        <article class="insight">
+          <div class="insight-num">Insight 03</div>
+          <h3>Refusal-to-recommend reads as respectful, not evasive — if the redirect is concrete</h3>
+          <p>When the co-pilot said “I can't recommend, but I can compare scenarios for you,” every usability participant took up the redirect. None read the refusal as the tool being unhelpful. The condition is the redirect being specific.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- MATERIAL -->
+    <section id="material">
+      <div class="section-tag">M — Material</div>
+      <h2>Evidence at a glance</h2>
+      <p class="lead">Key numbers that give the findings their weight, drawn from all five research inputs.</p>
+      <div class="evidence">
+        <div class="ev-card"><div class="ev-num">4/4</div><div class="ev-desc">Usability participants took up the co-pilot's refusal redirect</div></div>
+        <div class="ev-card"><div class="ev-num">6/6</div><div class="ev-desc">User-interview participants opened the tool twice a year or less</div></div>
+        <div class="ev-card"><div class="ev-num">13/16</div><div class="ev-desc">Survey respondents said tax-by-country context would increase confidence</div></div>
+        <div class="ev-card"><div class="ev-num">3/4</div><div class="ev-desc">Usability participants asked about timing before they asked about price</div></div>
+        <div class="ev-card"><div class="ev-num">11/16</div><div class="ev-desc">Survey respondents wanted notifications when a window opens or closes</div></div>
+        <div class="ev-card"><div class="ev-num">High</div><div class="ev-desc">Volume of HR tickets about “has it actually unlocked?” — flagged, not quantified</div></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">What people ask the co-pilot for vs. what the old tool currently provides</div>
+        <div class="chart-legend">
+          <span><span class="swatch green"></span>Users ask for it</span>
+          <span><span class="swatch grey"></span>Currently provided</span>
+        </div>
+        <div class="chart-grid">
+          <div class="chart-col"><span class="bar need" style="height: 92%;"></span><span class="bar have" style="height: 14%;"></span></div>
+          <div class="chart-col"><span class="bar need" style="height: 85%;"></span><span class="bar have" style="height: 18%;"></span></div>
+          <div class="chart-col"><span class="bar need" style="height: 70%;"></span><span class="bar have" style="height: 32%;"></span></div>
+          <div class="chart-col"><span class="bar need" style="height: 64%;"></span><span class="bar have" style="height: 8%;"></span></div>
+        </div>
+        <div class="chart-labels">
+          <span>Timing &amp; sell windows</span>
+          <span>Tax for my country</span>
+          <span>What happens if I leave</span>
+          <span>Window alerts</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXECUTION -->
+    <section id="execution">
+      <div class="section-tag">E — Execution</div>
+      <h2>What the team is doing next</h2>
+      <p class="lead">Prioritised against user need, business impact, and engineering effort. P1 ships in the next sprint; P2 in the following one.</p>
+      <ul class="exec">
+        <li>
+          <span class="exec-priority">P1</span>
+          <div class="exec-text"><strong>Replace the slider front door with a question box.</strong> Default surface becomes “ask anything about your shares.” The slider stays available, but as a secondary tool. Wires directly to the co-pilot prompts already validated in usability.</div>
+        </li>
+        <li>
+          <span class="exec-priority">P1</span>
+          <div class="exec-text"><strong>Co-pilot answers timing questions before price questions.</strong> When the tool can't tell which the user wants, it leads with timing. Three of four usability participants asked about timing first.</div>
+        </li>
+        <li>
+          <span class="exec-priority p2">P2</span>
+          <div class="exec-text"><strong>Country-aware tax explanations as a default panel.</strong> Surface the participant's actual country and show one comparison alongside (UK or NO, depending on contract). Don't bury it behind a toggle.</div>
+        </li>
+        <li>
+          <span class="exec-priority p2">P2</span>
+          <div class="exec-text"><strong>Notifications for unlock/blackout window changes.</strong> Email + in-app, both opt-in by default. Eleven of sixteen survey respondents asked for this directly.</div>
+        </li>
+        <li>
+          <span class="exec-priority p3">P3</span>
+          <div class="exec-text"><strong>Quarterly recap email.</strong> Closes the twice-a-year gap by bringing the tool to the participant when something has actually changed. Test against open-rate before scaling.</div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- SUMMARY -->
+    <section id="summary">
+      <div class="section-tag">Summary</div>
+      <h2>If you read nothing else</h2>
+      <p>People open the simulator with life-event questions and a near-zero memory of how the tool works. The slider front door fits neither. The rebuild leads with a question box wired to a co-pilot that explains timing before price, surfaces country-specific tax by default, and refuses to recommend — clearly, with concrete redirects. The team is shipping P1 in the next sprint.</p>
+    </section>
+  </main>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var links = document.querySelectorAll('#toc a[data-section]');
+    var sections = Array.from(links).map(function (a) { return document.getElementById(a.dataset.section); });
+    function update() {
+      var y = window.scrollY + 140;
+      var active = sections[0];
+      sections.forEach(function (s) { if (s && s.offsetTop <= y) active = s; });
+      links.forEach(function (a) { a.classList.toggle('is-active', a.dataset.section === (active && active.id)); });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  });
+</script>
+</body>
+</html>

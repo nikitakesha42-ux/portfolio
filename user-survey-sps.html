@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Survey — Share price simulator · Experience</title>
+<meta name="description" content="User survey for the Share price simulator rebuild. 10 questions across 5 need clusters. Generated with Claude using the RTCCF framework. Deployable as a Netlify form." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F1F0ED;
+    --ink: #0D0D0D;
+    --muted: #666666;
+    --accent: #A6A295;
+    --card: #FFFFFF;
+    --rule: #E2E0DA;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    padding: 64px 24px 96px;
+  }
+  .back-link {
+    position: fixed; top: 24px; left: 28px; z-index: 10;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--accent); text-decoration: none; letter-spacing: 0.06em;
+  }
+  .back-link:hover { color: var(--ink); }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .doc-kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  h1 { font-size: 30px; font-weight: 700; line-height: 1.18; letter-spacing: -0.018em; color: var(--ink); margin-bottom: 12px; }
+  .intro { font-size: 15px; line-height: 1.6; color: var(--muted); margin-bottom: 40px; }
+
+  .section-head {
+    display: flex; align-items: center; gap: 12px;
+    margin: 48px 0 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase;
+  }
+  .section-head .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink); display: inline-block; }
+
+  .q {
+    background: var(--card); border: 1px solid var(--rule);
+    border-radius: 14px; padding: 22px 24px; margin-bottom: 12px;
+  }
+  .q-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .q-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--ink); }
+  .q-tag {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--muted); background: var(--bg); padding: 3px 10px; border-radius: 999px;
+    text-transform: lowercase;
+  }
+  .q-question {
+    font-size: 15.5px; line-height: 1.5; color: var(--ink); font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .q-helper { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+
+  /* Radio + checkbox */
+  .opt-group { display: flex; flex-direction: column; gap: 8px; }
+  .opt {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px; border: 1px solid var(--rule); border-radius: 10px;
+    cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .opt:hover { background: var(--bg); border-color: var(--accent); }
+  .opt input { accent-color: var(--ink); width: 16px; height: 16px; flex: none; }
+  .opt span { font-size: 14.5px; color: var(--ink); }
+  .opt.is-checked { border-color: var(--ink); background: var(--bg); }
+
+  /* Rating scale */
+  .scale-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .scale { display: flex; gap: 8px; margin-bottom: 8px; }
+  .scale label {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    height: 48px; border: 1px solid var(--rule); border-radius: 10px;
+    cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease;
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: var(--ink);
+  }
+  .scale input { display: none; }
+  .scale label:hover { background: var(--bg); }
+  .scale input:checked + label { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  .scale-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+
+  /* Open text */
+  textarea {
+    width: 100%; min-height: 130px;
+    background: var(--bg); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 14px 16px;
+    font: 14.5px 'Inter', sans-serif; color: var(--ink); resize: vertical;
+  }
+  textarea:focus { outline: 2px solid var(--ink); outline-offset: 0; border-color: var(--ink); }
+
+  .submit-row {
+    margin-top: 32px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .privacy-note { font-size: 13px; color: var(--muted); line-height: 1.55; }
+  .submit-btn {
+    appearance: none; background: var(--ink); color: var(--card);
+    border: 1px solid var(--ink); border-radius: 999px;
+    font: 500 14px 'Inter', sans-serif; padding: 12px 24px;
+    display: inline-flex; align-items: center; gap: 10px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background 0.15s ease, transform 0.12s ease;
+  }
+  .submit-btn:hover { background: #2a2a2a; }
+  .submit-btn:active { transform: scale(0.98); }
+
+  .success {
+    display: none;
+    background: var(--card); border: 1px solid var(--rule); border-radius: 14px;
+    padding: 28px 32px; text-align: center;
+  }
+  .success.is-shown { display: block; }
+  .success h2 { font-size: 22px; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+  .success p { font-size: 14px; color: var(--muted); }
+</style>
+</head>
+<body>
+<a class="back-link" href="research-with-ai.html">← Back to case</a>
+
+<div class="wrap">
+  <div class="doc-kicker">User survey · 4 minutes</div>
+  <h1>Your experience with the share price simulator</h1>
+  <p class="intro">We're trying to understand what's useful — and what's missing — when you look at the share price simulator on your employee portal. There are no right or wrong answers. Please respond based on your actual experience, not how you think it should work.</p>
+
+  <form id="survey-form" name="share-simulator-survey" method="POST" data-netlify="true">
+    <input type="hidden" name="form-name" value="share-simulator-survey" />
+
+    <!-- SECTION A -->
+    <div class="section-head"><span class="dot"></span>A — Frequency &amp; first impression</div>
+
+    <div class="q">
+      <div class="q-head"><span class="q-num">01</span><span class="q-tag">frequency</span></div>
+      <p class="q-question">After getting an unlock notification, how often do you open the share price simulator?</p>
+      <div class="opt-group">
+        <label class="opt"><input type="radio" name="q1" value="weekly"><span>Several times a week</span></label>
+        <label class="opt"><input type="radio" name="q1" value="monthly"><span>About once a month</span></label>
+        <label class="opt"><input type="radio" name="q1" value="quarterly"><span>Only at the unlock itself</span></label>
+        <label class="opt"><input type="radio" name="q1" value="rarely"><span>Rarely — I trust it works without checking</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-head"><span class="q-num">02</span><span class="q-tag">clarity</span></div>
+      <p class="q-question">When you open the simulator, how easy is it to tell what your shares are worth right now?</p>
+      <p class="q-helper">1 = very difficult · 5 = very easy</p>
+      <div class="scale">
+        <input type="radio" name="q2" id="q2-1" value="1"><label for="q2-1">1</label>
+        <input type="radio" name="q2" id="q2-2" value="2"><label for="q2-2">2</label>
+        <input type="radio" name="q2" id="q2-3" value="3"><label for="q2-3">3</label>
+        <input type="radio" name="q2" id="q2-4" value="4"><label for="q2-4">4</label>
+        <input type="radio" name="q2" id="q2-5" value="5"><label for="q2-5">5</label>
+      </div>
+      <div class="scale-ends"><span>Very difficult</span><span>Very easy</span></div>
+    </div>
+
+    <!-- SECTION B -->
+    <div class="section-head"><span class="dot"></span>B — When things need your attention</div>
+
+    <div class="q">
+      <div class="q-head"><span class="q-num">03</span><span class="q-tag">attention items</span></div>
+      <p class="q-question">In the last 6 months, have you ever missed a window or deadline — like an unlock you could have sold during — because the tool didn't make it clear?</p>
+      <div class="opt-group">
+        <label class="opt"><input type="radio" name="q3" value="missed-late"><span>Yes — I found out too late</span></label>
+        <label class="opt"><input type="radio" name="q3" value="missed-caught"><span>Yes — but I caught it in time</span></label>
+        <label class="opt"><input type="radio" name="q3" value="no-clear"><span>No — I always noticed straightaway</span></label>
+        <label class="opt"><input type="radio" name="q3" value="no-windows"><span>I haven't had any windows or deadlines yet</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-head"><span class="q-num">04</span><span class="q-tag">attention items</span></div>
+      <p class="q-question">How would you prefer to find out if something needs your attention — for example, an unlock or blackout window opens or closes?</p>
+      <p class="q-helper">Choose all that apply.</p>
+      <div class="opt-group">
+        <label class="opt"><input type="checkbox" name="q4" value="email"><span>Email from Optio</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="push"><span>In-app notification</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="banner"><span>A clear banner when I open the dashboard</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="calendar"><span>A calendar invite for the date</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="hr"><span>Through HR or my manager</span></label>
+      </div>
+    </div>
+
+    <!-- SECTION C -->
+    <div class="section-head"><span class="dot"></span>C — Tax &amp; country context</div>
+
+    <div class="q">
+      <div class="q-head"><span class="q-num">05</span><span class="q-tag">tax context</span></div>
+      <p class="q-question">After looking at a price scenario, how useful would it be to see what it means for your tax in your country — and how that compares between countries?</p>
+      <p class="q-helper">1 = not useful at all · 5 = very useful</p>
+      <div class="scale">
+        <input type="radio" name="q5" id="q5-1" value="1"><label for="q5-1">1</label>
+        <input type="radio" name="q5" id="q5-2" value="2"><label for="q5-2">2</label>
+        <input type="radio" name="q5" id="q5-3" value="3"><label for="q5-3">3</label>
+        <input type="radio" name="q5" id="q5-4" value="4"><label for="q5-4">4</label>
+        <input type="radio" name="q5" id="q5-5" value="5"><label for="q5-5">5</label>
+      </div>
+      <div class="scale-ends"><span>Not useful</span><span>Very useful</span></div>
+    </div>
+
+    <div class="q">
+      <div class="q-head"><span class="q-num">06</span><span class="q-tag">tax context</span></div>
+      <p class="q-question">How do you currently judge whether a number the simulator shows includes tax or not?</p>
+      <div class="opt-group">
+        <label class="opt"><input type="radio" name="q6" value="labels"><span>The label on the number tells me</span></label>
+        <label class="opt"><input type="radio" name="q6" value="guess"><span>I have to guess from context</span></label>
+        <label class="opt"><input type="radio" name="q6" value="ask"><span>I ask HR or a colleague</span></label>
+        <label class="opt"><input type="radio" name="q6" value="unsure"><span>I'm honestly not sure</span></label>
+      </div>
+    </div>
+
+    <!-- SECTION D -->
+    <div class="section-head"><span class="dot"></span>D — Confidence &amp; decisions</div>
+
+    <div class="q">
+      <div class="q-head"><span class="q-num">07</span><span class="q-tag">confirmation</span></div>
+      <p class="q-question">After making a decision based on the simulator (or deciding not to), what do you do to confirm you've got the right number?</p>
+      <p class="q-helper">Choose all that apply.</p>
+      <div class="opt-group">
+        <label class="opt"><input type="checkbox" name="q7" value="recheck"><span>I open the tool again later to double-check</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="excel"><span>I work the same numbers out in Excel</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="hr"><span>I ask HR or someone on the equity team</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="partner"><span>I talk to a partner or family member</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="advisor"><span>I check with a financial advisor</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="none"><span>I don't do anything to confirm</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-head"><span class="q-num">08</span><span class="q-tag">confidence</span></div>
+      <p class="q-question">How confident are you that the simulator reflects your actual programme — your country, your contract, your unlock schedule?</p>
+      <p class="q-helper">1 = not confident · 5 = very confident</p>
+      <div class="scale">
+        <input type="radio" name="q8" id="q8-1" value="1"><label for="q8-1">1</label>
+        <input type="radio" name="q8" id="q8-2" value="2"><label for="q8-2">2</label>
+        <input type="radio" name="q8" id="q8-3" value="3"><label for="q8-3">3</label>
+        <input type="radio" name="q8" id="q8-4" value="4"><label for="q8-4">4</label>
+        <input type="radio" name="q8" id="q8-5" value="5"><label for="q8-5">5</label>
+      </div>
+      <div class="scale-ends"><span>Not confident</span><span>Very confident</span></div>
+    </div>
+
+    <!-- SECTION E -->
+    <div class="section-head"><span class="dot"></span>E — In your own words</div>
+
+    <div class="q">
+      <div class="q-head"><span class="q-num">09</span><span class="q-tag">all clusters</span></div>
+      <p class="q-question">Is there a question you've asked HR, a colleague, or a partner that the simulator should have answered for you?</p>
+      <p class="q-helper">Optional. Specific examples are very helpful.</p>
+      <textarea name="q9" placeholder="Your thoughts here…"></textarea>
+    </div>
+
+    <div class="q">
+      <div class="q-head"><span class="q-num">10</span><span class="q-tag">all clusters</span></div>
+      <p class="q-question">Is there anything the share price tool could show that would make it easier for you to know what's happening with your shares?</p>
+      <p class="q-helper">Please write as much or as little as you like.</p>
+      <textarea name="q10" placeholder="Your thoughts here…"></textarea>
+    </div>
+
+    <div class="submit-row">
+      <p class="privacy-note">Your responses go directly to the Optio UX research team and will be used to improve the app. No individual response will be attributed to you in any report.</p>
+      <button type="submit" class="submit-btn">Submit responses <span aria-hidden="true">→</span></button>
+    </div>
+  </form>
+
+  <div class="success" id="success">
+    <h2>Thanks for taking part.</h2>
+    <p>Your responses have been recorded and will go into the next round of share simulator research.</p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Visual feedback on option click
+    document.querySelectorAll('.opt input').forEach(function (input) {
+      input.addEventListener('change', function () {
+        var name = input.name;
+        if (input.type === 'radio') {
+          document.querySelectorAll('.opt input[name="' + name + '"]').forEach(function (i) {
+            i.closest('.opt').classList.toggle('is-checked', i.checked);
+          });
+        } else {
+          input.closest('.opt').classList.toggle('is-checked', input.checked);
+        }
+      });
+    });
+    // Simulated submit (this is a demo file; Netlify will handle if deployed)
+    document.getElementById('survey-form').addEventListener('submit', function (e) {
+      // If hosted on Netlify with data-netlify, the form submits normally.
+      // For local demo, fake it:
+      if (window.location.protocol === 'file:') {
+        e.preventDefault();
+        document.getElementById('survey-form').style.display = 'none';
+        document.getElementById('success').classList.add('is-shown');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

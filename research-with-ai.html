@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1f4a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>Research with AI · Anastasiia Nikitina</title>
+  <meta name="description" content="Six research artifacts, one repeatable methodology — from problem framing to research report. Knowledge-grounded AI assistants, structured prompts, designed deliverables." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main" data-en="Skip to main content" data-no="Hopp til hovedinnhold">Skip to main content</a>
+
+  <header class="case-header">
+    <a href="index.html" data-en="← All work" data-no="← Alt arbeid">← All work</a>
+    <div class="header-right">
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="index.html#selected-work" data-en="Work" data-no="Arbeid">Work</a>
+        <a href="about.html" data-en="About" data-no="Om meg">About</a>
+      </nav>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="no" aria-pressed="false">NO</button>
+      </div>
+    </div>
+  </header>
+
+  <figure class="case-banner">
+    <img src="assets/case/rwai/cover.jpg" alt="Cover — Ten artifacts. One methodology. The flow shown as three phases: Research (6 artifacts, frameworks PRISM, BGOALC, TASKS, PRIME) → Ideation (1 artifact, HMW cards with priority + evidence) → Prototyping (3 artifacts, Claude Code, Figma MCP, Claude Skills)." />
+    <figcaption data-en="Ten artifacts grouped in three phases — research, ideation, prototyping — each with its own framework, all built on the same setup."
+                data-no="Ti artefakter gruppert i tre faser — research, ideering, prototyping — hver med sitt eget rammeverk, alle bygd på samme oppsett.">
+      Ten artifacts grouped in three phases — research, ideation, prototyping — each with its own framework, all built on the same setup.
+    </figcaption>
+  </figure>
+
+  <main id="main" class="case wide">
+
+    <span class="case-eyebrow brand" data-en="Research methodology · 2026 · in use"
+                                     data-no="Research-metodikk · 2026 · i bruk">Research methodology · 2026 · in use</span>
+    <h1 class="case-h1"
+        data-en="From problem statement to working prototype — one methodology, ten artifacts, AI at every step."
+        data-no="Fra problemstilling til fungerende prototype — én metodikk, ti artefakter, AI i hvert steg.">
+      From problem statement to working prototype — one methodology, ten artifacts, AI at every step.
+    </h1>
+
+    <nav class="case-toc-pills" aria-label="On this page">
+      <a href="#brief"><span class="num">01</span> <span data-en="The brief" data-no="Oppgaven">The brief</span></a>
+      <a href="#setup"><span class="num">02</span> <span data-en="The setup" data-no="Oppsettet">The setup</span></a>
+      <a href="#research"><span class="num">03</span> <span data-en="Research" data-no="Research">Research</span></a>
+      <a href="#ideation"><span class="num">04</span> <span data-en="Ideation" data-no="Ideering">Ideation</span></a>
+      <a href="#prototyping"><span class="num">05</span> <span data-en="Prototyping" data-no="Prototyping">Prototyping</span></a>
+      <a href="#change"><span class="num">06</span> <span data-en="What changes" data-no="Det som endres">What changes</span></a>
+    </nav>
+
+    <!-- SNAPSHOT ROW -->
+    <div class="snap-row">
+      <div class="cell">
+        <span class="label" data-en="Year" data-no="År">Year</span>
+        <span class="value">
+          <strong>2026 · in use</strong>
+          <span class="aside" data-en="run on every discovery cycle"
+                              data-no="kjøres på hver discovery-runde">run on every discovery cycle</span>
+        </span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="Stack" data-no="Stack">Stack</span>
+        <span class="value" data-en="Claude · ChatGPT · Claude Code · Cursor · Figma MCP · Netlify"
+                            data-no="Claude · ChatGPT · Claude Code · Cursor · Figma MCP · Netlify">Claude · ChatGPT · Claude Code · Cursor · Figma MCP · Netlify</span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="My role" data-no="Min rolle">My role</span>
+        <span class="value" data-en="Solo · using the knowledge from an AI design bootcamp, designed the workflow"
+                            data-no="Alene · brukte kunnskap fra et AI-design-bootcamp og designet arbeidsflyten">Solo · using the knowledge from an AI design bootcamp, designed the workflow</span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="In one line" data-no="På én linje">In one line</span>
+        <span class="value" data-en="Knowledge-grounded AI + a framework per step = research, ideation and a built prototype in days, not weeks."
+                            data-no="Kunnskapsgrunnet AI + ett rammeverk per steg = research, ideering og en bygget prototype på dager, ikke uker.">Knowledge-grounded AI + a framework per step = research, ideation and a built prototype in days, not weeks.</span>
+      </div>
+    </div>
+
+    <!-- 01 THE BRIEF -->
+    <section id="brief" class="sf-section">
+      <span class="case-eyebrow" data-en="01 · The brief" data-no="01 · Oppgaven">01 · The brief</span>
+      <h2 data-en="Open Claude or ChatGPT, ask for help, get generic mush. Why? Two reasons. The AI doesn't know your product — so it makes things up. Your prompt has no shape — so the output has no shape."
+          data-no="Åpne Claude eller ChatGPT, be om hjelp, få generisk grøt. Hvorfor? To grunner. AI-en kjenner ikke produktet ditt — så den finner på ting. Prompten din har ingen form — så svaret har ingen form.">
+        Open Claude or ChatGPT, ask for help, get generic mush. Why? Two reasons. The AI doesn't know your product — so it makes things up. Your prompt has no shape — so the output has no shape.
+      </h2>
+      <p data-en="Fix those two and the whole thing changes. So I built a workflow that does exactly that."
+         data-no="Fiks de to og hele greia endrer seg. Så jeg bygde en arbeidsflyt som gjør nettopp det.">
+        Fix those two and the whole thing changes. So I built a workflow that does exactly that.
+      </p>
+    </section>
+
+    <!-- THE RULE -->
+    <section class="sf-section" style="margin-bottom: 48px;">
+      <span class="case-eyebrow" data-en="The whole thing in one line"
+                                 data-no="Hele greia på én linje">The whole thing in one line</span>
+      <p class="shift-quote" data-en="“Onboard the AI. Wrap every step in a framework. Ship something designed, not a paragraph.”"
+                             data-no="«Onboarde AI-en. Pakk hvert steg i et rammeverk. Lever noe designet, ikke et avsnitt.»">
+        “Onboard the AI. Wrap every step in a framework. Ship something designed, not a paragraph.”
+      </p>
+    </section>
+
+    <!-- 02 THE SETUP -->
+    <section id="setup" class="sf-section">
+      <span class="case-eyebrow ai" data-en="02 · The setup" data-no="02 · Oppsettet">02 · The setup</span>
+      <h2 data-en="Step one: onboard the AI"
+          data-no="Steg én: onboarde AI-en">
+        Step one: onboard the AI
+      </h2>
+      <p data-en="Imagine hiring a freelancer who doesn't know your product. You wouldn't expect great work. The AI is the same. So I made five little reference packs and point the assistants at them before anything else."
+         data-no="Tenk deg å hyre en freelancer som ikke kjenner produktet ditt. Du forventer ikke gode resultater. AI-en er likedan. Så jeg laget fem små referansepakker og peker assistentene mot dem før noe annet.">
+        Imagine hiring a freelancer who doesn't know your product. You wouldn't expect great work. The AI is the same. So I made five little reference packs and point the assistants at them before anything else.
+      </p>
+
+      <ul class="sf-ai-list"
+          data-en-html="<li><strong>The product.</strong> Overview, personas, screener responses, prior interview transcripts, the problem statement. So the AI knows who uses this thing and what we've already tried.</li><li><strong>The design system.</strong> Tokens, components, the patterns the team uses. Outputs come back looking like the actual product, not generic AI mockups.</li><li><strong>The dev stack.</strong> React, Tailwind, ShadCN, GitHub habits. So when the AI builds, the engineers can actually read it.</li><li><strong>iOS.</strong> Apple HIG, iPhone screen sizes, the safe areas you always forget. Keeps mobile work honest.</li><li><strong>Web.</strong> Component patterns, responsive rules, WCAG 2.1 AA accessibility. Same job as iOS, for the browser.</li>"
+          data-no-html="<li><strong>Produktet.</strong> Oversikt, personas, screener-svar, tidligere intervjuutskrifter, problemstillingen. Så AI-en vet hvem som bruker denne tingen og hva vi har prøvd før.</li><li><strong>Designsystemet.</strong> Tokens, komponenter, mønstrene teamet bruker. Output kommer tilbake som det faktiske produktet, ikke generiske AI-mockups.</li><li><strong>Dev-stacken.</strong> React, Tailwind, ShadCN, GitHub-vaner. Så når AI-en bygger, kan utviklerne faktisk lese det.</li><li><strong>iOS.</strong> Apple HIG, iPhone-skjermstørrelser, safe areas du alltid glemmer. Holder mobile flater ærlige.</li><li><strong>Web.</strong> Komponentmønstre, responsive regler, WCAG 2.1 AA-tilgjengelighet. Samme jobb som iOS, for nettleseren.</li>">
+        <li><strong>The product.</strong> Overview, personas, screener responses, prior interview transcripts, the problem statement. So the AI knows who uses this thing and what we've already tried.</li>
+        <li><strong>The design system.</strong> Tokens, components, the patterns the team uses. Outputs come back looking like the actual product, not generic AI mockups.</li>
+        <li><strong>The dev stack.</strong> React, Tailwind, ShadCN, GitHub habits. So when the AI builds, the engineers can actually read it.</li>
+        <li><strong>iOS.</strong> Apple HIG, iPhone screen sizes, the safe areas you always forget. Keeps mobile work honest.</li>
+        <li><strong>Web.</strong> Component patterns, responsive rules, WCAG 2.1 AA accessibility. Same job as iOS, for the browser.</li>
+      </ul>
+    </section>
+
+    <!-- 03 PHASE 1 — RESEARCH -->
+    <section id="research" class="sf-section">
+      <span class="case-eyebrow built" data-en="03 · Phase 1 · Research"
+                                       data-no="03 · Fase 1 · Research">03 · Phase 1 · Research</span>
+      <h2 data-en="Six steps that take a rough brief to a stakeholder-ready report"
+          data-no="Seks steg som tar en røff brief til en stakeholder-klar rapport">
+        Six steps that take a rough brief to a stakeholder-ready report
+      </h2>
+      <p data-en="Same shape every time. A framework decides the structure. RTCCF wraps it into a prompt. PRISM follow-ups iterate until the output is the artifact, not a draft. Every prompt I run lives in the Prompt Library — see that case for the full prompt text."
+         data-no="Samme form hver gang. Et rammeverk bestemmer strukturen. RTCCF pakker det inn i en prompt. PRISM-oppfølginger itererer til output er artefakten, ikke et utkast. Alle promptene jeg kjører ligger i Prompt-biblioteket — se det caset for full prompt-tekst."
+         data-en-html="Same shape every time. A framework decides the structure. RTCCF wraps it into a prompt. PRISM follow-ups iterate until the output is the artifact, not a draft. <strong>Every prompt I run lives in the <a href=&quot;prompt-library.html&quot;>Prompt Library</a></strong> — see that case for the full prompt text."
+         data-no-html="Samme form hver gang. Et rammeverk bestemmer strukturen. RTCCF pakker det inn i en prompt. PRISM-oppfølginger itererer til output er artefakten, ikke et utkast. <strong>Alle promptene jeg kjører ligger i <a href=&quot;prompt-library.html&quot;>Prompt-biblioteket</a></strong> — se det caset for full prompt-tekst.">
+        Same shape every time. A framework decides the structure. RTCCF wraps it into a prompt. PRISM follow-ups iterate until the output is the artifact, not a draft. <strong>Every prompt I run lives in the <a href="prompt-library.html">Prompt Library</a></strong> — see that case for the full prompt text.
+      </p>
+
+      <ol class="rwai-steps">
+
+        <li class="rwai-step">
+          <div class="rwai-step-head">
+            <span class="rwai-step-num">01</span>
+            <div class="rwai-step-head-text">
+              <span class="rwai-step-tag" data-en="Problem Statement · PRISM"
+                                          data-no="Problemstilling · PRISM">Problem Statement · PRISM</span>
+              <h3 class="rwai-step-title" data-en="Turn a hunch into a real problem statement (plus the HMWs that come from it)"
+                                          data-no="Gjør en magefølelse til en ekte problemstilling (pluss HMW-ene som kommer ut av den)">
+                Turn a hunch into a real problem statement (plus the HMWs that come from it)
+              </h3>
+            </div>
+          </div>
+          <figure class="rwai-step-image">
+            <img src="assets/case/rwai/sps-problem-statement.jpg" alt="Discovery sprint artefact for the Share price simulator — problem statement, six key behaviours, six clustered user needs (Understanding, Timing, Country, Life events, Comparison, Trust), and six How Might We statements. Generated with Claude using the RTCCF + PRISM framework." />
+          </figure>
+          <p class="rwai-step-copy"
+             data-en="You start with something rough — “people seem confused on that screen.” PRISM runs five moves on it: stress-test it, shift it across user types, break it into observable behaviours, turn behaviours into needs, generate HMWs. Out the other end: a real problem statement, the behaviours behind it, clean HMW cards. Enough to scope the whole sprint."
+             data-no="Du starter med noe røft — «folk virker forvirret på den skjermen». PRISM kjører fem trekk på det: stress-test, skift på tvers av brukertyper, bryt ned til observerbar atferd, gjør atferd til behov, generer HMW-er. Ut den andre enden: en ekte problemstilling, atferden bak den, rene HMW-kort. Nok til å skope hele sprinten.">
+            You start with something rough — “people seem confused on that screen.” PRISM runs five moves on it: stress-test it, shift it across user types, break it into observable behaviours, turn behaviours into needs, generate HMWs. Out the other end: a real problem statement, the behaviours behind it, clean HMW cards. Enough to scope the whole sprint.
+          </p>
+        </li>
+
+        <li class="rwai-step">
+          <div class="rwai-step-head">
+            <span class="rwai-step-num">02</span>
+            <div class="rwai-step-head-text">
+              <span class="rwai-step-tag" data-en="Stakeholder Interview · Live HTML guide"
+                                          data-no="Stakeholder-intervju · Live HTML-guide">Stakeholder Interview · Live HTML guide</span>
+              <h3 class="rwai-step-title" data-en="Before you talk to a single user, you talk to the team"
+                                          data-no="Før du snakker med én bruker, snakker du med teamet">
+                Before you talk to a single user, you talk to the team
+              </h3>
+            </div>
+          </div>
+          <figure class="rwai-step-image">
+            <img src="assets/case/rwai/sps-stakeholder-interview.jpg" alt="Stakeholder Interview Guide for the Share price simulator rebuild — annotated output showing the live HTML document with sidebar (sprint, participant, duration, date, session timer, sections with times), the read-aloud intro script, the Design Intent section with goal and three questions (Q1 with expanded notes textarea, Mark-as-done buttons), the 10-min flag transition, and Clear/Export-notes actions in the footer." />
+          </figure>
+          <p class="rwai-step-copy"
+             data-en="The AI writes the interview guide grounded in the problem statement — no leading questions, no “tell me about your role” fluff. The output is a live HTML doc with a timer, a notes field per question, and an export button. You run the actual meeting from the doc itself. No note-taking app on the side."
+             data-no="AI-en skriver intervjuguiden grunnet i problemstillingen — ingen ledende spørsmål, ingen «fortell meg om rollen din»-fyll. Output er et live HTML-dokument med en timer, et notisfelt per spørsmål, og en eksport-knapp. Du kjører selve møtet fra dokumentet. Ingen notatapp ved siden av.">
+            The AI writes the interview guide grounded in the problem statement — no leading questions, no “tell me about your role” fluff. The output is a live HTML doc with a timer, a notes field per question, and an export button. You run the actual meeting from the doc itself. No note-taking app on the side.
+          </p>
+          <p class="rwai-step-link">
+            <a href="stakeholder-interview-sps.html" target="_blank" rel="noopener"
+               data-en="Open the live interview guide ↗"
+               data-no="Åpne den live intervjuguiden ↗">Open the live interview guide ↗</a>
+          </p>
+        </li>
+
+        <li class="rwai-step">
+          <div class="rwai-step-head">
+            <span class="rwai-step-num">03</span>
+            <div class="rwai-step-head-text">
+              <span class="rwai-step-tag" data-en="User Interview · BGOALC"
+                                          data-no="Brukerintervju · BGOALC">User Interview · BGOALC</span>
+              <h3 class="rwai-step-title" data-en="Same shape, this time with real users"
+                                          data-no="Samme form, denne gangen med ekte brukere">
+                Same shape, this time with real users
+              </h3>
+            </div>
+          </div>
+          <figure class="rwai-step-image">
+            <img src="assets/case/rwai/sps-user-interview.jpg" alt="User Interview Guide for the Share price simulator participant interview — annotated output showing the live HTML document with sidebar (research title, session timer, date/participant/progress, eight BGOALC sections from Ice breaker through Closing with question counts), the Ice-breaker section with three questions and the Behaviours section beneath, each question card with Notes / If needed / Mark done buttons, and 35 total questions tracked at the top." />
+          </figure>
+          <p class="rwai-step-copy"
+             data-en="BGOALC keeps the questions about real experiences instead of opinions. “Walk me through the last time you did this” instead of “would you?” Six question slots, one per dimension — Behaviours, Goals, Obstacles, Actions, Logic, Context — all scoped to the exact surface being researched."
+             data-no="BGOALC holder spørsmålene rundt ekte erfaringer i stedet for meninger. «Ta meg gjennom sist du gjorde dette» i stedet for «ville du?». Seks spørsmålsspor, ett per dimensjon — Behaviours, Goals, Obstacles, Actions, Logic, Context — alle scoped til den eksakte flaten som undersøkes.">
+            BGOALC keeps the questions about real experiences instead of opinions. “Walk me through the last time you did this” instead of “would you?” Six question slots, one per dimension — Behaviours, Goals, Obstacles, Actions, Logic, Context — all scoped to the exact surface being researched.
+          </p>
+          <p class="rwai-step-link">
+            <a href="user-interview-sps.html" target="_blank" rel="noopener"
+               data-en="Open the live interview guide ↗"
+               data-no="Åpne den live intervjuguiden ↗">Open the live interview guide ↗</a>
+          </p>
+        </li>
+
+        <li class="rwai-step">
+          <div class="rwai-step-head">
+            <span class="rwai-step-num">04</span>
+            <div class="rwai-step-head-text">
+              <span class="rwai-step-tag" data-en="User Survey · Deployable form"
+                                          data-no="Brukerundersøkelse · Deploybart skjema">User Survey · Deployable form</span>
+              <h3 class="rwai-step-title" data-en="Quantify the patterns. Ship a live form by dragging a file"
+                                          data-no="Kvantifiser mønstrene. Lever et live skjema ved å dra inn en fil">
+                Quantify the patterns. Ship a live form by dragging a file
+              </h3>
+            </div>
+          </div>
+          <figure class="rwai-step-image">
+            <img src="assets/case/rwai/sps-user-survey.jpg" alt="User Survey for the Share price simulator — annotated output showing five need-cluster sections (A Frequency, B Attention, C Tax, D Confidence, E Open), question tags labelling each item to its cluster, a mix of radio buttons, 1-5 rating scales, multi-select and one open textarea, and a Submit responses CTA with a privacy note above. Generated with Claude using the RTCCF framework, deployable as a Netlify form." />
+          </figure>
+          <p class="rwai-step-copy"
+             data-en="The AI writes the survey in plain language — multiple choice, rating scales, one open question at the end. Then the magic bit: the file deploys to Netlify by dragging it in. Live link to share, responses to a dashboard. Quant answers in days, not weeks."
+             data-no="AI-en skriver undersøkelsen på vanlig språk — flervalg, skalaer, ett åpent spørsmål til slutt. Så den magiske biten: filen deployes til Netlify ved å dra den inn. Live lenke å dele, svar til et dashboard. Kvant-svar på dager, ikke uker.">
+            The AI writes the survey in plain language — multiple choice, rating scales, one open question at the end. Then the magic bit: the file deploys to Netlify by dragging it in. Live link to share, responses to a dashboard. Quant answers in days, not weeks.
+          </p>
+          <p class="rwai-step-link">
+            <a href="user-survey-sps.html" target="_blank" rel="noopener"
+               data-en="Open the live survey ↗"
+               data-no="Åpne den live undersøkelsen ↗">Open the live survey ↗</a>
+          </p>
+        </li>
+
+        <li class="rwai-step">
+          <div class="rwai-step-head">
+            <span class="rwai-step-num">05</span>
+            <div class="rwai-step-head-text">
+              <span class="rwai-step-tag" data-en="Usability Test · TASKS"
+                                          data-no="Brukbarhetstest · TASKS">Usability Test · TASKS</span>
+              <h3 class="rwai-step-title" data-en="Watch what people actually do, not what they say they'd do"
+                                          data-no="Se hva folk faktisk gjør, ikke hva de sier de ville gjort">
+                Watch what people actually do, not what they say they'd do
+              </h3>
+            </div>
+          </div>
+          <figure class="rwai-step-image">
+            <img src="assets/case/rwai/sps-usability-test.jpg" alt="Usability Test for the Share price simulator co-pilot — annotated output showing the live HTML moderator script with sidebar (study, participant, date, duration, session timer, seven sections from Setup through Close), the Setup introduction script with read-aloud framing and an If-needed prompt, plus Task 1 (knowing what your shares are worth today) with Add-note and Mark-done controls. Generated with Claude using the RTCCF + TASKS framework." />
+          </figure>
+          <p class="rwai-step-copy"
+             data-en="TASKS keeps the script focused on behaviour. Five slots per task: what they were asked, how they approached it, where they hesitated, what they didn't know, what counts as success. The AI writes it grounded in your actual product flow — not a “sign-up flow” template from the internet."
+             data-no="TASKS holder skriptet fokusert på atferd. Fem felt per oppgave: hva de ble bedt om, hvordan de gikk frem, hvor de nølte, hva de ikke visste, hva som teller som suksess. AI-en skriver det grunnet i din faktiske produktflyt — ikke en «registreringsflyt»-mal fra internett.">
+            TASKS keeps the script focused on behaviour. Five slots per task: what they were asked, how they approached it, where they hesitated, what they didn't know, what counts as success. The AI writes it grounded in your actual product flow — not a “sign-up flow” template from the internet.
+          </p>
+          <p class="rwai-step-link">
+            <a href="usability-test-sps.html" target="_blank" rel="noopener"
+               data-en="Open the live test script ↗"
+               data-no="Åpne det live testskriptet ↗">Open the live test script ↗</a>
+          </p>
+        </li>
+
+        <li class="rwai-step">
+          <div class="rwai-step-head">
+            <span class="rwai-step-num">06</span>
+            <div class="rwai-step-head-text">
+              <span class="rwai-step-tag" data-en="Research Report · PRIME"
+                                          data-no="Forskningsrapport · PRIME">Research Report · PRIME</span>
+              <h3 class="rwai-step-title" data-en="Fold five sources into one document a stakeholder reads with no preamble"
+                                          data-no="Fold fem kilder til ett dokument en stakeholder leser uten forord">
+                Fold five sources into one document a stakeholder reads with no preamble
+              </h3>
+            </div>
+          </div>
+          <figure class="rwai-step-image">
+            <img src="assets/case/rwai/sps-research-report.jpg" alt="Research Report for the Share price simulator — annotated output showing the PRIME-structured document with sidebar (P Problem, R Research, I Insights, M Material active, E Execution, Summary), the Material section with six evidence cards (4/4, 6/6, 13/16, 3/4, 11/16, High) each citing a source, and a comparison chart of what users ask the co-pilot for vs. what the old tool provides across four categories." />
+          </figure>
+          <p class="rwai-step-copy"
+             data-en="PRIME — Problem, Research, Insight, Material, Execution. The AI synthesises everything before it: stakeholder interview, user interviews, survey data, usability findings. Output is a designed PDF with a sidebar TOC, charts where the numbers earned them, quotes pulled from actual transcripts. Not a chat transcript. A report."
+             data-no="PRIME — Problem, Research, Insight, Material, Execution. AI-en syntetiserer alt før det: stakeholder-intervju, brukerintervjuer, undersøkelsesdata, brukbarhetsfunn. Output er en designet PDF med sidebar-TOC, grafer der tallene fortjente det, sitater hentet fra ekte transkripsjoner. Ikke en chat-utskrift. En rapport.">
+            PRIME — Problem, Research, Insight, Material, Execution. The AI synthesises everything before it: stakeholder interview, user interviews, survey data, usability findings. Output is a designed PDF with a sidebar TOC, charts where the numbers earned them, quotes pulled from actual transcripts. Not a chat transcript. A report.
+          </p>
+          <p class="rwai-step-link">
+            <a href="research-report-sps.html" target="_blank" rel="noopener"
+               data-en="Open the live research report ↗"
+               data-no="Åpne den live forskningsrapporten ↗">Open the live research report ↗</a>
+          </p>
+        </li>
+
+      </ol>
+    </section>
+
+    <!-- 04 PHASE 2 — IDEATION -->
+    <section id="ideation" class="sf-section">
+      <span class="case-eyebrow ai" data-en="04 · Phase 2 · Ideation"
+                                    data-no="04 · Fase 2 · Ideering">04 · Phase 2 · Ideation</span>
+      <h2 data-en="One bridge artifact: turn every research insight into a How Might We card the team can design against"
+          data-no="Én bro-artefakt: gjør hver research-innsikt til et How Might We-kort teamet kan designe mot">
+        One bridge artifact: turn every research insight into a How Might We card the team can design against
+      </h2>
+      <p data-en="The report is the end of phase one and the start of phase two. The HMW artifact is the bridge from “here's what we learned” to “here's what we'll build.”"
+         data-no="Rapporten er slutten på fase én og starten på fase to. HMW-artefakten er broen fra «her er hva vi lærte» til «her er hva vi skal bygge».">
+        The report is the end of phase one and the start of phase two. The HMW artifact is the bridge from “here's what we learned” to “here's what we'll build.”
+      </p>
+
+      <ol class="rwai-steps">
+
+        <li class="rwai-step">
+          <div class="rwai-step-head">
+            <span class="rwai-step-num">07</span>
+            <div class="rwai-step-head-text">
+              <span class="rwai-step-tag" data-en="HMW · One card per insight"
+                                          data-no="HMW · Ett kort per innsikt">HMW · One card per insight</span>
+              <h3 class="rwai-step-title" data-en="An interactive guide designers actually open in the next sprint"
+                                          data-no="En interaktiv guide designere faktisk åpner i neste sprint">
+                An interactive guide designers actually open in the next sprint
+              </h3>
+            </div>
+          </div>
+          <figure class="rwai-step-image">
+            <img src="assets/case/rwai/sps-hmw.jpg" alt="HMW guide for the Share price simulator — annotated output showing the sidebar with five statement entries and a priority key (P1 red, P2 amber, P3 blue), a how-to-use card explaining the artefact in three steps, and the Priority 1 section with the first HMW card (Reframe the slider front door, mapped to Insight 01). Generated with Claude from the research report." />
+          </figure>
+          <p class="rwai-step-copy"
+             data-en="Feed the report back to the AI. It writes one HMW card per insight — priority badge (red/amber/blue), evidence and quotes on one tab, success metrics on another. Nothing invented; every claim traces back to the report. Designers walk in with a working reference, not a Notion page they have to translate."
+             data-no="Mat rapporten tilbake til AI-en. Den skriver ett HMW-kort per innsikt — prioritetsmerke (rødt/gult/blått), bevis og sitater på én fane, suksessmål på en annen. Ingenting funnet på; hver påstand spores tilbake til rapporten. Designere går inn med en fungerende referanse, ikke en Notion-side de må oversette.">
+            Feed the report back to the AI. It writes one HMW card per insight — priority badge (red/amber/blue), evidence and quotes on one tab, success metrics on another. Nothing invented; every claim traces back to the report. Designers walk in with a working reference, not a Notion page they have to translate.
+          </p>
+          <p class="rwai-step-link">
+            <a href="hmw-sps.html" target="_blank" rel="noopener"
+               data-en="Open the live HMW guide ↗"
+               data-no="Åpne den live HMW-guiden ↗">Open the live HMW guide ↗</a>
+          </p>
+        </li>
+
+      </ol>
+    </section>
+
+    <!-- 05 PHASE 3 — PROTOTYPING -->
+    <section id="prototyping" class="sf-section">
+      <span class="case-eyebrow built" data-en="05 · Phase 3 · Prototyping"
+                                       data-no="05 · Fase 3 · Prototyping">05 · Phase 3 · Prototyping</span>
+      <h2 data-en="Three steps that turn HMWs into a working React prototype — and push the result back into Figma"
+          data-no="Tre steg som gjør HMW-er om til en fungerende React-prototype — og sender resultatet tilbake til Figma">
+        Three steps that turn HMWs into a working React prototype — and push the result back into Figma
+      </h2>
+      <p data-en="Prototyping isn't a separate room from research and design. It's the same workflow, same prompts, same knowledge bases. By the time you get here, Claude already knows the design system, the user behaviours and the priority HMW — so the React build starts where research ended, not from a blank file."
+         data-no="Prototyping er ikke et eget rom fra research og design. Samme arbeidsflyt, samme prompts, samme kunnskapsbaser. Når du kommer hit, kjenner Claude allerede designsystemet, brukeratferden og prioritert HMW — så React-builden starter der research-en sluttet, ikke fra en blank fil.">
+        Prototyping isn't a separate room from research and design. It's the same workflow, same prompts, same knowledge bases. By the time you get here, Claude already knows the design system, the user behaviours and the priority HMW — so the React build starts where research ended, not from a blank file.
+      </p>
+
+      <ol class="rwai-steps">
+
+        <li class="rwai-step">
+          <div class="rwai-step-head">
+            <span class="rwai-step-num">08</span>
+            <div class="rwai-step-head-text">
+              <span class="rwai-step-tag" data-en="Claude Code Prototype · RTCCF + PRISM"
+                                          data-no="Claude Code-prototype · RTCCF + PRISM">Claude Code Prototype · RTCCF + PRISM</span>
+              <h3 class="rwai-step-title" data-en="HMW → 3 ideas → 1 React build → PRISM-iterated until it runs"
+                                          data-no="HMW → 3 ideer → 1 React-build → PRISM-iterert til den kjører">
+                HMW → 3 ideas → 1 React build → PRISM-iterated until it runs
+              </h3>
+            </div>
+          </div>
+          <figure class="rwai-step-image">
+            <img src="assets/case/rwai/sps-cc-prototype.jpg" alt="Claude Code Prototype for the Share price simulator — annotated output showing the live React prototype with Andrea's mock share programme banner (4 000 RSUs, Norway, €10 share price), the Ask-the-co-pilot tab active, the 'Should I sell now?' refusal answer with three concrete redirect chips, and the follow-up earnings-window answer with a 45-day timing and €7 300 net-after-tax estimate." />
+          </figure>
+          <p class="rwai-step-copy"
+             data-en="Pick the highest-priority HMW. One RTCCF prompt: give me 3 distinct ideas. You pick one. Another prompt sends it to Claude Code: build it in React + Tailwind using the design system tokens already loaded. PRISM follow-ups iterate one thing at a time. The output is a prototype that runs in a browser, not a mockup."
+             data-no="Velg den høyest prioriterte HMW-en. Én RTCCF-prompt: gi meg 3 distinkte ideer. Du velger én. En ny prompt sender den til Claude Code: bygg den i React + Tailwind med designsystem-tokens som allerede er lastet. PRISM-oppfølginger itererer én ting av gangen. Output er en prototype som kjører i en nettleser, ikke en mockup.">
+            Pick the highest-priority HMW. One RTCCF prompt: give me 3 distinct ideas. You pick one. Another prompt sends it to Claude Code: build it in React + Tailwind using the design system tokens already loaded. PRISM follow-ups iterate one thing at a time. The output is a prototype that runs in a browser, not a mockup.
+          </p>
+          <p class="rwai-step-link">
+            <a href="share-simulator-prototype.html" target="_blank" rel="noopener"
+               data-en="Open the live prototype ↗"
+               data-no="Åpne den live prototypen ↗">Open the live prototype ↗</a>
+          </p>
+        </li>
+
+        <li class="rwai-step">
+          <div class="rwai-step-head">
+            <span class="rwai-step-num">09</span>
+            <div class="rwai-step-head-text">
+              <span class="rwai-step-tag" data-en="Figma MCP · Two-way design ↔ code"
+                                          data-no="Figma MCP · Toveis design ↔ kode">Figma MCP · Two-way design ↔ code</span>
+              <h3 class="rwai-step-title" data-en="Claude reads your Figma file — and pushes the new prototype back into it"
+                                          data-no="Claude leser Figma-filen din — og sender den nye prototypen tilbake inn i den">
+                Claude reads your Figma file — and pushes the new prototype back into it
+              </h3>
+            </div>
+          </div>
+          <figure class="rwai-step-image">
+            <img src="assets/case/rwai/sps-figma-mcp.jpg" alt="Figma MCP output for the Share price simulator — annotated view of the Share-price-simulator-2.0 Figma file with three pushed-back frames (Co-pilot default state, Refusal answer, Earnings-window timing), the MCP connection panel showing 14 frames pushed from Claude Code via OAuth, and Dev Mode + MCP tabs." />
+          </figure>
+          <p class="rwai-step-copy"
+             data-en="Figma MCP (Model Context Protocol) connects Figma to Claude so the AI accesses real design files — layout, variables, screenshots, Dev Mode specs. Desktop MCP runs locally and reads what's open. Remote MCP runs in the cloud and does both directions — Claude can push the new prototype back into Figma over OAuth. Claude stops being a translator and starts being a design operator inside Figma."
+             data-no="Figma MCP (Model Context Protocol) kobler Figma til Claude slik at AI-en får tilgang til ekte designfiler — layout, variabler, skjermbilder, Dev Mode-specs. Desktop MCP kjører lokalt og leser det som er åpent. Remote MCP kjører i skyen og gjør begge retninger — Claude kan sende den nye prototypen tilbake til Figma via OAuth. Claude slutter å være en oversetter og blir en design-operatør inne i Figma.">
+            Figma MCP (Model Context Protocol) connects Figma to Claude so the AI accesses real design files — layout, variables, screenshots, Dev Mode specs. Desktop MCP runs locally and reads what's open. Remote MCP runs in the cloud and does both directions — Claude can push the new prototype back into Figma over OAuth. Claude stops being a translator and starts being a design operator inside Figma.
+          </p>
+          <p class="rwai-step-link">
+            <a href="https://www.figma.com/design/VQKNkiqnBnkPJ3KeWxJHaB/Share-price-simulator-2.0?node-id=0-1&amp;t=gb0ELLdL08lJmzpb-1" target="_blank" rel="noopener"
+               data-en="Open the Figma file ↗"
+               data-no="Åpne Figma-filen ↗">Open the Figma file ↗</a>
+          </p>
+        </li>
+
+        <li class="rwai-step">
+          <div class="rwai-step-head">
+            <span class="rwai-step-num">10</span>
+            <div class="rwai-step-head-text">
+              <span class="rwai-step-tag" data-en="Claude Code Skills · Reusable behaviour"
+                                          data-no="Claude Code Skills · Gjenbrukbar atferd">Claude Code Skills · Reusable behaviour</span>
+              <h3 class="rwai-step-title" data-en="Package the whole setup so the next session starts where this one ended"
+                                          data-no="Pakk hele oppsettet slik at neste sesjon starter der denne sluttet">
+                Package the whole setup so the next session starts where this one ended
+              </h3>
+            </div>
+          </div>
+          <figure class="rwai-step-image">
+            <img src="assets/case/rwai/sps-claude-skills.jpg" alt="Claude Code Skills view — annotated screenshot of the Claude desktop app Skills panel with the design-engineer-assistant skill open, showing the trigger description (auto-fires on design-system intent), metadata (Added by You, Last updated Jun 8 2026, Trigger: Slash command + auto), and the SKILL.md content with What-You-Help-With and Core-Playbooks sections in the markdown editor." />
+          </figure>
+          <p class="rwai-step-copy"
+             data-en="Last piece. I packaged the whole Design Engineer setup as a SKILL.md file Claude Code reads at runtime. Every new prototype session inherits the same context automatically. No re-pasting, no drift. Same setup, every time."
+             data-no="Siste bit. Jeg pakket hele Design Engineer-oppsettet som en SKILL.md-fil Claude Code leser ved kjøring. Hver ny prototype-sesjon arver samme kontekst automatisk. Ingen re-paste, ingen drift. Samme oppsett, hver gang.">
+            Last piece. I packaged the whole Design Engineer setup as a SKILL.md file Claude Code reads at runtime. Every new prototype session inherits the same context automatically. No re-pasting, no drift. Same setup, every time.
+          </p>
+        </li>
+
+      </ol>
+    </section>
+
+    <!-- 06 SO WHAT CHANGES -->
+    <section id="change" class="sf-section">
+      <span class="case-eyebrow" data-en="06 · So what changes"
+                                 data-no="06 · Så hva endres">06 · So what changes</span>
+      <h2 data-en="Days, not weeks. And the prototype starts where the research ended — not from a blank file."
+          data-no="Dager, ikke uker. Og prototypen starter der research-en sluttet — ikke fra en blank fil.">
+        Days, not weeks. And the prototype starts where the research ended — not from a blank file.
+      </h2>
+      <p data-en="The thing isn't faster because the AI is smarter. It's faster because the work I used to redo every time — relearning my own prompt, re-explaining the product, re-translating research into a design — is now structured. The first artifact takes the same time it used to. By the second, you're shipping in an afternoon. By the time you reach prototyping, Claude already knows the design system, the user behaviours and the priority HMW. The React build picks up where research stopped."
+         data-no="Greia er ikke raskere fordi AI-en er smartere. Den er raskere fordi arbeidet jeg gjorde på nytt hver gang — lære min egen prompt, forklare produktet, oversette research til design — nå er strukturert. Den første artefakten tar samme tid som før. Ved nummer to leverer du på en ettermiddag. Når du kommer til prototyping, kjenner Claude allerede designsystemet, brukeratferden og prioritert HMW. React-builden tar over der research-en stoppet.">
+        The thing isn't faster because the AI is smarter. It's faster because the work I used to redo every time — relearning my own prompt, re-explaining the product, re-translating research into a design — is now structured. The first artifact takes the same time it used to. By the second, you're shipping in an afternoon. By the time you reach prototyping, Claude already knows the design system, the user behaviours and the priority HMW. The React build picks up where research stopped.
+      </p>
+    </section>
+
+  </main>
+
+  <div class="case-end">
+    <h2 data-en="Next: Prompt Library" data-no="Neste: Prompt-bibliotek">Next: Prompt Library</h2>
+    <a href="prompt-library.html" data-en="See the prompts that drive the workflow →"
+                                  data-no="Se promptene som driver arbeidsflyten →">See the prompts that drive the workflow →</a>
+  </div>
+
+  <script src="i18n.js"></script>
+</body>
+</html>

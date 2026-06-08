@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Interview — Share price simulator · BGOALC guide</title>
+<meta name="description" content="BGOALC-structured user interview guide for the Share price simulator rebuild. 35 questions across 8 sections. Generated with Claude using the RTCCF framework." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F1F0ED;
+    --ink: #0D0D0D;
+    --muted: #666666;
+    --accent: #A6A295;
+    --card: #FFFFFF;
+    --rule: #E2E0DA;
+    --done-bg: #ECEAE4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  body {
+    background: var(--bg);
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frame {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--bg);
+    border-right: 1px solid var(--rule);
+    padding: 60px 24px 28px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .sb-kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+  .sb-title-card { margin-bottom: 16px; }
+  .sb-title { font-size: 17px; font-weight: 700; line-height: 1.3; color: var(--ink); margin-bottom: 4px; }
+  .sb-subtitle { font-size: 13px; color: var(--muted); }
+
+  /* Timer card */
+  .timer-card { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 18px; margin: 16px 0; }
+  .timer-label { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+  .timer-display { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 12px; }
+  .timer-btns { display: flex; gap: 8px; }
+  .timer-btn {
+    appearance: none; border: 1px solid var(--rule); background: var(--card); color: var(--ink);
+    font: 500 12px 'Inter', sans-serif; padding: 7px 14px; border-radius: 8px; cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .timer-btn.is-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  .timer-btn.is-primary:hover { background: #2a2a2a; }
+  .timer-btn:hover:not(.is-primary) { background: var(--bg); }
+
+  /* Meta rows */
+  .sb-meta { border-top: 1px solid var(--rule); margin-top: 8px; padding-top: 14px; }
+  .sb-meta-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .sb-meta-row .label { color: var(--muted); font-size: 13px; }
+  .sb-meta-row .value { font-weight: 500; }
+  .sb-meta-row .value.progress { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+  /* Sections nav */
+  .sb-section-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin: 16px 0 10px; }
+  .sb-sections { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .sb-sections a {
+    display: flex; justify-content: space-between; align-items: center;
+    text-decoration: none; color: var(--muted);
+    font-size: 14px; padding: 8px 12px; border-radius: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .sb-sections a:hover { background: var(--card); color: var(--ink); }
+  .sb-sections a.is-active { background: var(--ink); color: var(--card); font-weight: 500; }
+  .sb-sections .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rule); margin-right: 10px; display: inline-block; }
+  .sb-sections a.is-active .dot { background: var(--card); }
+  .sb-sections .count {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
+  }
+  .sb-sections a.is-active .count { color: var(--card); opacity: 0.75; }
+  .sb-row-line { display: flex; align-items: center; }
+
+  /* MAIN */
+  .main { padding: 40px 56px 120px; max-width: 960px; }
+  .doc-kicker { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-size: 32px; font-weight: 700; line-height: 1.18; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 6px; }
+  .doc-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 40px; }
+
+  /* Section */
+  .section { margin-top: 40px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+  .section-head-left { display: flex; align-items: baseline; gap: 12px; }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 0.06em; }
+  .section-head h2 { font-size: 22px; font-weight: 600; line-height: 1.3; color: var(--ink); }
+  .section-count { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); }
+
+  /* Question card */
+  .q {
+    background: var(--card); border: 1px solid var(--rule); border-radius: 12px;
+    padding: 18px 22px; margin-bottom: 12px;
+    transition: opacity 0.25s ease, background 0.25s ease;
+  }
+  .q.is-done { background: var(--done-bg); opacity: 0.65; }
+  .q-question {
+    font-size: 15px; line-height: 1.55; color: var(--ink); font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .q-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .q-actions-left { display: flex; gap: 8px; flex-wrap: wrap; }
+  .q-btn {
+    appearance: none; border: 1px solid var(--rule); background: var(--card); color: var(--ink);
+    font: 500 12px 'Inter', sans-serif; padding: 6px 14px; border-radius: 999px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .q-btn:hover { background: var(--bg); }
+  .q-btn.is-active { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  .q-btn.mark { font-weight: 500; }
+  .q-btn.mark.is-done {
+    background: var(--ink); color: var(--card); border-color: var(--ink);
+  }
+
+  /* Expandable panels (Notes and If needed) */
+  .q-panel { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule); }
+  .q-panel.is-open { display: block; }
+  .q-panel .label {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em;
+    color: var(--accent); text-transform: uppercase; margin-bottom: 6px;
+  }
+  .q-panel.ifneeded p { font-size: 13.5px; line-height: 1.55; color: var(--muted); }
+  .q-panel.notes textarea {
+    width: 100%; min-height: 100px;
+    background: var(--bg); border: 1px solid var(--rule); border-radius: 8px;
+    padding: 12px 14px; font: 14px 'Inter', sans-serif; color: var(--ink); resize: vertical;
+  }
+  .q-panel.notes textarea:focus { outline: 2px solid var(--ink); outline-offset: 0; border-color: var(--ink); }
+
+  /* Footer actions */
+  .footer-actions {
+    position: fixed; bottom: 24px; right: 32px;
+    display: flex; gap: 8px; z-index: 10;
+  }
+  .footer-btn {
+    appearance: none; border: 1px solid var(--rule); background: var(--card); color: var(--ink);
+    font: 500 13px 'Inter', sans-serif; padding: 10px 16px; border-radius: 999px; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(13,13,13,0.05);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .footer-btn:hover { background: var(--bg); }
+  .footer-btn.is-primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  .footer-btn.is-primary:hover { background: #2a2a2a; }
+
+  /* Back link */
+  .back-link {
+    position: fixed; top: 24px; left: 28px; z-index: 10;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--accent); text-decoration: none; letter-spacing: 0.06em;
+  }
+  .back-link:hover { color: var(--ink); }
+
+  @media (max-width: 900px) {
+    .frame { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); }
+    .main { padding: 32px 24px 120px; }
+    h1 { font-size: 24px; }
+    .footer-actions { right: 16px; bottom: 16px; }
+  }
+</style>
+</head>
+<body>
+  <a class="back-link" href="research-with-ai.html">← Back to case</a>
+
+  <div class="frame">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-kicker">Research</div>
+      <div class="sb-title-card">
+        <div class="sb-title">Share price simulator</div>
+        <div class="sb-subtitle">Optio UX — user interview</div>
+      </div>
+
+      <div class="timer-card">
+        <div class="timer-label">Session timer</div>
+        <div class="timer-display" id="timer">00:00</div>
+        <div class="timer-btns">
+          <button class="timer-btn is-primary" id="timer-toggle">Start</button>
+          <button class="timer-btn" id="timer-reset">Reset</button>
+        </div>
+      </div>
+
+      <div class="sb-meta">
+        <div class="sb-meta-row"><span class="label">Date</span><span class="value">14 Apr 2026</span></div>
+        <div class="sb-meta-row"><span class="label">Participant</span><span class="value">P—</span></div>
+        <div class="sb-meta-row"><span class="label">Asked</span><span class="value progress" id="progress">0 / 35</span></div>
+      </div>
+
+      <div class="sb-section-label">Sections</div>
+      <ul class="sb-sections" id="section-nav">
+        <li><a href="#ice-breaker" data-section="ice-breaker"><span class="sb-row-line"><span class="dot"></span>Ice breaker</span><span class="count">3</span></a></li>
+        <li><a href="#behaviours" data-section="behaviours"><span class="sb-row-line"><span class="dot"></span>Behaviours</span><span class="count">5</span></a></li>
+        <li><a href="#goals" data-section="goals"><span class="sb-row-line"><span class="dot"></span>Goals</span><span class="count">5</span></a></li>
+        <li><a href="#obstacles" data-section="obstacles"><span class="sb-row-line"><span class="dot"></span>Obstacles</span><span class="count">5</span></a></li>
+        <li><a href="#actions" data-section="actions"><span class="sb-row-line"><span class="dot"></span>Actions</span><span class="count">5</span></a></li>
+        <li><a href="#logic" data-section="logic"><span class="sb-row-line"><span class="dot"></span>Logic</span><span class="count">5</span></a></li>
+        <li><a href="#context" data-section="context"><span class="sb-row-line"><span class="dot"></span>Context</span><span class="count">5</span></a></li>
+        <li><a href="#closing" data-section="closing"><span class="sb-row-line"><span class="dot"></span>Closing</span><span class="count">2</span></a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="doc-kicker">User interview · BGOALC</div>
+      <h1>Share price simulator — participant interview</h1>
+      <p class="doc-subtitle">Optio Equity Platform · UX Research · April 2026 · 35 questions across 8 sections</p>
+
+      <!-- 01 ICE BREAKER -->
+      <section class="section" id="ice-breaker">
+        <div class="section-head">
+          <div class="section-head-left"><span class="section-num">01</span><h2>Ice breaker</h2></div>
+          <span class="section-count">3 questions</span>
+        </div>
+        <article class="q"><p class="q-question">Can you tell me a bit about the last time you checked your share programme?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What were you trying to find out?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">How often do you typically open Optio or similar share tools?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Is there a moment in the year when you reach for it more than others?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">When you open Optio, what are you usually looking to find out first?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Do you have a specific question in mind, or are you browsing?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+      </section>
+
+      <!-- 02 BEHAVIOURS -->
+      <section class="section" id="behaviours">
+        <div class="section-head">
+          <div class="section-head-left"><span class="section-num">02</span><h2>Behaviours</h2></div>
+          <span class="section-count">5 questions</span>
+        </div>
+        <article class="q"><p class="q-question">Walk me through the last time you checked what your shares are worth. What did you do step by step?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Where did you start? What did you click first?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">How do you usually keep track of your vesting schedule between checks?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Calendar reminders, screenshots, memory, a spreadsheet?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">Can you describe a recent time you went looking for something about your shares and couldn't find it?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What were you looking for? Where did you end up?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">What do you tend to look at first when you open the share price tool?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Is your eye drawn to a number, a date, a chart, or something else?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">When was the last time you used the price-movement slider — what were you trying to find out?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Did it answer the question you actually had?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+      </section>
+
+      <!-- 03 GOALS -->
+      <section class="section" id="goals">
+        <div class="section-head">
+          <div class="section-head-left"><span class="section-num">03</span><h2>Goals</h2></div>
+          <span class="section-count">5 questions</span>
+        </div>
+        <article class="q"><p class="q-question">When you open the simulator, what are you usually trying to find out?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Are you checking a number, planning a decision, or just keeping up?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">What would a "useful" answer look like for you — a number, a date, an explanation, something else?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>If you could write the answer yourself, what would it say?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">If the tool could tell you one thing perfectly, what would it be?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What would you stop having to figure out yourself?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">What do you typically do with the information after you find it?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Discuss with someone? Save a number? Plan a decision?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">How would you know the tool was working well for you?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What signal would tell you "yes, I got what I came for"?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+      </section>
+
+      <!-- 04 OBSTACLES -->
+      <section class="section" id="obstacles">
+        <div class="section-head">
+          <div class="section-head-left"><span class="section-num">04</span><h2>Obstacles</h2></div>
+          <span class="section-count">5 questions</span>
+        </div>
+        <article class="q"><p class="q-question">What's the hardest part of figuring out what your shares are worth today?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What gets in the way before you even open the tool?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">When was the last time you opened the tool, got stuck, and gave up?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What did you do instead?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">Which words or concepts in the tool do you find unclear?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Lock-up, blackout, vesting, RSU — any of those?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">Have you ever asked HR a question that the tool should have answered? What was it?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Did you get an answer? Did it match what the tool would have said?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">What's the most frustrating part of the current experience?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Where would your patience run out first?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+      </section>
+
+      <!-- 05 ACTIONS -->
+      <section class="section" id="actions">
+        <div class="section-head">
+          <div class="section-head-left"><span class="section-num">05</span><h2>Actions</h2></div>
+          <span class="section-count">5 questions</span>
+        </div>
+        <article class="q"><p class="q-question">What did you do the last time you wanted to know if you could sell?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Where did you start? Where did you end up?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">When the tool didn't answer your question, where did you go next?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>HR, a colleague, Google, a partner?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">Have you ever used Excel, screenshots, or asked someone else to figure out your shares? Walk me through that.</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>How did it end? Did you trust the result?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">Have you ever asked a partner or financial advisor something Optio should have answered?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What was that conversation like?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">What's something you wish the tool did that would save you a step?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What's the step you'd most like to skip?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+      </section>
+
+      <!-- 06 LOGIC -->
+      <section class="section" id="logic">
+        <div class="section-head">
+          <div class="section-head-left"><span class="section-num">06</span><h2>Logic</h2></div>
+          <span class="section-count">5 questions</span>
+        </div>
+        <article class="q"><p class="q-question">When you see a price prediction, how do you decide whether to act on it?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What would make you trust it more?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">How do you think about "what if the price drops 30%" — does that match how you actually worry about your shares?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What do you worry about that the tool doesn't show?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">What information makes you trust the number the tool gives you?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Sources, assumptions, dates, calculations — any of those?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">When you compare two scenarios, how do you weigh which is better for you?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What matters most to you: money, timing, risk, peace of mind?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">What's the difference, to you, between "this is information" and "this is advice"?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>How do you want the tool to draw that line?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+      </section>
+
+      <!-- 07 CONTEXT -->
+      <section class="section" id="context">
+        <div class="section-head">
+          <div class="section-head-left"><span class="section-num">07</span><h2>Context</h2></div>
+          <span class="section-count">5 questions</span>
+        </div>
+        <article class="q"><p class="q-question">What was going on in your life or work the last time you opened the tool?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Was it sparked by a specific event?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">Do you check at different times depending on what's happening — year-end, planning to leave, market news?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Are there moments when the tool feels more relevant than usual?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">Is there anyone you usually check with before making a decision about your shares?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Partner, parent, friend, colleague, advisor?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">Does the country you live in affect how you use the tool? How?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Tax timing, currency, leaving rules?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">How does the way you think about your shares change between unlocks?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>Are there months when you don't think about them at all?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+      </section>
+
+      <!-- 08 CLOSING -->
+      <section class="section" id="closing">
+        <div class="section-head">
+          <div class="section-head-left"><span class="section-num">08</span><h2>Closing</h2></div>
+          <span class="section-count">2 questions</span>
+        </div>
+        <article class="q"><p class="q-question">If you could change one thing about the simulator, what would it be?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel ifneeded"><div class="label">If needed</div><p>What's the one thing you'd fix first?</p></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+        <article class="q"><p class="q-question">Is there anything I should have asked but didn't — or anything you want to add?</p>
+          <div class="q-actions"><div class="q-actions-left"><button class="q-btn js-notes">Notes</button><button class="q-btn js-if">If needed</button></div><button class="q-btn mark js-mark">Mark done</button></div>
+          <div class="q-panel notes"><div class="label">Notes</div><textarea placeholder="Type notes here…"></textarea></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <div class="footer-actions">
+    <button class="footer-btn" id="clear-btn">Clear notes</button>
+    <button class="footer-btn is-primary" id="export-btn">Export notes</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Timer
+      var timerEl = document.getElementById('timer');
+      var toggleBtn = document.getElementById('timer-toggle');
+      var resetBtn = document.getElementById('timer-reset');
+      var seconds = 0, running = false, intervalId = null;
+      function fmt(s) { var m = Math.floor(s/60), r = s%60; return (m<10?'0'+m:m)+':'+(r<10?'0'+r:r); }
+      toggleBtn.addEventListener('click', function () {
+        running = !running;
+        toggleBtn.textContent = running ? 'Pause' : 'Start';
+        if (running) intervalId = setInterval(function () { seconds++; timerEl.textContent = fmt(seconds); }, 1000);
+        else clearInterval(intervalId);
+      });
+      resetBtn.addEventListener('click', function () { clearInterval(intervalId); running = false; seconds = 0; toggleBtn.textContent = 'Start'; timerEl.textContent = '00:00'; });
+
+      // Notes / If needed panel toggles
+      document.querySelectorAll('.q').forEach(function (q) {
+        var notesBtn = q.querySelector('.js-notes');
+        var ifBtn = q.querySelector('.js-if');
+        var notesPanel = q.querySelector('.q-panel.notes');
+        var ifPanel = q.querySelector('.q-panel.ifneeded');
+        if (notesBtn) notesBtn.addEventListener('click', function () {
+          notesPanel.classList.toggle('is-open');
+          notesBtn.classList.toggle('is-active', notesPanel.classList.contains('is-open'));
+        });
+        if (ifBtn) ifBtn.addEventListener('click', function () {
+          ifPanel.classList.toggle('is-open');
+          ifBtn.classList.toggle('is-active', ifPanel.classList.contains('is-open'));
+        });
+      });
+
+      // Mark done + progress
+      var progress = document.getElementById('progress');
+      var allQ = document.querySelectorAll('.q');
+      function updateProgress() {
+        var done = document.querySelectorAll('.q.is-done').length;
+        progress.textContent = done + ' / ' + allQ.length;
+      }
+      document.querySelectorAll('.js-mark').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var card = btn.closest('.q');
+          var isDone = card.classList.toggle('is-done');
+          btn.classList.toggle('is-done', isDone);
+          btn.textContent = isDone ? '✓ Done' : 'Mark done';
+          updateProgress();
+        });
+      });
+      updateProgress();
+
+      // Section nav scrollspy
+      var navLinks = document.querySelectorAll('#section-nav a');
+      var sections = Array.from(navLinks).map(function (a) { return document.getElementById(a.dataset.section); });
+      function updateActive() {
+        var y = window.scrollY + 120;
+        var active = sections[0];
+        sections.forEach(function (s) { if (s && s.offsetTop <= y) active = s; });
+        navLinks.forEach(function (a) { a.classList.toggle('is-active', a.dataset.section === (active && active.id)); });
+      }
+      window.addEventListener('scroll', updateActive, { passive: true });
+      updateActive();
+
+      // Export notes
+      document.getElementById('export-btn').addEventListener('click', function () {
+        var lines = ['User Interview — Share price simulator', 'Date: 14 April 2026', 'Participant: P—', '', '— — — — — — — — — —', ''];
+        document.querySelectorAll('.section').forEach(function (sec) {
+          var heading = sec.querySelector('h2');
+          if (heading) { lines.push('## ' + heading.textContent); lines.push(''); }
+          sec.querySelectorAll('.q').forEach(function (q, i) {
+            var question = q.querySelector('.q-question').textContent;
+            var notesTa = q.querySelector('.q-panel.notes textarea');
+            var notes = notesTa ? (notesTa.value || '(no notes)') : '(no notes)';
+            var state = q.classList.contains('is-done') ? '[done]' : '[open]';
+            lines.push((i+1) + '. ' + state + ' — ' + question);
+            lines.push('   Notes: ' + notes.replace(/\n/g, '\n   '));
+            lines.push('');
+          });
+        });
+        var w = window.open();
+        if (w) {
+          w.document.write('<pre style="font: 13px/1.6 SF Mono, Menlo, monospace; padding: 24px; white-space: pre-wrap;">' + lines.join('\n').replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }) + '</pre>');
+          w.document.title = 'User Interview — exported notes';
+        } else {
+          var blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob); a.download = 'user-interview-notes.txt'; a.click();
+        }
+      });
+
+      document.getElementById('clear-btn').addEventListener('click', function () {
+        if (!confirm('Clear all notes and reset all questions?')) return;
+        document.querySelectorAll('textarea').forEach(function (t) { t.value = ''; });
+        document.querySelectorAll('.q').forEach(function (q) {
+          q.classList.remove('is-done');
+          var mark = q.querySelector('.js-mark');
+          if (mark) { mark.classList.remove('is-done'); mark.textContent = 'Mark done'; }
+          q.querySelectorAll('.q-panel').forEach(function (p) { p.classList.remove('is-open'); });
+          q.querySelectorAll('.q-btn').forEach(function (b) { if (!b.classList.contains('mark')) b.classList.remove('is-active'); });
+        });
+        updateProgress();
+      });
+    });
+  </script>
+</body>
+</html>

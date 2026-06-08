@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Might We — Share price simulator · Ideation guide</title>
+<meta name="description" content="Interactive HMW guide for the Share price simulator rebuild. Five statements derived from the research report, each mapped to a research insight. Generated with Claude using the RTCCF framework." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F1F0ED;
+    --ink: #0D0D0D;
+    --muted: #666666;
+    --accent: #A6A295;
+    --card: #FFFFFF;
+    --rule: #E2E0DA;
+    --p1: #C84B3D;
+    --p1-soft: #FBE9E6;
+    --p2: #C8923D;
+    --p2-soft: #F8EDD9;
+    --p3: #4A6FB3;
+    --p3-soft: #E2EAF6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  body {
+    background: var(--bg);
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .back-link {
+    position: fixed; top: 24px; left: 28px; z-index: 10;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--accent); text-decoration: none; letter-spacing: 0.06em;
+  }
+  .back-link:hover { color: var(--ink); }
+
+  .frame { display: grid; grid-template-columns: 300px 1fr; min-height: 100vh; }
+
+  .sidebar {
+    background: var(--bg); border-right: 1px solid var(--rule);
+    padding: 60px 26px 28px; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  .sb-kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
+  .sb-title { font-size: 22px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 10px; letter-spacing: -0.01em; }
+  .sb-desc { font-size: 13px; line-height: 1.55; color: var(--muted); margin-bottom: 28px; }
+
+  .sb-section-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin: 22px 0 10px; padding-top: 18px; border-top: 1px solid var(--rule); }
+  .sb-statements { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .sb-statements a {
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 8px; align-items: start;
+    text-decoration: none; color: var(--muted);
+    font-size: 13px; padding: 9px 10px; border-radius: 7px;
+    line-height: 1.35;
+  }
+  .sb-statements a:hover { background: var(--card); color: var(--ink); }
+  .sb-statements a.is-active { background: var(--card); color: var(--ink); font-weight: 500; }
+  .sb-statements .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rule); margin-top: 6px; flex: none; }
+  .sb-statements a.is-active .dot { background: var(--ink); }
+
+  .priority-key { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--rule); }
+  .priority-key-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+  .pk-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 12.5px; color: var(--ink); }
+  .pk-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .pk-dot.p1 { background: var(--p1); }
+  .pk-dot.p2 { background: var(--p2); }
+  .pk-dot.p3 { background: var(--p3); }
+
+  .sb-foot {
+    margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--accent); line-height: 1.5;
+  }
+
+  .main { padding: 48px 56px 120px; max-width: 880px; margin: 0 auto; }
+  .doc-kicker { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-size: 38px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 12px; }
+  .lead { font-size: 15px; line-height: 1.6; color: var(--muted); margin-bottom: 24px; max-width: 60ch; }
+  .meta-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+  .meta-pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--muted); padding: 5px 14px;
+    border: 1px solid var(--rule); border-radius: 999px; background: var(--card);
+  }
+
+  .howto {
+    background: var(--card); border: 1px solid var(--rule);
+    border-radius: 14px; padding: 26px 28px;
+    margin-bottom: 48px;
+  }
+  .howto h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+  .howto > p { font-size: 14px; line-height: 1.6; color: var(--muted); margin-bottom: 20px; }
+  .howto-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .howto-step { background: var(--bg); border-radius: 10px; padding: 18px 18px; }
+  .howto-num { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: var(--rule); margin-bottom: 8px; letter-spacing: -0.02em; line-height: 1; }
+  .howto-step p { font-size: 13px; line-height: 1.55; color: var(--ink); }
+
+  .priority-section { margin-top: 56px; }
+  .priority-section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+  .insight-ref { font-size: 14px; color: var(--muted); margin-bottom: 18px; max-width: 65ch; line-height: 1.55; }
+  .insight-ref strong { color: var(--ink); font-weight: 600; }
+
+  .hmw-card {
+    background: var(--card); border: 1px solid var(--rule);
+    border-radius: 14px; padding: 24px 26px;
+    margin-bottom: 14px;
+  }
+  .hmw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; }
+  .hmw-tags { display: inline-flex; align-items: center; gap: 8px; }
+  .hmw-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--ink); }
+  .hmw-priority {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    padding: 4px 10px; border-radius: 999px; color: var(--card);
+    letter-spacing: 0.06em;
+  }
+  .hmw-priority.p1 { background: var(--p1); }
+  .hmw-priority.p2 { background: var(--p2); }
+  .hmw-priority.p3 { background: var(--p3); }
+  .insight-pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted);
+    padding: 4px 10px; border: 1px solid var(--rule); border-radius: 999px;
+  }
+  .hmw-statement {
+    font-size: 18px; line-height: 1.45; color: var(--ink); font-weight: 600;
+    letter-spacing: -0.005em; margin-bottom: 8px;
+  }
+  .hmw-statement em { color: var(--accent); font-style: normal; font-weight: 600; }
+  .hmw-rationale { font-size: 14px; line-height: 1.6; color: var(--muted); margin-bottom: 16px; max-width: 60ch; }
+
+  .hmw-tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--rule); margin-bottom: 16px; }
+  .hmw-tab {
+    appearance: none; background: transparent; border: 0;
+    font: 500 12.5px 'Inter', sans-serif; color: var(--muted);
+    padding: 10px 14px; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .hmw-tab:hover { color: var(--ink); }
+  .hmw-tab.is-active { color: var(--ink); border-color: var(--ink); }
+  .hmw-tab-panel { display: none; }
+  .hmw-tab-panel.is-active { display: block; }
+
+  .ev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .ev-cell { background: var(--bg); border-radius: 8px; padding: 14px 16px; }
+  .ev-cell .label { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+  .ev-cell .text { font-size: 13.5px; line-height: 1.55; color: var(--ink); }
+  .ev-cell.quote .text { font-style: italic; color: var(--muted); }
+
+  .directions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .direction { background: var(--bg); border-radius: 8px; padding: 14px 16px; }
+  .direction h4 { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .direction p { font-size: 12.5px; line-height: 1.55; color: var(--muted); }
+
+  .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .metric { background: var(--bg); border-radius: 8px; padding: 14px 16px; }
+  .metric .type {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 999px; margin-bottom: 8px;
+  }
+  .metric .type.behavioural { background: #E2EAF6; color: var(--p3); }
+  .metric .type.qualitative { background: #D9E5D7; color: #4A7048; }
+  .metric .type.proxy { background: #F8EDD9; color: var(--p2); }
+  .metric .type.usability { background: #ECE2F3; color: #7E4FA6; }
+  .metric h4 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .metric p { font-size: 12.5px; line-height: 1.55; color: var(--muted); margin-bottom: 8px; }
+  .metric .target {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    color: var(--ink); padding: 3px 9px; border-radius: 999px;
+    background: var(--card); border: 1px solid var(--rule);
+  }
+  .metrics-note {
+    background: var(--bg); border-radius: 8px; padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.55; color: var(--muted);
+  }
+  .metrics-note strong { color: var(--ink); }
+
+  @media (max-width: 900px) {
+    .frame { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); padding: 60px 24px 28px; }
+    .main { padding: 32px 24px 80px; }
+    h1 { font-size: 28px; }
+    .howto-cols, .ev-grid, .directions-grid, .metrics-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<a class="back-link" href="research-with-ai.html">← Back to case</a>
+
+<div class="frame">
+  <aside class="sidebar">
+    <div class="sb-kicker">Optio UX Research · 2026</div>
+    <div class="sb-title">How Might We</div>
+    <p class="sb-desc">Five HMW statements derived from the share price simulator discovery sprint. Each maps directly to a research insight.</p>
+
+    <div class="sb-section-label">Statements</div>
+    <ul class="sb-statements" id="stmt-nav">
+      <li><a href="#hmw1" data-target="hmw1"><span class="dot"></span>01 — Reframe the slider front door</a></li>
+      <li><a href="#hmw2" data-target="hmw2"><span class="dot"></span>02 — Lead with timing before price</a></li>
+      <li><a href="#hmw3" data-target="hmw3"><span class="dot"></span>03 — Surface country tax by default</a></li>
+      <li><a href="#hmw4" data-target="hmw4"><span class="dot"></span>04 — Notify on window changes</a></li>
+      <li><a href="#hmw5" data-target="hmw5"><span class="dot"></span>05 — Refuse with a concrete redirect</a></li>
+    </ul>
+
+    <div class="priority-key">
+      <div class="priority-key-label">Priority key</div>
+      <div class="pk-row"><span class="pk-dot p1"></span>Priority 1 — design now</div>
+      <div class="pk-row"><span class="pk-dot p2"></span>Priority 2 — design next</div>
+      <div class="pk-row"><span class="pk-dot p3"></span>Priority 3 — design later</div>
+    </div>
+
+    <div class="sb-foot">Anastasiia N.<br>April 2026 · internal only</div>
+  </aside>
+
+  <main class="main">
+    <div class="doc-kicker">Share price simulator · Discovery sprint</div>
+    <h1>How Might We</h1>
+    <p class="lead">Five design questions derived from the research report. Each statement translates a finding into an open brief — specific enough to design from, open enough that multiple solutions could answer it.</p>
+
+    <div class="meta-pills">
+      <span class="meta-pill">5 statements</span>
+      <span class="meta-pill">Grounded in 5 research methods</span>
+      <span class="meta-pill">Equity platform</span>
+      <span class="meta-pill">April 2026</span>
+    </div>
+
+    <div class="howto">
+      <h3>How to use these statements</h3>
+      <p>Each card contains the HMW statement, the insight it came from, supporting evidence, and possible design directions. Expand any card to see the evidence. Use the design directions as starting points — they are not constraints. Expand each card to explore the evidence behind the question.</p>
+      <div class="howto-cols">
+        <div class="howto-step"><div class="howto-num">01</div><p>Read the statement. Can you answer it in more than one way? If yes, it's well-formed.</p></div>
+        <div class="howto-step"><div class="howto-num">02</div><p>Expand the card. Read the evidence. Make sure your design answer comes from what users actually said and did.</p></div>
+        <div class="howto-step"><div class="howto-num">03</div><p>Start with Priority 1. Design one direction per statement before jumping to solutions.</p></div>
+      </div>
+    </div>
+
+    <!-- PRIORITY 1 -->
+    <section class="priority-section">
+      <div class="priority-section-label">Priority 1</div>
+      <p class="insight-ref"><strong>Insight 01</strong> — The slider front door makes people feel like the wrong audience for the tool. They think in life events, not percentages.</p>
+
+      <article class="hmw-card" id="hmw1">
+        <div class="hmw-head">
+          <div class="hmw-tags"><span class="hmw-num">HMW 01</span><span class="hmw-priority p1">Priority 1</span></div>
+          <span class="insight-pill">Insight 01</span>
+        </div>
+        <p class="hmw-statement">How might we replace the slider front door with a question box so people can <em>ask in their own words</em> instead of guessing at the right percentage?</p>
+        <p class="hmw-rationale">Six of six interview participants asked life-event questions ("when can I sell?", "what if I leave?"). Zero asked "what if the price moves X%?"</p>
+        <div class="hmw-tabs">
+          <button class="hmw-tab is-active" data-tab="ev1">Evidence &amp; directions</button>
+          <button class="hmw-tab" data-tab="met1">How to measure success</button>
+        </div>
+        <div class="hmw-tab-panel is-active" data-panel="ev1">
+          <div class="ev-grid">
+            <div class="ev-cell quote"><div class="label">Quote</div><div class="text">"I open it, look at the slider, and immediately go ask HR what it means for me." — P03, Norway</div></div>
+            <div class="ev-cell"><div class="label">Data</div><div class="text">3/4 usability participants asked about timing before price. 0/6 interview participants used the slider language.</div></div>
+          </div>
+          <div class="directions-grid">
+            <div class="direction"><h4>Question box as default</h4><p>Slider stays available as a secondary tool — accessible from a tab, not the front door.</p></div>
+            <div class="direction"><h4>Suggested-question chips</h4><p>Start participants with 3-4 chips matching the most-asked life events from research.</p></div>
+            <div class="direction"><h4>Auto-suggest as they type</h4><p>Lower the cold-start cost for the twice-a-year user who can't remember the vocabulary.</p></div>
+            <div class="direction"><h4>Slider as fallback</h4><p>Surface only when the co-pilot can't parse the question intent.</p></div>
+          </div>
+        </div>
+        <div class="hmw-tab-panel" data-panel="met1">
+          <div class="metrics-grid">
+            <div class="metric"><span class="type behavioural">Behavioural</span><h4>Question-box engagement</h4><p>Share of sessions where the user types or selects a question chip.</p><span class="target">Target: 75%+ in first month</span></div>
+            <div class="metric"><span class="type usability">Usability</span><h4>Time-to-first-answer</h4><p>From session open to first useful answer rendered.</p><span class="target">Target: under 45s</span></div>
+            <div class="metric"><span class="type qualitative">Qualitative</span><h4>"This is for me" rating</h4><p>Single Likert in post-session survey.</p><span class="target">Target: 4+/5 average</span></div>
+            <div class="metric"><span class="type proxy">Proxy</span><h4>HR ticket volume</h4><p>Tickets asking what their shares are worth right now.</p><span class="target">Target: -40% in Q3</span></div>
+          </div>
+          <div class="metrics-note">Don't optimise the slider away entirely — keep it for the small minority who actively want to model price movements.</div>
+        </div>
+      </article>
+
+      <p class="insight-ref" style="margin-top: 28px;"><strong>Insight 01</strong> (cont.) — When intent is ambiguous, participants want timing before they want price.</p>
+
+      <article class="hmw-card" id="hmw2">
+        <div class="hmw-head">
+          <div class="hmw-tags"><span class="hmw-num">HMW 02</span><span class="hmw-priority p1">Priority 1</span></div>
+          <span class="insight-pill">Insight 01</span>
+        </div>
+        <p class="hmw-statement">How might we have the co-pilot <em>lead with timing answers before price</em> when the user's intent isn't clear from the question?</p>
+        <p class="hmw-rationale">When asked "what's it worth", participants follow up with "and when can I sell?" three times out of four. The reverse never happens.</p>
+        <div class="hmw-tabs">
+          <button class="hmw-tab is-active" data-tab="ev2">Evidence &amp; directions</button>
+          <button class="hmw-tab" data-tab="met2">How to measure success</button>
+        </div>
+        <div class="hmw-tab-panel is-active" data-panel="ev2">
+          <div class="ev-grid">
+            <div class="ev-cell quote"><div class="label">Quote</div><div class="text">"Okay so it's worth this — but when can I actually do anything about it?" — P02, UK</div></div>
+            <div class="ev-cell"><div class="label">Data</div><div class="text">3/4 usability participants asked the timing question within 30 seconds of the price answer.</div></div>
+          </div>
+          <div class="directions-grid">
+            <div class="direction"><h4>Lead-with-timing default</h4><p>For "what's it worth?" type questions, the answer includes a sentence about when they can act.</p></div>
+            <div class="direction"><h4>Intent disambiguation chip</h4><p>"Are you asking what it's worth, or when you can sell?" as a one-tap clarifier.</p></div>
+          </div>
+        </div>
+        <div class="hmw-tab-panel" data-panel="met2">
+          <div class="metrics-grid">
+            <div class="metric"><span class="type behavioural">Behavioural</span><h4>Follow-up rate</h4><p>Sessions where the user asks a follow-up timing question.</p><span class="target">Target: -50%</span></div>
+            <div class="metric"><span class="type usability">Usability</span><h4>Task success — Task 2</h4><p>"When can I sell?" task pass rate in usability testing.</p><span class="target">Target: 4/4</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="hmw-card" id="hmw3">
+        <div class="hmw-head">
+          <div class="hmw-tags"><span class="hmw-num">HMW 03</span><span class="hmw-priority p1">Priority 1</span></div>
+          <span class="insight-pill">Survey + interviews</span>
+        </div>
+        <p class="hmw-statement">How might we surface <em>country-aware tax explanations</em> by default — not behind a toggle?</p>
+        <p class="hmw-rationale">13/16 survey respondents said tax-by-country context would increase confidence. The current tool buries tax behind a settings panel.</p>
+        <div class="hmw-tabs">
+          <button class="hmw-tab is-active" data-tab="ev3">Evidence &amp; directions</button>
+          <button class="hmw-tab" data-tab="met3">How to measure success</button>
+        </div>
+        <div class="hmw-tab-panel is-active" data-panel="ev3">
+          <div class="ev-grid">
+            <div class="ev-cell"><div class="label">Data</div><div class="text">13/16 survey respondents (81%) want tax-by-country surfaced. 4/6 interviews mentioned comparing with a colleague's country.</div></div>
+            <div class="ev-cell quote"><div class="label">Quote</div><div class="text">"My colleague in London gets a totally different number — I never know if mine is right." — P05, Germany</div></div>
+          </div>
+          <div class="directions-grid">
+            <div class="direction"><h4>Country in the header</h4><p>Show the participant's country and tax timing alongside every answer, not in settings.</p></div>
+            <div class="direction"><h4>One-tap compare</h4><p>"Compare with UK / NO / DE" tab on tax answers — answers the colleague question without asking.</p></div>
+          </div>
+        </div>
+        <div class="hmw-tab-panel" data-panel="met3">
+          <div class="metrics-grid">
+            <div class="metric"><span class="type qualitative">Qualitative</span><h4>Tax-confidence rating</h4><p>"I'm confident the tool reflects my country's tax rules" — survey question.</p><span class="target">Target: 4+/5 average</span></div>
+            <div class="metric"><span class="type behavioural">Behavioural</span><h4>Compare-country uses</h4><p>How often the compare-country interaction is used.</p><span class="target">Target: 25% of tax sessions</span></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- PRIORITY 2 -->
+    <section class="priority-section">
+      <div class="priority-section-label">Priority 2</div>
+      <p class="insight-ref"><strong>Insight 02</strong> — Recall between sessions is near-zero. The tool needs to come to participants when something has actually changed.</p>
+
+      <article class="hmw-card" id="hmw4">
+        <div class="hmw-head">
+          <div class="hmw-tags"><span class="hmw-num">HMW 04</span><span class="hmw-priority p2">Priority 2</span></div>
+          <span class="insight-pill">Insight 02</span>
+        </div>
+        <p class="hmw-statement">How might we <em>notify participants</em> when an unlock or blackout window opens or closes — so they don't have to remember to check?</p>
+        <p class="hmw-rationale">11/16 survey respondents asked for window notifications directly. 6/6 interview participants opened the tool twice a year or less.</p>
+        <div class="hmw-tabs">
+          <button class="hmw-tab is-active" data-tab="ev4">Evidence &amp; directions</button>
+          <button class="hmw-tab" data-tab="met4">How to measure success</button>
+        </div>
+        <div class="hmw-tab-panel is-active" data-panel="ev4">
+          <div class="ev-grid">
+            <div class="ev-cell"><div class="label">Data</div><div class="text">11/16 survey respondents (69%) asked for window notifications. Email + in-app preferred over either alone.</div></div>
+            <div class="ev-cell quote"><div class="label">Quote</div><div class="text">"I missed an unlock window once because I thought it was at year-end. Tell me." — P01, Norway</div></div>
+          </div>
+          <div class="directions-grid">
+            <div class="direction"><h4>Opt-in by default</h4><p>Toggle on at first session, with clear opt-out. Never auto-send unsolicited messages.</p></div>
+            <div class="direction"><h4>Email + in-app</h4><p>Email for the calendar reminder, in-app banner for when the participant returns.</p></div>
+          </div>
+        </div>
+        <div class="hmw-tab-panel" data-panel="met4">
+          <div class="metrics-grid">
+            <div class="metric"><span class="type behavioural">Behavioural</span><h4>Notification click-through</h4><p>From email notification to session.</p><span class="target">Target: 30%+</span></div>
+            <div class="metric"><span class="type proxy">Proxy</span><h4>HR tickets — missed window</h4><p>"I missed the unlock window" support tickets.</p><span class="target">Target: -75%</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="hmw-card" id="hmw5">
+        <div class="hmw-head">
+          <div class="hmw-tags"><span class="hmw-num">HMW 05</span><span class="hmw-priority p2">Priority 2</span></div>
+          <span class="insight-pill">Insight 03</span>
+        </div>
+        <p class="hmw-statement">How might we design the co-pilot's refusal so it's <em>safe to refuse</em> — saying "that's a decision you make" without losing the user's trust?</p>
+        <p class="hmw-rationale">4/4 usability participants took up the refusal redirect when it was paired with concrete scenarios. The condition is the redirect being specific, not generic.</p>
+        <div class="hmw-tabs">
+          <button class="hmw-tab is-active" data-tab="ev5">Evidence &amp; directions</button>
+          <button class="hmw-tab" data-tab="met5">How to measure success</button>
+        </div>
+        <div class="hmw-tab-panel is-active" data-panel="ev5">
+          <div class="ev-grid">
+            <div class="ev-cell quote"><div class="label">Quote</div><div class="text">"That actually felt fair — it gave me three things I could compare instead." — P06, UK</div></div>
+            <div class="ev-cell"><div class="label">Data</div><div class="text">4/4 usability participants took the redirect. 0/4 read the refusal as evasive.</div></div>
+          </div>
+          <div class="directions-grid">
+            <div class="direction"><h4>Refusal + 3 concrete chips</h4><p>"I can't recommend. Try: [compare 6mo] [if I leave] [next window]"</p></div>
+            <div class="direction"><h4>Explain the line</h4><p>One sentence on why the tool won't recommend — short, factual, not legalese.</p></div>
+          </div>
+        </div>
+        <div class="hmw-tab-panel" data-panel="met5">
+          <div class="metrics-grid">
+            <div class="metric"><span class="type qualitative">Qualitative</span><h4>"Felt respectful" rating</h4><p>Post-refusal Likert: "the answer felt fair, not evasive".</p><span class="target">Target: 4+/5 average</span></div>
+            <div class="metric"><span class="type behavioural">Behavioural</span><h4>Redirect take-up</h4><p>Share of refusals where the user clicks one of the offered scenarios.</p><span class="target">Target: 75%+</span></div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Tab toggles inside each HMW card
+    document.querySelectorAll('.hmw-card').forEach(function (card) {
+      var tabs = card.querySelectorAll('.hmw-tab');
+      var panels = card.querySelectorAll('.hmw-tab-panel');
+      tabs.forEach(function (t) {
+        t.addEventListener('click', function () {
+          tabs.forEach(function (x) { x.classList.remove('is-active'); });
+          panels.forEach(function (p) { p.classList.remove('is-active'); });
+          t.classList.add('is-active');
+          card.querySelector('[data-panel="' + t.dataset.tab + '"]').classList.add('is-active');
+        });
+      });
+    });
+
+    // Sidebar scrollspy
+    var links = document.querySelectorAll('#stmt-nav a');
+    var cards = Array.from(links).map(function (a) { return document.getElementById(a.dataset.target); });
+    function update() {
+      var y = window.scrollY + 140;
+      var active = cards[0];
+      cards.forEach(function (c) { if (c && c.offsetTop <= y) active = c; });
+      links.forEach(function (a) { a.classList.toggle('is-active', a.dataset.target === (active && active.id)); });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  });
+</script>
+</body>
+</html>

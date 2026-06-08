@@ -3422,3 +3422,302 @@ pre.prompt-inline {
   .prompt-source pre, pre.prompt-inline { font-size: 11px; padding: 14px 16px; }
   .prompt-source pre { max-height: 280px; }
 }
+
+/* ============================================================
+   Research-with-AI — step showcase layout
+   (Big images, short copy, collapsible prompts)
+   ============================================================ */
+.rwai-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.rwai-step {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.rwai-step-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+}
+.rwai-step-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  display: inline-block;
+}
+.rwai-step-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rwai-step-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.rwai-step-title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+}
+.rwai-step-image {
+  margin: 4px 0 0;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--panel-warm);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.rwai-step-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.6s ease;
+}
+.rwai-step-image:hover {
+  box-shadow: 0 12px 36px -16px rgba(10, 31, 74, 0.18);
+}
+.rwai-step-image:hover img {
+  transform: scale(1.015);
+}
+.rwai-step-copy {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink);
+  max-width: 62ch;
+  margin: 4px 0 0;
+}
+.rwai-step-copy strong {
+  font-weight: 600;
+}
+
+.rwai-step-link {
+  margin-top: 4px;
+}
+.rwai-step-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 8px 14px;
+  background: var(--panel-warm);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.rwai-step-link a:hover {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+/* Collapsible "show me the prompt" */
+.rwai-step-prompt {
+  margin-top: 4px;
+}
+.rwai-step-prompt summary {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--panel-warm);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.rwai-step-prompt summary::-webkit-details-marker { display: none; }
+.rwai-step-prompt summary::marker { display: none; content: ""; }
+.rwai-step-prompt summary::before {
+  content: "▸";
+  font-size: 10px;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+.rwai-step-prompt[open] summary::before {
+  transform: rotate(90deg);
+}
+.rwai-step-prompt summary:hover {
+  background: #fff;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.rwai-step-prompt-body {
+  margin-top: 14px;
+  padding: 20px 22px;
+  background: var(--panel-warm);
+  border-left: 3px solid var(--accent, #d23a3a);
+  border-radius: 0 10px 10px 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.rwai-step-prompt-body strong {
+  display: inline-block;
+  color: var(--accent, #d23a3a);
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+/* Phase header — bigger, more visual than a regular case-eyebrow */
+.rwai-phase-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.rwai-phase-head .rwai-phase-num {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.rwai-phase-head .rwai-phase-name {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--accent, #d23a3a);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .rwai-steps { gap: 56px; }
+  .rwai-step-num { font-size: 11px; }
+  .rwai-step-title { font-size: 19px; }
+  .rwai-step-copy { font-size: 15px; }
+}
+
+/* ============================================================
+   Home — "My current design process" band
+   ============================================================ */
+.process-band {
+  margin-top: 96px;
+  padding: 56px 48px;
+  background: var(--gradient);
+  border: 1px solid var(--rule);
+  border-radius: 24px;
+}
+.process-band-h2 {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--navy, var(--ink));
+  margin: 14px 0 18px;
+  max-width: 28ch;
+}
+.process-band-intro {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--navy-soft, var(--muted));
+  max-width: 70ch;
+  margin: 0 0 36px;
+}
+
+.process-steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  padding: 0;
+  margin: 0 0 36px;
+}
+.process-step {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 24px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.process-step-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.process-step h3 {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0;
+}
+.process-step p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+
+.process-band-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--ink);
+  transition: gap 0.2s ease, opacity 0.2s ease;
+}
+.process-band-cta:hover { gap: 14px; opacity: 0.8; }
+.process-band-cta-arrow {
+  font-size: 16px;
+  line-height: 1;
+  flex: none;
+  transition: transform 0.2s ease;
+}
+.process-band-cta:hover .process-band-cta-arrow { transform: translateX(2px); }
+
+@media (max-width: 960px) {
+  .process-band { padding: 40px 32px; margin-top: 72px; }
+  .process-band-h2 { font-size: 30px; }
+  .process-steps { grid-template-columns: 1fr; gap: 16px; margin-bottom: 28px; }
+}
+@media (max-width: 640px) {
+  .process-band { padding: 28px 20px; border-radius: 18px; margin-top: 56px; }
+  .process-band-h2 { font-size: 24px; }
+  .process-band-intro { font-size: 14px; }
+  .process-step { padding: 18px 18px 20px; }
+  .process-step h3 { font-size: 16px; }
+  .process-band-cta { font-size: 14px; }
+}

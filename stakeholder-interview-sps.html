@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stakeholder Interview — Share price simulator · Discovery sprint</title>
+<meta name="description" content="Stakeholder interview guide for the Share price simulator rebuild discovery sprint. Twenty-minute conversation with the product lead. Generated with Claude using the RTCCF framework." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F1F0ED;
+    --ink: #0D0D0D;
+    --muted: #666666;
+    --accent: #A6A295;
+    --card: #FFFFFF;
+    --rule: #E2E0DA;
+    --red: #C84B3D;
+    --done-bg: #ECEAE4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 32px; }
+  body {
+    background: var(--bg);
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frame {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--bg);
+    border-right: 1px solid var(--rule);
+    padding: 60px 28px 36px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .sb-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .sb-row {
+    margin-bottom: 18px;
+  }
+  .sb-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .sb-value {
+    font-size: 14.5px;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  /* Timer card */
+  .timer-card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 16px 0 24px;
+  }
+  .timer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .timer-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .timer-btns { display: flex; gap: 8px; }
+  .timer-btn {
+    appearance: none;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .timer-btn.is-primary {
+    background: var(--ink);
+    color: var(--card);
+    border-color: var(--ink);
+  }
+  .timer-btn.is-primary:hover { background: #2a2a2a; }
+  .timer-btn:hover { background: var(--bg); }
+
+  /* Sections nav */
+  .sb-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin: 24px 0 12px;
+  }
+  .sb-sections { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .sb-sections a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .sb-sections a:hover { background: var(--card); color: var(--ink); }
+  .sb-sections a.is-active { background: var(--card); color: var(--ink); font-weight: 500; }
+  .sb-sections .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--rule);
+    margin-right: 10px;
+  }
+  .sb-sections a.is-active .dot { background: var(--ink); }
+  .sb-sections .time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+  }
+  .sb-section-row { display: flex; align-items: center; }
+
+  /* MAIN CONTENT */
+  .main {
+    padding: 48px 56px 120px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .doc-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .doc-subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 48px;
+  }
+
+  /* Section */
+  .section { margin-top: 42px; }
+  .section-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section h2 {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .section-script, .section-goal {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-bottom: 20px;
+  }
+  .section-script .label, .section-goal .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-script p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .section-goal p {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  /* Question card */
+  .q {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-bottom: 14px;
+    transition: opacity 0.25s ease;
+  }
+  .q.is-done {
+    background: var(--done-bg);
+    opacity: 0.7;
+  }
+  .q-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .q-tag-row { display: inline-flex; align-items: center; gap: 8px; }
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .q-chip {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    background: var(--bg);
+    padding: 3px 10px;
+    border-radius: 999px;
+    text-transform: lowercase;
+  }
+  .mark-btn {
+    appearance: none;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .mark-btn:hover { background: var(--ink); color: var(--card); }
+  .q.is-done .mark-btn { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  .q-question {
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+  .q-ifneeded { margin-bottom: 14px; }
+  .q-ifneeded .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .q-ifneeded p {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .q-notes summary {
+    list-style: none;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+  }
+  .q-notes summary::-webkit-details-marker { display: none; }
+  .q-notes summary::before {
+    content: "▸";
+    transition: transform 0.18s ease;
+  }
+  .q-notes[open] summary::before { transform: rotate(90deg); }
+  .q-notes textarea {
+    margin-top: 10px;
+    width: 100%;
+    min-height: 110px;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    resize: vertical;
+  }
+  .q-notes textarea:focus { outline: 2px solid var(--ink); outline-offset: 0; border-color: var(--ink); }
+
+  /* Flag transition divider */
+  .flag {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 36px 0 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .flag .line { flex: 1; height: 1px; background: var(--rule); }
+
+  /* Footer actions */
+  .footer-actions {
+    position: fixed;
+    bottom: 24px;
+    right: 32px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+  .footer-btn {
+    appearance: none;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(13,13,13,0.05);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .footer-btn:hover { background: var(--bg); }
+  .footer-btn.is-primary {
+    background: var(--ink);
+    color: var(--card);
+    border-color: var(--ink);
+  }
+  .footer-btn.is-primary:hover { background: #2a2a2a; }
+
+  /* Back link */
+  .back-link {
+    position: fixed;
+    top: 24px;
+    left: 28px;
+    z-index: 10;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .back-link:hover { color: var(--ink); }
+
+  @media (max-width: 900px) {
+    .frame { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); }
+    .main { padding: 32px 24px 120px; }
+    h1 { font-size: 28px; }
+    .footer-actions { right: 16px; bottom: 16px; }
+  }
+</style>
+</head>
+<body>
+  <a class="back-link" href="research-with-ai.html">← Back to case</a>
+
+  <div class="frame">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-kicker">Optio Research</div>
+
+      <div class="sb-row">
+        <div class="sb-label">Sprint</div>
+        <div class="sb-value">Share price simulator rebuild</div>
+      </div>
+      <div class="sb-row">
+        <div class="sb-label">Participant</div>
+        <div class="sb-value">Product lead, Equity Platform</div>
+      </div>
+      <div class="sb-row">
+        <div class="sb-label">Duration</div>
+        <div class="sb-value">20 minutes</div>
+      </div>
+      <div class="sb-row">
+        <div class="sb-label">Date</div>
+        <div class="sb-value">14 April 2026</div>
+      </div>
+
+      <div class="timer-card">
+        <div class="timer-label">Session timer</div>
+        <div class="timer-display" id="timer">00:00</div>
+        <div class="timer-btns">
+          <button class="timer-btn is-primary" id="timer-toggle">Start</button>
+          <button class="timer-btn" id="timer-reset">Reset</button>
+        </div>
+      </div>
+
+      <div class="sb-section-label">Sections</div>
+      <ul class="sb-sections" id="section-nav">
+        <li><a href="#intro" data-section="intro"><span class="sb-section-row"><span class="dot"></span>Intro</span><span class="time">1 min</span></a></li>
+        <li><a href="#design-intent" data-section="design-intent"><span class="sb-section-row"><span class="dot"></span>Design intent</span><span class="time">8 min</span></a></li>
+        <li><a href="#mental-models" data-section="mental-models"><span class="sb-section-row"><span class="dot"></span>Mental models</span><span class="time">8 min</span></a></li>
+        <li><a href="#closing" data-section="closing"><span class="sb-section-row"><span class="dot"></span>Closing</span><span class="time">3 min</span></a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="doc-kicker">Stakeholder interview guide</div>
+      <h1>Share price simulator — rebuild discovery</h1>
+      <p class="doc-subtitle">Optio Equity Platform · UX Research · April 2026</p>
+
+      <!-- INTRO -->
+      <section class="section" id="intro">
+        <div class="section-meta"><span>Intro</span><span>~1 min</span></div>
+        <h2>Read aloud to open the session</h2>
+        <div class="section-script">
+          <div class="label">Script</div>
+          <p>“Thanks for making time. This is part of a discovery sprint on the share price simulator. I want to understand the intent behind the current design, what's been explored before, and where you see the constraints. There are no right answers here — I'm trying to build an accurate picture of what the team already knows before we start speaking to participants. I'll be taking notes. The session is twenty minutes and I'll flag when we're at the halfway point.”</p>
+        </div>
+      </section>
+
+      <!-- SECTION 1: DESIGN INTENT -->
+      <section class="section" id="design-intent">
+        <div class="section-meta"><span>Section 1</span><span>~8 min</span></div>
+        <h2>Design intent and prior exploration</h2>
+        <div class="section-goal">
+          <div class="label">Goal</div>
+          <p>Understand why the simulator is structured the way it is today — what decisions were made, what tradeoffs were accepted, and what has already been tried or ruled out.</p>
+        </div>
+
+        <article class="q" data-q="1">
+          <div class="q-head">
+            <div class="q-tag-row"><span class="q-num">Q1</span><span class="q-chip">design intent</span></div>
+            <button class="mark-btn">Mark as done</button>
+          </div>
+          <p class="q-question">When the current simulator was designed around a price-movement slider, what was the team's understanding of what participants come to that screen to do?</p>
+          <div class="q-ifneeded">
+            <div class="label">If needed</div>
+            <p>Was there research or data that shaped that understanding at the time?</p>
+          </div>
+          <details class="q-notes"><summary>Notes</summary><textarea placeholder="Type notes here…"></textarea></details>
+        </article>
+
+        <article class="q" data-q="2">
+          <div class="q-head">
+            <div class="q-tag-row"><span class="q-num">Q2</span><span class="q-chip">prior exploration</span></div>
+            <button class="mark-btn">Mark as done</button>
+          </div>
+          <p class="q-question">Has the team explored a question-based front door instead of the slider — for example, “ask anything about your shares” — and if so, what happened with that?</p>
+          <div class="q-ifneeded">
+            <div class="label">If needed</div>
+            <p>Was it designed, prototyped, deprioritised, or ruled out for a specific reason?</p>
+          </div>
+          <details class="q-notes"><summary>Notes</summary><textarea placeholder="Type notes here…"></textarea></details>
+        </article>
+
+        <article class="q" data-q="3">
+          <div class="q-head">
+            <div class="q-tag-row"><span class="q-num">Q3</span><span class="q-chip">constraints</span></div>
+            <button class="mark-btn">Mark as done</button>
+          </div>
+          <p class="q-question">What constraints — technical, regulatory, or business — are most relevant to changes in this area?</p>
+          <div class="q-ifneeded">
+            <div class="label">If needed</div>
+            <p>Where does the “no financial advice” line sit? What does compliance need to see before a redesign ships?</p>
+          </div>
+          <details class="q-notes"><summary>Notes</summary><textarea placeholder="Type notes here…"></textarea></details>
+        </article>
+      </section>
+
+      <!-- 10 MIN FLAG -->
+      <div class="flag"><span>10 min mark — flag transition</span><span class="line"></span></div>
+
+      <!-- SECTION 2: MENTAL MODELS -->
+      <section class="section" id="mental-models">
+        <div class="section-meta"><span>Section 2</span><span>~8 min</span></div>
+        <h2>Mental models and known gaps</h2>
+        <div class="section-goal">
+          <div class="label">Goal</div>
+          <p>Surface what the team already believes about participant behaviour — and where they suspect the current tool falls short — before we test those beliefs with users.</p>
+        </div>
+
+        <article class="q" data-q="4">
+          <div class="q-head">
+            <div class="q-tag-row"><span class="q-num">Q4</span><span class="q-chip">user questions</span></div>
+            <button class="mark-btn">Mark as done</button>
+          </div>
+          <p class="q-question">What questions are participants currently asking HR and Customer Success that the simulator could be answering instead?</p>
+          <div class="q-ifneeded">
+            <div class="label">If needed</div>
+            <p>Are there themes — timing, tax, what happens if I leave — that come up more than others?</p>
+          </div>
+          <details class="q-notes"><summary>Notes</summary><textarea placeholder="Type notes here…"></textarea></details>
+        </article>
+
+        <article class="q" data-q="5">
+          <div class="q-head">
+            <div class="q-tag-row"><span class="q-num">Q5</span><span class="q-chip">user types</span></div>
+            <button class="mark-btn">Mark as done</button>
+          </div>
+          <p class="q-question">Which user types actually open this tool, and how often? Where are we wrong about the “twice-a-year” assumption?</p>
+          <div class="q-ifneeded">
+            <div class="label">If needed</div>
+            <p>Are there segments — first-time recipients, near-vest, near-leave — that behave very differently?</p>
+          </div>
+          <details class="q-notes"><summary>Notes</summary><textarea placeholder="Type notes here…"></textarea></details>
+        </article>
+
+        <article class="q" data-q="6">
+          <div class="q-head">
+            <div class="q-tag-row"><span class="q-num">Q6</span><span class="q-chip">cost of the gap</span></div>
+            <button class="mark-btn">Mark as done</button>
+          </div>
+          <p class="q-question">What has the “twice-a-year recall” problem cost the team in practice — support load, churn risk, missed unlocks, anything else you've seen?</p>
+          <div class="q-ifneeded">
+            <div class="label">If needed</div>
+            <p>Are there examples where a participant got a wrong impression and acted on it?</p>
+          </div>
+          <details class="q-notes"><summary>Notes</summary><textarea placeholder="Type notes here…"></textarea></details>
+        </article>
+      </section>
+
+      <!-- SECTION 3: CLOSING -->
+      <section class="section" id="closing">
+        <div class="section-meta"><span>Section 3</span><span>~3 min</span></div>
+        <h2>Closing</h2>
+
+        <article class="q" data-q="7">
+          <div class="q-head">
+            <div class="q-tag-row"><span class="q-num">Q7</span><span class="q-chip">success</span></div>
+            <button class="mark-btn">Mark as done</button>
+          </div>
+          <p class="q-question">If we get this rebuild right, what changes for the team six months from now?</p>
+          <div class="q-ifneeded">
+            <div class="label">If needed</div>
+            <p>What's the one signal you'd want to see in Mixpanel or in support tickets?</p>
+          </div>
+          <details class="q-notes"><summary>Notes</summary><textarea placeholder="Type notes here…"></textarea></details>
+        </article>
+
+        <article class="q" data-q="8">
+          <div class="q-head">
+            <div class="q-tag-row"><span class="q-num">Q8</span><span class="q-chip">anything we missed</span></div>
+            <button class="mark-btn">Mark as done</button>
+          </div>
+          <p class="q-question">Is there anything I should have asked but didn't — or anyone else you'd recommend I talk to before we start with participants?</p>
+          <details class="q-notes"><summary>Notes</summary><textarea placeholder="Type notes here…"></textarea></details>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <!-- FOOTER ACTIONS -->
+  <div class="footer-actions">
+    <button class="footer-btn" id="clear-btn">Clear notes</button>
+    <button class="footer-btn is-primary" id="export-btn">Export notes</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // -------- Timer --------
+      var timerEl = document.getElementById('timer');
+      var toggleBtn = document.getElementById('timer-toggle');
+      var resetBtn = document.getElementById('timer-reset');
+      var seconds = 0, running = false, intervalId = null;
+      function fmt(s) {
+        var m = Math.floor(s / 60), r = s % 60;
+        return (m < 10 ? '0' + m : m) + ':' + (r < 10 ? '0' + r : r);
+      }
+      toggleBtn.addEventListener('click', function () {
+        running = !running;
+        toggleBtn.textContent = running ? 'Pause' : 'Start';
+        if (running) {
+          intervalId = setInterval(function () { seconds++; timerEl.textContent = fmt(seconds); }, 1000);
+        } else {
+          clearInterval(intervalId);
+        }
+      });
+      resetBtn.addEventListener('click', function () {
+        clearInterval(intervalId);
+        running = false; seconds = 0;
+        toggleBtn.textContent = 'Start';
+        timerEl.textContent = '00:00';
+      });
+
+      // -------- Mark as done --------
+      document.querySelectorAll('.mark-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var card = btn.closest('.q');
+          var isDone = card.classList.toggle('is-done');
+          btn.textContent = isDone ? '✓ Done' : 'Mark as done';
+        });
+      });
+
+      // -------- Section nav (active state on scroll) --------
+      var navLinks = document.querySelectorAll('#section-nav a');
+      var sections = Array.from(navLinks).map(function (a) { return document.getElementById(a.dataset.section); });
+      function updateActive() {
+        var y = window.scrollY + 120;
+        var active = sections[0];
+        sections.forEach(function (s) { if (s && s.offsetTop <= y) active = s; });
+        navLinks.forEach(function (a) {
+          a.classList.toggle('is-active', a.dataset.section === (active && active.id));
+        });
+      }
+      window.addEventListener('scroll', updateActive, { passive: true });
+      updateActive();
+
+      // -------- Export notes --------
+      document.getElementById('export-btn').addEventListener('click', function () {
+        var lines = ['Stakeholder Interview — Share price simulator rebuild', 'Date: 14 April 2026', 'Participant: Product lead, Equity Platform', '', '— — — — — — — — — —', ''];
+        document.querySelectorAll('.section').forEach(function (sec) {
+          var heading = sec.querySelector('h2');
+          if (heading) { lines.push('## ' + heading.textContent); lines.push(''); }
+          sec.querySelectorAll('.q').forEach(function (q) {
+            var num = q.querySelector('.q-num').textContent;
+            var question = q.querySelector('.q-question').textContent;
+            var notes = q.querySelector('textarea').value || '(no notes)';
+            var doneState = q.classList.contains('is-done') ? '[done]' : '[open]';
+            lines.push(num + ' ' + doneState + ' — ' + question);
+            lines.push('  Notes: ' + notes.replace(/\n/g, '\n  '));
+            lines.push('');
+          });
+        });
+        var blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+        var url = URL.createObjectURL(blob);
+        var w = window.open();
+        if (w) {
+          w.document.write('<pre style="font: 13px/1.6 SF Mono, Menlo, monospace; padding: 24px; white-space: pre-wrap;">' + lines.join('\n').replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }) + '</pre>');
+          w.document.title = 'Stakeholder Interview — exported notes';
+        } else {
+          var a = document.createElement('a');
+          a.href = url; a.download = 'stakeholder-interview-notes.txt'; a.click();
+        }
+      });
+
+      // -------- Clear --------
+      document.getElementById('clear-btn').addEventListener('click', function () {
+        if (!confirm('Clear all notes and reset all questions?')) return;
+        document.querySelectorAll('textarea').forEach(function (t) { t.value = ''; });
+        document.querySelectorAll('.q').forEach(function (q) {
+          q.classList.remove('is-done');
+          q.querySelector('.mark-btn').textContent = 'Mark as done';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
