@@ -1504,6 +1504,35 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Refresh the "synced Xm ago" badge text every 30s.
   setInterval(updateSyncBadge, 30000);
 
+  // Demo mode for portfolio screenshots. ?demo=detail|add|sync|tag|<discipline>[&tag=<slug>]
+  const demoParams = new URLSearchParams(location.search);
+  const demo = demoParams.get('demo');
+  const demoTag = demoParams.get('tag');
+  if (demo) {
+    // Kill transitions so screenshots are crisp mid-frame.
+    const style = document.createElement('style');
+    style.textContent = '*,*::before,*::after{transition:none!important;animation:none!important}';
+    document.head.appendChild(style);
+    setTimeout(() => {
+      if (demo === 'detail') {
+        const first = state.prompts.find(p => p.discipline === state.discipline);
+        if (first) openDetail(first.id);
+      } else if (demo === 'add')  openEdit();
+      else if (demo === 'sync')   openSyncSettings();
+      else if (demo === 'tag') {
+        // pick a tag that exists in the current discipline so we always have results
+        const bucket = state.prompts.filter(p => p.discipline === state.discipline);
+        const tagPool = Array.from(new Set(bucket.flatMap(p => p.tags || [])));
+        const chosen = demoTag && tagPool.includes(demoTag) ? demoTag : tagPool[0];
+        if (chosen) { state.tagFilter = chosen; render(); }
+      } else if (DISCIPLINES.find(d => d.id === demo)) {
+        state.discipline = demo;
+        if (demoTag) state.tagFilter = demoTag;
+        render();
+      }
+    }, 80);
+  }
+
   // modals
   document.querySelectorAll('[data-close]').forEach(el => {
     el.addEventListener('click', () => {

@@ -8,11 +8,236 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="format-detection" content="telephone=no" />
   <title>Prompt Library · Anastasiia Nikitina</title>
-  <meta name="description" content="A small internal library of named, versioned RTCCF prompts for the design team — disciplines, tags, search, Copy Prompt." />
+  <meta name="description" content="A tiny prompt library for the design team. One shape. 33 prompts. Lives on the phone, the Mac, and inside the robot that helps me work." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ------------------------------------------------------------------
+       Page-scoped visuals. Everything else uses the portfolio's own CSS.
+    ------------------------------------------------------------------ */
+
+    /* Browser chrome — a minimal Safari-like frame for desktop stills. */
+    .pl-browser {
+      margin: 24px 0 0;
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      background: #eef0f3;
+      overflow: hidden;
+      box-shadow: 0 30px 60px -30px rgba(10, 31, 74, 0.25);
+    }
+    .pl-browser__bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: linear-gradient(#f4f5f7, #e8eaee);
+      border-bottom: 1px solid var(--rule);
+    }
+    .pl-browser__dots {
+      display: inline-flex;
+      gap: 6px;
+    }
+    .pl-browser__dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #d6d9de;
+    }
+    .pl-browser__dots span:nth-child(1) { background: #ff5f57; }
+    .pl-browser__dots span:nth-child(2) { background: #febc2e; }
+    .pl-browser__dots span:nth-child(3) { background: #28c840; }
+    .pl-browser__url {
+      flex: 1;
+      text-align: center;
+      font-family: var(--mono, ui-monospace, Menlo, monospace);
+      font-size: 12px;
+      color: #6b7280;
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      border: 1px solid #e3e5e9;
+    }
+    .pl-browser__canvas {
+      display: block;
+      background: #fafafa;
+    }
+    .pl-browser__canvas img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Phone chrome — rounded frame for mobile stills. */
+    .pl-phones {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 24px 0 0;
+      align-items: end;
+    }
+    .pl-phone {
+      margin: 0 auto;
+      max-width: 280px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 36px;
+      background: linear-gradient(160deg, #1a2440, #0a1428);
+      box-shadow: 0 25px 45px -20px rgba(10, 31, 74, 0.5);
+      position: relative;
+    }
+    .pl-phone::before {
+      content: "";
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 22px;
+      border-radius: 14px;
+      background: #0a1428;
+      z-index: 2;
+    }
+    .pl-phone img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 28px;
+      background: #fff;
+    }
+    .pl-phone__label {
+      display: block;
+      text-align: center;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    /* "Reasoning" callout — why each change is here. */
+    .pl-why {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 62ch;
+    }
+    .pl-why::before {
+      content: "WHY — ";
+      font-family: var(--mono, ui-monospace, Menlo, monospace);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Three-up install story: Phone · Mac · Robot. */
+    .pl-everywhere {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 28px 0 0;
+    }
+    .pl-everywhere article {
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 22px;
+      background: var(--panel-warm);
+    }
+    .pl-everywhere h4 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .pl-everywhere p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .pl-everywhere .pl-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #0a1f4a;
+      color: #fff;
+      margin-bottom: 14px;
+      font-size: 18px;
+    }
+
+    /* Retrospective "impact bands". */
+    .pl-impact {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin: 28px 0 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+    }
+    .pl-impact article {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .pl-impact .pl-impact__tag {
+      font-family: var(--mono, ui-monospace, Menlo, monospace);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .pl-impact h4 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.3;
+    }
+    .pl-impact p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* Try-it-live install blocks. */
+    .pl-install {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin: 24px 0 0;
+    }
+    .pl-install article {
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 20px 22px;
+      background: var(--panel-warm);
+    }
+    .pl-install h4 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+    .pl-install p  { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.55; }
+    .pl-install code {
+      font-family: var(--mono, ui-monospace, Menlo, monospace);
+      font-size: 12px;
+      background: #eef0f3;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Mobile reflow — keep the page breathing at phone widths. */
+    @media (max-width: 760px) {
+      .pl-everywhere,
+      .pl-impact,
+      .pl-install,
+      .pl-phones { grid-template-columns: 1fr; }
+      .pl-browser { border-radius: 10px; }
+      .pl-browser__url { font-size: 11px; }
+    }
+
+    /* Keep the hero GIF from exploding on very wide screens. */
+    .pl-browser--hero { max-width: 1100px; margin-left: auto; margin-right: auto; }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main" data-en="Skip to main content" data-no="Hopp til hovedinnhold">Skip to main content</a>
@@ -31,34 +256,48 @@
     </div>
   </header>
 
+  <!-- ===== HERO / BANNER ========================================== -->
   <figure class="case-banner">
-    <img src="assets/case/pl-hero.png" alt="Prompt Library — an internal RTCCF prompt library used by the design team" />
-    <figcaption data-en="An internal prompt library for the design team — disciplines, tags, search, RTCCF end to end."
-                data-no="Et internt prompt-bibliotek for designteamet — disipliner, tagger, søk, RTCCF fra ende til ende.">
-      An internal prompt library for the design team — disciplines, tags, search, RTCCF end to end.
+    <div class="pl-browser pl-browser--hero" aria-hidden="false">
+      <div class="pl-browser__bar">
+        <span class="pl-browser__dots"><span></span><span></span><span></span></span>
+        <span class="pl-browser__url">anastasiianikitina.no / prompt-library-app.html</span>
+      </div>
+      <div class="pl-browser__canvas">
+        <img src="assets/case/pl-walkthrough.gif"
+             alt="Looping walkthrough of the Prompt Library — the home view, a tag filter, a prompt detail, the Add Prompt modal, the Sync modal, and the Design Systems and Prototyping disciplines."
+             width="2200" height="1375" />
+      </div>
+    </div>
+    <figcaption data-en="The library in motion — browse, filter, open, add, sync. One tiny web page. Same shape every time."
+                data-no="Biblioteket i bevegelse — bla, filtrer, åpne, legg til, synkroniser. Én liten nettside. Samme form hver gang.">
+      The library in motion — browse, filter, open, add, sync. One tiny web page. Same shape every time.
     </figcaption>
   </figure>
 
   <main id="main" class="case wide">
 
-    <span class="case-eyebrow brand" data-en="Internal team tool · 2026 · live" data-no="Internt teamverktøy · 2026 · live">Internal team tool · 2026 · live</span>
+    <span class="case-eyebrow brand"
+          data-en="Internal team tool · 2026 · live"
+          data-no="Internt teamverktøy · 2026 · live">Internal team tool · 2026 · live</span>
     <h1 class="case-h1"
-        data-en="Three prompts, one team prompt library — written in the same framework it stores"
-        data-no="Tre prompts, ett prompt-bibliotek for teamet — skrevet i samme rammeverk det selv lagrer">
-      Three prompts, one team prompt library — written in the same framework it stores
+        data-en="One prompt library. On your phone, your laptop, and inside the robot that helps you work."
+        data-no="Ett prompt-bibliotek. På telefonen, på laptopen, og inne i roboten som hjelper deg med å jobbe.">
+      One prompt library. On your phone, your laptop, and inside the robot that helps you work.
     </h1>
 
     <nav class="case-toc-pills" aria-label="On this page">
-      <a href="#brief"><span class="num">01</span> <span data-en="The brief" data-no="Oppgaven">The brief</span></a>
-      <a href="#inside"><span class="num">02</span> <span data-en="What's inside" data-no="Det som er inni">What's inside</span></a>
-      <a href="#built"><span class="num">03</span> <span data-en="Three prompts" data-no="Tre prompts">Three prompts</span></a>
-      <a href="#try"><span class="num">04</span> <span data-en="Try it live" data-no="Prøv det">Try it live</span></a>
+      <a href="#why"><span class="num">01</span> <span data-en="The problem" data-no="Problemet">The problem</span></a>
+      <a href="#changes"><span class="num">02</span> <span data-en="What I changed" data-no="Det jeg endret">What I changed</span></a>
+      <a href="#everywhere"><span class="num">03</span> <span data-en="Lives everywhere" data-no="Lever overalt">Lives everywhere</span></a>
+      <a href="#impact"><span class="num">04</span> <span data-en="What it saves" data-no="Hva det sparer">What it saves</span></a>
+      <a href="#try"><span class="num">05</span> <span data-en="Try it live" data-no="Prøv det">Try it live</span></a>
     </nav>
 
     <!-- SNAPSHOT ROW -->
     <div class="snap-row">
       <div class="cell">
-        <span class="label" data-en="Years" data-no="År">Years</span>
+        <span class="label" data-en="When" data-no="Når">When</span>
         <span class="value">
           <strong>Q1 2026 · live</strong>
           <span class="aside" data-en="used by the design team daily"
@@ -66,142 +305,350 @@
         </span>
       </div>
       <div class="cell">
-        <span class="label" data-en="Stack" data-no="Stack">Stack</span>
-        <span class="value" data-en="Claude Code · vanilla HTML/JS · localStorage"
-                            data-no="Claude Code · vanilla HTML/JS · localStorage">Claude Code · vanilla HTML/JS · localStorage</span>
+        <span class="label" data-en="What's inside" data-no="Hva er inni">What's inside</span>
+        <span class="value" data-en="33 prompts · 5 disciplines · one shape"
+                            data-no="33 prompts · 5 disipliner · én form">33 prompts · 5 disciplines · one shape</span>
       </div>
       <div class="cell">
         <span class="label" data-en="My role" data-no="Min rolle">My role</span>
-        <span class="value" data-en="Solo · design and the prompt that built it"
-                            data-no="Alene · design og prompten som bygde det">Solo · design and the prompt that built it</span>
+        <span class="value" data-en="Solo · design, build, the prompts themselves"
+                            data-no="Alene · design, bygging, promptene selv">Solo · design, build, the prompts themselves</span>
       </div>
       <div class="cell">
         <span class="label" data-en="In one line" data-no="På én linje">In one line</span>
-        <span class="value" data-en="The library and the prompts that built it use the same RTCCF shape."
-                            data-no="Biblioteket og promptene som bygde det bruker samme RTCCF-form.">The library and the prompts that built it use the same RTCCF shape.</span>
+        <span class="value" data-en="A tiny library. One place. One shape. Lives on phone, Mac, and inside the robot."
+                            data-no="Et bittelite bibliotek. Ett sted. Én form. Lever på telefon, Mac og inne i roboten.">A tiny library. One place. One shape. Lives on phone, Mac, and inside the robot.</span>
       </div>
     </div>
 
-    <!-- 01 THE BRIEF -->
-    <section id="brief" class="sf-section">
-      <span class="case-eyebrow" data-en="01 · The brief" data-no="01 · Oppgaven">01 · The brief</span>
-      <h2 data-en="Designers don't run out of ideas — they run out of structure. Without it, the first reply is surface-level and we burn tokens fixing it."
-          data-no="Designere går ikke tom for ideer — de går tom for struktur. Uten den er det første svaret overflatisk, og vi brenner tokens på å fikse det.">
-        Designers don't run out of ideas — they run out of structure. Without it, the first reply is surface-level and we burn tokens fixing it.
+    <!-- 01 · THE PROBLEM ============================================ -->
+    <section id="why" class="sf-section">
+      <span class="case-eyebrow" data-en="01 · The problem" data-no="01 · Problemet">01 · The problem</span>
+      <h2 data-en="Everyone on the team wrote prompts a different way. Same designer, different shape every time."
+          data-no="Alle på teamet skrev prompts ulikt. Samme designer, ulik form hver gang.">
+        Everyone on the team wrote prompts a different way. Same designer, different shape every time.
       </h2>
-      <p data-en="The team writes prompts every week, but each person writes them differently — same designer, different shape every time. So I picked two frameworks for the team to share: RTCCF (Role, Task, Context, Constraints, Format) as the front-loaded shape for the first prompt, and PRISM for the follow-ups that come after — review what's been built, iterate on one thing, specify exactly what you want, maintain what's already working. Then I built the library to hold them — one RTCCF prompt in, a working app out, in the same shape end to end."
-         data-no="Teamet skriver prompts hver uke, men hver person skriver dem ulikt — samme designer, ulik form hver gang. Så jeg valgte to rammeverk teamet skulle dele: RTCCF (Role, Task, Context, Constraints, Format) som den frontlastede formen for første prompt, og PRISM for oppfølgingene som kommer etter — gjennomgå det som er bygget, iterer på én ting, spesifiser nøyaktig hva du vil ha, behold det som allerede fungerer. Så bygde jeg biblioteket som holder dem — én RTCCF-prompt inn, en fungerende app ut, i samme form fra ende til ende.">
-        The team writes prompts every week, but each person writes them differently — same designer, different shape every time. So I picked two frameworks for the team to share: RTCCF (Role, Task, Context, Constraints, Format) as the front-loaded shape for the first prompt, and PRISM for the follow-ups that come after — review what's been built, iterate on one thing, specify exactly what you want, maintain what's already working. Then I built the library to hold them — one RTCCF prompt in, a working app out, in the same shape end to end.
+      <p data-en="A prompt is just a note to the robot that tells it what to do. On a good day, you write a clear one and the robot gives you a useful answer. On a bad day, you write a sloppy one and the robot guesses — and you spend the next hour fixing a bad guess."
+         data-no="En prompt er bare en beskjed til roboten om hva den skal gjøre. På en god dag skriver du en klar en og roboten gir deg et nyttig svar. På en dårlig dag skriver du en slurvete en og roboten gjetter — og du bruker neste time på å fikse en dårlig gjetning.">
+        A prompt is just a note to the robot that tells it what to do. On a good day, you write a clear one and the robot gives you a useful answer. On a bad day, you write a sloppy one and the robot guesses — and you spend the next hour fixing a bad guess.
+      </p>
+      <p data-en="The team was writing dozens of prompts a week. Each person wrote them differently. The same person wrote them differently on different days. New teammates had nowhere to look for &ldquo;that prompt Anna used in September&rdquo;. The robot kept guessing. We kept fixing."
+         data-no="Teamet skrev dusinvis av prompts i uka. Hver person skrev dem forskjellig. Samme person skrev dem forskjellig på ulike dager. Nye teammedlemmer hadde ingen steder å lete etter «den prompten Anna brukte i september». Roboten fortsatte å gjette. Vi fortsatte å fikse.">
+        The team was writing dozens of prompts a week. Each person wrote them differently. The same person wrote them differently on different days. New teammates had nowhere to look for &ldquo;that prompt Anna used in September&rdquo;. The robot kept guessing. We kept fixing.
+      </p>
+
+      <p class="shift-quote" style="margin-top: 36px;"
+         data-en="&ldquo;If everyone used the same shape for a prompt — who the robot is, what to do, what it needs to know, what not to do, what to hand back — the first answer would almost always be useful. The library is what holds those shaped prompts.&rdquo;"
+         data-no="«Hvis alle brukte samme form for en prompt — hvem roboten er, hva den skal gjøre, hva den må vite, hva den ikke skal gjøre, hva den skal levere — ville det første svaret nesten alltid være nyttig. Biblioteket er det som holder disse formede promptene.»">
+        &ldquo;If everyone used the same shape for a prompt — who the robot is, what to do, what it needs to know, what not to do, what to hand back — the first answer would almost always be useful. The library is what holds those shaped prompts.&rdquo;
       </p>
     </section>
 
-    <!-- THE RULE -->
-    <section class="sf-section" style="margin-bottom: 48px;">
-      <span class="case-eyebrow" data-en="The rule it's built on" data-no="Regelen det er bygget på">The rule it's built on</span>
-      <p class="shift-quote" data-en="“Front-load Role, Task, Context, Constraints, Format — and the first reply is already most of the way there. The library stores every prompt in that same shape.”"
-                             data-no="“Frontlast Role, Task, Context, Constraints, Format — så er det første svaret allerede nesten i mål. Biblioteket lagrer hver prompt i akkurat samme form.”">
-        “Front-load Role, Task, Context, Constraints, Format — and the first reply is already most of the way there. The library stores every prompt in that same shape.”
-      </p>
-    </section>
-
-    <!-- 02 WHAT'S INSIDE -->
-    <section id="inside" class="sf-section">
-      <span class="case-eyebrow ai" data-en="02 · What's inside" data-no="02 · Det som er inni">02 · What's inside</span>
-      <h2 data-en="A working library — five disciplines, search, tags, instant copy"
-          data-no="Et fungerende bibliotek — fem disipliner, søk, tagger, kopier med ett klikk">
-        A working library — five disciplines, search, tags, instant copy
+    <!-- 02 · THE CHANGES =========================================== -->
+    <section id="changes" class="sf-section">
+      <span class="case-eyebrow ai" data-en="02 · What I changed"
+                                    data-no="02 · Det jeg endret">02 · What I changed</span>
+      <h2 data-en="Five rooms. One shape. Chips you can stack. A copy button that gives you the whole thing."
+          data-no="Fem rom. Én form. Chips du kan stable. En kopi-knapp som gir deg alt sammen.">
+        Five rooms. One shape. Chips you can stack. A copy button that gives you the whole thing.
       </h2>
 
+      <!-- CHANGE 01 — Rooms (disciplines) ------------------------- -->
+      <article class="sf-decision" style="margin-top: 32px;">
+        <span class="signal-tag" data-en="Change 01 · Rooms by discipline"
+                                 data-no="Endring 01 · Rom etter disiplin">Change 01 · Rooms by discipline</span>
+        <h3 data-en="Everything the team does fits under one of five hats"
+            data-no="Alt teamet gjør passer under én av fem hatter">
+          Everything the team does fits under one of five hats
+        </h3>
+        <p data-en="UX Research · Writing · Design Systems · Prototyping · Design Engineering. Each one is its own room in the sidebar. Walk into the room you need, nothing else is in your way."
+           data-no="UX Research · Writing · Design Systems · Prototyping · Design Engineering. Hver av dem er sitt eget rom i sidepanelet. Gå inn i rommet du trenger, så står ingenting annet i veien.">
+          UX Research · Writing · Design Systems · Prototyping · Design Engineering. Each one is its own room in the sidebar. Walk into the room you need, nothing else is in your way.
+        </p>
+        <p class="pl-why"
+           data-en="Everyone on a design team does these five things, in some mix. Making each one its own room means you can walk into &ldquo;Prototyping&rdquo; and only see prompts about prototypes — not a mash-up of surveys and component audits at the same time."
+           data-no="Alle på et designteam gjør disse fem tingene, i en eller annen miks. Når hver er sitt eget rom, kan du gå inn i «Prototyping» og bare se prompter om prototyper — ikke en blanding av undersøkelser og komponentgjennomganger på samme tid.">
+          Everyone on a design team does these five things, in some mix. Making each one its own room means you can walk into &ldquo;Prototyping&rdquo; and only see prompts about prototypes — not a mash-up of surveys and component audits at the same time.
+        </p>
+
+        <div class="pl-browser" style="margin-top: 24px;">
+          <div class="pl-browser__bar">
+            <span class="pl-browser__dots"><span></span><span></span><span></span></span>
+            <span class="pl-browser__url">Prototyping · 6 prompts</span>
+          </div>
+          <div class="pl-browser__canvas">
+            <img src="assets/case/pl-new/_08-desktop-prototyping.png"
+                 alt="The Prototyping room of the library. The sidebar shows the five disciplines. The main area shows 6 cards: A/B Prototype, Data-Driven Prototype with Mock API, Interactive State Prototype, Motion & Micro-interaction Spec, Multi-Currency Wallet UI, and Recipient-Facing Status States." />
+          </div>
+        </div>
+      </article>
+
+      <!-- CHANGE 02 — The shape (RTCCF) ---------------------------- -->
+      <article class="sf-decision" style="margin-top: 32px;">
+        <span class="signal-tag ai"
+              data-en="Change 02 · One shape for every prompt"
+              data-no="Endring 02 · Én form for hver prompt">Change 02 · One shape for every prompt</span>
+        <h3 data-en="Role, Task, Context, Constraints, Format"
+            data-no="Rolle, Oppgave, Kontekst, Rammer, Format">
+          Role, Task, Context, Constraints, Format
+        </h3>
+        <p data-en="Every prompt in the library has the same five slots. Who the robot should be. What it should do. What it needs to know. What not to do. What to hand back. If you fill the five slots, you have a prompt. If you don&rsquo;t, you have a wish."
+           data-no="Hver prompt i biblioteket har de samme fem feltene. Hvem roboten skal være. Hva den skal gjøre. Hva den må vite. Hva den ikke skal gjøre. Hva den skal levere. Fyller du de fem feltene, har du en prompt. Hvis ikke, har du et ønske.">
+          Every prompt in the library has the same five slots. Who the robot should be. What it should do. What it needs to know. What not to do. What to hand back. If you fill the five slots, you have a prompt. If you don&rsquo;t, you have a wish.
+        </p>
+        <p class="pl-why"
+           data-en="Robots give better first answers when you tell them who they are, what you want, what they need to know, what&rsquo;s off-limits, and what to hand back. Keeping the five slots in the same order, every time, means you (and a new teammate on day one) know exactly where to look and exactly where to write."
+           data-no="Roboter gir bedre første svar når du forteller dem hvem de er, hva du vil ha, hva de må vite, hva som er utenfor, og hva de skal levere. Å holde de fem feltene i samme rekkefølge, hver gang, betyr at du (og en ny kollega på dag én) vet nøyaktig hvor du skal se og nøyaktig hvor du skal skrive.">
+          Robots give better first answers when you tell them who they are, what you want, what they need to know, what&rsquo;s off-limits, and what to hand back. Keeping the five slots in the same order, every time, means you (and a new teammate on day one) know exactly where to look and exactly where to write.
+        </p>
+
+        <div class="pl-browser" style="margin-top: 24px;">
+          <div class="pl-browser__bar">
+            <span class="pl-browser__dots"><span></span><span></span><span></span></span>
+            <span class="pl-browser__url">Add new prompt · one shape</span>
+          </div>
+          <div class="pl-browser__canvas">
+            <img src="assets/case/pl-new/_03-desktop-add.png"
+                 alt="The Add Prompt modal. Fields: Prompt Title, Author, Discipline. Below, a section titled &quot;RTCCF Framework&quot; with labelled textareas for ROLE, TASK, CONTEXT, CONSTRAINTS." />
+          </div>
+        </div>
+      </article>
+
+      <!-- CHANGE 03 — Tag chips ------------------------------------ -->
+      <article class="sf-decision" style="margin-top: 32px;">
+        <span class="signal-tag"
+              data-en="Change 03 · Chips you can stack"
+              data-no="Endring 03 · Chips du kan stable">Change 03 · Chips you can stack</span>
+        <h3 data-en="Tap a chip. The list narrows."
+            data-no="Trykk på en chip. Listen smalner.">
+          Tap a chip. The list narrows.
+        </h3>
+        <p data-en="Each prompt has a few coloured tags. Tap &ldquo;user-behaviour&rdquo; and only the user-behaviour prompts remain. Tap it again and they&rsquo;re back. No search bar fight."
+           data-no="Hver prompt har noen få fargede tagger. Trykk «user-behaviour» og bare user-behaviour-promptene blir igjen. Trykk igjen og de er tilbake. Ingen kamp med søkefeltet.">
+          Each prompt has a few coloured tags. Tap &ldquo;user-behaviour&rdquo; and only the user-behaviour prompts remain. Tap it again and they&rsquo;re back. No search bar fight.
+        </p>
+        <p class="pl-why"
+           data-en="Search works for typing out a word. Chips work for pointing at a shape of problem. People reach for prompts both ways — the library lets them."
+           data-no="Søk fungerer når du skriver et ord. Chips fungerer når du peker på en form av problem. Folk henter prompter på begge måter — biblioteket lar dem.">
+          Search works for typing out a word. Chips work for pointing at a shape of problem. People reach for prompts both ways — the library lets them.
+        </p>
+
+        <div class="pl-browser" style="margin-top: 24px;">
+          <div class="pl-browser__bar">
+            <span class="pl-browser__dots"><span></span><span></span><span></span></span>
+            <span class="pl-browser__url">Filter: user-behaviour · 2 prompts</span>
+          </div>
+          <div class="pl-browser__canvas">
+            <img src="assets/case/pl-new/_09-desktop-tagfilter.png"
+                 alt="The UX Research room with the &quot;user-behaviour&quot; chip selected. The list has narrowed to two cards: Behavioural Breakdown and Problem Statement." />
+          </div>
+        </div>
+      </article>
+
+      <!-- CHANGE 04 — Copy button ---------------------------------- -->
+      <article class="sf-decision" style="margin-top: 32px;">
+        <span class="signal-tag built"
+              data-en="Change 04 · The copy button"
+              data-no="Endring 04 · Kopi-knappen">Change 04 · The copy button</span>
+        <h3 data-en="One tap. The whole prompt. On your clipboard."
+            data-no="Ett trykk. Hele prompten. På utklippstavlen.">
+          One tap. The whole prompt. On your clipboard.
+        </h3>
+        <p data-en="Open a prompt, hit &ldquo;Copy Prompt&rdquo;. The whole thing — Role, Task, Context, Constraints, Format — is on your clipboard with the labels. Paste it wherever you work. The robot gets the same shape every time, from every person on the team."
+           data-no="Åpne en prompt, trykk «Copy Prompt». Alt sammen — Rolle, Oppgave, Kontekst, Rammer, Format — ligger på utklippstavlen med etikettene. Lim det inn der du jobber. Roboten får samme form hver gang, fra hver person på teamet.">
+          Open a prompt, hit &ldquo;Copy Prompt&rdquo;. The whole thing — Role, Task, Context, Constraints, Format — is on your clipboard with the labels. Paste it wherever you work. The robot gets the same shape every time, from every person on the team.
+        </p>
+        <p class="pl-why"
+           data-en="Taking a prompt out of the library should feel like copying a phone number. If it takes more than one tap, people start writing their own from memory — and the shape drifts."
+           data-no="Å ta en prompt ut av biblioteket bør føles som å kopiere et telefonnummer. Hvis det tar mer enn ett trykk, begynner folk å skrive sine egne fra hukommelsen — og formen drifter.">
+          Taking a prompt out of the library should feel like copying a phone number. If it takes more than one tap, people start writing their own from memory — and the shape drifts.
+        </p>
+
+        <div class="pl-browser" style="margin-top: 24px;">
+          <div class="pl-browser__bar">
+            <span class="pl-browser__dots"><span></span><span></span><span></span></span>
+            <span class="pl-browser__url">Behavioural Breakdown · full prompt</span>
+          </div>
+          <div class="pl-browser__canvas">
+            <img src="assets/case/pl-new/_02-desktop-detail.png"
+                 alt="A prompt detail modal titled &quot;Behavioural Breakdown&quot;, showing the full Role, Task, Context, Constraints, Format sections, with Edit, Delete and Copy Prompt buttons." />
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 03 · LIVES EVERYWHERE ====================================== -->
+    <section id="everywhere" class="sf-section">
+      <span class="case-eyebrow" data-en="03 · Lives everywhere"
+                                 data-no="03 · Lever overalt">03 · Lives everywhere</span>
+      <h2 data-en="On your phone. On your Mac. Inside the robot that helps you work."
+          data-no="På telefonen. På Macen. Inne i roboten som hjelper deg med å jobbe.">
+        On your phone. On your Mac. Inside the robot that helps you work.
+      </h2>
+      <p data-en="The library is one tiny web page. That means it can live wherever the web lives. I taught it three new tricks so the same 33 prompts are always in reach, in the shape the team already knows."
+         data-no="Biblioteket er én bittelite nettside. Det betyr at det kan leve der nettet lever. Jeg lærte det tre nye triks slik at de samme 33 promptene alltid er innen rekkevidde, i formen teamet allerede kjenner.">
+        The library is one tiny web page. That means it can live wherever the web lives. I taught it three new tricks so the same 33 prompts are always in reach, in the shape the team already knows.
+      </p>
+
+      <div class="pl-everywhere">
+        <article>
+          <span class="pl-icon" aria-hidden="true">📱</span>
+          <h4 data-en="On your phone"
+              data-no="På telefonen">On your phone</h4>
+          <p data-en="Tap &ldquo;Add to Home Screen&rdquo;. The library installs like a real app — icon on the home screen, no browser bar, no sign-in. Edits you make on the bus are there when you open the Mac."
+             data-no="Trykk «Legg til på Hjem-skjerm». Biblioteket installeres som en ekte app — ikon på hjem-skjermen, ingen nettleserlinje, ingen pålogging. Redigeringer du gjør på bussen er der når du åpner Macen.">
+            Tap &ldquo;Add to Home Screen&rdquo;. The library installs like a real app — icon on the home screen, no browser bar, no sign-in. Edits you make on the bus are there when you open the Mac.
+          </p>
+        </article>
+        <article>
+          <span class="pl-icon" aria-hidden="true">💻</span>
+          <h4 data-en="On your Mac"
+              data-no="På Macen">On your Mac</h4>
+          <p data-en="Install the same web page to the Mac dock. One click away, every workday. No separate login, no &ldquo;where did I save that prompt?&rdquo;."
+             data-no="Installer den samme nettsiden til Mac-dokken. Ett klikk unna, hver arbeidsdag. Ingen separat pålogging, ingen «hvor lagret jeg den prompten?».">
+            Install the same web page to the Mac dock. One click away, every workday. No separate login, no &ldquo;where did I save that prompt?&rdquo;.
+          </p>
+        </article>
+        <article>
+          <span class="pl-icon" aria-hidden="true">🤖</span>
+          <h4 data-en="Inside the robot"
+              data-no="Inne i roboten">Inside the robot</h4>
+          <p data-en="The same 33 prompts show up as the robot&rsquo;s own menu. In Claude Code, type &ldquo;/ux-research&rdquo; and it reads the matching prompt, asks you only the bits it needs, and runs. No copy-paste in the middle."
+             data-no="De samme 33 promptene dukker opp som robotens egen meny. I Claude Code skriver du «/ux-research» og den leser den matchende prompten, spør deg kun om det den trenger, og kjører. Ingen kopi-lim midt i.">
+            The same 33 prompts show up as the robot&rsquo;s own menu. In Claude Code, type &ldquo;/ux-research&rdquo; and it reads the matching prompt, asks you only the bits it needs, and runs. No copy-paste in the middle.
+          </p>
+        </article>
+      </div>
+
+      <!-- Mobile stills, in phone frames -->
+      <div class="pl-phones">
+        <figure>
+          <div class="pl-phone">
+            <img src="assets/case/pl-new/_06-mobile-home.png"
+                 alt="The library on a phone. The sidebar collapses into a horizontal row of discipline icons. The prompt list scrolls vertically underneath." />
+          </div>
+          <figcaption class="pl-phone__label"
+                      data-en="Phone — the five rooms collapse into a row of icons."
+                      data-no="Telefon — de fem rommene faller sammen til en rad med ikoner.">
+            Phone — the five rooms collapse into a row of icons.
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="pl-phone">
+            <img src="assets/case/pl-new/_07-mobile-detail.png"
+                 alt="A prompt opened on the phone. The full Role, Task, Context, Constraints sections are legible without zooming." />
+          </div>
+          <figcaption class="pl-phone__label"
+                      data-en="Phone — open a prompt, Copy, done."
+                      data-no="Telefon — åpne en prompt, Kopier, ferdig.">
+            Phone — open a prompt, Copy, done.
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- Sync -->
+      <h3 style="margin-top: 48px;"
+          data-en="Edit here, show up there"
+          data-no="Rediger her, dukk opp der">
+        Edit here, show up there
+      </h3>
+      <p data-en="There&rsquo;s no backend. The library is just a web page. But I added a small sync trick: paste a private key into Sync Settings on the phone and the Mac, and edits you make in one place quietly show up in the other a second later. Nothing is public. Nothing is shared with the team by default — only with yourself."
+         data-no="Det er ingen backend. Biblioteket er bare en nettside. Men jeg la til et lite synk-triks: lim en privat nøkkel inn i Sync Settings på telefonen og Macen, og redigeringer du gjør ett sted dukker stille opp det andre et sekund senere. Ingenting er offentlig. Ingenting deles med teamet som standard — bare med deg selv.">
+        There&rsquo;s no backend. The library is just a web page. But I added a small sync trick: paste a private key into Sync Settings on the phone and the Mac, and edits you make in one place quietly show up in the other a second later. Nothing is public. Nothing is shared with the team by default — only with yourself.
+      </p>
+
+      <div class="pl-browser" style="margin-top: 24px;">
+        <div class="pl-browser__bar">
+          <span class="pl-browser__dots"><span></span><span></span><span></span></span>
+          <span class="pl-browser__url">Sync across devices · settings</span>
+        </div>
+        <div class="pl-browser__canvas">
+          <img src="assets/case/pl-new/_04-desktop-sync.png"
+               alt="A modal titled &quot;Sync across devices&quot; with inputs for a private key, a status dot that reads &quot;Idle&quot;, a &quot;Save and sync&quot; button, and a line explaining that edits are mirrored privately." />
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · WHAT IT SAVES (Retrospective) ========================== -->
+    <section id="impact" class="sf-section">
+      <span class="case-eyebrow" data-en="04 · What it saves"
+                                 data-no="04 · Hva det sparer">04 · What it saves</span>
+      <h2 data-en="One hour a week per designer. A month of design work back in the team&rsquo;s hands over a year."
+          data-no="En time i uka per designer. En måned med designarbeid tilbake i teamets hender på et år.">
+        One hour a week per designer. A month of design work back in the team&rsquo;s hands over a year.
+      </h2>
+      <p data-en="These are honest estimates, not metrics from a dashboard. I&rsquo;ll show the real numbers once the team has been on it for a quarter — but here&rsquo;s where I expect the value to show up."
+         data-no="Dette er ærlige anslag, ikke tall fra et dashbord. Jeg viser de ekte tallene når teamet har brukt det i et kvartal — men her er hvor jeg forventer at verdien dukker opp.">
+        These are honest estimates, not metrics from a dashboard. I&rsquo;ll show the real numbers once the team has been on it for a quarter — but here&rsquo;s where I expect the value to show up.
+      </p>
+
+      <div class="pl-impact">
+        <article>
+          <span class="pl-impact__tag" data-en="For me" data-no="For meg">For me</span>
+          <h4 data-en="Write once. Use everywhere."
+              data-no="Skriv én gang. Bruk overalt.">Write once. Use everywhere.</h4>
+          <p data-en="The prompt I used to build this library is now inside the library. A nice closed loop — the thing explains itself."
+             data-no="Prompten jeg brukte for å bygge dette biblioteket er nå inne i biblioteket. En fin lukket sløyfe — tingen forklarer seg selv.">
+            The prompt I used to build this library is now inside the library. A nice closed loop — the thing explains itself.
+          </p>
+        </article>
+        <article>
+          <span class="pl-impact__tag" data-en="For the team"
+                                        data-no="For teamet">For the team</span>
+          <h4 data-en="No more hunting"
+              data-no="Ingen jakting mer">No more hunting</h4>
+          <p data-en="A new teammate&rsquo;s first day can be &ldquo;open the library, pick a UX Research prompt, run it&rdquo;. No more &ldquo;where&rsquo;s that prompt Anna used in September?&rdquo;."
+             data-no="En ny kollegas første dag kan være «åpne biblioteket, velg en UX Research-prompt, kjør den». Ingen mer «hvor er den prompten Anna brukte i september?».">
+            A new teammate&rsquo;s first day can be &ldquo;open the library, pick a UX Research prompt, run it&rdquo;. No more &ldquo;where&rsquo;s that prompt Anna used in September?&rdquo;.
+          </p>
+        </article>
+        <article>
+          <span class="pl-impact__tag" data-en="For the robot"
+                                        data-no="For roboten">For the robot</span>
+          <h4 data-en="Better first answers"
+              data-no="Bedre første svar">Better first answers</h4>
+          <p data-en="Same shape every time. The robot stops guessing because it&rsquo;s been told who to be, what to do, what to know, what not to do, and what to hand back — every single time."
+             data-no="Samme form hver gang. Roboten slutter å gjette fordi den har fått beskjed om hvem den skal være, hva den skal gjøre, hva den skal vite, hva den ikke skal gjøre, og hva den skal levere — hver eneste gang.">
+            Same shape every time. The robot stops guessing because it&rsquo;s been told who to be, what to do, what to know, what not to do, and what to hand back — every single time.
+          </p>
+        </article>
+        <article>
+          <span class="pl-impact__tag" data-en="For the company"
+                                        data-no="For selskapet">For the company</span>
+          <h4 data-en="Shorter time to a first useful answer"
+              data-no="Kortere vei til første nyttige svar">Shorter time to a first useful answer</h4>
+          <p data-en="Fewer tokens burned re-writing the same prompt. Shorter path from a design question to an answer a designer can actually use."
+             data-no="Færre tokens brent på å skrive om den samme prompten. Kortere vei fra et designspørsmål til et svar en designer faktisk kan bruke.">
+            Fewer tokens burned re-writing the same prompt. Shorter path from a design question to an answer a designer can actually use.
+          </p>
+        </article>
+      </div>
+
+      <h3 style="margin-top: 48px;"
+          data-en="What I&rsquo;d change next"
+          data-no="Hva jeg ville endret neste">
+        What I&rsquo;d change next
+      </h3>
       <ul class="sf-ai-list"
-          data-en-html="<li><strong>Sidebar disciplines.</strong> UX Research, Writing, Design Systems, Prototyping, Design Engineering — each with a short subtitle and icon.</li><li><strong>Top bar.</strong> Search across title, discipline and tags. A primary “+ Add Prompt” CTA.</li><li><strong>Prompt cards.</strong> Title, tag chips (with “+N” overflow), ROLE and TASK previews (truncated), author, date, “Copy Prompt”.</li><li><strong>Detail + modal.</strong> Full RTCCF sections (Role, Task, Context, Constraints, Format) — Edit and Delete on the detail, Save and Cancel on Add / Edit.</li><li><strong>Filters that compose.</strong> Tag chips filter the visible grid · the sidebar discipline filters what loads · search filters across all three.</li><li><strong>Copy Prompt.</strong> Copies the full assembled prompt (every filled RTCCF section, labelled) to clipboard with a brief confirmation.</li><li><strong>No backend, no sign-in.</strong> Edits live in your browser (localStorage). Private to your device by default — nothing is sent anywhere.</li>"
-          data-no-html="<li><strong>Sidebar-disipliner.</strong> UX Research, Writing, Design Systems, Prototyping, Design Engineering — hver med kort undertittel og ikon.</li><li><strong>Toppbar.</strong> Søk på tvers av tittel, disiplin og tagger. En primær «+ Add Prompt»-CTA.</li><li><strong>Prompt-kort.</strong> Tittel, tag-chips (med «+N»-overflow), ROLE- og TASK-forhåndsvisninger (avkortet), forfatter, dato, «Copy Prompt».</li><li><strong>Detalj + modal.</strong> Fulle RTCCF-seksjoner (Role, Task, Context, Constraints, Format) — Edit og Delete i detaljvisningen, Save og Cancel i Add/Edit.</li><li><strong>Filtre som komponerer.</strong> Tag-chips filtrerer det synlige rutenettet · sidebar-disiplinen filtrerer hva som lastes · søk filtrerer på tvers av alle tre.</li><li><strong>Copy Prompt.</strong> Kopierer den fulle sammensatte prompten (hver fylte RTCCF-seksjon, med etikett) til utklippstavlen med en kort bekreftelse.</li><li><strong>Ingen backend, ingen innlogging.</strong> Endringer lever i nettleseren din (localStorage). Privat til enheten din som standard — ingenting sendes noe sted.</li>">
-        <li><strong>Sidebar disciplines.</strong> UX Research, Writing, Design Systems, Prototyping, Design Engineering — each with a short subtitle and icon.</li>
-        <li><strong>Top bar.</strong> Search across title, discipline and tags. A primary "+ Add Prompt" CTA.</li>
-        <li><strong>Prompt cards.</strong> Title, tag chips (with "+N" overflow), ROLE and TASK previews (truncated), author, date, "Copy Prompt".</li>
-        <li><strong>Detail + modal.</strong> Full RTCCF sections (Role, Task, Context, Constraints, Format) — Edit and Delete on the detail, Save and Cancel on Add / Edit.</li>
-        <li><strong>Filters that compose.</strong> Tag chips filter the visible grid · the sidebar discipline filters what loads · search filters across all three.</li>
-        <li><strong>Copy Prompt.</strong> Copies the full assembled prompt (every filled RTCCF section, labelled) to clipboard with a brief confirmation.</li>
-        <li><strong>No backend, no sign-in.</strong> Edits live in your browser (localStorage). Private to your device by default — nothing is sent anywhere.</li>
+          data-en-html="<li><strong>A &ldquo;runs&rdquo; count on each prompt.</strong> The prompts the team actually uses rise to the top. The ones no one touches get re-written or quietly dropped.</li><li><strong>Attach a tiny test to every prompt.</strong> One example input, the expected shape of the answer. If a model update breaks a prompt, the library catches it on the next sync — not in a meeting.</li><li><strong>A shared &ldquo;team&rdquo; mode.</strong> Right now sync is private to each designer. A second, opt-in key would let the team share a core set everyone starts from — like a design system for prompts.</li>"
+          data-no-html="<li><strong>En &laquo;kjøringer&raquo;-teller på hver prompt.</strong> Promptene teamet faktisk bruker, stiger til toppen. De ingen tar i, blir skrevet om eller stille droppet.</li><li><strong>Fest en liten test til hver prompt.</strong> Ett eksempel-input, forventet form på svaret. Hvis en modell-oppdatering bryter en prompt, fanger biblioteket det ved neste synk — ikke i et møte.</li><li><strong>En delt &laquo;team&raquo;-modus.</strong> Akkurat nå er synk privat for hver designer. En andre, valgfri nøkkel ville la teamet dele et kjernesett alle starter fra — som et designsystem for prompter.</li>">
+        <li><strong>A &ldquo;runs&rdquo; count on each prompt.</strong> The prompts the team actually uses rise to the top. The ones no one touches get re-written or quietly dropped.</li>
+        <li><strong>Attach a tiny test to every prompt.</strong> One example input, the expected shape of the answer. If a model update breaks a prompt, the library catches it on the next sync — not in a meeting.</li>
+        <li><strong>A shared &ldquo;team&rdquo; mode.</strong> Right now sync is private to each designer. A second, opt-in key would let the team share a core set everyone starts from — like a design system for prompts.</li>
       </ul>
     </section>
 
-    <!-- 03 ONE PROMPT -->
-    <section id="built" class="sf-section">
-      <span class="case-eyebrow built" data-en="03 · Built with one prompt" data-no="03 · Bygget med én prompt">03 · Built with one prompt</span>
-      <h2 data-en="One prompt. One library. RTCCF end to end."
-          data-no="Én prompt. Ett bibliotek. RTCCF fra ende til ende.">
-        One prompt. One library. RTCCF end to end.
-      </h2>
-      <p data-en="I wrote the prompt in the same RTCCF + PRISM shape I wanted the team to use. The library then stores team prompts in that shape. The result is the app the Try-it-live button opens."
-         data-no="Jeg skrev prompten i samme RTCCF + PRISM-form jeg ville teamet skulle bruke. Biblioteket lagrer så team-promptene i den formen. Resultatet er appen Try-it-live-knappen åpner.">
-        I wrote the prompt in the same RTCCF + PRISM shape I wanted the team to use. The library then stores team prompts in that shape. The result is the app the Try-it-live button opens.
-      </p>
-
-      <article class="sf-decision">
-        <span class="signal-tag built" data-en="The prompt · UI + behaviour + persistence" data-no="Prompten · UI + adferd + lagring">The prompt · UI + behaviour + persistence</span>
-        <h3 data-en="The whole library, in one RTCCF prompt"
-            data-no="Hele biblioteket, i én RTCCF-prompt">The whole library, in one RTCCF prompt</h3>
-        <p data-en="One prompt covering the role (senior product designer + front-end engineer), the task (every screen and interaction the library needed), the context (internal tool, RTCCF as storage shape, clean SaaS aesthetic), the constraints (field order fixed, search across title + discipline + tags, scope = CRUD only, mobile-responsive, no backend, no sign-in) and the format (one standalone HTML file with localStorage)."
-           data-no="Én prompt som dekker rollen (senior produktdesigner + front-end-utvikler), oppgaven (hver skjerm og interaksjon biblioteket trengte), konteksten (internt verktøy, RTCCF som lagringsform, ren SaaS-estetikk), begrensningene (felt-rekkefølge låst, søk på tvers av tittel + disiplin + tagger, scope = kun CRUD, mobilresponsiv, ingen backend, ingen innlogging) og formatet (én standalone HTML-fil med localStorage).">
-          One prompt covering the role (senior product designer + front-end engineer), the task (every screen and interaction the library needed), the context (internal tool, RTCCF as storage shape, clean SaaS aesthetic), the constraints (field order fixed, search across title + discipline + tags, scope = CRUD only, mobile-responsive, no backend, no sign-in) and the format (one standalone HTML file with localStorage).
-        </p>
-        <details class="prompt-source">
-          <summary data-en="Read the full prompt" data-no="Les hele prompten">Read the full prompt</summary>
-<pre>ROLE
-You are a senior product designer and front-end engineer building a polished, production-quality internal web app as a single standalone HTML file. You specialise in clean SaaS interfaces with strong information hierarchy and thoughtful interactive states.
-
-TASK
-Build a "Prompt Library" web app where a design team stores, browses, and copies reusable AI prompts organised by discipline, with full CRUD (create, read, update, delete) persisted in the browser.
-
-The app must include:
-
-A left sidebar with the workspace name/logo at top and a navigable list of disciplines (UX Research, Writing, Design Systems, Prototyping, Design Engineering), each with a short subtitle and icon. Settings and Help &amp; Support pinned to the bottom.
-A top bar with a search field ("Search prompts, disciplines, or tags…"), a hint ("Click cards to view details"), and a primary "+ Add Prompt" button.
-A main content area showing the selected discipline title, a prompt count, a horizontal "Filter by tags" row of pill chips, and a responsive grid of prompt cards.
-Prompt cards displaying: title, tag pills (with a "+N" overflow chip), a ROLE section and TASK section preview (truncated), a "Click to view full prompt details" link, author name, date, and a "Copy Prompt" button.
-A clickable card that opens the full prompt detail (all RTCCF sections) with Edit and Delete actions.
-An "Add New Prompt" / "Edit Prompt" modal with fields: Prompt Title*, Author*, Discipline (dropdown), and an RTCCF Framework section with a short helper line ("Structure your prompt using the Role, Task, Context, Constraints, Format framework") followed by labelled textareas for ROLE*, TASK*, CONTEXT, CONSTRAINTS, FORMAT, plus a tags input. Save and Cancel actions.
-
-CONTEXT
-This is an internal tool for a product design team that wants to standardise prompt-writing using the RTCCF framework (Role, Task, Context, Constraints, Format). Every prompt is authored in that structure and persisted in the browser (localStorage). The aesthetic is clean and minimal — a modern SaaS dashboard: dark navy sidebar, light main area, generous whitespace, subtle card borders, rounded corners, a dark primary button, small uppercase section labels (ROLE, TASK) in muted gray, and coloured tag chips derived from the tag text.
-
-CONSTRAINTS
-Use the RTCCF field structure exactly: Role, Task, Context, Constraints, Format — in that order.
-Search filters across title, discipline, and tags. Tag chips filter the visible cards. Discipline sidebar selection filters which prompts load.
-"Copy Prompt" copies the full assembled prompt (all filled RTCCF sections, labelled) to the clipboard with a brief confirmation.
-Single cohesive theme, mobile-responsive (sidebar collapses, grid reflows to one column). Keep scope to CRUD only — do not add features beyond this.
-One file. Vanilla JS. localStorage only. No tracking, no network calls after fonts load. Accessible by keyboard; Escape closes modals.
-
-FORMAT
-A single standalone HTML file with embedded CSS and JS. On first load, seed the app with ~10 example prompts across all five disciplines so a first-time visitor never lands on an empty state.</pre>
-        </details>
-      </article>
-
-      <figure class="sf-figure sf-figure-wide" style="margin-top: 32px;">
-        <video controls preload="metadata" playsinline muted poster="assets/case/pl-walkthrough-poster.jpg" aria-label="Walkthrough of the live Prompt Library — disciplines, search, prompt detail, Copy Prompt">
-          <source src="assets/case/pl-walkthrough.mp4" type="video/mp4" />
-          <p data-en="Your browser doesn't support embedded video. Open the live library below."
-             data-no="Nettleseren din støtter ikke innebygd video. Åpne biblioteket nedenfor.">
-            Your browser doesn't support embedded video. Open the live library below.
-          </p>
-        </video>
-        <figcaption data-en="The library in action — disciplines, search, prompt detail, Copy Prompt. One prompt in, a working app out."
-                    data-no="Biblioteket i bruk — disipliner, søk, prompt-detalj, Copy Prompt. Én prompt inn, en fungerende app ut.">
-          The library in action — disciplines, search, prompt detail, Copy Prompt. One prompt in, a working app out.
-        </figcaption>
-      </figure>
-    </section>
-
-    <!-- 04 TRY IT LIVE -->
+    <!-- 05 · TRY IT LIVE =========================================== -->
     <section id="try" class="sf-section">
-      <span class="case-eyebrow" data-en="04 · Try it live" data-no="04 · Prøv det">04 · Try it live</span>
-      <h2 data-en="Open the library — no sign-in, nothing to install"
-          data-no="Åpne biblioteket — ingen innlogging, ingenting å installere">
-        Open the library — no sign-in, nothing to install
+      <span class="case-eyebrow" data-en="05 · Try it live"
+                                 data-no="05 · Prøv det">05 · Try it live</span>
+      <h2 data-en="Open it now. Nothing to install. Nothing to sign in to."
+          data-no="Åpne det nå. Ingenting å installere. Ingenting å logge på.">
+        Open it now. Nothing to install. Nothing to sign in to.
       </h2>
-      <p data-en="The library opens straight into the UX Research discipline with 10 seed prompts across all five disciplines. Search, filter by tag, open a prompt, copy the full RTCCF text. Add, edit, delete — your changes live in your browser (localStorage), private to your device."
-         data-no="Biblioteket åpner rett inn i UX Research-disiplinen med 10 seed-prompts fordelt på alle fem disipliner. Søk, filtrer på tag, åpne en prompt, kopier hele RTCCF-teksten. Legg til, rediger, slett — endringene dine lever i nettleseren din (localStorage), privat til enheten din.">
-        The library opens straight into the UX Research discipline with 10 seed prompts across all five disciplines. Search, filter by tag, open a prompt, copy the full RTCCF text. Add, edit, delete — your changes live in your browser (localStorage), private to your device.
+      <p data-en="The live library opens with the 33 real prompts the design team uses. Browse, filter, open a prompt, hit Copy. Add your own if you want — they live in your browser, private to your device."
+         data-no="Det live biblioteket åpner med de 33 ekte promptene designteamet bruker. Bla, filtrer, åpne en prompt, trykk Kopier. Legg til dine egne hvis du vil — de bor i nettleseren din, private til enheten din.">
+        The live library opens with the 33 real prompts the design team uses. Browse, filter, open a prompt, hit Copy. Add your own if you want — they live in your browser, private to your device.
       </p>
 
       <p style="margin-top: 20px;">
@@ -209,68 +656,57 @@ A single standalone HTML file with embedded CSS and JS. On first load, seed the 
            data-en="Open the Prompt Library ↗"
            data-no="Åpne Prompt-biblioteket ↗">Open the Prompt Library ↗</a>
       </p>
+
+      <div class="pl-install">
+        <article>
+          <h4 data-en="Install on your phone"
+              data-no="Installer på telefonen">Install on your phone</h4>
+          <p data-en="Open the library in Safari on your phone. Tap Share, then &ldquo;Add to Home Screen&rdquo;. The library installs with an icon, no browser bar, works offline."
+             data-no="Åpne biblioteket i Safari på telefonen. Trykk Del, så «Legg til på Hjem-skjerm». Biblioteket installeres med et ikon, ingen nettleserlinje, fungerer uten nett.">
+            Open the library in Safari on your phone. Tap Share, then &ldquo;Add to Home Screen&rdquo;. The library installs with an icon, no browser bar, works offline.
+          </p>
+        </article>
+        <article>
+          <h4 data-en="Install on your Mac"
+              data-no="Installer på Macen">Install on your Mac</h4>
+          <p data-en="Open the library in a Chromium browser (or Safari 17+). From the address bar, choose &ldquo;Install app&rdquo;. It lives in the dock like any other app."
+             data-no="Åpne biblioteket i en Chromium-nettleser (eller Safari 17+). Fra adressefeltet, velg «Installer app». Den bor i dokken som en vanlig app.">
+            Open the library in a Chromium browser (or Safari 17+). From the address bar, choose &ldquo;Install app&rdquo;. It lives in the dock like any other app.
+          </p>
+        </article>
+        <article>
+          <h4 data-en="Use it from the robot&rsquo;s menu"
+              data-no="Bruk det fra robotens meny">Use it from the robot&rsquo;s menu</h4>
+          <p data-en="If you work in Claude Code, the same 33 prompts are available as a menu. Type the room name and the robot reads the matching prompt — it asks only for the bits that change between runs."
+             data-no="Hvis du jobber i Claude Code, er de samme 33 promptene tilgjengelig som en meny. Skriv romnavnet og roboten leser den matchende prompten — den spør bare om det som endres mellom kjøringer.">
+            If you work in Claude Code, the same 33 prompts are available as a menu. Type the room name and the robot reads the matching prompt — it asks only for the bits that change between runs.
+          </p>
+          <p style="margin-top: 10px; font-size: 13px;">
+            <code>/ux-research</code> &nbsp; <code>/writing</code> &nbsp; <code>/design-systems</code> &nbsp; <code>/prototyping</code> &nbsp; <code>/design-engineering</code>
+          </p>
+        </article>
+        <article>
+          <h4 data-en="Read the shape"
+              data-no="Les formen">Read the shape</h4>
+          <p data-en="Every prompt in the library follows the same five slots — Role, Task, Context, Constraints, Format. The next project uses the exact same shape to run a full six-artifact research sprint."
+             data-no="Hver prompt i biblioteket følger de samme fem feltene — Rolle, Oppgave, Kontekst, Rammer, Format. Det neste prosjektet bruker nøyaktig samme form for å kjøre en full seks-artefakts forskningssprint.">
+            Every prompt in the library follows the same five slots — Role, Task, Context, Constraints, Format. The next project uses the exact same shape to run a full six-artifact research sprint.
+          </p>
+        </article>
+      </div>
     </section>
 
   </main>
 
   <div class="case-end">
     <h2 data-en="Next: Research with AI" data-no="Neste: Research med AI">Next: Research with AI</h2>
-    <a href="research-with-ai.html" data-en="See the methodology that uses these prompts →"
-                                    data-no="Se metodikken som bruker disse promptene →">See the methodology that uses these prompts →</a>
+    <a href="research-with-ai.html"
+       data-en="See a full research sprint, run end-to-end with the prompts in this library →"
+       data-no="Se en full forskningssprint, kjørt ende-til-ende med promptene i dette biblioteket →">
+      See a full research sprint, run end-to-end with the prompts in this library →
+    </a>
   </div>
 
   <script src="i18n.js"></script>
-  <script>
-    (function() {
-      function copyText(text) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          return navigator.clipboard.writeText(text).catch(function() { fallbackCopy(text); });
-        }
-        fallbackCopy(text);
-        return Promise.resolve();
-      }
-      function fallbackCopy(text) {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.position = 'absolute';
-        ta.style.left = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand('copy'); } catch (e) {}
-        document.body.removeChild(ta);
-      }
-      function flash(btn) {
-        btn.classList.add('is-copied');
-        window.setTimeout(function() { btn.classList.remove('is-copied'); }, 1600);
-      }
-
-      // Buttons
-      document.querySelectorAll('.copy-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          copyText(btn.getAttribute('data-copy') || '').then(function() { flash(btn); });
-        });
-      });
-
-      // Click the value itself (the <code>) to copy too
-      document.querySelectorAll('.creds .row dd').forEach(function(dd) {
-        var code = dd.querySelector('code');
-        var btn  = dd.querySelector('.copy-btn');
-        if (!code || !btn) return;
-        code.setAttribute('role', 'button');
-        code.setAttribute('tabindex', '0');
-        code.setAttribute('title', 'Click to copy');
-        code.addEventListener('click', function() {
-          copyText(btn.getAttribute('data-copy') || code.textContent || '').then(function() { flash(btn); });
-        });
-        code.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            copyText(btn.getAttribute('data-copy') || code.textContent || '').then(function() { flash(btn); });
-          }
-        });
-      });
-    })();
-  </script>
 </body>
 </html>
