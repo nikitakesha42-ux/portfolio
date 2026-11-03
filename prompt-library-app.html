@@ -669,6 +669,11 @@
         <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></span>
         <span>Reset from source</span>
       </button>
+      <button class="foot-item" type="button" id="syncBtn" title="Sync edits across your devices via a GitHub Gist">
+        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10Z"/></svg></span>
+        <span>Sync settings</span>
+        <span id="syncBadge" style="margin-left:auto; font-size:14px; line-height:1;"></span>
+      </button>
       <input type="file" id="importFile" accept="application/json,.json" hidden />
       <div class="sidebar-id">
         <div class="av">AN</div>
@@ -799,6 +804,54 @@
   </div>
 </div>
 
+<!-- SYNC SETTINGS MODAL -->
+<div class="overlay" id="syncOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="syncTitle" style="max-width:580px;">
+    <header class="modal-head">
+      <h3 id="syncTitle">Sync across devices</h3>
+      <button class="close" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </header>
+    <div class="modal-body">
+      <p id="syncHelp" style="color:var(--muted); font-size:13.5px; line-height:1.55; margin-bottom:14px;">
+        Sync is off. Add your Gist ID and a token to turn it on.
+      </p>
+      <div class="form-grid">
+        <div class="field">
+          <label>Gist ID</label>
+          <input type="text" id="syncGistInput" placeholder="e.g. 7a1b2c3d4e5f…" autocomplete="off" spellcheck="false" />
+          <div class="help">The 32-character ID from the Gist URL. Create one at <strong>gist.github.com</strong> with a file named <code>prompts.json</code>.</div>
+        </div>
+        <div class="field">
+          <label>Personal access token</label>
+          <input type="password" id="syncPatInput" placeholder="ghp_… or github_pat_…" autocomplete="new-password" spellcheck="false" />
+          <div class="help">
+            Needs the <code>gist</code> scope only. Create one at
+            <strong>github.com/settings/tokens</strong> (classic) or
+            <strong>github.com/settings/personal-access-tokens</strong> (fine-grained).
+            Stored only in your browser.
+          </div>
+        </div>
+      </div>
+      <details style="margin-top:14px;">
+        <summary style="cursor:pointer; color:var(--muted); font-size:12.5px;">How does this work?</summary>
+        <div style="color:var(--muted); font-size:12.5px; line-height:1.6; padding-top:8px;">
+          One file in your Gist (<code>prompts.json</code>) holds the whole library.
+          <br>• Every edit here pushes to the Gist after a 1-second pause.
+          <br>• Every launch pulls the Gist first, then renders.
+          <br>• Last writer wins — if you edit two devices offline at the same time, the newer save overwrites the older one on next sync.
+          <br>• Credentials never leave your browser except to <code>api.github.com</code>.
+        </div>
+      </details>
+    </div>
+    <footer class="modal-foot">
+      <button class="btn btn-ghost" data-close type="button">Cancel</button>
+      <button class="btn btn-primary" id="syncSaveBtn" type="button">Test &amp; save</button>
+    </footer>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -818,7 +871,8 @@ const SEED = []; // real library is fetched from assets/prompts.json
 
 /* ─── State & storage ─────────────────────────────── */
 const STORAGE_KEY   = 'prompt-library-v2';
-const SOURCE_URL    = 'assets/prompts.json'; // single source of truth
+const SYNC_KEY      = 'prompt-library-sync';   // { gistId, pat }
+const SOURCE_URL    = 'assets/prompts.json';   // single source of truth (first-time seed)
 let state = {
   discipline: 'ux-research',
   search: '',
@@ -827,6 +881,7 @@ let state = {
   editingId: null,
   viewingId: null,
   loaded: false,
+  sync: { gistId: '', pat: '', status: 'idle', lastAt: 0 }, // 'idle'|'syncing'|'ok'|'error'
 };
 
 async function loadPrompts() {
@@ -851,6 +906,7 @@ async function loadPrompts() {
 function persist() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.prompts)); }
   catch (e) { console.warn('persist failed', e); }
+  schedulePush();   // if sync is configured, debounced push to Gist
 }
 
 /* ─── Export / Import — keeps prompts.json as the source of truth ── */
@@ -898,6 +954,181 @@ function resetToSource() {
     state.prompts = ps; render();
     toast('Reloaded from prompts.json');
   });
+}
+
+/* ─── Gist sync (cross-device) ─────────────────────── */
+/* One private Gist holds prompts.json. Pull on launch, push on save.
+ * PAT scope needed: `gist` only. Credentials live in localStorage,
+ * only sent to api.github.com, never anywhere else. */
+
+function loadSyncSettings() {
+  try {
+    const raw = localStorage.getItem(SYNC_KEY);
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    state.sync.gistId = s.gistId || '';
+    state.sync.pat    = s.pat || '';
+  } catch {}
+}
+function saveSyncSettings() {
+  try {
+    localStorage.setItem(SYNC_KEY, JSON.stringify({
+      gistId: state.sync.gistId,
+      pat:    state.sync.pat,
+    }));
+  } catch {}
+}
+function syncConfigured() {
+  return !!(state.sync.gistId && state.sync.pat);
+}
+function setSyncStatus(status) {
+  state.sync.status = status;
+  if (status === 'ok') state.sync.lastAt = Date.now();
+  updateSyncBadge();
+}
+function updateSyncBadge() {
+  const el = document.getElementById('syncBadge');
+  if (!el) return;
+  if (!syncConfigured()) { el.textContent = ''; el.title = 'Not set up'; return; }
+  const dot = ({ idle:'·', syncing:'…', ok:'●', error:'!' })[state.sync.status] || '·';
+  const colour = ({
+    idle:  'rgba(255,255,255,0.35)',
+    syncing: '#fff2a8',
+    ok:    '#59e699',
+    error: '#ff8a7a',
+  })[state.sync.status] || 'rgba(255,255,255,0.35)';
+  el.textContent = dot;
+  el.style.color = colour;
+  el.title = state.sync.status === 'ok'
+    ? `Synced ${timeAgo(state.sync.lastAt)}`
+    : state.sync.status;
+}
+function timeAgo(ts) {
+  if (!ts) return 'never';
+  const s = Math.round((Date.now() - ts) / 1000);
+  if (s < 10)   return 'just now';
+  if (s < 60)   return `${s}s ago`;
+  if (s < 3600) return `${Math.round(s/60)}m ago`;
+  return `${Math.round(s/3600)}h ago`;
+}
+
+async function pullFromGist() {
+  if (!syncConfigured()) return null;
+  setSyncStatus('syncing');
+  try {
+    const res = await fetch(`https://api.github.com/gists/${state.sync.gistId}`, {
+      headers: {
+        'Authorization': `token ${state.sync.pat}`,
+        'Accept':        'application/vnd.github+json',
+      },
+      cache: 'no-store',
+    });
+    if (!res.ok) throw new Error(`gist pull: HTTP ${res.status}`);
+    const gist = await res.json();
+    // Pick the first file named prompts.json, or any .json file.
+    const files = Object.values(gist.files || {});
+    const file = files.find(f => f.filename === 'prompts.json') || files.find(f => /\.json$/i.test(f.filename));
+    if (!file) throw new Error('gist has no prompts.json');
+    const content = file.truncated
+      ? await fetch(file.raw_url).then(r => r.text())
+      : file.content;
+    const doc = JSON.parse(content);
+    const prompts = Array.isArray(doc) ? doc : (doc.prompts || []);
+    if (!Array.isArray(prompts)) throw new Error('gist file is not a prompts array');
+    setSyncStatus('ok');
+    return prompts;
+  } catch (e) {
+    console.warn('pullFromGist failed', e);
+    setSyncStatus('error');
+    return null;
+  }
+}
+
+let pushTimer = null;
+function schedulePush() {
+  if (!syncConfigured()) return;
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(pushToGist, 1000); // debounce 1s
+}
+async function pushToGist() {
+  if (!syncConfigured()) return;
+  setSyncStatus('syncing');
+  try {
+    const body = {
+      files: {
+        'prompts.json': {
+          content: JSON.stringify({
+            version: 1,
+            exportedAt: new Date().toISOString(),
+            count: state.prompts.length,
+            prompts: state.prompts,
+          }, null, 2),
+        },
+      },
+    };
+    const res = await fetch(`https://api.github.com/gists/${state.sync.gistId}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `token ${state.sync.pat}`,
+        'Accept':        'application/vnd.github+json',
+        'Content-Type':  'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(`gist push: HTTP ${res.status}`);
+    setSyncStatus('ok');
+  } catch (e) {
+    console.warn('pushToGist failed', e);
+    setSyncStatus('error');
+  }
+}
+
+/* ─── Sync settings modal ──────────────────────────── */
+function openSyncSettings() {
+  $('#syncGistInput').value = state.sync.gistId || '';
+  $('#syncPatInput').value  = state.sync.pat    || '';
+  $('#syncHelp').textContent = syncConfigured()
+    ? 'Sync is on. Edits push to your Gist and pull on launch.'
+    : 'Sync is off. Add your Gist ID and a token to turn it on.';
+  openOverlay('syncOverlay');
+}
+async function saveSyncSettingsFromForm() {
+  const gistId = $('#syncGistInput').value.trim();
+  const pat    = $('#syncPatInput').value.trim();
+  if (!gistId || !pat) {
+    if (confirm('Leave both fields empty to turn sync OFF?')) {
+      state.sync.gistId = ''; state.sync.pat = '';
+      saveSyncSettings();
+      setSyncStatus('idle');
+      closeOverlay('syncOverlay');
+      toast('Sync turned off');
+    }
+    return;
+  }
+  state.sync.gistId = gistId;
+  state.sync.pat    = pat;
+  saveSyncSettings();
+  // Test by doing a pull; if it works, offer to replace or merge.
+  const remote = await pullFromGist();
+  if (!remote) {
+    toast('Saved — couldn’t reach the gist, check ID and token');
+    return;
+  }
+  const replace = confirm(
+    `Gist has ${remote.length} prompts; your local library has ${state.prompts.length}.\n\n` +
+    `OK  = use the Gist (recommended if this is a new device)\n` +
+    `Cancel = keep the local copy (it’ll push to the Gist on your next edit)`
+  );
+  if (replace) {
+    state.prompts = remote;
+    persist();
+    render();
+    toast('Pulled from Gist');
+  } else {
+    schedulePush();
+    toast('Keeping local; will push on next change');
+  }
+  closeOverlay('syncOverlay');
 }
 
 /* ─── Tag colour palette ──────────────────────────── */
@@ -1240,7 +1471,17 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
 
 /* ─── Wire up ─────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
+  loadSyncSettings();
+  updateSyncBadge();
   state.prompts = await loadPrompts();
+  // If sync is set up, prefer the Gist copy over the local cache.
+  if (syncConfigured()) {
+    const remote = await pullFromGist();
+    if (remote && remote.length) {
+      state.prompts = remote;
+      persist();   // keep localStorage in sync too, so offline opens use it
+    }
+  }
   state.loaded = true;
   render();
 
@@ -1257,6 +1498,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     e.target.value = '';
   });
   $('#resetBtn')?.addEventListener('click', resetToSource);
+  $('#syncBtn')?.addEventListener('click', openSyncSettings);
+  $('#syncSaveBtn')?.addEventListener('click', saveSyncSettingsFromForm);
+
+  // Refresh the "synced Xm ago" badge text every 30s.
+  setInterval(updateSyncBadge, 30000);
 
   // modals
   document.querySelectorAll('[data-close]').forEach(el => {
