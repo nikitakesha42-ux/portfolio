@@ -1508,6 +1508,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const demoParams = new URLSearchParams(location.search);
   const demo = demoParams.get('demo');
   const demoTag = demoParams.get('tag');
+  const demoTitle = demoParams.get('title');
   if (demo) {
     // Kill transitions so screenshots are crisp mid-frame.
     const style = document.createElement('style');
@@ -1515,8 +1516,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.head.appendChild(style);
     setTimeout(() => {
       if (demo === 'detail') {
-        const first = state.prompts.find(p => p.discipline === state.discipline);
-        if (first) openDetail(first.id);
+        const slug = (demoTitle || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const match = slug
+          ? state.prompts.find(p =>
+              p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === slug)
+          : state.prompts.find(p => p.discipline === state.discipline);
+        if (match) openDetail(match.id);
       } else if (demo === 'add')  openEdit();
       else if (demo === 'sync')   openSyncSettings();
       else if (demo === 'tag') {
