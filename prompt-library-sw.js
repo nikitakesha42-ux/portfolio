@@ -9,7 +9,7 @@
  *  - prompts.json (source of truth):                    network-first with cache fallback
  *  - anything else:                                     bypass
  */
-const VERSION    = 'pl-sw-v1';
+const VERSION    = 'pl-sw-v2';
 const APP_CACHE  = `pl-app-${VERSION}`;
 const DATA_CACHE = `pl-data-${VERSION}`;
 
@@ -64,14 +64,19 @@ self.addEventListener('fetch', (event) => {
 
   const path = url.pathname;
 
-  // prompts.json → network-first, cache fallback
-  if (path.endsWith('/assets/prompts.json')) {
+  // prompts.json + app HTML → network-first, cache fallback.
+  // Ensures deploys reach installed PWAs on the next launch instead of
+  // being pinned by cache-first until the user deletes and reinstalls.
+  if (
+    path.endsWith('/assets/prompts.json') ||
+    path.endsWith('/prompt-library-app.html')
+  ) {
     event.respondWith(networkFirst(req));
     return;
   }
-  // app shell → cache-first with background revalidate
+  // Static shell (manifest, icons) → cache-first with background revalidate.
+  // These rarely change; serving them from cache keeps the app snappy.
   if (
-    path.endsWith('/prompt-library-app.html') ||
     path.endsWith('/prompt-library.webmanifest') ||
     path.includes('/assets/pl-pwa/')
   ) {
