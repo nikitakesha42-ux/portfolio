@@ -1,0 +1,34 @@
+{
+  "name": "Prompt Library",
+  "short_name": "Prompts",
+  "description": "A small internal library of named, versioned RTCCF prompts.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "/prompt-library-app.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0f1f3d",
+  "background_color": "#fafafa",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "assets/pl-pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/pl-pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/pl-pwa/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0a1f4a" />
+<title>Prompt Library · Design Team</title>
+<meta name="description" content="A small internal library of named, versioned RTCCF prompts — browse, edit, copy." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<!-- PWA -->
+<link rel="manifest" href="prompt-library.webmanifest" />
+<link rel="apple-touch-icon" href="assets/pl-pwa/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Prompts" />
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --ink-2: #2b2b2b;
+    --muted: #6b7280;
+    --soft: #9ca3af;
+    --bg: #fafafa;
+    --paper: #ffffff;
+    --rule: #e5e7eb;
+    --rule-2: #eef0f3;
+    --panel: #f5f6f8;
+    --sidebar: #0f1f3d;
+    --sidebar-2: #1a2d52;
+    --sidebar-text: rgba(255,255,255,0.92);
+    --sidebar-muted: rgba(255,255,255,0.55);
+    --primary: #0a0a0a;
+    --primary-hover: #262626;
+    --danger: #d23a3a;
+    --focus: #3b82f6;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --shadow-sm: 0 1px 2px rgba(10,15,30,.04), 0 1px 1px rgba(10,15,30,.03);
+    --shadow-md: 0 8px 24px -8px rgba(10,15,30,.12), 0 2px 4px rgba(10,15,30,.04);
+    --shadow-lg: 0 20px 50px -12px rgba(10,15,30,.22), 0 4px 10px rgba(10,15,30,.06);
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--bg);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+  input, textarea, select { font: inherit; color: inherit; }
+  a { color: inherit; }
+
+  /* ─── Layout ──────────────────────────────────────── */
+  .app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ─── Sidebar ─────────────────────────────────────── */
+  .sidebar {
+    background: var(--sidebar);
+    color: var(--sidebar-text);
+    padding: 20px 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+  .brand {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 4px 8px 12px;
+  }
+  .brand-mark {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1b3a74, #2756a8);
+    display: grid; place-items: center;
+    color: #cfe3ff;
+    font-size: 18px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  }
+  .brand-text h1 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: #fff;
+  }
+  .brand-text p {
+    font-size: 12px;
+    color: var(--sidebar-muted);
+  }
+  .nav-label {
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    color: var(--sidebar-muted);
+    text-transform: uppercase;
+    padding: 0 10px;
+    margin-top: 6px;
+  }
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .nav-item {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 10px;
+    border-radius: 10px;
+    color: var(--sidebar-text);
+    text-align: left;
+    transition: background 0.14s ease;
+  }
+  .nav-item:hover { background: rgba(255,255,255,.05); }
+  .nav-item.active {
+    background: #050e22;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.07);
+  }
+  .nav-item .icon {
+    width: 24px; height: 24px;
+    display: grid; place-items: center;
+    color: #9fb8e6;
+    opacity: 0.9;
+  }
+  .nav-item.active .icon { color: #cfe0ff; }
+  .nav-item .meta { min-width: 0; }
+  .nav-item .meta .title {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: -0.005em;
+    line-height: 1.25;
+  }
+  .nav-item .meta .sub {
+    display: block;
+    font-size: 11.5px;
+    color: var(--sidebar-muted);
+    margin-top: 2px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sidebar-foot {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .foot-item {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 9px 10px;
+    border-radius: 10px;
+    color: var(--sidebar-muted);
+    text-align: left;
+    font-size: 13px;
+  }
+  .foot-item:hover { background: rgba(255,255,255,.05); color: #fff; }
+  .foot-item .icon { width: 24px; height: 24px; display: grid; place-items: center; }
+
+  .sidebar-id {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    font-size: 12px;
+    color: var(--sidebar-muted);
+    border-top: 1px solid rgba(255,255,255,.06);
+    margin-top: 8px;
+  }
+  .sidebar-id .av {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: #2756a8;
+    color: #fff;
+    display: grid; place-items: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ─── Main ────────────────────────────────────────── */
+  .main {
+    background: var(--bg);
+    min-width: 0;
+  }
+
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 14px;
+    align-items: center;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--rule-2);
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .search {
+    position: relative;
+    max-width: 580px;
+    width: 100%;
+  }
+  .search svg {
+    position: absolute; top: 50%; left: 14px; transform: translateY(-50%);
+    color: var(--soft);
+  }
+  .search input {
+    width: 100%;
+    height: 40px;
+    padding: 0 14px 0 40px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--panel);
+    outline: none;
+    transition: border-color 0.14s ease, background 0.14s ease;
+  }
+  .search input:focus {
+    border-color: var(--ink);
+    background: var(--paper);
+  }
+  .hint {
+    font-size: 12.5px;
+    color: var(--soft);
+    white-space: nowrap;
+  }
+  .btn {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    padding: 0 14px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease, transform 0.08s ease;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-primary:active { transform: translateY(0.5px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--rule);
+  }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .btn-danger {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid #f3cccc;
+  }
+  .btn-danger:hover { background: #fff5f5; }
+
+  /* ─── Discipline header ───────────────────────────── */
+  .disc-header {
+    padding: 28px 32px 8px;
+  }
+  .disc-header .row1 {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .disc-header h2 {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .disc-header .count {
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  .disc-header p {
+    color: var(--muted);
+    font-size: 13.5px;
+    margin-top: 2px;
+  }
+
+  /* ─── Filter row ──────────────────────────────────── */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 18px 32px 8px;
+    flex-wrap: wrap;
+  }
+  .filter-label {
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+
+  /* ─── Tag chips ───────────────────────────────────── */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    transition: transform 0.08s ease, box-shadow 0.14s ease;
+    cursor: pointer;
+    border: 0;
+    background: #f1f3f6;
+    color: #3f4756;
+  }
+  .chip:hover { box-shadow: 0 0 0 2px rgba(10,15,30,.06); }
+  .chip.active { box-shadow: 0 0 0 2px rgba(10,15,30,.65); }
+  /* colour variants — derived from first letter/common tags */
+  .chip[data-color="purple"] { background:#f0e8ff; color:#6d3fc1; }
+  .chip[data-color="blue"]   { background:#e4efff; color:#2756a8; }
+  .chip[data-color="pink"]   { background:#ffe5ef; color:#b4336f; }
+  .chip[data-color="cyan"]   { background:#def4f3; color:#117373; }
+  .chip[data-color="green"]  { background:#deefd9; color:#2a6b3a; }
+  .chip[data-color="orange"] { background:#ffe6d0; color:#a0531a; }
+  .chip[data-color="amber"]  { background:#fff2cf; color:#8a6412; }
+  .chip[data-color="red"]    { background:#ffe3e1; color:#aa2d2d; }
+  .chip[data-color="grey"]   { background:#eef0f3; color:#3f4756; }
+
+  /* ─── Prompt grid ─────────────────────────────────── */
+  .grid {
+    padding: 14px 32px 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: box-shadow 0.14s ease, border-color 0.14s ease, transform 0.08s ease;
+    text-align: left;
+  }
+  .card:hover {
+    border-color: #d0d5dc;
+    box-shadow: var(--shadow-md);
+  }
+  .card:active { transform: translateY(1px); }
+  .card h3 {
+    font-size: 15.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .card-tags {
+    display: flex; gap: 5px; flex-wrap: wrap;
+  }
+  .card-tags .chip { font-size: 10.5px; padding: 3px 9px; cursor: default; }
+  .card-tags .chip:hover { box-shadow: none; }
+  .card-section {
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .card-section .label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--soft);
+    text-transform: uppercase;
+  }
+  .card-section .preview {
+    font-size: 12.5px;
+    color: var(--ink-2);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card .divider { height: 1px; background: var(--rule-2); }
+  .card .hint-click {
+    font-size: 11.5px;
+    color: var(--soft);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .card-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 2px;
+  }
+  .card-foot .who {
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .card-copy {
+    display: inline-flex; gap: 6px; align-items: center;
+    padding: 6px 12px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 12px;
+    transition: background 0.14s ease;
+  }
+  .card-copy:hover { background: #262626; }
+  .card-copy.done { background: #16a34a; }
+
+  /* ─── Empty state ─────────────────────────────────── */
+  .empty {
+    padding: 48px 32px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .empty h3 {
+    font-size: 16px; color: var(--ink); margin-bottom: 6px;
+  }
+  .empty .cta { margin-top: 18px; display: inline-flex; }
+
+  /* ─── Modal ───────────────────────────────────────── */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(8, 12, 24, 0.42);
+    display: grid; place-items: center;
+    padding: 40px 20px;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 0.14s ease;
+    pointer-events: none;
+  }
+  .overlay.open { opacity: 1; pointer-events: auto; }
+  .modal {
+    background: var(--paper);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 720px;
+    max-height: calc(100vh - 80px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(8px);
+    transition: transform 0.18s ease;
+  }
+  .overlay.open .modal { transform: translateY(0); }
+  .modal-head {
+    padding: 22px 26px 12px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+    align-items: start;
+  }
+  .modal-head h3 {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .modal .close {
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    border-radius: 8px;
+    color: var(--muted);
+  }
+  .modal .close:hover { background: var(--panel); color: var(--ink); }
+  .modal-body {
+    padding: 0 26px 10px;
+    overflow: auto;
+    flex: 1;
+  }
+  .modal-tags {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    padding: 0 26px 20px;
+  }
+  .modal-section { margin-bottom: 18px; }
+  .modal-section .sec-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--soft);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .modal-section .sec-body {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    white-space: pre-wrap;
+  }
+  .modal-foot {
+    padding: 14px 22px;
+    border-top: 1px solid var(--rule-2);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  .modal-foot .left {
+    margin-right: auto; display: flex; gap: 10px;
+  }
+
+  /* ─── Edit form ───────────────────────────────────── */
+  .form-grid {
+    display: grid;
+    gap: 14px;
+    padding: 4px 0 6px;
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .field .required { color: var(--danger); }
+  .field input[type="text"],
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--rule);
+    border-radius: 9px;
+    background: var(--paper);
+    outline: none;
+    transition: border-color 0.14s ease;
+  }
+  .field input[type="text"]:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--ink);
+  }
+  .field textarea {
+    min-height: 68px;
+    resize: vertical;
+    font: inherit;
+  }
+  .field .help {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .rtccf-head {
+    padding-top: 10px;
+    border-top: 1px solid var(--rule-2);
+    margin-top: 8px;
+  }
+  .rtccf-head h4 {
+    font-size: 13.5px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .rtccf-head p {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+
+  /* ─── Toast ───────────────────────────────────────── */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--ink);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 100;
+    pointer-events: none;
+    box-shadow: var(--shadow-md);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ─── Responsive ──────────────────────────────────── */
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: static;
+      height: auto;
+      padding: 16px;
+    }
+    .sidebar-foot { display: none; }
+    .sidebar-id { display: none; }
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 6px;
+    }
+    .nav-item .meta .sub { display: none; }
+    .nav-label { display: none; }
+    .brand { padding-bottom: 8px; }
+    .topbar {
+      grid-template-columns: 1fr auto;
+      padding: 14px 20px;
+    }
+    .hint { display: none; }
+    .disc-header, .filter-row, .grid { padding-left: 20px; padding-right: 20px; }
+    .grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .modal-head, .modal-tags, .modal-body { padding-left: 20px; padding-right: 20px; }
+  }
+
+  /* Portfolio-return pill — tucked into the topbar, scrolls with it */
+  .back-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.14s ease, border-color 0.14s ease;
+    white-space: nowrap;
+  }
+  .back-pill:hover { color: var(--ink); border-color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2 13.8 8.2 20 10 13.8 11.8 12 18 10.2 11.8 4 10 10.2 8.2z" opacity=".9"/><circle cx="18" cy="5" r="1.5"/><circle cx="5" cy="18" r="1.2"/></svg>
+      </div>
+      <div class="brand-text">
+        <h1>Prompt Library</h1>
+        <p>Design Team</p>
+      </div>
+    </div>
+
+    <div class="nav-label">Disciplines</div>
+    <nav class="nav" id="nav"></nav>
+
+    <div class="sidebar-foot">
+      <button class="foot-item" type="button" id="exportBtn" title="Download the current library as prompts.json">
+        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+        <span>Export JSON</span>
+      </button>
+      <button class="foot-item" type="button" id="importBtn" title="Replace the library with prompts from a JSON file">
+        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+        <span>Import JSON</span>
+      </button>
+      <button class="foot-item" type="button" id="resetBtn" title="Discard your edits and reload from assets/prompts.json">
+        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></span>
+        <span>Reset from source</span>
+      </button>
+      <input type="file" id="importFile" accept="application/json,.json" hidden />
+      <div class="sidebar-id">
+        <div class="av">AN</div>
+        <div>You · reading &amp; writing</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="searchInput" type="search" placeholder="Search prompts, disciplines, or tags…" autocomplete="off" />
+      </div>
+      <span class="hint">Click cards to view details</span>
+      <button class="btn btn-primary" id="addBtn">+ Add Prompt</button>
+      <a class="back-pill" href="prompt-library.html">← Back to case</a>
+    </header>
+
+    <div class="disc-header">
+      <div class="row1">
+        <h2 id="discTitle">UX Research</h2>
+        <span class="count" id="discCount"></span>
+      </div>
+      <p id="discSub">Surveys, interviews, synthesis</p>
+    </div>
+
+    <div class="filter-row">
+      <span class="filter-label">Filter:</span>
+      <div id="tagFilters" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    </div>
+
+    <div id="grid" class="grid"></div>
+    <div id="empty" class="empty" hidden></div>
+  </main>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="overlay" id="detailOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <header class="modal-head">
+      <h3 id="detailTitle"></h3>
+      <button class="close" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </header>
+    <div class="modal-tags" id="detailTags"></div>
+    <div class="modal-body" id="detailBody"></div>
+    <footer class="modal-foot">
+      <div class="left">
+        <button class="btn btn-ghost" id="editBtn">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+          Edit
+        </button>
+        <button class="btn btn-danger" id="deleteBtn">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+          Delete
+        </button>
+      </div>
+      <button class="btn btn-primary" id="copyBtn">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy Prompt
+      </button>
+    </footer>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="overlay" id="editOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+    <header class="modal-head">
+      <h3 id="editTitle">Add New Prompt</h3>
+      <button class="close" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </header>
+    <div class="modal-body">
+      <form id="editForm" class="form-grid" autocomplete="off">
+        <div class="two-col">
+          <div class="field">
+            <label>Prompt Title <span class="required">*</span></label>
+            <input type="text" name="title" required maxlength="80" />
+          </div>
+          <div class="field">
+            <label>Author <span class="required">*</span></label>
+            <input type="text" name="author" required value="AN" maxlength="30" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Discipline</label>
+          <select name="discipline" id="editDiscipline"></select>
+        </div>
+        <div class="rtccf-head">
+          <h4>RTCCF Framework</h4>
+          <p>Structure your prompt using the Role, Task, Context, Constraints, Format framework</p>
+        </div>
+        <div class="field">
+          <label>ROLE <span class="required">*</span></label>
+          <textarea name="role" required placeholder="You are a …"></textarea>
+        </div>
+        <div class="field">
+          <label>TASK <span class="required">*</span></label>
+          <textarea name="task" required placeholder="Do …"></textarea>
+        </div>
+        <div class="field">
+          <label>CONTEXT</label>
+          <textarea name="context" placeholder="The situation, the users, the surface"></textarea>
+        </div>
+        <div class="field">
+          <label>CONSTRAINTS</label>
+          <textarea name="constraints" placeholder="Rules, limits, what not to do"></textarea>
+        </div>
+        <div class="field">
+          <label>FORMAT</label>
+          <textarea name="format" placeholder="What the output should look like"></textarea>
+        </div>
+        <div class="field">
+          <label>Tags</label>
+          <input type="text" name="tags" placeholder="comma-separated · e.g. discovery-sprint, synthesis" />
+          <div class="help">Lowercase, hyphenated. Comma-separate multiple.</div>
+        </div>
+      </form>
+    </div>
+    <footer class="modal-foot">
+      <button class="btn btn-ghost" data-close type="button">Cancel</button>
+      <button class="btn btn-primary" id="saveBtn" type="button">Save</button>
+    </footer>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ────────────────────────────────────────────────────────── */
+/*  Prompt Library — static, localStorage-backed, no auth    */
+/* ────────────────────────────────────────────────────────── */
+
+const DISCIPLINES = [
+  { id:'ux-research',     title:'UX Research',        sub:'Surveys, interviews, synthesis',  icon:'ux' },
+  { id:'writing',         title:'Writing',            sub:'Copy, content, documentation',     icon:'pen' },
+  { id:'design-systems',  title:'Design Systems',     sub:'Tokens, components, patterns',     icon:'stack' },
+  { id:'prototyping',     title:'Prototyping',        sub:'Flows, interactions, wireframes',  icon:'bolt' },
+  { id:'design-engineering', title:'Design Engineering', sub:'Code, handoff, implementation',    icon:'code' },
+];
+
+const SEED = []; // real library is fetched from assets/prompts.json
+
+/* ─── State & storage ─────────────────────────────── */
+const STORAGE_KEY   = 'prompt-library-v2';
+const SOURCE_URL    = 'assets/prompts.json'; // single source of truth
+let state = {
+  discipline: 'ux-research',
+  search: '',
+  tagFilter: null,
+  prompts: [],
+  editingId: null,
+  viewingId: null,
+  loaded: false,
+};
+
+async function loadPrompts() {
+  // Local edits win if present. Otherwise fetch the canonical library.
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch {}
+  try {
+    const res = await fetch(SOURCE_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('fetch ' + res.status);
+    const doc = await res.json();
+    return Array.isArray(doc) ? doc : (doc.prompts || []);
+  } catch (e) {
+    console.warn('could not load prompts.json', e);
+    return [];
+  }
+}
+function persist() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.prompts)); }
+  catch (e) { console.warn('persist failed', e); }
+}
+
+/* ─── Export / Import — keeps prompts.json as the source of truth ── */
+function exportPrompts() {
+  const doc = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    count: state.prompts.length,
+    prompts: state.prompts,
+  };
+  const blob = new Blob([JSON.stringify(doc, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'prompts.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  toast('Downloaded prompts.json');
+}
+function importPromptsFile(file) {
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const doc = JSON.parse(r.result);
+      const incoming = Array.isArray(doc) ? doc : (doc.prompts || []);
+      if (!Array.isArray(incoming) || incoming.length === 0) {
+        toast('That file has no prompts in it');
+        return;
+      }
+      if (!confirm(`Replace the current library with ${incoming.length} prompts from this file?`)) return;
+      state.prompts = incoming;
+      persist();
+      render();
+      toast(`Imported ${incoming.length} prompts`);
+    } catch {
+      toast('Could not read that file as JSON');
+    }
+  };
+  r.readAsText(file);
+}
+function resetToSource() {
+  if (!confirm('Discard your edits and reload from assets/prompts.json?')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch {}
+  loadPrompts().then(ps => {
+    state.prompts = ps; render();
+    toast('Reloaded from prompts.json');
+  });
+}
+
+/* ─── Tag colour palette ──────────────────────────── */
+const COLOR_FOR_TAG = {};
+const PALETTE = ['purple','blue','pink','cyan','green','orange','amber','red'];
+function colorFor(tag) {
+  if (COLOR_FOR_TAG[tag]) return COLOR_FOR_TAG[tag];
+  // deterministic hash → palette index
+  let h = 0; for (const ch of tag) h = (h*31 + ch.charCodeAt(0)) >>> 0;
+  COLOR_FOR_TAG[tag] = PALETTE[h % PALETTE.length];
+  return COLOR_FOR_TAG[tag];
+}
+
+/* ─── Icons ───────────────────────────────────────── */
+function discIcon(id) {
+  const stroke = 'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
+  const map = {
+    'ux':    `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" ${stroke}><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6M11 8v6" opacity=".7"/></svg>`,
+    'pen':   `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" ${stroke}><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>`,
+    'stack': `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" ${stroke}><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>`,
+    'bolt':  `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" ${stroke}><path d="M13 2 3 14h9l-1 8 10-12h-9Z"/></svg>`,
+    'code':  `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" ${stroke}><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>`,
+  };
+  return map[id] || map.ux;
+}
+
+/* ─── Render ──────────────────────────────────────── */
+const $ = (sel, root=document) => root.querySelector(sel);
+
+function renderNav() {
+  const nav = $('#nav');
+  nav.innerHTML = '';
+  for (const d of DISCIPLINES) {
+    const btn = document.createElement('button');
+    btn.className = 'nav-item' + (d.id === state.discipline ? ' active' : '');
+    btn.type = 'button';
+    btn.innerHTML = `
+      <span class="icon">${discIcon(d.icon)}</span>
+      <span class="meta"><span class="title">${d.title}</span><span class="sub">${d.sub}</span></span>
+    `;
+    btn.addEventListener('click', () => {
+      state.discipline = d.id;
+      state.tagFilter = null;
+      render();
+    });
+    nav.appendChild(btn);
+  }
+}
+
+function visiblePrompts() {
+  const q = state.search.trim().toLowerCase();
+  return state.prompts.filter(p => {
+    if (p.discipline !== state.discipline && !q) return false;
+    if (q) {
+      const hay = (p.title + ' ' + p.role + ' ' + p.task + ' ' + (p.tags||[]).join(' ') + ' ' + disciplineTitle(p.discipline)).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    if (state.tagFilter && !(p.tags||[]).includes(state.tagFilter)) return false;
+    return true;
+  });
+}
+
+function disciplineTitle(id) { return (DISCIPLINES.find(d => d.id === id) || {}).title || id; }
+function disciplineSub(id)   { return (DISCIPLINES.find(d => d.id === id) || {}).sub || ''; }
+
+function renderDiscHeader() {
+  const current = state.search.trim()
+    ? { title: 'Search results', sub: `for "${state.search.trim()}"` }
+    : { title: disciplineTitle(state.discipline), sub: disciplineSub(state.discipline) };
+  $('#discTitle').textContent = current.title;
+  $('#discSub').textContent = current.sub;
+  const count = visiblePrompts().length;
+  $('#discCount').textContent = `${count} ${count === 1 ? 'prompt' : 'prompts'}`;
+}
+
+function renderTagFilters() {
+  const wrap = $('#tagFilters');
+  // tags for the current discipline (or search-scope)
+  const pool = state.search.trim() ? state.prompts : state.prompts.filter(p => p.discipline === state.discipline);
+  const freq = {};
+  for (const p of pool) for (const t of (p.tags||[])) freq[t] = (freq[t]||0)+1;
+  const tags = Object.keys(freq).sort((a,b) => freq[b]-freq[a]).slice(0, 14);
+  wrap.innerHTML = '';
+  if (tags.length === 0) { wrap.closest('.filter-row').hidden = true; return; }
+  wrap.closest('.filter-row').hidden = false;
+  for (const t of tags) {
+    const chip = document.createElement('button');
+    chip.className = 'chip' + (state.tagFilter === t ? ' active' : '');
+    chip.type = 'button';
+    chip.dataset.color = colorFor(t);
+    chip.textContent = t;
+    chip.addEventListener('click', () => {
+      state.tagFilter = state.tagFilter === t ? null : t;
+      render();
+    });
+    wrap.appendChild(chip);
+  }
+}
+
+function tagChipHTML(t, max=3) {
+  return `<span class="chip" data-color="${colorFor(t)}">${t}</span>`;
+}
+
+function renderGrid() {
+  const grid = $('#grid'); grid.innerHTML = '';
+  const items = visiblePrompts();
+  if (items.length === 0) {
+    $('#empty').hidden = false;
+    $('#empty').innerHTML = `
+      <h3>No prompts here yet</h3>
+      <p>Add one — it stays in your browser, private to you.</p>
+      <div class="cta"><button class="btn btn-primary" onclick="openEdit()">+ Add Prompt</button></div>
+    `;
+    grid.hidden = true; return;
+  }
+  grid.hidden = false; $('#empty').hidden = true;
+  for (const p of items) {
+    const tags = p.tags || [];
+    const shown = tags.slice(0, 3).map(t => tagChipHTML(t)).join('');
+    const overflow = tags.length > 3 ? `<span class="chip" data-color="grey">+${tags.length - 3}</span>` : '';
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <h3>${esc(p.title)}</h3>
+      <div class="card-tags">${shown}${overflow}</div>
+      <div class="card-section"><span class="label">Role</span><span class="preview">${esc(p.role)}</span></div>
+      <div class="card-section"><span class="label">Task</span><span class="preview">${esc(p.task)}</span></div>
+      <div class="divider"></div>
+      <span class="hint-click">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        Click to view full prompt details
+      </span>
+      <div class="card-foot">
+        <span class="who">${esc(p.author || 'AN')} · ${formatDate(p.date)}</span>
+        <button class="card-copy" type="button" data-id="${p.id}">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Prompt
+        </button>
+      </div>
+    `;
+    // open detail
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.card-copy')) return;
+      openDetail(p.id);
+    });
+    // copy
+    card.querySelector('.card-copy').addEventListener('click', (e) => {
+      e.stopPropagation();
+      copyPrompt(p.id, e.currentTarget);
+    });
+    grid.appendChild(card);
+  }
+}
+
+function render() {
+  renderNav();
+  renderDiscHeader();
+  renderTagFilters();
+  renderGrid();
+}
+
+/* ─── Detail modal ────────────────────────────────── */
+function openDetail(id) {
+  const p = state.prompts.find(x => x.id === id);
+  if (!p) return;
+  state.viewingId = id;
+  $('#detailTitle').textContent = p.title;
+  $('#detailTags').innerHTML = (p.tags||[]).map(t => tagChipHTML(t)).join('');
+  const body = $('#detailBody');
+  body.innerHTML = '';
+  const fields = [
+    ['Role', p.role], ['Task', p.task], ['Context', p.context],
+    ['Constraints', p.constraints], ['Format', p.format],
+  ];
+  for (const [label, text] of fields) {
+    if (!text || !text.trim()) continue;
+    const sec = document.createElement('div');
+    sec.className = 'modal-section';
+    sec.innerHTML = `<div class="sec-label">${label}</div><div class="sec-body">${esc(text)}</div>`;
+    body.appendChild(sec);
+  }
+  openOverlay('detailOverlay');
+}
+
+/* ─── Edit modal ──────────────────────────────────── */
+function openEdit(id) {
+  state.editingId = id || null;
+  const sel = $('#editDiscipline'); sel.innerHTML = '';
+  for (const d of DISCIPLINES) {
+    const opt = document.createElement('option');
+    opt.value = d.id; opt.textContent = d.title;
+    sel.appendChild(opt);
+  }
+  const form = $('#editForm');
+  form.reset();
+  if (id) {
+    const p = state.prompts.find(x => x.id === id);
+    if (!p) return;
+    $('#editTitle').textContent = 'Edit prompt';
+    form.title.value = p.title;
+    form.author.value = p.author || 'AN';
+    form.discipline.value = p.discipline;
+    form.role.value = p.role || '';
+    form.task.value = p.task || '';
+    form.context.value = p.context || '';
+    form.constraints.value = p.constraints || '';
+    form.format.value = p.format || '';
+    form.tags.value = (p.tags || []).join(', ');
+  } else {
+    $('#editTitle').textContent = 'Add new prompt';
+    form.discipline.value = state.discipline;
+    form.author.value = 'AN';
+  }
+  closeOverlay('detailOverlay');
+  openOverlay('editOverlay');
+  setTimeout(() => form.title.focus(), 100);
+}
+
+function savePrompt() {
+  const form = $('#editForm');
+  const data = Object.fromEntries(new FormData(form).entries());
+  // basic validation
+  if (!data.title.trim() || !data.author.trim() || !data.role.trim() || !data.task.trim()) {
+    toast('Title, Author, Role and Task are required');
+    return;
+  }
+  const tags = (data.tags || '')
+    .split(',').map(s => s.trim().toLowerCase().replace(/\s+/g,'-')).filter(Boolean);
+  if (state.editingId) {
+    const p = state.prompts.find(x => x.id === state.editingId);
+    Object.assign(p, {
+      title: data.title.trim(), author: data.author.trim(),
+      discipline: data.discipline, role: data.role, task: data.task,
+      context: data.context, constraints: data.constraints, format: data.format,
+      tags,
+    });
+    toast('Prompt updated');
+  } else {
+    state.prompts.unshift({
+      id: 'p' + Date.now().toString(36),
+      discipline: data.discipline,
+      title: data.title.trim(),
+      author: data.author.trim(),
+      date: new Date().toISOString().slice(0,10),
+      tags,
+      role: data.role, task: data.task, context: data.context,
+      constraints: data.constraints, format: data.format,
+    });
+    state.discipline = data.discipline;
+    toast('Prompt added');
+  }
+  persist();
+  closeOverlay('editOverlay');
+  render();
+}
+
+function deletePrompt(id) {
+  if (!confirm('Delete this prompt? This can\'t be undone.')) return;
+  state.prompts = state.prompts.filter(p => p.id !== id);
+  persist();
+  closeOverlay('detailOverlay');
+  render();
+  toast('Prompt deleted');
+}
+
+/* ─── Copy ────────────────────────────────────────── */
+function assemble(p) {
+  const bits = [];
+  if (p.role)        bits.push('ROLE\n' + p.role.trim());
+  if (p.task)        bits.push('TASK\n' + p.task.trim());
+  if (p.context)     bits.push('CONTEXT\n' + p.context.trim());
+  if (p.constraints) bits.push('CONSTRAINTS\n' + p.constraints.trim());
+  if (p.format)      bits.push('FORMAT\n' + p.format.trim());
+  return bits.join('\n\n');
+}
+async function copyPrompt(id, btn) {
+  const p = state.prompts.find(x => x.id === id);
+  if (!p) return;
+  const text = assemble(p);
+  try { await navigator.clipboard.writeText(text); }
+  catch { fallbackCopy(text); }
+  toast('Prompt copied');
+  if (btn) {
+    btn.classList.add('done');
+    const prev = btn.innerHTML;
+    btn.innerHTML = `
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Copied
+    `;
+    setTimeout(() => { btn.classList.remove('done'); btn.innerHTML = prev; }, 1600);
+  }
+}
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); } catch {}
+  document.body.removeChild(ta);
+}
+
+/* ─── Overlay helpers ─────────────────────────────── */
+function openOverlay(id) {
+  const o = $('#'+id);
+  o.classList.add('open');
+  o.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeOverlay(id) {
+  const o = $('#'+id);
+  o.classList.remove('open');
+  o.setAttribute('aria-hidden', 'true');
+  if (!document.querySelector('.overlay.open')) document.body.style.overflow = '';
+}
+
+/* ─── Toast ───────────────────────────────────────── */
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+/* ─── Utilities ───────────────────────────────────── */
+function esc(s) { return String(s || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function formatDate(iso) {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+  } catch { return iso; }
+}
+
+/* ─── Service worker (PWA) ───────────────────────── */
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('prompt-library-sw.js', { scope: './' })
+      .catch(err => console.warn('SW registration failed', err));
+  });
+}
+
+/* ─── Wire up ─────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', async () => {
+  state.prompts = await loadPrompts();
+  state.loaded = true;
+  render();
+
+  $('#searchInput').addEventListener('input', (e) => {
+    state.search = e.target.value;
+    render();
+  });
+  $('#addBtn').addEventListener('click', () => openEdit());
+  $('#exportBtn')?.addEventListener('click', exportPrompts);
+  $('#importBtn')?.addEventListener('click', () => $('#importFile').click());
+  $('#importFile')?.addEventListener('change', (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (f) importPromptsFile(f);
+    e.target.value = '';
+  });
+  $('#resetBtn')?.addEventListener('click', resetToSource);
+
+  // modals
+  document.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', () => {
+      closeOverlay('detailOverlay');
+      closeOverlay('editOverlay');
+    });
+  });
+  document.querySelectorAll('.overlay').forEach(ov => {
+    ov.addEventListener('click', (e) => {
+      if (e.target === ov) {
+        closeOverlay('detailOverlay');
+        closeOverlay('editOverlay');
+      }
+    });
+  });
+
+  $('#editBtn').addEventListener('click', () => {
+    if (state.viewingId) openEdit(state.viewingId);
+  });
+  $('#deleteBtn').addEventListener('click', () => {
+    if (state.viewingId) deletePrompt(state.viewingId);
+  });
+  $('#copyBtn').addEventListener('click', () => {
+    if (state.viewingId) copyPrompt(state.viewingId, $('#copyBtn'));
+  });
+  $('#saveBtn').addEventListener('click', savePrompt);
+  $('#editForm').addEventListener('submit', (e) => { e.preventDefault(); savePrompt(); });
+
+  // keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeOverlay('detailOverlay');
+      closeOverlay('editOverlay');
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="format-detection" content="telephone=no" />
   <title>Prompt Library · Anastasiia Nikitina</title>
-  <meta name="description" content="A small library of named, versioned prompts that turned AI from a daily experiment into a daily habit — built in Figma Make on a Supabase backend." />
+  <meta name="description" content="A small internal library of named, versioned RTCCF prompts for the design team — disciplines, tags, search, Copy Prompt." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -32,10 +32,10 @@
   </header>
 
   <figure class="case-banner">
-    <img src="assets/case/pl-hero.png" alt="Prompt Library — a Supabase-backed prompt library built in Figma Make" />
-    <figcaption data-en="An internal prompt library for the design team — disciplines, tags, search, sign-in. Built in Figma Make with three prompts."
-                data-no="Et internt prompt-bibliotek for designteamet — disipliner, tagger, søk, innlogging. Bygget i Figma Make med tre prompts.">
-      An internal prompt library for the design team — disciplines, tags, search, sign-in. Built in Figma Make with three prompts.
+    <img src="assets/case/pl-hero.png" alt="Prompt Library — an internal RTCCF prompt library used by the design team" />
+    <figcaption data-en="An internal prompt library for the design team — disciplines, tags, search, RTCCF end to end."
+                data-no="Et internt prompt-bibliotek for designteamet — disipliner, tagger, søk, RTCCF fra ende til ende.">
+      An internal prompt library for the design team — disciplines, tags, search, RTCCF end to end.
     </figcaption>
   </figure>
 
@@ -61,19 +61,19 @@
         <span class="label" data-en="Years" data-no="År">Years</span>
         <span class="value">
           <strong>Q1 2026 · live</strong>
-          <span class="aside" data-en="built alongside Memorisely AI Design + AI Coding"
-                              data-no="bygget parallelt med Memorisely AI Design + AI Coding">built alongside Memorisely AI Design + AI Coding</span>
+          <span class="aside" data-en="used by the design team daily"
+                              data-no="brukt av designteamet daglig">used by the design team daily</span>
         </span>
       </div>
       <div class="cell">
         <span class="label" data-en="Stack" data-no="Stack">Stack</span>
-        <span class="value" data-en="Figma Make · Supabase (CRUD + auth)"
-                            data-no="Figma Make · Supabase (CRUD + auth)">Figma Make · Supabase (CRUD + auth)</span>
+        <span class="value" data-en="Claude Code · vanilla HTML/JS · localStorage"
+                            data-no="Claude Code · vanilla HTML/JS · localStorage">Claude Code · vanilla HTML/JS · localStorage</span>
       </div>
       <div class="cell">
         <span class="label" data-en="My role" data-no="Min rolle">My role</span>
-        <span class="value" data-en="Solo · three prompts to ship the whole app"
-                            data-no="Alene · tre prompts for å levere hele appen">Solo · three prompts to ship the whole app</span>
+        <span class="value" data-en="Solo · design and the prompt that built it"
+                            data-no="Alene · design og prompten som bygde det">Solo · design and the prompt that built it</span>
       </div>
       <div class="cell">
         <span class="label" data-en="In one line" data-no="På én linje">In one line</span>
@@ -89,9 +89,9 @@
           data-no="Designere går ikke tom for ideer — de går tom for struktur. Uten den er det første svaret overflatisk, og vi brenner tokens på å fikse det.">
         Designers don't run out of ideas — they run out of structure. Without it, the first reply is surface-level and we burn tokens fixing it.
       </h2>
-      <p data-en="The team writes prompts every week, but each person writes them differently — same designer, different shape every time. So I picked two frameworks for the team to share: RTCCF (Role, Task, Context, Constraints, Format) as the front-loaded shape for the first prompt, and PRISM for the follow-ups that come after — review what's been built, iterate on one thing, specify exactly what you want, maintain what's already working. Then I built the library to hold them — in Figma Make, with three prompts, in the same RTCCF shape end to end."
-         data-no="Teamet skriver prompts hver uke, men hver person skriver dem ulikt — samme designer, ulik form hver gang. Så jeg valgte to rammeverk teamet skulle dele: RTCCF (Role, Task, Context, Constraints, Format) som den frontlastede formen for første prompt, og PRISM for oppfølgingene som kommer etter — gjennomgå det som er bygget, iterer på én ting, spesifiser nøyaktig hva du vil ha, behold det som allerede fungerer. Så bygde jeg biblioteket som holder dem — i Figma Make, med tre prompts, i samme RTCCF-form fra ende til ende.">
-        The team writes prompts every week, but each person writes them differently — same designer, different shape every time. So I picked two frameworks for the team to share: RTCCF (Role, Task, Context, Constraints, Format) as the front-loaded shape for the first prompt, and PRISM for the follow-ups that come after — review what's been built, iterate on one thing, specify exactly what you want, maintain what's already working. Then I built the library to hold them — in Figma Make, with three prompts, in the same RTCCF shape end to end.
+      <p data-en="The team writes prompts every week, but each person writes them differently — same designer, different shape every time. So I picked two frameworks for the team to share: RTCCF (Role, Task, Context, Constraints, Format) as the front-loaded shape for the first prompt, and PRISM for the follow-ups that come after — review what's been built, iterate on one thing, specify exactly what you want, maintain what's already working. Then I built the library to hold them — one RTCCF prompt in, a working app out, in the same shape end to end."
+         data-no="Teamet skriver prompts hver uke, men hver person skriver dem ulikt — samme designer, ulik form hver gang. Så jeg valgte to rammeverk teamet skulle dele: RTCCF (Role, Task, Context, Constraints, Format) som den frontlastede formen for første prompt, og PRISM for oppfølgingene som kommer etter — gjennomgå det som er bygget, iterer på én ting, spesifiser nøyaktig hva du vil ha, behold det som allerede fungerer. Så bygde jeg biblioteket som holder dem — én RTCCF-prompt inn, en fungerende app ut, i samme form fra ende til ende.">
+        The team writes prompts every week, but each person writes them differently — same designer, different shape every time. So I picked two frameworks for the team to share: RTCCF (Role, Task, Context, Constraints, Format) as the front-loaded shape for the first prompt, and PRISM for the follow-ups that come after — review what's been built, iterate on one thing, specify exactly what you want, maintain what's already working. Then I built the library to hold them — one RTCCF prompt in, a working app out, in the same shape end to end.
       </p>
     </section>
 
@@ -107,112 +107,87 @@
     <!-- 02 WHAT'S INSIDE -->
     <section id="inside" class="sf-section">
       <span class="case-eyebrow ai" data-en="02 · What's inside" data-no="02 · Det som er inni">02 · What's inside</span>
-      <h2 data-en="A working library — five disciplines, search, tags, sign-in"
-          data-no="Et fungerende bibliotek — fem disipliner, søk, tagger, innlogging">
-        A working library — five disciplines, search, tags, sign-in
+      <h2 data-en="A working library — five disciplines, search, tags, instant copy"
+          data-no="Et fungerende bibliotek — fem disipliner, søk, tagger, kopier med ett klikk">
+        A working library — five disciplines, search, tags, instant copy
       </h2>
 
       <ul class="sf-ai-list"
-          data-en-html="<li><strong>Sidebar disciplines.</strong> UX Research, Writing, Design Systems, Prototyping, Design Engineering — each with a short subtitle and icon. Settings and Help &amp; Support pinned to the bottom.</li><li><strong>Top bar.</strong> Search across title, discipline and tags. A primary “+ Add Prompt” CTA.</li><li><strong>Prompt cards.</strong> Title, tag chips (with “+N” overflow), ROLE and TASK previews (truncated), author, date, “Copy Prompt”.</li><li><strong>Detail + modal.</strong> Full RTCCF sections (Role, Task, Context, Constraints, Format) — Edit and Delete on the detail, Save and Cancel on Add / Edit.</li><li><strong>Filters that compose.</strong> Tag chips filter the visible grid · the sidebar discipline filters what loads · search filters across all three.</li><li><strong>Copy Prompt.</strong> Copies the full assembled prompt (every filled RTCCF section, labelled) to clipboard with a brief confirmation.</li><li><strong>Team-only auth.</strong> Email + password sign-in via Supabase. Only the design team reads or writes.</li>"
-          data-no-html="<li><strong>Sidebar-disipliner.</strong> UX Research, Writing, Design Systems, Prototyping, Design Engineering — hver med kort undertittel og ikon. Settings og Help &amp; Support er festet nederst.</li><li><strong>Toppbar.</strong> Søk på tvers av tittel, disiplin og tagger. En primær «+ Add Prompt»-CTA.</li><li><strong>Prompt-kort.</strong> Tittel, tag-chips (med «+N»-overflow), ROLE- og TASK-forhåndsvisninger (avkortet), forfatter, dato, «Copy Prompt».</li><li><strong>Detalj + modal.</strong> Fulle RTCCF-seksjoner (Role, Task, Context, Constraints, Format) — Edit og Delete i detaljvisningen, Save og Cancel i Add/Edit.</li><li><strong>Filtre som komponerer.</strong> Tag-chips filtrerer det synlige rutenettet · sidebar-disiplinen filtrerer hva som lastes · søk filtrerer på tvers av alle tre.</li><li><strong>Copy Prompt.</strong> Kopierer den fulle sammensatte prompten (hver fylte RTCCF-seksjon, med etikett) til utklippstavlen med en kort bekreftelse.</li><li><strong>Team-only auth.</strong> E-post + passord-innlogging via Supabase. Bare designteamet leser eller skriver.</li>">
-        <li><strong>Sidebar disciplines.</strong> UX Research, Writing, Design Systems, Prototyping, Design Engineering — each with a short subtitle and icon. Settings and Help &amp; Support pinned to the bottom.</li>
+          data-en-html="<li><strong>Sidebar disciplines.</strong> UX Research, Writing, Design Systems, Prototyping, Design Engineering — each with a short subtitle and icon.</li><li><strong>Top bar.</strong> Search across title, discipline and tags. A primary “+ Add Prompt” CTA.</li><li><strong>Prompt cards.</strong> Title, tag chips (with “+N” overflow), ROLE and TASK previews (truncated), author, date, “Copy Prompt”.</li><li><strong>Detail + modal.</strong> Full RTCCF sections (Role, Task, Context, Constraints, Format) — Edit and Delete on the detail, Save and Cancel on Add / Edit.</li><li><strong>Filters that compose.</strong> Tag chips filter the visible grid · the sidebar discipline filters what loads · search filters across all three.</li><li><strong>Copy Prompt.</strong> Copies the full assembled prompt (every filled RTCCF section, labelled) to clipboard with a brief confirmation.</li><li><strong>No backend, no sign-in.</strong> Edits live in your browser (localStorage). Private to your device by default — nothing is sent anywhere.</li>"
+          data-no-html="<li><strong>Sidebar-disipliner.</strong> UX Research, Writing, Design Systems, Prototyping, Design Engineering — hver med kort undertittel og ikon.</li><li><strong>Toppbar.</strong> Søk på tvers av tittel, disiplin og tagger. En primær «+ Add Prompt»-CTA.</li><li><strong>Prompt-kort.</strong> Tittel, tag-chips (med «+N»-overflow), ROLE- og TASK-forhåndsvisninger (avkortet), forfatter, dato, «Copy Prompt».</li><li><strong>Detalj + modal.</strong> Fulle RTCCF-seksjoner (Role, Task, Context, Constraints, Format) — Edit og Delete i detaljvisningen, Save og Cancel i Add/Edit.</li><li><strong>Filtre som komponerer.</strong> Tag-chips filtrerer det synlige rutenettet · sidebar-disiplinen filtrerer hva som lastes · søk filtrerer på tvers av alle tre.</li><li><strong>Copy Prompt.</strong> Kopierer den fulle sammensatte prompten (hver fylte RTCCF-seksjon, med etikett) til utklippstavlen med en kort bekreftelse.</li><li><strong>Ingen backend, ingen innlogging.</strong> Endringer lever i nettleseren din (localStorage). Privat til enheten din som standard — ingenting sendes noe sted.</li>">
+        <li><strong>Sidebar disciplines.</strong> UX Research, Writing, Design Systems, Prototyping, Design Engineering — each with a short subtitle and icon.</li>
         <li><strong>Top bar.</strong> Search across title, discipline and tags. A primary "+ Add Prompt" CTA.</li>
         <li><strong>Prompt cards.</strong> Title, tag chips (with "+N" overflow), ROLE and TASK previews (truncated), author, date, "Copy Prompt".</li>
         <li><strong>Detail + modal.</strong> Full RTCCF sections (Role, Task, Context, Constraints, Format) — Edit and Delete on the detail, Save and Cancel on Add / Edit.</li>
         <li><strong>Filters that compose.</strong> Tag chips filter the visible grid · the sidebar discipline filters what loads · search filters across all three.</li>
         <li><strong>Copy Prompt.</strong> Copies the full assembled prompt (every filled RTCCF section, labelled) to clipboard with a brief confirmation.</li>
-        <li><strong>Team-only auth.</strong> Email + password sign-in via Supabase. Only the design team reads or writes.</li>
+        <li><strong>No backend, no sign-in.</strong> Edits live in your browser (localStorage). Private to your device by default — nothing is sent anywhere.</li>
       </ul>
     </section>
 
-    <!-- 03 THREE PROMPTS -->
+    <!-- 03 ONE PROMPT -->
     <section id="built" class="sf-section">
-      <span class="case-eyebrow built" data-en="03 · Built with three prompts" data-no="03 · Bygget med tre prompts">03 · Built with three prompts</span>
-      <h2 data-en="Three prompts. One library. RTCCF end to end."
-          data-no="Tre prompts. Ett bibliotek. RTCCF fra ende til ende.">
-        Three prompts. One library. RTCCF end to end.
+      <span class="case-eyebrow built" data-en="03 · Built with one prompt" data-no="03 · Bygget med én prompt">03 · Built with one prompt</span>
+      <h2 data-en="One prompt. One library. RTCCF end to end."
+          data-no="Én prompt. Ett bibliotek. RTCCF fra ende til ende.">
+        One prompt. One library. RTCCF end to end.
       </h2>
-      <p data-en="I wrote the three prompts in the same RTCCF + PRISM shape I wanted the team to use. The library then stores team prompts in that shape. The Figma Make file below has the full AI chat history — every wrong turn included."
-         data-no="Jeg skrev de tre promptene i samme RTCCF + PRISM-form jeg ville teamet skulle bruke. Biblioteket lagrer så team-promptene i den formen. Figma Make-filen nedenfor har hele AI-chat-historikken — hvert feiltrinn inkludert.">
-        I wrote the three prompts in the same RTCCF + PRISM shape I wanted the team to use. The library then stores team prompts in that shape. The Figma Make file below has the full AI chat history — every wrong turn included.
+      <p data-en="I wrote the prompt in the same RTCCF + PRISM shape I wanted the team to use. The library then stores team prompts in that shape. The result is the app the Try-it-live button opens."
+         data-no="Jeg skrev prompten i samme RTCCF + PRISM-form jeg ville teamet skulle bruke. Biblioteket lagrer så team-promptene i den formen. Resultatet er appen Try-it-live-knappen åpner.">
+        I wrote the prompt in the same RTCCF + PRISM shape I wanted the team to use. The library then stores team prompts in that shape. The result is the app the Try-it-live button opens.
       </p>
 
-      <div class="sf-decisions">
-        <article class="sf-decision">
-          <span class="signal-tag built" data-en="Prompt 1 · UI + behaviour" data-no="Prompt 1 · UI + adferd">Prompt 1 · UI + behaviour</span>
-          <h3 data-en="The whole library, in one RTCCF prompt"
-              data-no="Hele biblioteket, i én RTCCF-prompt">The whole library, in one RTCCF prompt</h3>
-          <p data-en="One long prompt covering the role (senior product designer + front-end engineer in Figma Make), the task (every screen and interaction the library needed), the context (internal tool, RTCCF as storage shape, clean SaaS aesthetic), the constraints (field order fixed, search across title + discipline + tags, scope = CRUD only, mobile-responsive) and the format (a working Figma Make app)."
-             data-no="Én lang prompt som dekket rollen (senior produktdesigner + front-end-utvikler i Figma Make), oppgaven (hver skjerm og interaksjon biblioteket trengte), konteksten (internt verktøy, RTCCF som lagringsform, ren SaaS-estetikk), begrensningene (felt-rekkefølge låst, søk på tvers av tittel + disiplin + tagger, scope = kun CRUD, mobilresponsiv) og formatet (en fungerende Figma Make-app).">
-            One long prompt covering the role (senior product designer + front-end engineer in Figma Make), the task (every screen and interaction the library needed), the context (internal tool, RTCCF as storage shape, clean SaaS aesthetic), the constraints (field order fixed, search across title + discipline + tags, scope = CRUD only, mobile-responsive) and the format (a working Figma Make app).
-          </p>
-          <details class="prompt-source">
-            <summary data-en="Read the full prompt" data-no="Les hele prompten">Read the full prompt</summary>
+      <article class="sf-decision">
+        <span class="signal-tag built" data-en="The prompt · UI + behaviour + persistence" data-no="Prompten · UI + adferd + lagring">The prompt · UI + behaviour + persistence</span>
+        <h3 data-en="The whole library, in one RTCCF prompt"
+            data-no="Hele biblioteket, i én RTCCF-prompt">The whole library, in one RTCCF prompt</h3>
+        <p data-en="One prompt covering the role (senior product designer + front-end engineer), the task (every screen and interaction the library needed), the context (internal tool, RTCCF as storage shape, clean SaaS aesthetic), the constraints (field order fixed, search across title + discipline + tags, scope = CRUD only, mobile-responsive, no backend, no sign-in) and the format (one standalone HTML file with localStorage)."
+           data-no="Én prompt som dekker rollen (senior produktdesigner + front-end-utvikler), oppgaven (hver skjerm og interaksjon biblioteket trengte), konteksten (internt verktøy, RTCCF som lagringsform, ren SaaS-estetikk), begrensningene (felt-rekkefølge låst, søk på tvers av tittel + disiplin + tagger, scope = kun CRUD, mobilresponsiv, ingen backend, ingen innlogging) og formatet (én standalone HTML-fil med localStorage).">
+          One prompt covering the role (senior product designer + front-end engineer), the task (every screen and interaction the library needed), the context (internal tool, RTCCF as storage shape, clean SaaS aesthetic), the constraints (field order fixed, search across title + discipline + tags, scope = CRUD only, mobile-responsive, no backend, no sign-in) and the format (one standalone HTML file with localStorage).
+        </p>
+        <details class="prompt-source">
+          <summary data-en="Read the full prompt" data-no="Les hele prompten">Read the full prompt</summary>
 <pre>ROLE
-You are a senior product designer and front-end engineer building a polished, production-quality internal web app in Figma Make. You specialize in clean SaaS interfaces with strong information hierarchy and thoughtful interactive states, and you connect front-ends to a Supabase backend for data persistence.
+You are a senior product designer and front-end engineer building a polished, production-quality internal web app as a single standalone HTML file. You specialise in clean SaaS interfaces with strong information hierarchy and thoughtful interactive states.
 
 TASK
-Build a "Prompt Library" web app where a design team stores, browses, and copies reusable AI prompts organized by discipline, backed by a Supabase database for full CRUD (create, read, update, delete). I want to use supabase to create very basic CRUD database to create, read, update and delete prompts. Nothing more needs to be added just this simpe function. The app must include:
+Build a "Prompt Library" web app where a design team stores, browses, and copies reusable AI prompts organised by discipline, with full CRUD (create, read, update, delete) persisted in the browser.
+
+The app must include:
 
 A left sidebar with the workspace name/logo at top and a navigable list of disciplines (UX Research, Writing, Design Systems, Prototyping, Design Engineering), each with a short subtitle and icon. Settings and Help &amp; Support pinned to the bottom.
 A top bar with a search field ("Search prompts, disciplines, or tags…"), a hint ("Click cards to view details"), and a primary "+ Add Prompt" button.
 A main content area showing the selected discipline title, a prompt count, a horizontal "Filter by tags" row of pill chips, and a responsive grid of prompt cards.
 Prompt cards displaying: title, tag pills (with a "+N" overflow chip), a ROLE section and TASK section preview (truncated), a "Click to view full prompt details" link, author name, date, and a "Copy Prompt" button.
 A clickable card that opens the full prompt detail (all RTCCF sections) with Edit and Delete actions.
-An "Add New Prompt" / "Edit Prompt" modal with fields: Prompt Title*, Author*, Discipline (dropdown), and an RTCCF Framework section with a short helper line ("Structure your prompt using the Role, Task, Context, Constraints, Format framework") followed by labeled textareas for ROLE*, TASK*, CONTEXT, CONSTRAINTS, FORMAT, plus a tags input. Save and cancel actions.
+An "Add New Prompt" / "Edit Prompt" modal with fields: Prompt Title*, Author*, Discipline (dropdown), and an RTCCF Framework section with a short helper line ("Structure your prompt using the Role, Task, Context, Constraints, Format framework") followed by labelled textareas for ROLE*, TASK*, CONTEXT, CONSTRAINTS, FORMAT, plus a tags input. Save and Cancel actions.
 
 CONTEXT
-This is an internal tool for a product design team that wants to standardize prompt-writing using the RTCCF framework (Role, Task, Context, Constraints, Format). Every prompt is authored in that structure and persisted in Supabase. The aesthetic is clean and minimal — a modern SaaS dashboard: neutral light background, generous whitespace, subtle card borders, rounded corners, a dark primary button, small uppercase section labels (ROLE, TASK) in muted gray.
+This is an internal tool for a product design team that wants to standardise prompt-writing using the RTCCF framework (Role, Task, Context, Constraints, Format). Every prompt is authored in that structure and persisted in the browser (localStorage). The aesthetic is clean and minimal — a modern SaaS dashboard: dark navy sidebar, light main area, generous whitespace, subtle card borders, rounded corners, a dark primary button, small uppercase section labels (ROLE, TASK) in muted gray, and coloured tag chips derived from the tag text.
 
 CONSTRAINTS
 Use the RTCCF field structure exactly: Role, Task, Context, Constraints, Format — in that order.
 Search filters across title, discipline, and tags. Tag chips filter the visible cards. Discipline sidebar selection filters which prompts load.
-"Copy Prompt" copies the full assembled prompt (all filled RTCCF sections, labeled) to the clipboard with a brief confirmation.
-Single cohesive light theme, mobile-responsive (sidebar collapses, grid reflows to one column). Keep scope to CRUD only — do not add features beyond this.
+"Copy Prompt" copies the full assembled prompt (all filled RTCCF sections, labelled) to the clipboard with a brief confirmation.
+Single cohesive theme, mobile-responsive (sidebar collapses, grid reflows to one column). Keep scope to CRUD only — do not add features beyond this.
+One file. Vanilla JS. localStorage only. No tracking, no network calls after fonts load. Accessible by keyboard; Escape closes modals.
 
 FORMAT
-A working, interactive web app in Figma Make connected to Supabase. Supabase should be used to create very basic CRUD database to create, read, update and delete prompts. Nothing more needs to be added just this simpe function.</pre>
-          </details>
-        </article>
-
-        <article class="sf-decision">
-          <span class="signal-tag ai" data-en="Prompt 2 · Persistence" data-no="Prompt 2 · Persistens">Prompt 2 · Persistence</span>
-          <h3 data-en="Wire Supabase for basic CRUD"
-              data-no="Koble Supabase for grunnleggende CRUD">Wire Supabase for basic CRUD</h3>
-          <p data-en="The follow-up — exactly:"
-             data-no="Oppfølgingen — ordrett:">The follow-up — exactly:</p>
-<pre class="prompt-inline">Supabase should be used to create very basic CRUD database to create, read, update and delete prompts. Nothing more needs to be added just this simpe function.</pre>
-        </article>
-
-        <article class="sf-decision">
-          <span class="signal-tag problem" data-en="Prompt 3 · Team auth" data-no="Prompt 3 · Team-auth">Prompt 3 · Team auth</span>
-          <h3 data-en="Add team-only sign-in"
-              data-no="Legg til innlogging kun for teamet">Add team-only sign-in</h3>
-          <p data-en="The third and last — exactly:"
-             data-no="Den tredje og siste — ordrett:">The third and last — exactly:</p>
-<pre class="prompt-inline">Now we have added CRUD operations using supebase we want to go ahead and add some basic user auth to ensure it's just out team accessing and using our prompt system.</pre>
-        </article>
-      </div>
-
-      <figure class="sf-figure sf-figure-wide" style="margin-top: 32px;">
-        <img src="assets/case/pl-supabase.png" alt="Supabase Table Editor — the key-value store holding every saved prompt" />
-        <figcaption data-en="The Supabase project the second prompt set up — a key-value table holding every saved prompt. Each row is one stored RTCCF prompt."
-                    data-no="Supabase-prosjektet den andre prompten satte opp — en key-value-tabell som holder hver lagret prompt. Hver rad er én lagret RTCCF-prompt.">
-          The Supabase project the second prompt set up — a key-value table holding every saved prompt. Each row is one stored RTCCF prompt.
-        </figcaption>
-      </figure>
+A single standalone HTML file with embedded CSS and JS. On first load, seed the app with ~10 example prompts across all five disciplines so a first-time visitor never lands on an empty state.</pre>
+        </details>
+      </article>
 
       <figure class="sf-figure sf-figure-wide" style="margin-top: 32px;">
         <video controls preload="metadata" playsinline muted poster="assets/case/pl-walkthrough-poster.jpg" aria-label="Walkthrough of the live Prompt Library — disciplines, search, prompt detail, Copy Prompt">
           <source src="assets/case/pl-walkthrough.mp4" type="video/mp4" />
-          <p data-en="Your browser doesn't support embedded video. Open the live library via the credentials below."
-             data-no="Nettleseren din støtter ikke innebygd video. Åpne biblioteket via påloggingen nedenfor.">
-            Your browser doesn't support embedded video. Open the live library via the credentials below.
+          <p data-en="Your browser doesn't support embedded video. Open the live library below."
+             data-no="Nettleseren din støtter ikke innebygd video. Åpne biblioteket nedenfor.">
+            Your browser doesn't support embedded video. Open the live library below.
           </p>
         </video>
-        <figcaption data-en="The library in action — disciplines, search, prompt detail, Copy Prompt. Three prompts in, working app out. The Figma Make file with the full AI chat history is one click away in the credentials below."
-                    data-no="Biblioteket i bruk — disipliner, søk, prompt-detalj, Copy Prompt. Tre prompts inn, fungerende app ut. Figma Make-filen med hele AI-chat-historikken er ett klikk unna i påloggingen nedenfor.">
-          The library in action — disciplines, search, prompt detail, Copy Prompt. Three prompts in, working app out. The Figma Make file with the full AI chat history is one click away in the credentials below.
+        <figcaption data-en="The library in action — disciplines, search, prompt detail, Copy Prompt. One prompt in, a working app out."
+                    data-no="Biblioteket i bruk — disipliner, søk, prompt-detalj, Copy Prompt. Én prompt inn, en fungerende app ut.">
+          The library in action — disciplines, search, prompt detail, Copy Prompt. One prompt in, a working app out.
         </figcaption>
       </figure>
     </section>
@@ -220,78 +195,20 @@ A working, interactive web app in Figma Make connected to Supabase. Supabase sho
     <!-- 04 TRY IT LIVE -->
     <section id="try" class="sf-section">
       <span class="case-eyebrow" data-en="04 · Try it live" data-no="04 · Prøv det">04 · Try it live</span>
-      <h2 data-en="Sign in and have a look"
-          data-no="Logg inn og ta en titt">
-        Sign in and have a look
+      <h2 data-en="Open the library — no sign-in, nothing to install"
+          data-no="Åpne biblioteket — ingen innlogging, ingenting å installere">
+        Open the library — no sign-in, nothing to install
       </h2>
-      <p data-en="Copy the credentials below, open the URL, and you're in — the same library the design team uses every day. Browse the disciplines, open a prompt, see RTCCF in the wild. The Figma Make link at the bottom opens the build file with the full AI chat history if you want to see how it was made."
-         data-no="Kopier påloggingen nedenfor, åpne URL-en, og du er inne — det samme biblioteket designteamet bruker hver dag. Bla gjennom disiplinene, åpne en prompt, se RTCCF i bruk. Figma Make-lenken nederst åpner byggefilen med hele AI-chat-historikken hvis du vil se hvordan det ble laget.">
-        Copy the credentials below, open the URL, and you're in — the same library the design team uses every day. Browse the disciplines, open a prompt, see RTCCF in the wild. The Figma Make link at the bottom opens the build file with the full AI chat history if you want to see how it was made.
+      <p data-en="The library opens straight into the UX Research discipline with 10 seed prompts across all five disciplines. Search, filter by tag, open a prompt, copy the full RTCCF text. Add, edit, delete — your changes live in your browser (localStorage), private to your device."
+         data-no="Biblioteket åpner rett inn i UX Research-disiplinen med 10 seed-prompts fordelt på alle fem disipliner. Søk, filtrer på tag, åpne en prompt, kopier hele RTCCF-teksten. Legg til, rediger, slett — endringene dine lever i nettleseren din (localStorage), privat til enheten din.">
+        The library opens straight into the UX Research discipline with 10 seed prompts across all five disciplines. Search, filter by tag, open a prompt, copy the full RTCCF text. Add, edit, delete — your changes live in your browser (localStorage), private to your device.
       </p>
 
-      <div class="creds-combo">
-        <figure class="creds-thumb">
-          <img src="assets/case/pl-signin.png" alt="Prompt Library sign-in screen — Design Team · Internal Tool, email + password fields, Sign In CTA" />
-        </figure>
-        <dl class="creds creds-inline">
-          <div class="row">
-            <dt data-en="URL" data-no="URL">URL</dt>
-            <dd>
-              <a href="https://prompt-library.figma.site" target="_blank" rel="noopener">prompt-library.figma.site</a>
-              <button type="button" class="copy-btn" data-copy="https://prompt-library.figma.site" aria-label="Copy URL">
-                <svg class="copy-icon copy-icon-default" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="9" y="9" width="13" height="13" rx="2.5"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                <svg class="copy-icon copy-icon-done" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span class="copy-default" data-en="Copy" data-no="Kopier">Copy</span>
-                <span class="copy-done" data-en="Copied" data-no="Kopiert">Copied</span>
-              </button>
-            </dd>
-          </div>
-          <div class="row">
-            <dt data-en="Email" data-no="E-post">Email</dt>
-            <dd>
-              <code>email@gmail.com</code>
-              <button type="button" class="copy-btn" data-copy="email@gmail.com" aria-label="Copy email">
-                <svg class="copy-icon copy-icon-default" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="9" y="9" width="13" height="13" rx="2.5"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                <svg class="copy-icon copy-icon-done" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span class="copy-default" data-en="Copy" data-no="Kopier">Copy</span>
-                <span class="copy-done" data-en="Copied" data-no="Kopiert">Copied</span>
-              </button>
-            </dd>
-          </div>
-          <div class="row">
-            <dt data-en="Password" data-no="Passord">Password</dt>
-            <dd>
-              <code>fv1sP5mS20Q</code>
-              <button type="button" class="copy-btn" data-copy="fv1sP5mS20Q" aria-label="Copy password">
-                <svg class="copy-icon copy-icon-default" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="9" y="9" width="13" height="13" rx="2.5"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                <svg class="copy-icon copy-icon-done" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span class="copy-default" data-en="Copy" data-no="Kopier">Copy</span>
-                <span class="copy-done" data-en="Copied" data-no="Kopiert">Copied</span>
-              </button>
-            </dd>
-          </div>
-          <div class="row">
-            <dt data-en="Build + AI chat" data-no="Bygg + AI-chat">Build + AI chat</dt>
-            <dd><a href="https://www.figma.com/make/Tmb753FaLCyZeScxLgZf26/Prompt-Library-Web-App?t=E16txpXliqQVe7nU-20&amp;fullscreen=1" target="_blank" rel="noopener" data-en="Open the Figma Make file — code + chat history ↗"
-                                                                                                                                                                data-no="Åpne Figma Make-filen — kode + chat-historikk ↗">Open the Figma Make file — code + chat history ↗</a></dd>
-          </div>
-        </dl>
-      </div>
+      <p style="margin-top: 20px;">
+        <a class="btn-pill-dark" href="prompt-library-app.html" target="_blank" rel="noopener"
+           data-en="Open the Prompt Library ↗"
+           data-no="Åpne Prompt-biblioteket ↗">Open the Prompt Library ↗</a>
+      </p>
     </section>
 
   </main>

@@ -1,0 +1,570 @@
+{
+  "version": 1,
+  "exportedAt": "2026-11-03",
+  "count": 33,
+  "prompts": [
+    {
+      "id": "a25e977e-50e3-4aed-bb40-35fe1049544e",
+      "discipline": "ux-research",
+      "title": "Behavioural Breakdown",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "user-behaviour",
+        "triggers"
+      ],
+      "role": "You are a UX researcher mapping a problem into concrete, observable user behaviours.",
+      "task": "Break the problem into observable user behaviours.\nFor each behaviour:\n\nwhat triggers the behaviour\nwhat the user is trying to understand\nwhat information they rely on in the transaction list\nwhere the list falls short\nwhat workaround (if any) they use instead",
+      "context": "Focus on behaviours such as:\n\nchecking status immediately after sending\nreturning multiple times to check progress\nconfirming arrival with the recipient\ntracking expected amounts or timing\nidentifying delays, holds, or issues",
+      "constraints": "Be specific about user actions (e.g. \"opens transfer\", \"messages recipient\", not \"checks status\").\nAvoid abstraction — describe concrete actions.",
+      "format": "For each behaviour, present its trigger, what the user is trying to understand, the information they rely on, where the list falls short, and the workaround they use instead."
+    },
+    {
+      "id": "10a0bf85-6156-4bf1-8014-b99ce50f3b3e",
+      "discipline": "ux-research",
+      "title": "BGOALC User Interview Script",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "bgoalc-framework",
+        "interview-guide",
+        "discovery-sprint",
+        "qualitative-research",
+        "behavioural-research"
+      ],
+      "role": "You are a UX researcher conducting user interviews for a product focused on the transaction list on the home dashboard.",
+      "task": "Create a structured user interview script using the BGOALC framework (Behaviours, Goals, Obstacles, Actions, Logic, Context).  The script should help uncover how users understand, track, and evaluate their international transfers within a transaction list.",
+      "context": "Users rely on the transaction list to understand what is happening with their money. However, the current experience only shows a static record (amount, recipient, status) and lacks clarity around:\n Whether transfers are complete or still in progress\n If any action is required\n Whether outcomes met expectations\n The exchange rate context behind decisions\nThis creates uncertainty, forces users to open individual transactions, and reduces trust and sense of control.",
+      "constraints": "Questions must be open-ended and non-leading\n Avoid asking about solutions or features\n Focus on real past behaviour, not hypothetical scenarios\n Keep questions simple, conversational, and easy to understand\n Ensure full coverage of all BGOALC categories\n Limit to 3–5 high-quality questions per category",
+      "format": "Structure the interview script as follows:\n1. Ice Breaker (2–3 questions)  Light, easy questions to build comfort and context.\n2. Behaviours (3–5 questions) 3. Goals (3–5 questions) 4. Obstacles (3–5 questions) 5. Actions (3–5 questions) 6. Logic (3–5 questions) 7. Context (3–5 questions)\n8. Closing Question (1–2 questions)  Wrap up with a reflective, open-ended question. \nEach question should:\n Be written as a natural interview prompt\n Encourage storytelling and specific examples\n Avoid yes/no answers"
+    },
+    {
+      "id": "81cba4f4-36df-45cc-9598-1cbb9be30e75",
+      "discipline": "ux-research",
+      "title": "Clustering Behaviours into Core User Needs",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "user-needs",
+        "synthesis",
+        "behavioural-grouping"
+      ],
+      "role": "You are a UX researcher synthesizing behaviours into structured, prioritized user needs.",
+      "task": "Cluster the behaviours and gaps into core user needs.\nUse these need clusters:\n\nTransfer status clarity\nAttention items\nRate context\nRecipient status",
+      "context": "For each cluster:\n\ndefine the underlying user need\ndescribe the current system gap\nexplain the user consequence (behavioural + emotional)\ninclude a representative behaviour (not a solution)",
+      "constraints": "Ensure each need reflects:\n\na real user problem\na clear gap\na meaningful consequence\n\nDo not include features, ideas, or UI suggestions.",
+      "format": "For each of the four need clusters, present the underlying user need, the current system gap, the user consequence (behavioural + emotional), and a representative behaviour."
+    },
+    {
+      "id": "f6aa5495-e431-4f77-b5b2-e0c28a828292",
+      "discipline": "ux-research",
+      "title": "HMW Statements",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "how-might-we",
+        "user-needs"
+      ],
+      "role": "You are a UX researcher translating user needs into sharp, solution-agnostic How Might We statements.",
+      "task": "Generate How Might We (HMW) statements based on the identified needs.\nGuidelines:\n\neach HMW addresses one specific need\ndo not embed solutions or UI elements\navoid vague phrasing (e.g. \"improve clarity\")\nensure each HMW reflects:\n\na real user behaviour\na clear point of uncertainty or friction",
+      "context": "For each need cluster, list 3–5 HMW statements.",
+      "constraints": "Avoid embedding solutions (e.g. notifications, labels, dashboards).\nEnsure variation in angle (not repetitions).",
+      "format": "For each need cluster:\n\nlist 3–5 HMW statements\nensure variation in angle (not repetitions)"
+    },
+    {
+      "id": "e5f3547c-6dce-4292-bffc-5994f4126318",
+      "discipline": "ux-research",
+      "title": "PRIME Research Report",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "synthesis",
+        "prime-framework",
+        "cross-source-patterns"
+      ],
+      "role": "You are a UX researcher synthesising findings from multiple research sources, including stakeholder interviews, user interviews, surveys, and usability testing. Your goal is to turn mixed data into a clear, decision-ready research report.",
+      "task": "Create a concise research report using the PRIME framework (Problem, Research, Insight, Material, Execution).\nThe report should:\n Combine findings across all research inputs\n Identify patterns and overlaps (not isolated observations)\n Highlight what matters most for the product and business\n Translate insights into clear, actionable decisions",
+      "context": "You are working with a mix of qualitative and quantitative data, including:\n Stakeholder interviews (business goals, assumptions, constraints)\n User interviews (needs, behaviours, expectations)\n Surveys (trends, validation, scale)\n Usability testing (observed behaviour, friction, success/failure)\nStakeholders need a single, clear narrative that answers:\n What’s happening across all research\n Where misalignment exists (user vs business)\n What is breaking or working\n What should be prioritised next",
+      "constraints": "Keep the report short and scannable (max 1–2 pages)\n Synthesis > summary (combine, don’t list)\n Focus on patterns, not individual data points\n Limit to 3–5 key insights\n Use simple, natural language\n Avoid research jargon\n Every insight must lead to a clear action\n Do not separate findings by method — unify them",
+      "format": "1. Problem\nWhat are we trying to understand or improve?  Include both:\n User perspective\n Business perspective\n2. Research\nHow was the research conducted?\n Methods used (interviews, surveys, testing, stakeholders)\n Number of participants\n Scope\n(Keep this tight — just enough to build trust)\n3. Insights\n3–5 key insights only\nEach insight should:\n Combine multiple data sources\n Highlight a clear pattern or tension\n Be framed as a meaningful shift in understanding\n4. Material (Evidence)\nSupport each insight with a mix of:\n User quotes\n Behavioural observations\n Survey trends or percentages\n Stakeholder perspectives (where relevant)\nInclude simple charts where helpful, such as:\n % of users confused at a step\n Task success vs failure\n Survey response distribution\n5. Execution (Actions)\nFor each insight, define:\n What should change\n Why it matters\n The expected outcome\nActions should be:\n Clear and practical\n Directly tied to the insight\n Prioritised if possible\n6. Summary (Optional)\nA short, sharp recap:\n The biggest problem\n The most important action\nOutput Requirements\n Structured using PRIME\n Feels like one clear story (not multiple reports stitched together)\n Actionable for product, design, and business teams\n Readable in under 5 minutes\n Focused on decisions, not documentation"
+    },
+    {
+      "id": "769ff240-5352-4f98-9eac-853dba5d2d86",
+      "discipline": "ux-research",
+      "title": "Problem Statement",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "discovery-sprint",
+        "synthesis",
+        "user-behaviour",
+        "insight-framing"
+      ],
+      "role": "You are a senior UX researcher synthesizing discovery research into a sharp, evidence-based problem statement.",
+      "task": "Write a clear, evidence-based problem statement for a discovery sprint focused on the transaction list on the home dashboard.",
+      "context": "The transaction list is a high-frequency surface used by people who send money internationally.\n\nUsers return to this list after sending to:\n- check whether money has arrived\n- understand the status of transfers\n- decide whether they need to take action\n\nResearch indicates that:\n- users revisit the list multiple times after sending\n- they rely on workarounds (e.g. screenshots, messaging recipients, manual tracking)\n- the list shows what happened, but does not consistently communicate:\n  - what it means\n  - what is still in progress\n  - whether any action is required",
+      "constraints": "- Do not propose solutions, features, or UI changes\n- Do not restate the context — focus on synthesis and insight\n- Do not introduce assumptions not grounded in observed behaviour\n- Avoid vague or generic phrases (e.g. “improve clarity”, “enhance experience”)\n\nThe problem statement must:\n- be grounded in observable user behaviour, not inferred intent\n- make the gap explicit (what users need vs what the system shows)\n- articulate consequences:\n  - behavioural (e.g. repeated checking, opening transfers, contacting support)\n  - emotional (e.g. uncertainty, anxiety, reduced sense of control)\n- reflect that this is an active decision-making surface, not a passive history",
+      "format": "Write 2–3 concise paragraphs that:\n1. Define the user group and the moment of use\n2. Describe the gap between current system behaviour and user needs\n3. Explain the consequences of this gap on behaviour, confidence, and decision-making\n\nWhere possible, anchor statements in concrete behaviours rather than abstractions."
+    },
+    {
+      "id": "d5e97992-6a0d-45fa-9eef-866e551094eb",
+      "discipline": "ux-research",
+      "title": "Problem Statement Stress-Test",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "critical-evaluation",
+        "problem-statement",
+        "assumptions-audit",
+        "synthesis"
+      ],
+      "role": "You are a critical design research reviewer who interrogates problem framing for hidden assumptions and evidence gaps",
+      "task": "Critically evaluate the problem statement.\nIdentify:\n\nany hidden assumptions about user understanding, intent, or behaviour\nwhere the statement is overgeneralised or too broad\nwhere evidence is implied but not explicit\nany missing distinctions (e.g. different user types, contexts, or moments in time)\nwhere the statement is describing the product, not the user",
+      "context": "Then:\nRewrite the problem statement to make it more:\n\nprecise\nbehaviourally grounded\nexplicit about uncertainty and evidence limits",
+      "constraints": "Do not introduce new ideas — only refine based on the existing context.",
+      "format": "A critique covering the identified points above, followed by a rewritten problem statement."
+    },
+    {
+      "id": "098ffc83-ef79-4806-8dee-585af245113f",
+      "discipline": "ux-research",
+      "title": "Rapid ideation",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "ideation",
+        "how-might-we",
+        "evidence-based"
+      ],
+      "role": "You are a Design Engineer",
+      "task": "Generate ideas to address the highest-priority HMW: How might we reflect the recipient’s reality in the transaction list, rather than internal state, so users feel informed instead of guessing?",
+      "context": "You’ve completed user research and are now in the ideation phase before rapid prototyping.  Focus exclusively on improving the transaction list experience. A visual reference of the current UI is provided.",
+      "constraints": "Generate 3 distinct ideas\n Ground each idea in research evidence or observed user behavior\n Prioritise ideas based on:\n User satisfaction\n User needs\n Business impact\n Keep solutions practical and testable (not abstract)",
+      "format": "Present as a clear, scannable list. For each idea include:\nIdea – A concise description of the concept\nEvidence – The specific user insight, pain point, or behavior that supports it\nSuccess Metrics – How we would measure impact (e.g. reduced support queries, increased clarity, faster comprehension)"
+    },
+    {
+      "id": "413813df-e370-41ad-a987-1f73cfe43fb5",
+      "discipline": "ux-research",
+      "title": "Reframing the Problem",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "user-segmentation"
+      ],
+      "role": "You are a UX researcher segmenting a problem across distinct user patterns and behaviours.",
+      "task": "Reframe the problem across different user patterns:\n\nScheduled senders (e.g. recurring, time-sensitive transfers)\nOpportunistic senders (e.g. rate-driven, flexible timing)\nMulti-currency / control-oriented users (e.g. actively managing balances and rates)",
+      "context": "For each group:\n\ndescribe the specific moment when they use the transaction list\nexplain what they are trying to understand or confirm\nhighlight what feels uncertain or risky\nidentify how the problem manifests differently",
+      "constraints": "Focus on differences in:\n\nexpectations\ntolerance for uncertainty\ndecision-making behaviour",
+      "format": "For each of the three user groups, present the moment of use, what they are trying to confirm, what feels uncertain or risky, and how the problem manifests differently."
+    },
+    {
+      "id": "e00cdf8b-2a39-4bab-8165-e6c6c31354fc",
+      "discipline": "ux-research",
+      "title": "Stakeholder Interview Guide",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "interview-guide",
+        "discovery-sprint",
+        "planning",
+        "qualitative-research"
+      ],
+      "role": "You are a senior UX researcher running a discovery sprint focused on the transaction list on the home dashboard.",
+      "task": "Write a structured stakeholder interview guide for a 20-minute conversation with the product lead.",
+      "context": "Do not ask leading questions or suggest solutions. Do not make assumptions about what the stakeholder believes, surface it through questions. Every question should be specific to this product area. Avoid generic openers like \"tell me about your role.\" Do not use em dashes anywhere in the content.",
+      "constraints": "The problem statement is in your knowledge files. Use it to shape the interview goals and questions. The stakeholder has context on why the transaction list is designed the way it is today, what has been explored before, and what constraints exist around changing it.",
+      "format": "Write a structured interview guide with a short intro the interviewer reads aloud, two sections each with a clear goal and 2 to 3 questions including an \"if needed\" follow-up for each, and a closing question for anything unprompted. Include a suggested time for each section."
+    },
+    {
+      "id": "a4e36132-4087-4226-88a7-97758205c9cd",
+      "discipline": "ux-research",
+      "title": "TASKS Usability Test Script",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "usability-testing",
+        "tasks-framework",
+        "moderated-testing"
+      ],
+      "role": "You are a UX researcher conducting usability testing for a  product, focused on the transaction list on the home dashboard.",
+      "task": "Create a structured usability test script using the TASKS framework (Task, Attempt, Struggle, Knowledge Gap, Success).\nThe script should help evaluate whether users can:\n Understand what is happening in their transactions at a glance\n Identify which transfers are complete or still in progress\n Recognise if any action is required\n Feel confident that everything is sorted without opening individual transactions",
+      "context": "Users rely on the transaction list to understand what is happening with their money. However, the current experience only shows a static record (amount, recipient, status) and lacks clarity around:\n Whether transfers are complete or still in progress\n If any action is required\n Whether outcomes met expectations\n The exchange rate context behind decisions\nThis creates uncertainty, forces users to open individual transactions, and reduces trust and sense of control.",
+      "constraints": "Tasks must be scenario-based and realistic (not UI instructions)\n Avoid mentioning specific UI elements (e.g. “transaction list”)\n Do not guide or lead the user during tasks\n Include prompts for think-aloud behaviour\n Include light probing questions only after tasks\n Keep language simple, natural, and conversational\n Focus on observing behaviour, not opinions\n Limit to 3–4 high-quality tasks",
+      "format": "Structure the usability test script as follows:\n1. Setup (1–2 prompts)\n Brief context\n Ask user to think out loud\n2. Tasks (3–4 total)  For each task include:\nScenario (real-life situation)\nModerator note (what to observe: confusion, hesitation, clarity)\n3. Reflection (3–4 questions)\n What’s happening here?\n Is everything clear?\n Would you do anything next?\n How confident do you feel?\n4. Close (1 question)\n If you left this now, how would you feel about your transactions?\nOutput requirements\n Keep it short (15–20 min session)\n Use natural language\n Make it easy to run live"
+    },
+    {
+      "id": "a95deb44-3e66-4dcb-ae42-9cbb47e5dfce",
+      "discipline": "ux-research",
+      "title": "User Survey to Validate Behavioural Patterns",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "user-survey",
+        "discovery-sprint",
+        "behavioural-patterns",
+        "planning"
+      ],
+      "role": "You are a senior UX researcher running a discovery sprint focused on the transaction list on the home dashboard.",
+      "task": "Write a user survey to validate the behavioural patterns identified in the problem statement. The survey should help quantify how frequently users experience uncertainty about transfer status, what they do as a result, and what information they wish the list showed.",
+      "context": "Keep the survey under 10 questions. Use plain, jargon-free language. Mix question types: multiple choice, rating scales, and one open text question at the end. Do not ask leading questions. Every question should connect directly to one of the four need clusters in the problem statement.",
+      "constraints": "The problem statement and need clusters are in your knowledge files. Use them to shape every question. Participants are existing users who send money internationally at least once a month.",
+      "format": "Write the full survey with a short intro paragraph the participant reads before starting, all questions numbered, answer options for each closed question, and a clear closing message."
+    },
+    {
+      "id": "32bbcebb-ff3e-4822-b0b3-aba116d1d44a",
+      "discipline": "writing",
+      "title": "Critique & Rewrite of Existing Copy",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "copy-critique"
+      ],
+      "role": "You are a senior copywriter who critiques and rewrites copy with strategic intent.",
+      "task": "Critically evaluate the attached copy, then rewrite it in three distinct variants that pursue different goals (e.g. build trust, drive action, reduce anxiety). Label what each variant prioritises and trades off.",
+      "context": "The copy will be tested against real users, so the variants must be meaningfully different in strategy, not just wording. The critique should surface hidden assumptions about what the reader already knows or feels.",
+      "constraints": "Do not introduce claims unsupported by the source material\nEach variant must take a genuinely different angle, not a reworded twin\nName the trade-off each variant makes\nKeep variants the same approximate length as the original",
+      "format": "A short critique (assumptions, weaknesses, ambiguities), then three labelled variants, each with a one-line note on what it optimises for."
+    },
+    {
+      "id": "d1712b20-3421-4af1-a108-d9d8fe59a9cc",
+      "discipline": "writing",
+      "title": "Discovery Sprint Compilation",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "discovery-sprint",
+        "pdf",
+        "problem-statement",
+        "user-needs",
+        "how-might-we"
+      ],
+      "role": "You are a UX researcher producing a polished, stakeholder-ready discovery sprint document.",
+      "task": "Create a clear, well-structured discovery sprint document from the outputs above.\nInclude:\n\nProblem statement\nKey behaviours\nCore user needs (grouped by cluster)\nHow Might We (HMW) statements\n\nGenerate this as a downloadable PDF file.",
+      "context": "The result should be a clean, minimal, stakeholder-ready document.",
+      "constraints": "Return the final output as a downloadable PDF file.\nDo not output HTML\nDo not output plain text\nDo not include explanations or commentary\nOnly return the generated PDF file",
+      "format": "Style:\n\nbackground: #F1F0ED\nprimary text: #0D0D0D\nsecondary text: #666666\naccent: #A6A295\ncard background: #FFFFFF\nfont: Inter"
+    },
+    {
+      "id": "9987a5dc-d8c9-4596-b102-a057f6398988",
+      "discipline": "writing",
+      "title": "Release Notes",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "release-notes",
+        "product-communication"
+      ],
+      "role": "You are a product writer translating engineering changes into user-facing release notes.",
+      "task": "Convert the attached changelog or list of merged changes into release notes a non-technical user can understand. Group changes into New, Improved, and Fixed.",
+      "context": "Readers are everyday product users, not developers. They care what changed for them, not how it was implemented. Internal ticket numbers and refactors should be omitted unless they affect behaviour.",
+      "constraints": "Do not invent changes not present in the source\nLead each item with the user benefit, not the technical mechanism\nKeep each item to one or two sentences\nDrop purely internal changes that have no user impact",
+      "format": "Three grouped sections (New, Improved, Fixed) with a short one-line intro at the top summarising the release theme."
+    },
+    {
+      "id": "2906a8df-e0fa-4c86-902b-b0b7a16934ab",
+      "discipline": "writing",
+      "title": "UX Microcopy Audit",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "content-audit",
+        "microcopy"
+      ],
+      "role": "You are a senior UX writer auditing product copy for clarity, consistency, and tone.",
+      "task": "Audit the copy in the attached screens and return every string that should be rewritten. For each, give the current text, the problem, and a rewritten version that fits a clear, trustworthy, jargon-free voice.",
+      "context": "Cover button labels, error messages, empty states, confirmations, and helper text. The product is a financial tool where ambiguity erodes trust, so copy must say what happens and what the user should expect, never hedge.",
+      "constraints": "Do not invent strings not visible in the screens\nFlag tone inconsistencies between strings\nPrefer plain language over feature jargon\nError messages must state cause and recovery, not blame the user\nDo not use em dashes",
+      "format": "A table — Location, Current text, Problem, Rewritten text. Group rows by screen."
+    },
+    {
+      "id": "b7546870-fd48-4cbe-a04e-73be632f6971",
+      "discipline": "design-systems",
+      "title": "Accessibility Conformance Audit",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "accessibility",
+        "wcag",
+        "audit"
+      ],
+      "role": "You are an accessibility specialist auditing design system components against WCAG 2.2 AA.",
+      "task": "Audit the attached components and list every accessibility issue. For each, name the affected element, the specific success criterion at risk, the impact on users, and the concrete fix.",
+      "context": "These components are reused everywhere, so a single accessibility defect propagates across the product. Focus on contrast, focus visibility, keyboard operability, target size, and semantic structure.",
+      "constraints": "Reference the specific WCAG 2.2 success criterion for each issue\nOnly flag what is observable in the supplied designs or code\nGive a concrete fix, not a general principle\nCover the new 2.2 criteria (focus appearance, target size, dragging alternatives) where relevant",
+      "format": "A table — Element, Issue, WCAG criterion, User impact, Fix. Order rows by severity, blockers first."
+    },
+    {
+      "id": "788b04a6-811b-4d7f-980f-ea5f5d927585",
+      "discipline": "design-systems",
+      "title": "Component API Design Review",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "api-design",
+        "scalability",
+        "typescript"
+      ],
+      "role": "You are a design systems engineer reviewing a component's API for scalability and developer experience.",
+      "task": "Review the attached component and propose an improved API. Decide what should be a variant, what should be a boolean, what should be a slot, and what should be composition rather than configuration.",
+      "context": "The component will be used across many teams, so the API must be hard to misuse and easy to extend. Over-configured components with sprawling prop lists are a known failure mode; prefer composition and a small set of orthogonal props.",
+      "constraints": "Justify each prop's existence; flag any that should be removed or merged\nDistinguish variant (mutually exclusive) from boolean (independent) clearly\nPrefer composition over configuration where it reduces prop count\nNote accessibility props that should be required, not optional\nUse TypeScript types in the proposed API",
+      "format": "A critique of the current API, a proposed TypeScript type for the props, and a table — Prop, Type, Why it exists, Variant/Boolean/Slot."
+    },
+    {
+      "id": "2e31ee85-f49e-4133-b105-127f8a53d1e2",
+      "discipline": "design-systems",
+      "title": "Component Audit",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "sub-components",
+        "audit"
+      ],
+      "role": "You are a senior design systems engineer",
+      "task": "Audit these screens and return every element that should become a reusable Figma component. Name each one, describe what makes it distinct, estimate how many variants it needs, and flag if it's a sub-component of something larger.",
+      "context": "Use PascalCase naming. Don't componentise one-off decorative elements. Flag sub-components separately — don't fold them into the parent.",
+      "constraints": "Attached are the screens from the transaction list UI built in Claude Code. Use these as your source of truth — don't infer anything that isn't visible in the designs.",
+      "format": "A table — Component name, Description, Estimated variant count, Sub-component of."
+    },
+    {
+      "id": "62912ca9-4c4f-45cd-9f61-d350f66c66ec",
+      "discipline": "design-systems",
+      "title": "Production-Ready Component Set",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "react",
+        "typescript",
+        "accessibility"
+      ],
+      "role": "You are a senior React + TypeScript design systems engineer.",
+      "task": "Build a production-ready Avatar component set from the attached Figma:\n- 5 sizes: xs, sm, md, lg, xl\n- 3 variants: neutral, brand, image\n- optional bottom-right overlapping badge\n- initials support\n- image fallback support\n- token-driven styling",
+      "context": "The design shows a circular avatar primitive with:\n- neutral: light bg + dark initials\n- brand: light bg + dark green initials\n- image: cropped circular photo\n- optional EU-style badge: blue circle, yellow stars, ring separator\n\nSuggested token mapping:\n- bg neutral = gray.100 `#F6F7F4`\n- text neutral = gray.900 `#0B0C0A`\n- text brand = forestGreen.600 `#163300`\n- outline = gray.300 `#D7D8D2`\n- badge stars = yellow.500 `#FFD400` :contentReference[oaicite:14]{index=14}",
+      "constraints": "- React + TypeScript\n- Use `variant`, not `style`, in code API\n- Ref-forwarding\n- Centralized size config\n- Circular only\n- `object-fit: cover` for images\n- Badge scales by size and overlaps bottom-right\n- Good a11y defaults\n- No magic numbers scattered through component\n- Non-interactive by default\n\nUse:\n```ts\ntype AvatarProps = {\n  size?: \"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\";\n  variant?: \"neutral\" | \"brand\" | \"image\";\n  initials?: string;\n  src?: string;\n  alt?: string;\n  showBadge?: boolean;\n  badgeAriaLabel?: string;\n  className?: string;\n};",
+      "format": "- Avatar.tsx - avatar.styles.ts (or token config) - Badge implementation (inline or separate) - Brief explanation of key decisions - Production-ready - Token-driven - Clean API - Visually accurate to design - Accessible"
+    },
+    {
+      "id": "5de22dbf-2abb-4b62-b80d-41e25bea2848",
+      "discipline": "prototyping",
+      "title": "A/B Prototype",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "react",
+        "ab-testing"
+      ],
+      "role": "You are a design engineer building a prototype to compare two design directions for the same problem.",
+      "task": "Build a prototype that renders two distinct design directions for the attached flow side by side (or via a toggle), using the same mock data, so a team can evaluate them against each other in a session.",
+      "context": "Choosing between directions in the abstract leads to opinion-led debates. A working side-by-side comparison on identical data lets the team judge against behaviour and clarity rather than description.",
+      "constraints": "Both directions must use the same underlying mock data\nEach direction should represent a genuinely different approach, not a restyle\nReact functional components with hooks\nTailwind utility classes, semantic token-aligned names where possible\nInclude a short labelled note stating what each direction optimises for\nNo dependencies beyond React and Tailwind",
+      "format": "A single self-contained React component file with a toggle or split layout switching between Direction A and Direction B, a shared mock data array at the top, and a label above each describing its strategic intent."
+    },
+    {
+      "id": "2051bfd7-2af0-4d90-ab84-4d9b75b7a015",
+      "discipline": "prototyping",
+      "title": "Data-Driven Prototype with Mock API",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "react",
+        "mock-api",
+        "data-fetching"
+      ],
+      "role": "You are a design engineer building a prototype that behaves like it has a real backend.",
+      "task": "Build a prototype of the attached interface that fetches from a mock API layer with realistic latency and occasional failures, so loading and error behaviour feel real during testing.",
+      "context": "Prototypes with instant, perfect data hide the real experience of waiting and failure. This one simulates network conditions so usability sessions surface how the design handles latency and errors.",
+      "constraints": "Mock API layer with simulated delay and a configurable failure rate\nRender genuine loading and error states driven by the fetch lifecycle\nReact functional components with hooks\nTailwind utility classes, semantic token-aligned names where possible\nRealistic mock dataset, minimum 8 records\nNo dependencies beyond React and Tailwind",
+      "format": "A single self-contained React component file. Mock API functions at the top, a control to adjust latency and failure rate, and the interface rendering live below. Inline comments only on the async logic."
+    },
+    {
+      "id": "be4285e0-46f5-489d-bc19-bbdc019229f4",
+      "discipline": "prototyping",
+      "title": "Interactive State Prototype",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "react",
+        "edge-cases",
+        "unhappy paths"
+      ],
+      "role": "You are a design engineer prototyping the full state lifecycle of a flow.",
+      "task": "Build a prototype that demonstrates every state of the attached flow: idle, loading, empty, error, partial, and success. Include a control panel to switch between states so stakeholders can review each without triggering real conditions.",
+      "context": "Teams usually prototype only the happy path, leaving edge states undesigned until late. This prototype exists to make the unhappy paths reviewable early, so every realistic state is a first-class deliverable.",
+      "constraints": "Cover idle, loading, empty, error, and success at minimum\nUse React functional components with hooks\nTailwind utility classes only, semantic token-aligned names where possible\nRealistic mock data for each state\nA visible control to switch states manually\nNo dependencies beyond React and Tailwind",
+      "format": "A single self-contained React component file with a state-switcher control at the top and the flow rendering below in the selected state. Inline comments only where state logic needs explaining."
+    },
+    {
+      "id": "6bd9abca-6ca3-49cb-9e62-40df8b91e6dc",
+      "discipline": "prototyping",
+      "title": "Motion & Micro-interaction Spec",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "micro-interactions"
+      ],
+      "role": "You are a design engineer specifying and prototyping micro-interactions.",
+      "task": "Prototype the key micro-interactions for the attached component (e.g. hover, press, toggle, success confirmation). For each, build a working example and document the timing, easing, and properties animated.",
+      "context": "Motion is usually described in vague words (\"snappy\", \"smooth\") that engineers cannot build from. This prototype turns motion into precise, testable values that double as an implementation spec.",
+      "constraints": "Specify duration, easing curve, and animated properties for each interaction\nRespect prefers-reduced-motion with a non-animated fallback\nKeep motion subtle and purposeful, never decorative\nCSS transitions/animations only, no animation libraries\nAll scripts wrapped in DOMContentLoaded",
+      "format": "A single HTML file. For each interaction: a live demo, a short rationale, and a spec table (Property, Duration, Easing, Trigger). Use the design: background #F1F0ED, primary text #0D0D0D, accent #A6A295, white #FFFFFF for cards. Font: Inter."
+    },
+    {
+      "id": "11f0af69-bf8d-4332-86c7-635295acd56a",
+      "discipline": "prototyping",
+      "title": "Multi-Currency Wallet UI",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "ui-design",
+        "fintech",
+        "accessibility"
+      ],
+      "role": "You are a senior UI designer, specialising in prototyping and design systems",
+      "task": "Recreate the provided UI matching exactly what we have in Figma as a layout, following a structured, component-based approach. Ensure this component is in the centre of a #FFFFFF screen",
+      "context": "This is a multi-currency wallet interface showing a total balance, primary actions (Send, Add money, Request), and individual currency cards with account details, and balances. The design should match our attached frames",
+      "constraints": "Ensure spacing matches auto layout\nBuild reusable components for buttons and currency cards\nFollow a consistent spacing system (e.g. 4px rule)\nEnsure accessibility in contrast and text sizing\nKeep typography clean and hierarchy clear\nAvoid hard-coded values where components can be reused",
+      "format": "Frame structure defined using auto layout\nCreate components from frames\nLayer naming clean and scalable\nReady for design system integration"
+    },
+    {
+      "id": "050cee24-eaa2-42c7-85f9-d896b4e0eaa7",
+      "discipline": "prototyping",
+      "title": "Recipient-Facing Status States (React + Tailwind)",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "react",
+        "tailwind",
+        "fintech",
+        "ux-copy"
+      ],
+      "role": "You are a Design Engineer building a React prototype. You specialise in translating product concepts into clean, production-ready UI using React, Tailwind, and token-based design systems.",
+      "task": "Build a prototype of the transaction list that replaces internal status labels with recipient-facing outcome states, so users understand what has actually happened from the recipient's perspective rather than guessing at internal pipeline state.",
+      "context": "The current transaction list shows statuses like \"Sent\" and \"Added\" alongside an initiation date. Research shows users interpret \"Sent\" as \"received\", creating confusion and avoidable support contacts. This prototype should replace those internal labels with outcome-oriented language that reflects the recipient's reality:  \"Recipient notified\" — transfer is on its way but not yet landed \"Funds available in account\" — recipient can access the money \"Awaiting bank processing\" — transfer is queued at the receiving bank  The visual reference is the existing transaction list: a white surface, circular transaction type icons, recipient name + status + date on the left, amount on the right. Positive amounts (received/added) appear in green. The design should feel native to our design system — clean, minimal, trustworthy.",
+      "constraints": "Use React functional components with hooks Use Tailwind utility classes for all styling — no custom CSS Use semantic token-aligned class names where possible (e.g. text-primary, bg-surface) Match the existing Wise transaction list layout: icon · name/status/date · amount Support three transaction states: notified, available, processing Each state should have a distinct but subtle visual treatment (label colour, icon or indicator) Amounts should be formatted with currency code (e.g. 49 EUR, + 50 EUR) Positive/incoming amounts should render in green Use realistic mock data — minimum 4 transactions covering all three states Keep the component small and focused — TransactionList composed of TransactionRow No external dependencies beyond React and Tailwind",
+      "format": "Deliver a single self-contained React component file that can be dropped into a Vite or Next.js project. Include:  TransactionRow — renders a single transaction with icon, recipient name, recipient-facing status label, date, and amount TransactionList — renders the full list with a \"Transactions\" heading and a \"See all\" link Mock data array at the top of the file covering all three states Inline comments only where the status logic needs explanation"
+    },
+    {
+      "id": "11df2cfd-c963-42dd-b2b0-3afeec764b90",
+      "discipline": "design-engineering",
+      "title": "Adding Netlify Form",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "netlify",
+        "html",
+        "survey"
+      ],
+      "role": "You are a design engineer who ships deployable single-file HTML tools.",
+      "task": "Add Netlify form handling to this HTML survey.",
+      "context": "",
+      "constraints": "On the form tag, add data-netlify=\"true\" and a name attribute for the form. Make sure every input field has a name attribute that matches the question topic so responses are readable in the Netlify dashboard.",
+      "format": "The form should be fully ready to deploy by dragging the HTML file directly into Netlify with no manual changes needed afterwards."
+    },
+    {
+      "id": "4cc88f2f-4a5e-44f4-8313-e1c5e811d6e7",
+      "discipline": "design-engineering",
+      "title": "BGOALC Interactive Interview Guide",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "bgoalc-framework",
+        "discovery-sprint",
+        "user-interview",
+        "qualitative-research",
+        "interactive-guide"
+      ],
+      "role": "You are a design engineer building interactive single-file HTML tools for research workflows.",
+      "task": "Format this as an interactive HTML document.",
+      "context": "The document should work as a live interview guide with the following features. A fixed sidebar with session metadata, a running timer with start and reset, and a section list that highlights the active section based on scroll position, including when the user reaches the last section. Each question card should have an expandable notes field for typing during the session, an \"if needed\" prompt styled more subtly than the main question, and a mark as done button that applies a visual completion state without hiding the content. An export notes button in the bottom right that opens a new tab with all notes collected cleanly.",
+      "constraints": "All scripts wrapped in DOMContentLoaded.",
+      "format": "Use the following design: background #F1F0ED, primary text #0D0D0D, secondary text #666666, accent #A6A295, white #FFFFFF for cards. Font: Inter. Clean, minimal layout with generous spacing. The layout should be fully responsive with a two column structure on desktop, sidebar fixed on the left and content scrolling on the right."
+    },
+    {
+      "id": "b77fc562-f0f2-42ba-8dbd-a781750068d3",
+      "discipline": "design-engineering",
+      "title": "Interactive Interview Guide",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "interactive-guide",
+        "vanilla-js",
+        "html"
+      ],
+      "role": "You are a design engineer building interactive single-file HTML tools for research workflows.",
+      "task": "Format this as an interactive HTML document.\nThe document should work as a live interview guide with the following features.",
+      "context": "A fixed sidebar with session metadata, a running timer with start and reset, and a section list that highlights the active section based on scroll position, including when the user reaches the last section. Each question card should have an expandable notes field for typing during the session, an \"if needed\" prompt styled more subtly than the main question, and a mark as done button that applies a visual completion state without hiding the content. An export notes button in the bottom right that opens a new tab with all notes collected cleanly.",
+      "constraints": "All scripts wrapped in DOMContentLoaded.",
+      "format": "Use the following design: background #F1F0ED, primary text #0D0D0D, secondary text #666666, accent #A6A295, white #FFFFFF for cards. Font: Inter. Clean, minimal layout with generous spacing. The layout should be fully responsive with a two column structure on desktop, sidebar fixed on the left and content scrolling on the right."
+    },
+    {
+      "id": "d55754d8-e13f-4c66-a6c3-2556352c207e",
+      "discipline": "design-engineering",
+      "title": "Interactive PRIME Research Report",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "prime-framework",
+        "html",
+        "vanilla-js",
+        "research-report"
+      ],
+      "role": "You are a design engineer building interactive single-file HTML tools for research workflows.",
+      "task": "Format this as an interactive HTML document.",
+      "context": "The document should work as a live research report guide with the following features. A fixed sidebar with research title and short summary, and a section list that highlights the active section based on scroll position. The research report should follow the PRIME framework and have scrollable sections with the charts and data visible for stakeholders.",
+      "constraints": "All scripts wrapped in DOMContentLoaded.",
+      "format": "Use the following design: background #F1F0ED, primary text #0D0D0D, secondary text #666666, accent #A6A295, white #FFFFFF for cards. Font: Inter. Clean, minimal layout with generous spacing. The layout should be fully responsive with a two column structure on desktop, sidebar fixed on the left and content scrolling on the right in the centre of the page."
+    },
+    {
+      "id": "a922ca5e-e0df-4345-a63a-87fc73036256",
+      "discipline": "design-engineering",
+      "title": "Research Report → Interactive HMW Guide",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "how-might-we",
+        "html-tool",
+        "insight-mapping",
+        "vanilla-js",
+        "data-extraction"
+      ],
+      "role": "You are a senior UX researcher converting a research report into a working design tool for a product team.",
+      "task": "Convert the attached HTML research report into a single-file interactive HTML HMW guide. Extract all insights, evidence, quotes, data, and priorities directly from the report. Do not invent content.",
+      "context": "The research report contains findings from a discovery sprint. Each insight in the report maps to one HMW statement. The output will be used by product designers as a working reference during design sprints.",
+      "constraints": "Extract content from the attached report only — do not add or invent insights - One HMW card per insight - No external JavaScript libraries - All scripts wrapped in DOMContentLoaded - Single file, runs in any browser with no dependencies",
+      "format": "Design: background #F1F0ED, primary text #0D0D0D, secondary text #666666, accent #A6A295, white #FFFFFF for cards, border #E2E0DA. Font: Inter from Google Fonts. Layout: two-column on desktop — fixed sidebar 280px on the left, content scrolling on the right with max-width 780px. Single column below 900px. Sidebar: study title and description, section navigation with active scroll highlighting, priority key at the bottom. HMW cards: HMW number, priority badge (Priority 1 red, Priority 2 amber, Priority 3 blue), insight reference pill, bold HMW statement with key words in accent colour, rationale in secondary text. A toggle opens two tabs — Evidence & directions and How to measure success. Evidence tab shows quotes, data pills, constraints, and a 2x2 grid of design direction cards. Metrics tab shows a 2x2 grid of metric cards with coloured type labels (Behavioural blue, Qualitative green, Proxy amber, Usability purple), a bold title, description, and target pill. A tinted note block sits below the grid."
+    },
+    {
+      "id": "7bffafff-b2f3-45be-8785-a5b0ee49b8fa",
+      "discipline": "design-engineering",
+      "title": "Styling the Validation Survey",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "html",
+        "survey-ui"
+      ],
+      "role": "You are a design engineer building styled single-file HTML forms for research workflows.",
+      "task": "Format this as a styled HTML form.",
+      "context": "",
+      "constraints": "Each question should be styled as a clear card. Radio buttons and checkboxes styled to match the design system. Rating scales rendered as a visual row of options. The open text question as a comfortable textarea. A submit button at the end.",
+      "format": "Use the following design: background #F1F0ED, primary text #0D0D0D, secondary text #666666, accent #A6A295, white #FFFFFF for cards. Font: Inter. Clean, minimal layout with generous spacing."
+    },
+    {
+      "id": "8b259a66-5493-4a7c-909f-eaa061cd2e6c",
+      "discipline": "design-engineering",
+      "title": "TASKS  Interactive Interview Guide",
+      "author": "AN",
+      "date": "2026-06-07",
+      "tags": [
+        "tasks-framework",
+        "html",
+        "interactive-guide",
+        "vanilla-js"
+      ],
+      "role": "You are a design engineer building interactive single-file HTML tools for research workflows.",
+      "task": "Format this as an interactive HTML document.",
+      "context": "The document should work as a live interview guide with the following features. A fixed sidebar with session metadata, a running timer with start and reset, and a section list that highlights the active section based on scroll position, including when the user reaches the last section. Each question card should have an expandable notes field for typing during the session, an \"if needed\" prompt styled more subtly than the main question, and a mark as done button that applies a visual completion state without hiding the content. An export notes button in the bottom right that opens a new tab with all notes collected cleanly.",
+      "constraints": "All scripts wrapped in DOMContentLoaded.",
+      "format": "Use the following design: background #F1F0ED, primary text #0D0D0D, secondary text #666666, accent #A6A295, white #FFFFFF for cards. Font: Inter. Clean, minimal layout with generous spacing. The layout should be fully responsive with a two column structure on desktop, sidebar fixed on the left and content scrolling on the right."
+    }
+  ]
+}
