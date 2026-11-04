@@ -688,6 +688,8 @@
     box-shadow: 0 -12px 30px rgba(10,15,30,0.15);
   }
   .sheet.open { transform: translateY(0); }
+  /* Closed panels sit just off-screen; drop their shadow so it can't bleed in at the edge */
+  .sheet:not(.open), .ai-drawer:not(.open) { box-shadow: none; }
   html[data-motion="reduce"] .sheet { transition: none; }
   .sheet .grabber { width: 44px; height: 4px; background: var(--rule-strong); border-radius: 2px; margin: 0 auto; }
   .sheet .sheet-head { display: flex; justify-content: space-between; align-items: center; }
@@ -814,6 +816,95 @@
     .detail-inner .show-on-chart { display: none; }
 
     .ai-drawer, .sheet { max-width: 560px; margin-inline: auto; }
+  }
+
+  /* ---------- Laptop and up ----------
+     Designed last, on purpose. Everything above is the phone layout; this
+     only rearranges the same blocks once there's room. Nothing new appears,
+     nothing is hidden, so a person who switches device finds the same page. */
+  @media (min-width: 1024px) {
+    .app { max-width: 1240px; box-shadow: 0 0 0 1px var(--rule), 0 30px 80px -40px rgba(26, 31, 46, 0.25); }
+    header.top { padding: 14px 40px; }
+    header.top h1 { font-size: 16px; }
+
+    /* Price bar: one calm line, still pinned, so the anchor never leaves */
+    .price-bar { flex-direction: row; flex-wrap: wrap; align-items: center; column-gap: 18px; row-gap: 4px; padding: 12px 40px; }
+    .price-bar .row1, .price-bar .row2 { display: contents; }
+    .price-bar .price { font-size: 19px; }
+    .price-bar .as-of { order: 9; margin-left: auto; font-size: 11px; }
+    .price-bar .status-chip { font-size: 11px; }
+    .price-bar .pos { font-size: 11.5px; }
+
+    main { padding: 44px 56px 72px; }
+    .section-head h2 { font-size: 24px; }
+
+    /* Home: the answer on the left, the facts behind it on the right */
+    #view-home:not([hidden]) {
+      display: grid; align-items: start;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      grid-template-areas: "hero pos" "cta attn";
+      gap: 32px 56px;
+    }
+    #view-home > .hero { grid-area: hero; }
+    #view-home > .cta-hero { grid-area: cta; }
+    #view-home > .pos-card { grid-area: pos; }
+    #view-home > .attn-card { grid-area: attn; }
+    .hero h1 { font-size: 34px; line-height: 1.22; letter-spacing: -0.6px; }
+    .hero .since { font-size: 15px; }
+    .pos-card { padding: 22px 24px; }
+    .pos-card .row .lbl { font-size: 13.5px; }
+    .pos-card .row .val { font-size: 15px; }
+
+    /* Simulator: same arrangement as the phone on its side. Chart pinned on
+       the left, everything you change on the right */
+    #view-simulator:not([hidden]) {
+      display: grid; align-items: start;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      grid-template-areas:
+        "head  head"
+        "chart chips"
+        "chart custom"
+        "chart result"
+        "chart explore"
+        "chart links"
+        "chart note";
+      gap: 24px 40px;
+    }
+    #view-simulator > .section-head { grid-area: head; }
+    #view-simulator > .scen-chips { grid-area: chips; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    #view-simulator > .custom-price { grid-area: custom; }
+    #view-simulator > .result { grid-area: result; margin-top: 0; }
+    #view-simulator > .chart-card { grid-area: chart; position: sticky; top: calc(var(--header-h, 56px) + 72px); padding: 22px 20px 16px; }
+    #view-simulator > .explore { grid-area: explore; }
+    #view-simulator > .source-note { grid-area: note; }
+    #view-simulator > .next-steps { grid-area: links; flex-direction: row; }
+    #view-simulator > .next-steps > * { flex: 1; }
+    .detail-inner .show-on-chart { display: none; }
+
+    /* Reading-heavy views keep a comfortable line length */
+    #view-breakdown { width: 100%; max-width: 860px; align-self: center; }
+
+    /* Compare: the two choices finally sit side by side, as the name promises */
+    #view-compare:not([hidden]) {
+      display: grid; align-items: stretch;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 24px 28px; width: 100%; max-width: 980px; align-self: center;
+    }
+    #view-compare > .section-head, #view-compare > .scen-banner,
+    #view-compare > .compare-picker, #view-compare > .delta-card { grid-column: 1 / -1; }
+    #view-compare > .compare-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    #view-compare > #downloadBtn { grid-column: 2; }
+
+    /* AI co-pilot docks to the right edge, so the numbers it explains stay in view */
+    .ai-drawer {
+      left: auto; top: 0; right: 0; bottom: 0; width: 440px; max-height: none;
+      border-radius: 20px 0 0 20px; padding: 24px 24px 28px;
+      transform: translateX(100%);
+      box-shadow: -16px 0 40px rgba(10, 15, 30, 0.15);
+    }
+    .ai-drawer.open { transform: translateX(0); }
+    .ai-drawer .grabber { display: none; }
+    .sheet { max-width: 560px; margin-inline: auto; }
   }
 </style>
 </head>
