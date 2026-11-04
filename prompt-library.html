@@ -88,9 +88,9 @@
       align-items: end;
     }
 
-    /* Laptop frame (MacBook-ish) — the source image already carries its own
-       browser chrome, so the frame is just a bezel + base. No webcam strip,
-       no extra top band. */
+    /* Laptop frame (MacBook-ish) — a thin bezel around the app shot,
+       nothing else. No webcam strip, no extra top band — the image is
+       flush with all four inner edges. */
     .pl-laptop {
       position: relative;
       max-width: 720px;
@@ -98,10 +98,13 @@
       margin: 0 auto;
     }
     .pl-laptop__screen {
+      /* Set as a line-height:0 box so no stray text leading paints above
+         the image inside the bezel. */
+      font-size: 0;
+      line-height: 0;
       border: 8px solid #1a2440;
       border-radius: 10px 10px 2px 2px;
-      background: #0a1428;
-      padding: 0;
+      background: #1a2440;
       overflow: hidden;
       box-shadow: 0 25px 45px -20px rgba(10, 31, 74, 0.45);
     }
@@ -109,7 +112,7 @@
       display: block;
       width: 100%;
       height: auto;
-      aspect-ratio: 2000 / 1376;
+      aspect-ratio: 2000 / 1207;
     }
     .pl-laptop__base {
       height: 10px;
@@ -463,7 +466,7 @@
           <!-- Laptop -->
           <div class="pl-laptop">
             <div class="pl-laptop__screen">
-              <img src="assets/case/pl-new/_15-desktop-vivaldi.png"
+              <img src="assets/case/pl-new/_16-desktop-app.png"
                    alt="The library open on a MacBook — the UX Research room with 12 prompts, five discipline rooms in the sidebar, cards in the main area." />
             </div>
             <div class="pl-laptop__base" aria-hidden="true"></div>
