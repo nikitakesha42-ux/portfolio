@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#1a1f2e" />
+<title>Simulator proto · Concept B (mobile)</title>
+<style>
+  :root {
+    --ink: #1a1f2e;
+    --ink-2: #2b3140;
+    --muted: #5a606b;
+    --rule: #d8dce2;
+    --rule-strong: #9aa0ab;
+    --fill: #f3f4f7;
+    --fill-2: #e8eaef;
+    --ai: #3042a0;
+    --ai-soft: #e5e9fa;
+    --ai-strong: #202d75;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Inter', -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { font-family: var(--sans); -webkit-font-smoothing: antialiased; color: var(--ink); background: linear-gradient(180deg, #eef1ff 0%, #f6f8ff 100%); min-height: 100vh; }
+  body { min-height: 100vh; }
+
+  a.skip-link { position: absolute; left: -9999px; top: 0; background: var(--ink); color: #fff; padding: 10px 14px; text-decoration: none; }
+  a.skip-link:focus { left: 10px; top: 10px; z-index: 100; outline: 2px solid #fff; outline-offset: 2px; }
+
+  .app {
+    max-width: 420px; margin: 0 auto;
+    background: #fff; min-height: 100vh;
+    display: flex; flex-direction: column;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 16px 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+  header .back { color: var(--ink); text-decoration: none; font-size: 15px; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; min-width: 44px; }
+  header h1 { font-size: 15px; font-weight: 600; letter-spacing: -0.005em; }
+  header .more { width: 44px; text-align: right; color: var(--muted); font-size: 18px; min-height: 44px; display: inline-flex; align-items: center; justify-content: flex-end; }
+  main { padding: 14px 16px 22px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+  /* Filter chips */
+  .filters { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters button {
+    appearance: none; border: 1px solid var(--rule); background: #fff;
+    padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 12px; color: var(--muted);
+    cursor: pointer; white-space: nowrap; min-height: 44px; min-width: 44px;
+  }
+  .filters button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .filters button:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+
+  /* Totals pill */
+  .totals { display: flex; gap: 8px; }
+  .totals .t {
+    flex: 1; border: 1px solid var(--rule); border-radius: 12px; padding: 10px 14px;
+    display: flex; flex-direction: column; gap: 2px;
+    background: #fff;
+    min-height: 56px;
+  }
+  .totals .t.sim { background: var(--ai-soft); border-color: var(--ai); }
+  .totals .t .lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .totals .t.sim .lbl { color: var(--ai); }
+  .totals .t .val { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; }
+
+  /* Chart area — hero */
+  .chart-hero {
+    background: #fff; border: 1px solid var(--rule); border-radius: 14px; padding: 12px; position: relative;
+  }
+  .chart-hero .hint {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between;
+  }
+  .chart-hero svg { width: 100%; height: auto; display: block; }
+  .chart-hero .describe {
+    appearance: none; background: transparent; border: 1px solid var(--rule); color: var(--muted);
+    padding: 6px 10px; border-radius: 999px; font: inherit; font-size: 10.5px; cursor: pointer;
+    min-height: 32px;
+  }
+  .chart-hero .describe:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+
+  /* AI chip row */
+  .ai-row { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .ai-row::-webkit-scrollbar { display: none; }
+  .ai-row .spark {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 44px; min-height: 44px;
+    border-radius: 999px; background: var(--ai-soft); color: var(--ai);
+    border: 1px solid var(--ai);
+    font-size: 16px; flex-shrink: 0;
+  }
+  .ai-row button {
+    appearance: none; border: 1px solid var(--rule); background: #fff; color: var(--ink);
+    padding: 10px 14px; border-radius: 999px; font: inherit; font-size: 12.5px;
+    cursor: pointer; white-space: nowrap; min-height: 44px;
+  }
+  .ai-row button[aria-pressed="true"] {
+    background: var(--ai); color: #fff; border-color: var(--ai);
+  }
+  .ai-row button:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+
+  /* Inline answer card */
+  .answer-card {
+    background: var(--ai-soft); border: 1px solid var(--ai); border-radius: 12px;
+    padding: 12px 14px; font-size: 13.5px; line-height: 1.5; color: var(--ink);
+    display: none;
+  }
+  .answer-card.visible { display: block; }
+  .answer-card .q { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--ai); margin-bottom: 4px; display: block; }
+
+  /* Table drawer */
+  details.table-drawer {
+    border: 1px solid var(--rule); border-radius: 12px; background: #fff; overflow: hidden;
+  }
+  details.table-drawer summary {
+    list-style: none; cursor: pointer; padding: 12px 14px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase;
+    min-height: 44px;
+  }
+  details.table-drawer summary::-webkit-details-marker { display: none; }
+  details.table-drawer summary::after { content: '▸'; transition: transform 0.2s; color: var(--muted); }
+  details.table-drawer[open] summary::after { transform: rotate(90deg); }
+  details.table-drawer summary:focus-visible { outline: 2px solid var(--ai); outline-offset: -2px; }
+  .table-head {
+    display: grid; grid-template-columns: 50px 1fr 1fr 60px; gap: 8px;
+    padding: 0 14px 6px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); font-weight: 600; border-top: 1px solid var(--rule); padding-top: 10px;
+  }
+  .table-rows { padding: 0 14px 12px; }
+  .table-rows .tr {
+    display: grid; grid-template-columns: 50px 1fr 1fr 60px; gap: 8px;
+    padding: 8px 0; border-bottom: 1px dashed var(--rule);
+    font-size: 12.5px;
+  }
+  .table-rows .tr:last-child { border-bottom: none; }
+  .table-rows .tr .delta { color: var(--ai); font-family: var(--mono); font-size: 11px; text-align: right; }
+  .preview-rows { padding: 0 14px 4px; opacity: 0.85; }
+  details.table-drawer[open] .preview-rows { display: none; }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+    .chart-hero svg polyline, .chart-hero svg path, .chart-hero svg rect { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<div class="app">
+  <header>
+    <a class="back" href="share-simulator-wip.html" aria-label="Back to explorations">← Back</a>
+    <h1>Share price simulator</h1>
+    <span class="more" aria-hidden="true">⋯</span>
+  </header>
+
+  <main id="main">
+
+    <!-- Filters -->
+    <div class="filters" role="group" aria-label="Filters">
+      <button aria-pressed="true" data-filter="all">All plans ▾</button>
+      <button aria-pressed="false" data-filter="rsu">RSU only</button>
+      <button aria-pressed="false" data-filter="options">Options</button>
+      <button aria-pressed="true" data-filter="country">NO 🇳🇴</button>
+    </div>
+
+    <!-- Totals -->
+    <div class="totals" aria-live="polite">
+      <div class="t">
+        <span class="lbl">Current</span>
+        <span class="val" id="totalCurrent">500 NOK</span>
+      </div>
+      <div class="t sim">
+        <span class="lbl">Simulated</span>
+        <span class="val" id="totalSim">≈ 2 500 NOK</span>
+      </div>
+    </div>
+
+    <!-- Chart hero with on-axis scroller -->
+    <section class="chart-hero" aria-labelledby="chartTitle">
+      <div class="hint">
+        <span id="chartTitle">Simulated gain over time</span>
+        <button class="describe" id="describeBtn" aria-controls="answerCard">Describe this chart</button>
+      </div>
+      <svg id="chart" viewBox="0 0 320 220" role="img" aria-describedby="chartDesc">
+        <desc id="chartDesc">Line chart with a draggable year handle on the axis. Dragging changes the scenario year.</desc>
+        <!-- Grid -->
+        <g stroke="#e5e7eb" stroke-width="1">
+          <line x1="20" y1="10" x2="310" y2="10"/>
+          <line x1="20" y1="50" x2="310" y2="50"/>
+          <line x1="20" y1="90" x2="310" y2="90"/>
+          <line x1="20" y1="130" x2="310" y2="130"/>
+          <line x1="20" y1="170" x2="310" y2="170"/>
+        </g>
+        <!-- Ghost (previous) line when filter changes -->
+        <polyline id="ghostLine" fill="none" stroke="#c8ccd4" stroke-width="1.4" stroke-dasharray="3 3" points=""/>
+        <!-- Area + line -->
+        <path id="simArea" fill="#3042a0" fill-opacity="0.08" d=""/>
+        <polyline id="simLine" fill="none" stroke="#1a1f2e" stroke-width="2" points=""/>
+        <!-- Highlight region -->
+        <rect id="highlight" x="0" y="10" width="0" height="160" fill="#3042a0" fill-opacity="0.12" rx="4" style="display:none;"/>
+        <!-- Emphasis dot -->
+        <circle id="emphDot" cx="0" cy="0" r="0" fill="#3042a0" stroke="#fff" stroke-width="1.5" style="display:none;"/>
+        <!-- Axis track -->
+        <line x1="20" y1="192" x2="310" y2="192" stroke="#c8ccd4" stroke-width="2"/>
+        <line id="axisProgress" x1="20" y1="192" x2="160" y2="192" stroke="#1a1f2e" stroke-width="2.5"/>
+        <circle id="axisHandle" cx="160" cy="192" r="9" fill="#fff" stroke="#1a1f2e" stroke-width="2" style="cursor:grab;"/>
+        <line id="refLine" x1="160" y1="10" x2="160" y2="192" stroke="#3042a0" stroke-width="1" stroke-dasharray="2 3"/>
+        <!-- X labels -->
+        <g id="xLabels" fill="#5a606b" font-family="JetBrains Mono, monospace" font-size="9"></g>
+        <!-- Callout at handle -->
+        <g id="callout" style="display:none;">
+          <rect id="calloutBg" x="100" y="2" width="160" height="22" rx="5" fill="#3042a0"/>
+          <text id="calloutTxt" x="108" y="17" fill="#fff" font-family="Inter" font-size="10" font-weight="600">2026 · 1 800 NOK</text>
+        </g>
+      </svg>
+      <!-- Hidden ARIA slider for keyboard/SR -->
+      <label class="sr-only" for="yearSlider">Scenario year</label>
+      <input id="yearSlider" type="range" min="0" max="5" value="3" step="1"
+             class="sr-only"
+             aria-valuemin="0" aria-valuemax="5" aria-valuenow="3"
+             aria-valuetext="2026, 1 800 NOK projected" />
+    </section>
+
+    <!-- AI chips -->
+    <div class="ai-row" role="toolbar" aria-label="Suggested questions">
+      <span class="spark" aria-hidden="true">✦</span>
+      <button aria-pressed="false" data-q="leave-18m">What if I leave in 18 months?</button>
+      <button aria-pressed="false" data-q="no-uk">Compare NO vs UK tax</button>
+      <button aria-pressed="false" data-q="why-high">Why is 2026 higher?</button>
+    </div>
+
+    <!-- Inline answer -->
+    <div class="answer-card" id="answerCard" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Table drawer -->
+    <details class="table-drawer" id="tableDrawer">
+      <summary>▸ Table · per year</summary>
+      <div class="preview-rows" aria-hidden="true">
+        <!-- First 3 rows always visible even when drawer closed -->
+      </div>
+      <div class="table-head" aria-hidden="true">
+        <span>Year</span><span>Current</span><span>Simulated</span><span style="text-align:right;">Δ</span>
+      </div>
+      <div class="table-rows" id="tableRows"></div>
+    </details>
+
+  </main>
+</div>
+
+<script>
+  const yearsData = [
+    { year: 2023, current: 300 },
+    { year: 2024, current: 300 },
+    { year: 2025, current: 350 },
+    { year: 2026, current: 450 },
+    { year: 2027, current: 500 },
+    { year: 2028, current: 550 },
+  ];
+  let filter = 'all';          // all | rsu | options
+  let yearIdx = 3;              // 0..5 (which year the axis handle is on)
+  const SIM_MULT = 4;           // simulated = current × 4 (= +300%)
+
+  const yearSlider = document.getElementById('yearSlider');
+  const simLine = document.getElementById('simLine');
+  const simArea = document.getElementById('simArea');
+  const ghostLine = document.getElementById('ghostLine');
+  const xLabels = document.getElementById('xLabels');
+  const axisHandle = document.getElementById('axisHandle');
+  const axisProgress = document.getElementById('axisProgress');
+  const refLine = document.getElementById('refLine');
+  const callout = document.getElementById('callout');
+  const calloutBg = document.getElementById('calloutBg');
+  const calloutTxt = document.getElementById('calloutTxt');
+  const highlight = document.getElementById('highlight');
+  const emphDot = document.getElementById('emphDot');
+  const answerCard = document.getElementById('answerCard');
+  const describeBtn = document.getElementById('describeBtn');
+  const tableRows = document.getElementById('tableRows');
+  const totalCurrent = document.getElementById('totalCurrent');
+  const totalSim = document.getElementById('totalSim');
+  const previewRows = document.querySelector('.preview-rows');
+  const chartSvg = document.getElementById('chart');
+
+  // X mapping
+  const padL = 20, padR = 10, w = 320, h = 220, padT = 10, axisY = 192;
+  const n = yearsData.length;
+  const xStep = (w - padL - padR) / (n - 1);
+
+  function visibleData() {
+    // Filter demo: "rsu" reduces each year's current by ~50%, "options" keeps as-is
+    if (filter === 'rsu') return yearsData.map(d => ({ ...d, current: Math.round(d.current * 0.48) }));
+    if (filter === 'options') return yearsData.map(d => ({ ...d, current: Math.round(d.current * 0.52) }));
+    return yearsData;
+  }
+
+  function layout(data) {
+    const maxSim = Math.max(...data.map(d => d.current)) * SIM_MULT;
+    const yMax = maxSim * 1.1;
+    const yScale = (axisY - padT - 10) / yMax;
+    const points = data.map((d, i) => `${padL + i*xStep},${axisY - 10 - d.current * SIM_MULT * yScale}`);
+    const pointsStr = points.join(' ');
+    const areaD = `M${points[0]} L${points.slice(1).join(' L')} L${padL + (n-1)*xStep},${axisY - 10} L${padL},${axisY - 10} Z`;
+    return { pointsStr, areaD, points };
+  }
+
+  function renderChart(animate = true) {
+    const data = visibleData();
+    const { pointsStr, areaD, points } = layout(data);
+    simLine.setAttribute('points', pointsStr);
+    simArea.setAttribute('d', areaD);
+
+    // X labels
+    xLabels.innerHTML = data.map((d, i) => {
+      const x = padL + i * xStep - 10;
+      return `<text x="${x}" y="210">${d.year}</text>`;
+    }).join('');
+
+    // Table rows
+    tableRows.innerHTML = data.map(d => {
+      const sim = Math.round(d.current * SIM_MULT);
+      const delta = sim - d.current;
+      return `<div class="tr">
+        <span>${d.year}</span><span>${d.current}</span>
+        <span>${sim.toLocaleString('en-US').replace(/,/g, ' ')}</span>
+        <span class="delta">+${delta.toLocaleString('en-US').replace(/,/g, ' ')}</span>
+      </div>`;
+    }).join('');
+
+    // First 3 rows preview
+    previewRows.innerHTML = `
+      <div class="table-head" style="padding-top:12px;">
+        <span>Year</span><span>Current</span><span>Simulated</span><span style="text-align:right;">Δ</span>
+      </div>
+      <div class="table-rows" style="padding-bottom:0;">
+        ${data.slice(0,3).map(d => {
+          const sim = Math.round(d.current * SIM_MULT);
+          const delta = sim - d.current;
+          return `<div class="tr">
+            <span>${d.year}</span><span>${d.current}</span>
+            <span>${sim.toLocaleString('en-US').replace(/,/g, ' ')}</span>
+            <span class="delta">+${delta.toLocaleString('en-US').replace(/,/g, ' ')}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+
+    // Totals
+    const totC = data.reduce((a, d) => a + d.current, 0);
+    const totS = totC * SIM_MULT;
+    totalCurrent.textContent = `${totC.toLocaleString('en-US').replace(/,/g, ' ')} NOK`;
+    totalSim.textContent = `≈ ${totS.toLocaleString('en-US').replace(/,/g, ' ')} NOK`;
+
+    // Handle position
+    renderHandle();
+  }
+
+  function renderHandle() {
+    const x = padL + yearIdx * xStep;
+    axisHandle.setAttribute('cx', x);
+    axisProgress.setAttribute('x2', x);
+    refLine.setAttribute('x1', x);
+    refLine.setAttribute('x2', x);
+
+    const data = visibleData();
+    const d = data[yearIdx];
+    const sim = Math.round(d.current * SIM_MULT);
+    // Position callout around handle
+    const calloutWidth = 160;
+    let cx = x - calloutWidth / 2;
+    if (cx < 10) cx = 10;
+    if (cx + calloutWidth > w - 10) cx = w - 10 - calloutWidth;
+    calloutBg.setAttribute('x', cx);
+    calloutTxt.setAttribute('x', cx + 10);
+    calloutTxt.textContent = `${d.year} · ${sim.toLocaleString('en-US').replace(/,/g, ' ')} NOK`;
+    callout.style.display = '';
+
+    // Keep ARIA slider in sync
+    yearSlider.value = yearIdx;
+    yearSlider.setAttribute('aria-valuenow', yearIdx);
+    yearSlider.setAttribute('aria-valuetext', `${d.year}, ${sim.toLocaleString('en-US').replace(/,/g, ' ')} NOK projected`);
+  }
+
+  // Filter interaction
+  document.querySelectorAll('.filters button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      if (f === 'country') return;   // demo: country just toggles visually
+      if (f === 'all') {
+        filter = 'all';
+        document.querySelectorAll('.filters button').forEach(b => {
+          if (['all','rsu','options'].includes(b.dataset.filter)) b.setAttribute('aria-pressed', b.dataset.filter === 'all' ? 'true' : 'false');
+        });
+      } else {
+        filter = (filter === f) ? 'all' : f;
+        document.querySelectorAll('.filters button').forEach(b => {
+          if (['all','rsu','options'].includes(b.dataset.filter)) b.setAttribute('aria-pressed', b.dataset.filter === filter ? 'true' : 'false');
+        });
+      }
+      // Ghost: capture old line
+      ghostLine.setAttribute('points', simLine.getAttribute('points'));
+      setTimeout(() => ghostLine.setAttribute('points', ''), 1200);
+      renderChart();
+    });
+  });
+
+  // Axis handle drag (pointer events)
+  function pointerToIdx(clientX) {
+    const rect = chartSvg.getBoundingClientRect();
+    const scale = rect.width / w;
+    const x = (clientX - rect.left) / scale;
+    const idx = Math.round((x - padL) / xStep);
+    return Math.max(0, Math.min(n - 1, idx));
+  }
+  let dragging = false;
+  axisHandle.addEventListener('pointerdown', e => {
+    dragging = true;
+    axisHandle.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  window.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    yearIdx = pointerToIdx(e.clientX);
+    renderHandle();
+  });
+  window.addEventListener('pointerup', () => { dragging = false; });
+  // Tap anywhere on axis to jump
+  chartSvg.addEventListener('click', e => {
+    const rect = chartSvg.getBoundingClientRect();
+    const scale = rect.width / w;
+    const y = (e.clientY - rect.top) / scale;
+    if (y > axisY - 14 && y < axisY + 14) {
+      yearIdx = pointerToIdx(e.clientX);
+      renderHandle();
+    }
+  });
+
+  // Keyboard on hidden ARIA slider
+  yearSlider.addEventListener('input', () => {
+    yearIdx = parseInt(yearSlider.value);
+    renderHandle();
+  });
+  // Also catch keyboard focus on the visible handle (make it focusable)
+  axisHandle.setAttribute('tabindex', '0');
+  axisHandle.setAttribute('role', 'slider');
+  axisHandle.setAttribute('aria-valuemin', '0');
+  axisHandle.setAttribute('aria-valuemax', '5');
+  axisHandle.setAttribute('aria-label', 'Scenario year');
+  axisHandle.addEventListener('keydown', e => {
+    let changed = true;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') yearIdx = Math.min(n - 1, yearIdx + 1);
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') yearIdx = Math.max(0, yearIdx - 1);
+    else if (e.key === 'Home') yearIdx = 0;
+    else if (e.key === 'End') yearIdx = n - 1;
+    else if (e.key === 'PageUp') yearIdx = Math.min(n - 1, yearIdx + 2);
+    else if (e.key === 'PageDown') yearIdx = Math.max(0, yearIdx - 2);
+    else changed = false;
+    if (changed) { e.preventDefault(); renderHandle(); axisHandle.setAttribute('aria-valuenow', yearIdx); }
+  });
+
+  // AI chips → answer + highlight
+  const ANSWERS = {
+    'leave-18m': {
+      text: `In 18 months (around 2027), 1 250 of your shares will have unlocked. You'd be able to sell them inside a 90-day window. The remaining 2 750 would go back to the company. At today's price and Norwegian tax rules, that's about €12 500 after tax.`,
+      range: [3, 4],
+      dot: 4,
+    },
+    'no-uk': {
+      text: `Your shares are taxed under Norwegian rules — tax happens when each share unlocks, at your income tax rate. A UK contract would tax only when you sell. Same programme, different timing.`,
+      range: [0, 5],
+      dot: 2,
+    },
+    'why-high': {
+      text: `2026 is where the biggest share tranche unlocks — about 30% of the programme. Multiplied by the simulated price, that year's slice carries most of the climb.`,
+      range: [3, 3],
+      dot: 3,
+    },
+  };
+  function showAnswer(key) {
+    const a = ANSWERS[key];
+    if (!a) return;
+    // Clear previous selection
+    document.querySelectorAll('.ai-row button').forEach(b => b.setAttribute('aria-pressed', b.dataset.q === key ? 'true' : 'false'));
+    // Range highlight
+    const x0 = padL + a.range[0] * xStep;
+    const x1 = padL + a.range[1] * xStep;
+    highlight.setAttribute('x', Math.min(x0, x1) - 10);
+    highlight.setAttribute('width', Math.abs(x1 - x0) + 20);
+    highlight.setAttribute('height', axisY - 10);
+    highlight.style.display = '';
+    // Dot emphasis
+    const data = visibleData();
+    const sim = data[a.dot].current * SIM_MULT;
+    const maxSim = Math.max(...data.map(d => d.current)) * SIM_MULT;
+    const yScale = (axisY - padT - 10) / (maxSim * 1.1);
+    const dx = padL + a.dot * xStep;
+    const dy = axisY - 10 - sim * yScale;
+    emphDot.setAttribute('cx', dx);
+    emphDot.setAttribute('cy', dy);
+    emphDot.setAttribute('r', 5);
+    emphDot.style.display = '';
+    // Answer card
+    const q = document.querySelector(`.ai-row button[data-q="${key}"]`)?.textContent || '';
+    answerCard.innerHTML = `<span class="q">You asked: ${q}</span>${a.text}`;
+    answerCard.classList.add('visible');
+  }
+  document.querySelectorAll('.ai-row button[data-q]').forEach(btn => {
+    btn.addEventListener('click', () => showAnswer(btn.dataset.q));
+  });
+
+  // "Describe this chart" — plain-language summary
+  describeBtn.addEventListener('click', () => {
+    const data = visibleData();
+    const first = data[0], last = data[data.length - 1];
+    const simFirst = first.current * SIM_MULT;
+    const simLast = last.current * SIM_MULT;
+    const totS = data.reduce((a, d) => a + d.current, 0) * SIM_MULT;
+    const txt = `The chart shows simulated gain across six years — ${data[0].year} through ${data[data.length-1].year}. It starts at ${simFirst.toLocaleString('en-US').replace(/,/g,' ')} NOK and climbs to ${simLast.toLocaleString('en-US').replace(/,/g,' ')} NOK, mostly because more of your shares unlock in the later years. Total simulated gain across all years is ${totS.toLocaleString('en-US').replace(/,/g,' ')} NOK. The handle on the year axis is currently at ${data[yearIdx].year}.`;
+    answerCard.innerHTML = `<span class="q">Describe this chart</span>${txt}`;
+    answerCard.classList.add('visible');
+    document.querySelectorAll('.ai-row button').forEach(b => b.setAttribute('aria-pressed', 'false'));
+  });
+
+  renderChart(false);
+</script>
+</body>
+</html>

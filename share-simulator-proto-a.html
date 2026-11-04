@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#1a1f2e" />
+<title>Simulator proto · Concept A (mobile)</title>
+<style>
+  :root {
+    --ink: #1a1f2e;
+    --ink-2: #2b3140;
+    --muted: #5a606b;
+    --rule: #d8dce2;
+    --rule-strong: #9aa0ab;
+    --fill: #f3f4f7;
+    --fill-2: #e8eaef;
+    --paper: #fff;
+    --ai: #3042a0;
+    --ai-soft: #e5e9fa;
+    --ai-strong: #202d75;
+    --mint: #c6ebe0;
+    --accent: #0bbd7e;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Inter', -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { font-family: var(--sans); -webkit-font-smoothing: antialiased; color: var(--ink); background: linear-gradient(180deg, #eef1ff 0%, #f6f8ff 100%); min-height: 100vh; }
+  body { min-height: 100vh; }
+
+  a.skip-link { position: absolute; left: -9999px; top: 0; background: var(--ink); color: #fff; padding: 10px 14px; text-decoration: none; }
+  a.skip-link:focus { left: 10px; top: 10px; z-index: 100; outline: 2px solid #fff; outline-offset: 2px; }
+
+  .app {
+    max-width: 420px;
+    margin: 0 auto;
+    background: #fff;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    padding-bottom: max(72px, env(safe-area-inset-bottom));
+  }
+
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 16px 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+  header .back { color: var(--ink); text-decoration: none; font-size: 15px; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; min-width: 44px; }
+  header h1 { font-size: 15px; font-weight: 600; letter-spacing: -0.005em; }
+  header .more { width: 44px; text-align: right; color: var(--muted); font-size: 18px; min-height: 44px; display: inline-flex; align-items: center; justify-content: flex-end; }
+
+  main { padding: 18px 16px 28px; display: flex; flex-direction: column; gap: 16px; flex: 1; }
+
+  .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+  /* ---- Scroller region ---- */
+  .scroller-card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .scroller-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .slider-label { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .slider-values { font-family: var(--mono); font-size: 12px; color: var(--ai); font-weight: 600; letter-spacing: 0.04em; }
+
+  /* Native range styling */
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%;
+    height: 44px;
+    background: transparent;
+    display: block;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 8px; border-radius: 4px;
+    background: linear-gradient(90deg, var(--ink) var(--p, 38%), var(--fill-2) var(--p, 38%));
+  }
+  input[type="range"]::-moz-range-track {
+    height: 8px; border-radius: 4px; background: var(--fill-2);
+  }
+  input[type="range"]::-moz-range-progress {
+    height: 8px; border-radius: 4px; background: var(--ink);
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    height: 26px; width: 26px; border-radius: 50%; background: #fff;
+    border: 2px solid var(--ink);
+    margin-top: -9px;
+    box-shadow: 0 2px 6px rgba(26,31,46,0.15);
+  }
+  input[type="range"]::-moz-range-thumb {
+    height: 26px; width: 26px; border-radius: 50%; background: #fff;
+    border: 2px solid var(--ink);
+  }
+  input[type="range"]:focus-visible { outline: none; }
+  input[type="range"]:focus-visible::-webkit-slider-thumb { outline: 3px solid var(--ai); outline-offset: 2px; }
+  input[type="range"]:focus-visible::-moz-range-thumb { outline: 3px solid var(--ai); outline-offset: 2px; }
+
+  .scale-marks {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.04em;
+    padding: 0 2px;
+    margin-top: 4px;
+  }
+
+  /* ---- Summary cards ---- */
+  .summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: #fff;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .card.simulated { background: var(--ai-soft); border-color: var(--ai); }
+  .card .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .card.simulated .lbl { color: var(--ai); }
+  .card .val { font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: -0.015em; }
+  .card .delta { display: inline-block; font-family: var(--mono); font-size: 10px; color: var(--ai); margin-top: 2px; }
+
+  /* ---- Toggle + tabs ---- */
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .seg {
+    display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; padding: 3px; background: #fff;
+  }
+  .seg button {
+    appearance: none; border: 0; background: transparent; font: inherit; cursor: pointer;
+    padding: 6px 14px; border-radius: 999px; font-size: 12px; color: var(--muted); font-weight: 500;
+    min-height: 32px;
+  }
+  .seg button[aria-selected="true"] { background: var(--ink); color: #fff; }
+  .filter-tabs {
+    display: inline-flex; gap: 2px; overflow-x: auto; max-width: 100%;
+    scrollbar-width: none;
+  }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .filter-tabs button {
+    appearance: none; border: 1px solid var(--rule); background: #fff;
+    padding: 6px 12px; font: inherit; font-size: 11px; color: var(--muted);
+    border-radius: 999px; cursor: pointer; white-space: nowrap;
+    min-height: 32px;
+  }
+  .filter-tabs button[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .filter-tabs button:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+
+  /* ---- Chart ---- */
+  .chart-wrap {
+    background: #fff; border: 1px solid var(--rule); border-radius: 14px;
+    padding: 14px; position: relative;
+  }
+  .chart-caption { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .chart-wrap svg { width: 100%; height: auto; display: block; }
+  .legend { display: flex; gap: 14px; font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 8px; }
+  .legend span::before {
+    content: ''; display: inline-block; width: 12px; height: 2px; margin-right: 6px; vertical-align: middle;
+  }
+  .legend .current::before { background: var(--rule-strong); }
+  .legend .sim::before { background: var(--ink); }
+
+  /* ---- Table ---- */
+  .table-wrap {
+    border: 1px solid var(--rule); border-radius: 14px; background: #fff; padding: 2px 14px 10px;
+  }
+  .table-wrap .tr {
+    display: grid; grid-template-columns: 50px 1fr 1fr 60px;
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--rule);
+    font-size: 12.5px;
+    color: var(--ink);
+  }
+  .table-wrap .tr:last-child { border-bottom: none; }
+  .table-wrap .th {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600;
+  }
+  .table-wrap .delta { color: var(--ai); font-family: var(--mono); font-size: 11px; text-align: right; }
+
+  /* ---- Coachmark ---- */
+  .coachmark {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: calc(68px + env(safe-area-inset-bottom));
+    background: var(--ink); color: #fff;
+    padding: 12px 16px; border-radius: 12px;
+    max-width: 320px; width: calc(100% - 32px);
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; line-height: 1.4;
+    z-index: 60;
+    box-shadow: 0 10px 30px rgba(10,15,30,0.3);
+  }
+  .coachmark::after {
+    content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%) rotate(45deg);
+    width: 14px; height: 14px; background: var(--ink); border-radius: 2px;
+  }
+  .coachmark .ok {
+    appearance: none; border: 1px solid #fff; background: transparent; color: #fff;
+    font: inherit; font-size: 12px;
+    padding: 6px 12px; border-radius: 999px; cursor: pointer;
+    min-height: 32px;
+  }
+  .coachmark .spark { color: #fff; }
+
+  /* ---- Sticky co-pilot bar ---- */
+  .chat-bar {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    width: calc(100% - 20px); max-width: 400px;
+    background: #fff;
+    border: 1px solid var(--ai);
+    border-radius: 999px;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 24px rgba(48,66,160,0.15);
+    cursor: pointer;
+    min-height: 48px;
+    z-index: 50;
+  }
+  .chat-bar .spark { color: var(--ai); font-size: 15px; }
+  .chat-bar .ph { flex: 1; font-size: 13px; color: var(--muted); }
+  .chat-bar .hint {
+    position: absolute; left: 14px; right: 14px; top: -34px;
+    background: var(--ai); color: #fff; padding: 6px 12px; border-radius: 10px;
+    font-size: 11.5px; line-height: 1.35;
+    display: none;
+  }
+  .chat-bar.has-hint .hint { display: block; }
+  .chat-bar .hint::after {
+    content: ''; position: absolute; bottom: -5px; left: 30px;
+    width: 10px; height: 10px; background: var(--ai); transform: rotate(45deg);
+  }
+
+  /* ---- Co-pilot bottom sheet ---- */
+  .sheet-backdrop {
+    position: fixed; inset: 0; background: rgba(10,15,30,0.35);
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    z-index: 80;
+  }
+  .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+  .sheet {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    padding: 12px 18px max(22px, env(safe-area-inset-bottom));
+    transform: translateY(100%);
+    transition: transform 0.25s cubic-bezier(.3,.7,.3,1);
+    z-index: 90;
+    max-height: 90vh;
+    display: flex; flex-direction: column; gap: 14px;
+    box-shadow: 0 -12px 30px rgba(10,15,30,0.15);
+  }
+  .sheet.open { transform: translateY(0); }
+  .sheet .grabber {
+    width: 44px; height: 4px; background: var(--rule-strong); border-radius: 2px;
+    margin: 0 auto;
+  }
+  .sheet .sheet-head {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .sheet .sheet-head h2 { font-size: 15px; font-weight: 600; }
+  .sheet .sheet-head button {
+    appearance: none; border: 1px solid var(--rule); background: #fff;
+    padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer;
+    min-height: 36px; min-width: 44px;
+  }
+  .sheet .label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ai); font-weight: 600;
+  }
+  .sheet .suggested { display: flex; gap: 8px; flex-wrap: wrap; }
+  .sheet .suggested button {
+    appearance: none; border: 1px solid var(--ai); color: var(--ai); background: var(--ai-soft);
+    padding: 8px 14px; border-radius: 999px; font: inherit; font-size: 12.5px;
+    cursor: pointer; min-height: 44px;
+  }
+  .sheet .suggested button:focus-visible { outline: 2px solid var(--ai-strong); outline-offset: 2px; }
+  .sheet .input-row {
+    display: flex; gap: 8px; align-items: stretch;
+  }
+  .sheet label.visible {
+    display: block;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .sheet input[type="text"] {
+    flex: 1; border: 1px solid var(--rule); border-radius: 12px;
+    padding: 12px 14px; font: inherit; font-size: 14px; background: #fff;
+    min-height: 44px;
+  }
+  .sheet input[type="text"]:focus { outline: 2px solid var(--ai); outline-offset: 2px; border-color: var(--ai); }
+  .sheet .send {
+    appearance: none; border: 0; background: var(--ink); color: #fff;
+    width: 46px; border-radius: 12px; font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sheet .send:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+
+  .answer {
+    background: var(--ai-soft);
+    border: 1px solid var(--ai);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 13.5px; line-height: 1.5; color: var(--ink);
+    display: none;
+  }
+  .answer.visible { display: block; }
+  .answer .q { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--ai); margin-bottom: 4px; display: block; }
+
+  /* ---- Visually hidden (SR only) ---- */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: 0.001s !important;
+      animation-duration: 0.001s !important;
+    }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<div class="app">
+  <header>
+    <a class="back" href="share-simulator-wip.html" aria-label="Back to explorations">← Back</a>
+    <h1>Share price simulator</h1>
+    <span class="more" aria-hidden="true">⋯</span>
+  </header>
+
+  <main id="main">
+
+    <!-- SCROLLER -->
+    <section class="scroller-card" aria-labelledby="scroller-label">
+      <div class="scroller-head">
+        <span id="scroller-label" class="slider-label">Select your scenario</span>
+        <span class="slider-values" id="sliderValues">NOK 5 · +400 %</span>
+      </div>
+      <input id="priceSlider" type="range"
+             min="1" max="10" step="0.5" value="5"
+             aria-labelledby="scroller-label"
+             aria-valuemin="1" aria-valuemax="10" aria-valuenow="5"
+             aria-valuetext="5 NOK, 400 percent above current price" />
+      <div class="scale-marks" aria-hidden="true">
+        <span>1</span><span>3</span><span>5</span><span>7</span><span>10</span>
+      </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <section class="summary" aria-label="Scenario summary">
+      <div class="card">
+        <div class="lbl">Current gain</div>
+        <div class="val">500 NOK</div>
+      </div>
+      <div class="card simulated" aria-live="polite">
+        <div class="lbl">Simulated gain</div>
+        <div class="val" id="simValue">≈ 2 500 NOK</div>
+        <div class="delta" id="simDelta">+400 %</div>
+      </div>
+    </section>
+
+    <!-- CHART/TABLE TOGGLE -->
+    <div class="toggle-row" role="tablist" aria-label="View mode">
+      <div class="seg">
+        <button role="tab" aria-selected="true" id="tab-chart" aria-controls="panel-chart">Chart</button>
+        <button role="tab" aria-selected="false" id="tab-table" aria-controls="panel-table">Table</button>
+      </div>
+      <div class="filter-tabs" role="tablist" aria-label="Group by">
+        <button role="tab" aria-selected="true" id="group-year">Per year</button>
+        <button role="tab" aria-selected="false" id="group-plan">Per plan</button>
+        <button role="tab" aria-selected="false" id="group-inst">Per instrument</button>
+      </div>
+    </div>
+
+    <!-- CHART -->
+    <section id="panel-chart" class="chart-wrap" role="tabpanel" aria-labelledby="tab-chart">
+      <div class="chart-caption">Simulated gain over time</div>
+      <svg id="chart" viewBox="0 0 320 180" role="img" aria-labelledby="chartTitle" aria-describedby="chartDesc">
+        <title id="chartTitle">Projected simulated gain</title>
+        <desc id="chartDesc">Line chart comparing current gain to simulated gain across six years.</desc>
+        <g stroke="#e5e7eb" stroke-width="1">
+          <line x1="20" y1="10" x2="310" y2="10"/>
+          <line x1="20" y1="50" x2="310" y2="50"/>
+          <line x1="20" y1="90" x2="310" y2="90"/>
+          <line x1="20" y1="130" x2="310" y2="130"/>
+          <line x1="20" y1="160" x2="310" y2="160"/>
+        </g>
+        <polyline id="currentLine" fill="none" stroke="#9aa0ab" stroke-width="1.6" stroke-dasharray="4 3" points=""/>
+        <polyline id="simLine" fill="none" stroke="#1a1f2e" stroke-width="2" points=""/>
+        <g id="simDots" fill="#1a1f2e"></g>
+        <g id="xLabels" fill="#5a606b" font-family="JetBrains Mono, monospace" font-size="9"></g>
+      </svg>
+      <div class="legend" aria-hidden="true">
+        <span class="current">CURRENT</span>
+        <span class="sim">SIMULATED</span>
+      </div>
+    </section>
+
+    <!-- TABLE -->
+    <section id="panel-table" class="table-wrap" role="tabpanel" aria-labelledby="tab-table" hidden>
+      <div class="tr">
+        <span class="th">Year</span>
+        <span class="th">Current</span>
+        <span class="th">Simulated</span>
+        <span class="th" style="text-align:right;">Δ</span>
+      </div>
+      <div id="tableBody"></div>
+    </section>
+
+  </main>
+
+  <!-- Chat bar -->
+  <button class="chat-bar" id="chatBar" aria-label="Open the co-pilot" aria-haspopup="dialog" aria-expanded="false">
+    <span class="hint" id="chatHint" aria-hidden="true">Ask why 2026 is so much higher →</span>
+    <span class="spark" aria-hidden="true">✦</span>
+    <span class="ph">Ask the co-pilot about this scenario…</span>
+  </button>
+
+  <!-- Coachmark (one-time) -->
+  <div class="coachmark" id="coachmark" role="dialog" aria-live="polite" aria-labelledby="coachmarkText" hidden>
+    <span class="spark" aria-hidden="true">✦</span>
+    <span id="coachmarkText">Ask the co-pilot anything in your own language — same info, no jargon.</span>
+    <button class="ok" id="coachOk">Got it</button>
+  </div>
+</div>
+
+<!-- Bottom sheet -->
+<div class="sheet-backdrop" id="sheetBackdrop" aria-hidden="true"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
+  <div class="grabber" aria-hidden="true"></div>
+  <div class="sheet-head">
+    <h2 id="sheetTitle">Co-pilot</h2>
+    <button id="sheetClose" aria-label="Close co-pilot">Close</button>
+  </div>
+  <span class="label">Suggested</span>
+  <div class="suggested">
+    <button data-q="2026-why">Why is 2026 higher?</button>
+    <button data-q="leave-18m">What if I leave in 18 months?</button>
+    <button data-q="no-uk">Compare NO vs UK tax</button>
+    <button data-q="explain-chart">Explain this chart</button>
+  </div>
+  <div class="answer" id="answer" aria-live="polite" aria-atomic="true"></div>
+  <div>
+    <label class="visible" for="chatInput">Ask about your shares</label>
+    <div class="input-row">
+      <input id="chatInput" type="text" placeholder="Type a question…" autocomplete="off" />
+      <button class="send" id="chatSend" aria-label="Send">↑</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Data for the mock programme
+  const yearsData = [
+    { year: 2023, current: 300 },
+    { year: 2024, current: 300 },
+    { year: 2025, current: 350 },
+    { year: 2026, current: 450 },
+    { year: 2027, current: 500 },
+    { year: 2028, current: 550 },
+  ];
+  const BASE_PRICE = 1;
+
+  const slider = document.getElementById('priceSlider');
+  const sliderValues = document.getElementById('sliderValues');
+  const simValue = document.getElementById('simValue');
+  const simDelta = document.getElementById('simDelta');
+  const currentLine = document.getElementById('currentLine');
+  const simLine = document.getElementById('simLine');
+  const simDots = document.getElementById('simDots');
+  const xLabels = document.getElementById('xLabels');
+  const chatBar = document.getElementById('chatBar');
+  const chatHint = document.getElementById('chatHint');
+  const coachmark = document.getElementById('coachmark');
+  const coachOk = document.getElementById('coachOk');
+  const sheet = document.getElementById('sheet');
+  const sheetBackdrop = document.getElementById('sheetBackdrop');
+  const sheetClose = document.getElementById('sheetClose');
+  const answer = document.getElementById('answer');
+  const chatInput = document.getElementById('chatInput');
+  const chatSend = document.getElementById('chatSend');
+  const tableBody = document.getElementById('tableBody');
+  const tabChart = document.getElementById('tab-chart');
+  const tabTable = document.getElementById('tab-table');
+  const panelChart = document.getElementById('panel-chart');
+  const panelTable = document.getElementById('panel-table');
+
+  // Chart rendering
+  function layout(value) {
+    const w = 320, h = 180, padL = 20, padR = 10, padT = 10, padB = 20;
+    const n = yearsData.length;
+    const maxBase = Math.max(...yearsData.map(d => d.current));
+    const maxSim = maxBase * value / BASE_PRICE;
+    const yMax = Math.max(maxSim, maxBase) * 1.1;
+    const xStep = (w - padL - padR) / (n - 1);
+    const yScale = (h - padT - padB) / yMax;
+    const cPoints = yearsData.map((d, i) => `${padL + i*xStep},${h - padB - d.current * yScale}`).join(' ');
+    const sPoints = yearsData.map((d, i) => `${padL + i*xStep},${h - padB - (d.current * value) * yScale}`).join(' ');
+    return { cPoints, sPoints, xStep, padL, h, padB };
+  }
+
+  function update() {
+    const v = parseFloat(slider.value);
+    const pct = Math.round((v - BASE_PRICE) * 100);
+    sliderValues.textContent = `NOK ${v.toFixed(1)} · ${pct >= 0 ? '+' : ''}${pct} %`;
+    slider.setAttribute('aria-valuenow', v);
+    slider.setAttribute('aria-valuetext', `${v.toFixed(1)} NOK, ${pct} percent above current price`);
+    slider.style.setProperty('--p', `${((v - 1) / 9) * 100}%`);
+
+    // Sum of current & simulated gains
+    const sumCurrent = yearsData.reduce((a, d) => a + d.current, 0); // 2450
+    const sumSim = sumCurrent * v / BASE_PRICE;
+    simValue.textContent = `≈ ${Math.round(sumSim).toLocaleString('en-US').replace(/,/g, ' ')} NOK`;
+    simDelta.textContent = `${pct >= 0 ? '+' : ''}${pct} %`;
+
+    // Chart
+    const { cPoints, sPoints, xStep, padL, h, padB } = layout(v);
+    currentLine.setAttribute('points', cPoints);
+    simLine.setAttribute('points', sPoints);
+    simDots.innerHTML = yearsData.map((d, i) => {
+      const x = padL + i * xStep;
+      const y = h - padB - (d.current * v) * ((h - padB - 10) / (Math.max(...yearsData.map(x => x.current)) * Math.max(v, 1) * 1.1));
+      // simpler recalc
+      return '';
+    }).join('');
+    // Redo dots cleanly using same math
+    const dotEls = yearsData.map((d, i) => {
+      const x = padL + i * xStep;
+      // match sPoints y:
+      const pts = sPoints.split(' ');
+      const [, y] = pts[i].split(',');
+      return `<circle cx="${x}" cy="${y}" r="3" />`;
+    }).join('');
+    simDots.innerHTML = dotEls;
+
+    // X labels
+    xLabels.innerHTML = yearsData.map((d, i) => {
+      const x = padL + i * xStep - 10;
+      return `<text x="${x}" y="178">${d.year}</text>`;
+    }).join('');
+
+    // Table body
+    tableBody.innerHTML = yearsData.map(d => {
+      const sim = Math.round(d.current * v);
+      const delta = sim - d.current;
+      return `<div class="tr">
+        <span>${d.year}</span>
+        <span>${d.current}</span>
+        <span>${sim.toLocaleString('en-US').replace(/,/g, ' ')}</span>
+        <span class="delta">+${delta.toLocaleString('en-US').replace(/,/g, ' ')}</span>
+      </div>`;
+    }).join('');
+
+    // Hint: show when scroller at unusual value (>7x)
+    if (v >= 7) {
+      chatBar.classList.add('has-hint');
+    } else {
+      chatBar.classList.remove('has-hint');
+    }
+  }
+
+  slider.addEventListener('input', update);
+  update();
+
+  // Chart/Table toggle
+  function selectView(which) {
+    tabChart.setAttribute('aria-selected', which === 'chart');
+    tabTable.setAttribute('aria-selected', which === 'table');
+    panelChart.hidden = which !== 'chart';
+    panelTable.hidden = which !== 'table';
+  }
+  tabChart.addEventListener('click', () => selectView('chart'));
+  tabTable.addEventListener('click', () => selectView('table'));
+  // Keyboard arrow between tabs
+  [tabChart, tabTable].forEach((btn, i, arr) => {
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        const next = arr[(i + (e.key === 'ArrowRight' ? 1 : arr.length - 1)) % arr.length];
+        next.focus();
+        selectView(next === tabChart ? 'chart' : 'table');
+      }
+    });
+  });
+
+  // Group-by tabs (visual only for this proto)
+  document.querySelectorAll('.filter-tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tabs button').forEach(b => b.setAttribute('aria-selected', 'false'));
+      btn.setAttribute('aria-selected', 'true');
+    });
+  });
+
+  // Co-pilot sheet
+  let lastFocused = null;
+  function openSheet(suggested) {
+    lastFocused = document.activeElement;
+    sheet.classList.add('open');
+    sheetBackdrop.classList.add('open');
+    sheet.setAttribute('aria-hidden', 'false');
+    chatBar.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    if (suggested) {
+      setTimeout(() => sheet.querySelector(`button[data-q="${suggested}"]`)?.focus(), 150);
+    } else {
+      setTimeout(() => chatInput.focus(), 150);
+    }
+  }
+  function closeSheet() {
+    sheet.classList.remove('open');
+    sheetBackdrop.classList.remove('open');
+    sheet.setAttribute('aria-hidden', 'true');
+    chatBar.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    if (lastFocused && document.contains(lastFocused)) lastFocused.focus();
+    answer.classList.remove('visible');
+    answer.innerHTML = '';
+  }
+  chatBar.addEventListener('click', () => openSheet());
+  sheetBackdrop.addEventListener('click', closeSheet);
+  sheetClose.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet.classList.contains('open')) closeSheet(); });
+
+  // Suggested questions → inline answer
+  const ANSWERS = {
+    '2026-why': `In 2026 more of your shares unlock than in any other year of your plan — about 30% of the total. That bigger slice is why the simulated gain spikes.`,
+    'leave-18m': `In 18 months, 1 250 of your shares will have unlocked. You'd be able to sell them inside a 90-day window. The remaining 2 750 would go back to the company. At today's price and Norwegian tax rules, that's about €12 500 in your pocket after tax.`,
+    'no-uk': `Your shares are taxed under Norwegian rules — the tax happens when each share unlocks, at your income tax rate. Your colleague's contract is under UK rules — they're taxed only when they sell. Same programme, different countries, different timing.`,
+    'explain-chart': `The grey dashed line is today's gain at the current share price. The solid line is the gain if the price moves to your chosen scenario. Years where more shares vest show a bigger jump.`,
+  };
+  const QUESTIONS = {
+    '2026-why': 'Why is 2026 higher?',
+    'leave-18m': 'What if I leave in 18 months?',
+    'no-uk': 'Compare NO vs UK tax',
+    'explain-chart': 'Explain this chart',
+  };
+  document.querySelectorAll('.suggested button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.q;
+      answer.innerHTML = `<span class="q">You asked: ${QUESTIONS[key]}</span>${ANSWERS[key]}`;
+      answer.classList.add('visible');
+    });
+  });
+
+  chatSend.addEventListener('click', () => {
+    const q = chatInput.value.trim();
+    if (!q) return;
+    answer.innerHTML = `<span class="q">You asked: ${q}</span>In a real app, the co-pilot would answer here against your actual programme, never recommending.`;
+    answer.classList.add('visible');
+    chatInput.value = '';
+  });
+  chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') chatSend.click(); });
+
+  // One-time coachmark
+  const COACH_KEY = 'ss.protoA.coachSeen';
+  try {
+    if (!localStorage.getItem(COACH_KEY)) {
+      setTimeout(() => { coachmark.hidden = false; coachmark.focus(); }, 800);
+    }
+  } catch (e) {}
+  coachOk.addEventListener('click', () => {
+    coachmark.hidden = true;
+    try { localStorage.setItem(COACH_KEY, '1'); } catch (e) {}
+  });
+
+  // Focus trap in sheet
+  sheet.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const focusables = sheet.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+  });
+</script>
+</body>
+</html>
