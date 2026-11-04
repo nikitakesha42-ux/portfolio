@@ -18,7 +18,7 @@
        Page-scoped visuals. Everything else inherits the portfolio.
        ============================================================ */
 
-    /* Browser chrome — for the hero and a couple of detail stills. */
+    /* Browser chrome — for detail stills. */
     .pl-browser {
       border: 1px solid var(--rule);
       border-radius: 14px;
@@ -59,47 +59,40 @@
       position: relative;
     }
 
-    /* Pause/Play control for the hero walkthrough — WCAG 2.2.2 requires any
-       moving content >5s to be pausable. Sits in the bottom-right corner of
-       the canvas; inherits the dark navy brand tone. */
-    .pl-playpause {
-      position: absolute;
-      right: 12px;
-      bottom: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 10px 6px 8px;
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 999px;
-      background: rgba(10,31,74,0.82);
-      color: #fff;
-      font: 500 12px/1 var(--sans, 'Inter', system-ui, sans-serif);
-      letter-spacing: 0.01em;
-      cursor: pointer;
-      backdrop-filter: blur(4px);
-      transition: background 0.15s ease, transform 0.15s ease;
-    }
-    .pl-playpause:hover   { background: rgba(10,31,74,0.94); }
-    .pl-playpause:focus-visible {
-      outline: 2px solid #ffe066;
-      outline-offset: 2px;
-    }
-    /* Toggle which glyph is visible based on aria-pressed */
-    .pl-playpause .pl-playpause__play  { display: none; }
-    .pl-playpause .pl-playpause__pause { display: inline-block; }
-    .pl-playpause[aria-pressed="false"] .pl-playpause__play  { display: inline-block; }
-    .pl-playpause[aria-pressed="false"] .pl-playpause__pause { display: none; }
     .pl-browser__canvas img {
       display: block;
       width: 100%;
       height: auto;
-      aspect-ratio: 1100 / 687;  /* lock to the GIF's real aspect */
+      aspect-ratio: 1440 / 900;
     }
-    .pl-browser--hero {
-      max-width: 1100px;
-      margin: 0 auto;
+
+    /* Play/Pause for the phone recording. WCAG 2.2.2: moving content longer
+       than 5s must be pausable. Sits under the phone so it never covers the
+       recording; the label (not aria-pressed) carries the state. */
+    .pl-playpause {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 36px;
+      margin-top: 16px;
+      padding: 0 14px 0 12px;
+      border: 1px solid #0f1f3d;
+      border-radius: 999px;
+      background: #0f1f3d;
+      color: #fff;
+      font: 500 13px/1 var(--sans, 'Inter', system-ui, sans-serif);
+      cursor: pointer;
+      transition: background 0.15s ease;
     }
+    .pl-playpause[hidden] { display: none; }
+    .pl-playpause:hover { background: #1a2f5a; }
+    .pl-playpause:focus-visible {
+      outline: 2px solid #0f1f3d;
+      outline-offset: 3px;
+    }
+    .pl-playpause .pl-playpause__play { display: none; }
+    .pl-playpause[data-playing="false"] .pl-playpause__play  { display: inline-block; }
+    .pl-playpause[data-playing="false"] .pl-playpause__pause { display: none; }
 
     /* ============================================================
        One-library-three-homes mockup: laptop + phone + Mac dock.
@@ -167,9 +160,13 @@
       transform: translateY(-2px);
     }
 
-    /* Phone frame — iPhone 12 proportions.
-       iPhone 12: 71.5 × 146.7 mm body, 390 × 844 pt screen, ~47 pt corner
-       radius, notch ≈ 19 % of screen width, ≈ 2.7 % of screen height. */
+    /* Phone frame around an iPhone 17 screen recording. The recording already
+       includes the Dynamic Island and status bar, so the frame draws no notch. */
+    .pl-phone-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     .pl-phone {
       position: relative;
       max-width: 240px;
@@ -181,27 +178,20 @@
       box-shadow: 0 25px 45px -20px rgba(10, 31, 74, 0.5);
       overflow: hidden;
     }
-    .pl-phone::before {
-      /* iPhone 12 notch: ~42 × 13 px at a 220-px-wide screen. */
-      content: "";
-      position: absolute;
-      top: 9px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 42px;
-      height: 13px;
-      border-radius: 0 0 13px 13px;
-      background: #0a1428;
-      z-index: 2;
-    }
-    .pl-phone img {
+    .pl-phone video {
       display: block;
       width: 100%;
       height: auto;
-      aspect-ratio: 390 / 844;
+      aspect-ratio: 1206 / 2622;
+      object-fit: cover;
       border-radius: 30px;
       background: #fff;
     }
+    .pl-stage .video-transcript {
+      margin: 16px auto 0;
+      text-align: center;
+    }
+    .pl-stage .video-transcript-body { text-align: left; }
 
     /* Mac dock — pinned app in the system tray. */
     .pl-dock-row {
@@ -382,45 +372,6 @@
     </div>
   </header>
 
-  <!-- ===== HERO / BANNER ========================================= -->
-  <figure class="case-banner">
-    <div class="pl-browser pl-browser--hero">
-      <div class="pl-browser__bar">
-        <span class="pl-browser__dots" aria-hidden="true"><span></span><span></span><span></span></span>
-        <span class="pl-browser__url" aria-hidden="true">anastasiianikitina.no/prompt-library-app.html</span>
-      </div>
-      <div class="pl-browser__canvas">
-        <img id="plWalkthrough"
-             src="assets/case/pl-walkthrough.gif"
-             data-animated="assets/case/pl-walkthrough.gif"
-             data-still="assets/case/pl-walkthrough-poster.png"
-             alt="Looping walkthrough of the live Prompt Library — the home view, a tag filter, a prompt detail, the Add Prompt modal, the Sync modal, and two other disciplines." />
-        <button id="plWalkthroughToggle" type="button"
-                class="pl-playpause"
-                aria-pressed="true"
-                aria-controls="plWalkthrough"
-                data-en-pause="Pause walkthrough"
-                data-en-play="Play walkthrough"
-                data-no-pause="Pause gjennomgang"
-                data-no-play="Spill av gjennomgang"
-                aria-label="Pause walkthrough">
-          <!-- pause glyph (shown while playing) -->
-          <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
-               class="pl-playpause__pause">
-            <rect x="3" y="2" width="3.5" height="12" rx="1"/>
-            <rect x="9.5" y="2" width="3.5" height="12" rx="1"/>
-          </svg>
-          <!-- play glyph (shown while paused) -->
-          <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
-               class="pl-playpause__play">
-            <path d="M3.5 2.5v11a.5.5 0 0 0 .77.42l9-5.5a.5.5 0 0 0 0-.84l-9-5.5a.5.5 0 0 0-.77.42Z"/>
-          </svg>
-          <span class="pl-playpause__label" data-en="Pause" data-no="Pause">Pause</span>
-        </button>
-      </div>
-    </div>
-  </figure>
-
   <main id="main" class="case wide">
 
     <span class="case-eyebrow brand"
@@ -553,10 +504,32 @@
             </div>
             <div class="pl-laptop__base" aria-hidden="true"></div>
           </div>
-          <!-- Phone -->
-          <div class="pl-phone">
-            <img src="assets/case/pl-new/_06-mobile-home.png"
-                 alt="The same library on an iPhone — dark navy header with the five disciplines, Design Engineering selected, filter chips, and the first prompt card below." />
+          <!-- Phone: screen recording of the live library -->
+          <div class="pl-phone-col">
+            <div class="pl-phone">
+              <video id="plPhoneVideo"
+                     src="assets/case/pl-phone-walkthrough.mp4"
+                     poster="assets/case/pl-phone-walkthrough-poster.jpg"
+                     muted loop playsinline preload="none"
+                     aria-describedby="plPhoneVideoDesc"
+                     data-en-aria="Screen recording of the Prompt Library on an iPhone"
+                     data-no-aria="Skjermopptak av prompt-biblioteket på en iPhone"
+                     aria-label="Screen recording of the Prompt Library on an iPhone"></video>
+            </div>
+            <button id="plPhoneVideoToggle" type="button" class="pl-playpause"
+                    aria-controls="plPhoneVideo" data-playing="false"
+                    aria-label="Play screen recording" hidden>
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
+                   class="pl-playpause__pause">
+                <rect x="3" y="2" width="3.5" height="12" rx="1"/>
+                <rect x="9.5" y="2" width="3.5" height="12" rx="1"/>
+              </svg>
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
+                   class="pl-playpause__play">
+                <path d="M3.5 2.5v11a.5.5 0 0 0 .77.42l9-5.5a.5.5 0 0 0 0-.84l-9-5.5a.5.5 0 0 0-.77.42Z"/>
+              </svg>
+              <span class="pl-playpause__label">Play</span>
+            </button>
           </div>
         </div>
 
@@ -582,6 +555,17 @@
                     data-no="Installert i Mac-dokken, på hjem-skjermen på telefonen, og påkalt som /ux-research, /writing, /design-systems, /prototyping, og /design-engineering inne i Claude Code. Ett bibliotek. Tre hjem. Samme 33 prompts.">
           Installed to the Mac dock, home screen on the phone, and invoked as /ux-research, /writing, /design-systems, /prototyping, and /design-engineering inside Claude Code. One library. Three homes. Same 33 prompts.
         </figcaption>
+
+        <details class="video-transcript">
+          <summary data-en="What the phone recording shows" data-no="Hva telefonopptaket viser">What the phone recording shows</summary>
+          <div class="video-transcript-body">
+            <p id="plPhoneVideoDesc"
+               data-en="A silent, one-minute screen recording on an iPhone. It opens in the UX Research room, switches to Design Engineering and Writing, and comes back. A tag filter narrows the list to one prompt, the BGOALC User Interview Script. Its detail opens, the prompt is edited and saved, and a “Prompt updated” confirmation appears. Finally, a search for “problem statement” returns four prompts, and the Problem Statement Stress-Test opens and closes."
+               data-no="Et lydløst skjermopptak på ett minutt fra en iPhone. Det starter i UX Research-rommet, bytter til Design Engineering og Writing, og går tilbake. Et tag-filter snevrer listen inn til én prompt, BGOALC User Interview Script. Detaljvisningen åpnes, prompten redigeres og lagres, og bekreftelsen «Prompt updated» vises. Til slutt gir et søk på «problem statement» fire prompter, og Problem Statement Stress-Test åpnes og lukkes.">
+              A silent, one-minute screen recording on an iPhone. It opens in the UX Research room, switches to Design Engineering and Writing, and comes back. A tag filter narrows the list to one prompt, the BGOALC User Interview Script. Its detail opens, the prompt is edited and saved, and a “Prompt updated” confirmation appears. Finally, a search for “problem statement” returns four prompts, and the Problem Statement Stress-Test opens and closes.
+            </p>
+          </div>
+        </details>
       </figure>
     </section>
 
@@ -656,43 +640,54 @@
 
   <script src="i18n.js?v=2"></script>
   <script>
-    // Pause/Play for the hero walkthrough GIF (WCAG 2.2.2 Pause, Stop, Hide).
-    // Starts paused when the user has prefers-reduced-motion set (WCAG 2.3.3).
+    // Phone recording: plays only while on screen, and never on its own for
+    // prefers-reduced-motion users (WCAG 2.2.2 Pause, Stop, Hide + 2.3.3).
+    // Without JS the button stays hidden and the poster is a still image.
     (function () {
-      const img = document.getElementById('plWalkthrough');
-      const btn = document.getElementById('plWalkthroughToggle');
-      if (!img || !btn) return;
-      const animated = img.dataset.animated;
-      const still    = img.dataset.still;
-      const label    = btn.querySelector('.pl-playpause__label');
+      const video = document.getElementById('plPhoneVideo');
+      const btn = document.getElementById('plPhoneVideoToggle');
+      if (!video || !btn) return;
+      const label = btn.querySelector('.pl-playpause__label');
+      const TEXT = {
+        en: { play: 'Play', pause: 'Pause', playAria: 'Play screen recording', pauseAria: 'Pause screen recording' },
+        no: { play: 'Spill av', pause: 'Pause', playAria: 'Spill av skjermopptaket', pauseAria: 'Pause skjermopptaket' }
+      };
+      let userPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let inView = !('IntersectionObserver' in window);
 
-      function setPlaying(playing) {
-        btn.setAttribute('aria-pressed', String(playing));
-        const lang = document.documentElement.lang === 'nb' ? 'no' : 'en';
-        const text = btn.getAttribute(`data-${lang}-${playing ? 'pause' : 'play'}`);
-        btn.setAttribute('aria-label', text);
-        if (label) label.textContent = playing
-          ? (lang === 'no' ? 'Pause' : 'Pause')
-          : (lang === 'no' ? 'Spill av' : 'Play');
-        if (playing) {
-          if (img.getAttribute('src') !== animated) img.setAttribute('src', animated);
-        } else {
-          img.setAttribute('src', still);
-        }
+      function render() {
+        const playing = !video.paused;
+        const t = TEXT[document.documentElement.lang === 'nb' ? 'no' : 'en'];
+        btn.dataset.playing = String(playing);
+        btn.setAttribute('aria-label', playing ? t.pauseAria : t.playAria);
+        label.textContent = playing ? t.pause : t.play;
+      }
+      function sync() {
+        if (inView && !userPaused) video.play().catch(() => {});
+        else video.pause();
       }
 
+      btn.hidden = false;
+      // An explicit press always wins over the scroll-based autoplay.
       btn.addEventListener('click', () => {
-        setPlaying(btn.getAttribute('aria-pressed') !== 'true');
+        userPaused = !video.paused;
+        if (userPaused) video.pause();
+        else video.play().catch(() => {});
       });
+      video.addEventListener('play', render);
+      video.addEventListener('pause', render);
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; sync(); },
+          { threshold: 0.25 }).observe(video);
+      } else {
+        sync();
+      }
 
-      // Respect prefers-reduced-motion — start paused.
-      const prm = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (prm.matches) setPlaying(false);
-
-      // Keep the label in sync when the EN/NO toggle flips the page language.
-      const refresh = () => setPlaying(btn.getAttribute('aria-pressed') === 'true');
+      // i18n.js sets the page language on DOMContentLoaded and on EN/NO clicks.
+      document.addEventListener('DOMContentLoaded', render);
       document.querySelectorAll('.lang-switch button').forEach(b =>
-        b.addEventListener('click', () => setTimeout(refresh, 0)));
+        b.addEventListener('click', () => setTimeout(render, 0)));
+      render();
     })();
   </script>
 </body>
