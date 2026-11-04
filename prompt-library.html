@@ -95,24 +95,30 @@
     .pl-playpause[data-playing="false"] .pl-playpause__pause { display: none; }
 
     /* ============================================================
-       One-library-three-homes mockup: laptop + phone + Mac dock.
-       Pure CSS so there's no new image to maintain.
+       One-library-three-homes mockup. Left column: the Mac (laptop +
+       dock), then caption and transcript fill the space the taller
+       phone leaves. Right column: the phone recording. Device frames
+       are pure CSS.
        ============================================================ */
     .pl-stage {
       position: relative;
       margin: 32px 0 0;
-      padding: 48px 32px 24px;
+      padding: 32px;
       background: linear-gradient(180deg, #f6f7fa 0%, #e8ecf3 100%);
       border: 1px solid var(--rule);
       border-radius: 20px;
       overflow: hidden;
-    }
-    .pl-stage__row {
       display: grid;
       grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
-      gap: 32px;
-      align-items: end;
+      grid-template-rows: auto auto 1fr;
+      grid-template-areas:
+        "mac   phone"
+        "cap   phone"
+        "trans phone";
+      column-gap: 32px;
+      align-items: start;
     }
+    .pl-stage__mac { grid-area: mac; }
 
     /* Laptop frame (MacBook-ish) — a thin bezel around the app shot,
        nothing else. No webcam strip, no extra top band — the image is
@@ -163,6 +169,7 @@
     /* Phone frame around an iPhone 17 screen recording. The recording already
        includes the Dynamic Island and status bar, so the frame draws no notch. */
     .pl-phone-col {
+      grid-area: phone;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -188,16 +195,15 @@
       background: #fff;
     }
     .pl-stage .video-transcript {
-      margin: 16px auto 0;
-      text-align: center;
+      grid-area: trans;
+      margin-top: 12px;
     }
-    .pl-stage .video-transcript-body { text-align: left; }
 
     /* Mac dock — pinned app in the system tray. */
     .pl-dock-row {
       display: flex;
       justify-content: center;
-      margin-top: 28px;
+      margin-top: 24px;
     }
     .pl-dock {
       display: inline-flex;
@@ -256,13 +262,11 @@
       box-shadow: 0 6px 12px -6px rgba(10,31,74,0.2);
     }
     .pl-stage__caption {
-      margin: 20px 0 0;
-      text-align: center;
+      grid-area: cap;
+      margin: 24px 0 0;
       font-size: 14px;
+      line-height: 1.55;
       color: var(--muted);
-      max-width: 60ch;
-      margin-left: auto;
-      margin-right: auto;
     }
 
     /* "Reasoning" callout — why each change earns its place. */
@@ -342,12 +346,13 @@
        Mobile reflow.
        ============================================================ */
     @media (max-width: 760px) {
-      .pl-stage { padding: 32px 18px 18px; }
-      .pl-stage__row {
-        grid-template-columns: 1fr;
-        gap: 36px;
-        align-items: center;
+      .pl-stage {
+        padding: 24px 18px;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: none;
+        grid-template-areas: "mac" "phone" "cap" "trans";
       }
+      .pl-phone-col { margin-top: 36px; }
       .pl-access,
       .pl-impact { grid-template-columns: 1fr; }
       .pl-browser { border-radius: 10px; }
@@ -495,8 +500,8 @@
 
       <!-- Laptop + phone + Mac dock composite mockup -->
       <figure class="pl-stage" aria-label="The same library shown on a MacBook, on a phone, and pinned to the macOS dock as a native app.">
-        <div class="pl-stage__row">
-          <!-- Laptop -->
+        <!-- Mac: laptop with its dock -->
+        <div class="pl-stage__mac">
           <div class="pl-laptop">
             <div class="pl-laptop__screen">
               <img src="assets/case/pl-new/_16-desktop-app.png"
@@ -504,50 +509,49 @@
             </div>
             <div class="pl-laptop__base" aria-hidden="true"></div>
           </div>
-          <!-- Phone: screen recording of the live library -->
-          <div class="pl-phone-col">
-            <div class="pl-phone">
-              <video id="plPhoneVideo"
-                     src="assets/case/pl-phone-walkthrough.mp4"
-                     poster="assets/case/pl-phone-walkthrough-poster.jpg"
-                     muted loop playsinline preload="none"
-                     aria-describedby="plPhoneVideoDesc"
-                     data-en-aria="Screen recording of the Prompt Library on an iPhone"
-                     data-no-aria="Skjermopptak av prompt-biblioteket på en iPhone"
-                     aria-label="Screen recording of the Prompt Library on an iPhone"></video>
+          <div class="pl-dock-row" aria-hidden="true">
+            <div class="pl-dock">
+              <div class="pl-dock__item"></div>
+              <div class="pl-dock__item"></div>
+              <div class="pl-dock__item pl-dock__item--ours">
+                <span class="pl-dock__label"
+                      data-en="Prompt Library"
+                      data-no="Prompt-biblioteket">Prompt Library</span>
+                <img src="assets/pl-pwa/icon-192.png" alt="" />
+              </div>
+              <div class="pl-dock__item"></div>
+              <div class="pl-dock__item"></div>
+              <div class="pl-dock__item"></div>
             </div>
-            <button id="plPhoneVideoToggle" type="button" class="pl-playpause"
-                    aria-controls="plPhoneVideo" data-playing="false"
-                    aria-label="Play screen recording" hidden>
-              <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
-                   class="pl-playpause__pause">
-                <rect x="3" y="2" width="3.5" height="12" rx="1"/>
-                <rect x="9.5" y="2" width="3.5" height="12" rx="1"/>
-              </svg>
-              <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
-                   class="pl-playpause__play">
-                <path d="M3.5 2.5v11a.5.5 0 0 0 .77.42l9-5.5a.5.5 0 0 0 0-.84l-9-5.5a.5.5 0 0 0-.77.42Z"/>
-              </svg>
-              <span class="pl-playpause__label">Play</span>
-            </button>
           </div>
         </div>
 
-        <!-- Mac dock -->
-        <div class="pl-dock-row" aria-hidden="true">
-          <div class="pl-dock">
-            <div class="pl-dock__item"></div>
-            <div class="pl-dock__item"></div>
-            <div class="pl-dock__item pl-dock__item--ours">
-              <span class="pl-dock__label"
-                    data-en="Prompt Library"
-                    data-no="Prompt-biblioteket">Prompt Library</span>
-              <img src="assets/pl-pwa/icon-192.png" alt="" />
-            </div>
-            <div class="pl-dock__item"></div>
-            <div class="pl-dock__item"></div>
-            <div class="pl-dock__item"></div>
+        <!-- Phone: screen recording of the live library -->
+        <div class="pl-phone-col">
+          <div class="pl-phone">
+            <video id="plPhoneVideo"
+                   src="assets/case/pl-phone-walkthrough.mp4"
+                   poster="assets/case/pl-phone-walkthrough-poster.jpg"
+                   muted loop playsinline preload="none"
+                   aria-describedby="plPhoneVideoDesc"
+                   data-en-aria="Screen recording of the Prompt Library on an iPhone"
+                   data-no-aria="Skjermopptak av prompt-biblioteket på en iPhone"
+                   aria-label="Screen recording of the Prompt Library on an iPhone"></video>
           </div>
+          <button id="plPhoneVideoToggle" type="button" class="pl-playpause"
+                  aria-controls="plPhoneVideo" data-playing="false"
+                  aria-label="Play screen recording" hidden>
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
+                 class="pl-playpause__pause">
+              <rect x="3" y="2" width="3.5" height="12" rx="1"/>
+              <rect x="9.5" y="2" width="3.5" height="12" rx="1"/>
+            </svg>
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
+                 class="pl-playpause__play">
+              <path d="M3.5 2.5v11a.5.5 0 0 0 .77.42l9-5.5a.5.5 0 0 0 0-.84l-9-5.5a.5.5 0 0 0-.77.42Z"/>
+            </svg>
+            <span class="pl-playpause__label">Play</span>
+          </button>
         </div>
 
         <figcaption class="pl-stage__caption"
