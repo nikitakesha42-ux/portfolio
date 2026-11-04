@@ -247,13 +247,47 @@
   }
   .preview-rows .preview-head span:last-child { text-align: right; }
 
-  /* Instrument legend */
+  /* Chart legend — line swatches, no coloured dots */
   .legend-row {
-    display: flex; gap: 10px; flex-wrap: wrap;
+    display: flex; gap: 14px; flex-wrap: wrap;
     font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.04em;
   }
   .legend-row span { display: inline-flex; align-items: center; gap: 6px; }
-  .legend-row .sw { width: 10px; height: 10px; border-radius: 50%; }
+  .legend-row .line-dash,
+  .legend-row .line-solid { width: 18px; height: 2px; }
+  .legend-row .line-solid { background: var(--ink); }
+  .legend-row .line-dash { background: transparent; border-top: 1.5px dashed var(--rule-strong); }
+
+  /* AI tag — sparkle + "AI" so it's unambiguously an AI feature */
+  .ai-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px 4px 8px;
+    background: var(--ai-soft);
+    border: 1px solid var(--ai);
+    color: var(--ai);
+    border-radius: 999px;
+    min-height: 32px;
+    flex-shrink: 0;
+  }
+  .ai-tag__spark { font-size: 13px; line-height: 1; }
+  .ai-tag__text {
+    font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  }
+
+  /* Export link styled as a button link */
+  .export-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px;
+    background: var(--fill);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--ink);
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 500;
+  }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
@@ -281,18 +315,18 @@
 
     <!-- INSTRUMENTS -->
     <section aria-labelledby="instLabel">
-      <div class="group-label" id="instLabel">Instrument <span class="count" id="instCount">All · 3</span></div>
+      <div class="group-label" id="instLabel">Instrument</div>
       <div class="chip-row" role="group" aria-labelledby="instLabel">
-        <button aria-pressed="true" data-inst="all">All</button>
-        <button aria-pressed="false" data-inst="rsu"><span class="swatch sw-rsu"></span>RSU<span class="n">·1 800</span></button>
-        <button aria-pressed="false" data-inst="options"><span class="swatch sw-opt"></span>Options<span class="n">·1 950</span></button>
-        <button aria-pressed="false" data-inst="warrants"><span class="swatch sw-war"></span>Warrants<span class="n">·1 250</span></button>
+        <button aria-pressed="true" data-inst="all">All <span class="n">·5 000</span></button>
+        <button aria-pressed="false" data-inst="rsu">RSU <span class="n">·1 800</span></button>
+        <button aria-pressed="false" data-inst="options">Options <span class="n">·1 950</span></button>
+        <button aria-pressed="false" data-inst="warrants">Warrants <span class="n">·1 250</span></button>
       </div>
     </section>
 
-    <!-- PLANS (as chips, per your note) -->
+    <!-- PLANS -->
     <section aria-labelledby="planLabel">
-      <div class="group-label" id="planLabel">Plan <span class="count" id="planCount">All · 3</span></div>
+      <div class="group-label" id="planLabel">Plan</div>
       <div class="chip-row" role="group" aria-labelledby="planLabel">
         <button aria-pressed="true" data-plan="all">All plans</button>
         <button aria-pressed="false" data-plan="2023">Plan 2023</button>
@@ -301,34 +335,35 @@
       </div>
     </section>
 
-    <!-- COUNTRY + totals -->
-    <section>
-      <div class="group-label">Country <span class="count" id="countryCount">NO</span></div>
-      <div class="chip-row" role="group" aria-label="Country">
-        <button aria-pressed="true" data-country="no">NO 🇳🇴</button>
-        <button aria-pressed="false" data-country="uk">UK 🇬🇧</button>
-        <button aria-pressed="false" data-country="us">US 🇺🇸</button>
+    <!-- PRICE SCENARIO -->
+    <section aria-labelledby="scenarioLabel">
+      <div class="group-label" id="scenarioLabel">Price scenario <span class="count" id="scenarioHint">tap a multiplier</span></div>
+      <div class="chip-row" role="group" aria-labelledby="scenarioLabel">
+        <button aria-pressed="false" data-scen="1">Current · 1×</button>
+        <button aria-pressed="false" data-scen="2">+100 % · 2×</button>
+        <button aria-pressed="true" data-scen="4">+300 % · 4×</button>
+        <button aria-pressed="false" data-scen="10">+900 % · 10×</button>
       </div>
     </section>
 
-    <!-- TOTALS -->
+    <!-- TOTALS (now for the SELECTED YEAR, not aggregate) -->
     <section class="totals-row" aria-live="polite">
       <div class="t">
-        <span class="lbl">Current</span>
-        <span class="val" id="totalCurrent">5 000 NOK</span>
+        <span class="lbl">Current <span id="curYearLbl">(2026)</span></span>
+        <span class="val" id="totalCurrent">1 500 NOK</span>
       </div>
       <div class="t sim">
-        <span class="lbl">Simulated</span>
-        <span class="val" id="totalSim">≈ 20 000 NOK</span>
-        <span class="delta" id="totalDelta">+15 000 NOK · +300 %</span>
+        <span class="lbl">Simulated <span id="simYearLbl">(2026 · 4×)</span></span>
+        <span class="val" id="totalSim">≈ 6 000 NOK</span>
+        <span class="delta" id="totalDelta">+4 500 NOK · +300 %</span>
       </div>
     </section>
 
-    <!-- QUICK STATS STRIP (density!) -->
+    <!-- QUICK STATS STRIP -->
     <section class="stats-strip" aria-label="Quick stats">
       <div class="s"><span class="lbl">Biggest year</span><span class="v" id="biggestYear">2026</span></div>
-      <div class="s"><span class="lbl">Total shares</span><span class="v" id="totalShares">5 000</span></div>
       <div class="s"><span class="lbl">Next vest</span><span class="v" id="nextVest">Mar 2027</span></div>
+      <div class="s"><span class="lbl">Total across all</span><span class="v" id="totalAll">≈ 20 000</span></div>
     </section>
 
     <!-- CHART HERO with on-axis scroller -->
@@ -390,20 +425,21 @@
              aria-valuemin="0" aria-valuemax="5" aria-valuenow="3"
              aria-valuetext="2026, 1 800 NOK projected" />
 
-      <!-- Instrument legend -->
+      <!-- Chart legend — just the two lines, no instrument swatches -->
       <div class="legend-row" style="margin-top:10px;" aria-hidden="true">
-        <span><span class="sw sw-rsu"></span>RSU</span>
-        <span><span class="sw sw-opt"></span>Options</span>
-        <span><span class="sw sw-war"></span>Warrants</span>
-        <span style="margin-left:auto; color:var(--muted);">— current · — simulated</span>
+        <span><span class="line-dash"></span>Current</span>
+        <span><span class="line-solid"></span>Simulated</span>
       </div>
     </section>
 
     <!-- AI: suggested + free-form -->
     <section>
       <div class="ai-head">
-        <span class="spark" aria-hidden="true">✦</span>
-        <span class="label">Ask the co-pilot</span>
+        <span class="ai-tag" aria-hidden="true">
+          <span class="ai-tag__spark">✦</span>
+          <span class="ai-tag__text">AI</span>
+        </span>
+        <span class="label">Co-pilot · ask anything about your shares</span>
       </div>
       <div class="ai-row" role="toolbar" aria-label="Suggested questions">
         <button aria-pressed="false" data-q="leave-18m">What if I leave in 18 months?</button>
@@ -425,7 +461,7 @@
 
     <!-- Table drawer -->
     <details class="table-drawer" id="tableDrawer">
-      <summary><span>▸ Table · <span id="tableGroupLabel">per year</span></span><span style="font-size:10px;">CSV</span></summary>
+      <summary><span>▸ Table · <span id="tableGroupLabel">per year</span></span><span class="export-link">↓ Export</span></summary>
       <!-- Preview: first 3 rows always visible -->
       <div class="preview-rows" aria-hidden="true" id="previewArea"></div>
       <div class="table-toggle" role="tablist" aria-label="Group table by">
@@ -462,13 +498,11 @@
     { kind: 'Options',  current: 1950 },
     { kind: 'Warrants', current: 1250 },
   ];
-  const SIM_MULT = 4; // simulated = current × 4
-
   // ---- State ------------------------------------------------------
   let plan = 'all';
   let inst = 'all';
-  let country = 'no';
   let yearIdx = 3;      // handle starts at 2026
+  let simMult = 4;      // simulation multiplier (user-controlled via chips)
   let tableGroup = 'year';
 
   // ---- Elements ---------------------------------------------------
@@ -498,11 +532,11 @@
   const totalCurrent = document.getElementById('totalCurrent');
   const totalSim = document.getElementById('totalSim');
   const totalDelta = document.getElementById('totalDelta');
-  const instCount = document.getElementById('instCount');
-  const planCount = document.getElementById('planCount');
-  const countryCount = document.getElementById('countryCount');
+  const curYearLbl = document.getElementById('curYearLbl');
+  const simYearLbl = document.getElementById('simYearLbl');
+  const scenarioHint = document.getElementById('scenarioHint');
   const biggestYear = document.getElementById('biggestYear');
-  const totalShares = document.getElementById('totalShares');
+  const totalAll = document.getElementById('totalAll');
   const nextVest = document.getElementById('nextVest');
   const askInput = document.getElementById('askInput');
   const askSend = document.getElementById('askSend');
@@ -524,7 +558,7 @@
     return yearsData.map(d => ({
       ...d,
       current: Math.round(d.current * factor),
-      simulated: Math.round(d.current * factor * SIM_MULT),
+      simulated: Math.round(d.current * factor * simMult),
     }));
   }
 
@@ -586,34 +620,35 @@
     yearSlider.setAttribute('aria-valuetext', `${d.year}, ${fmt(d.simulated)} NOK projected`);
     axisHandle.setAttribute('aria-valuenow', yearIdx);
     axisHandle.setAttribute('aria-valuetext', `${d.year}, ${fmt(d.simulated)} NOK`);
+    // Totals depend on selected year, refresh them whenever handle moves
+    renderTotals();
   }
 
   function renderTotals() {
+    // Now reflects the SELECTED YEAR (via the axis handle) × chosen scenario
     const data = visibleData();
-    const totC = data.reduce((a, d) => a + d.current, 0);
-    const totS = totC * SIM_MULT;
-    totalCurrent.textContent = `${fmt(totC)} NOK`;
-    totalSim.textContent = `≈ ${fmt(totS)} NOK`;
-    totalDelta.textContent = `+${fmt(totS - totC)} NOK · +${Math.round((totS/totC - 1) * 100)} %`;
+    const d = data[yearIdx];
+    curYearLbl.textContent = `(${d.year})`;
+    simYearLbl.textContent = `(${d.year} · ${simMult}×)`;
+    totalCurrent.textContent = `${fmt(d.current)} NOK`;
+    totalSim.textContent = `≈ ${fmt(d.simulated)} NOK`;
+    const delta = d.simulated - d.current;
+    const pct = d.current > 0 ? Math.round((d.simulated / d.current - 1) * 100) : 0;
+    totalDelta.textContent = `+${fmt(delta)} NOK · +${pct} %`;
   }
 
   function renderQuickStats() {
     const data = visibleData();
     const big = data.reduce((best, d) => d.current > best.current ? d : best, data[0]);
     biggestYear.textContent = big.year;
-    const sumShares = data.reduce((a, d) => a + d.shares, 0);
-    totalShares.textContent = fmt(sumShares);
-    // Next vest — next upcoming year > 2026
+    const totS = data.reduce((a, d) => a + d.simulated, 0);
+    totalAll.textContent = `≈ ${fmt(totS)}`;
     nextVest.textContent = 'Mar 2027';
   }
 
   function renderCounts() {
-    const instMap = { all: 'All · 3', rsu: 'RSU · 1 800', options: 'Options · 1 950', warrants: 'Warrants · 1 250' };
-    instCount.textContent = instMap[inst];
-    const planMap = { all: 'All · 3', '2023': 'Plan 2023 · 2 200', '2024': 'Plan 2024 · 1 700', '2025': 'Plan 2025 · 1 100' };
-    planCount.textContent = planMap[plan];
-    const countryMap = { no: 'NO', uk: 'UK', us: 'US' };
-    countryCount.textContent = countryMap[country];
+    const scenarioMap = { 1: 'at current price', 2: '+100 % move', 4: '+300 % move', 10: '+900 % move' };
+    scenarioHint.textContent = scenarioMap[simMult] || 'tap a multiplier';
   }
 
   // ---- Table per group --------------------------------------------
@@ -626,12 +661,12 @@
       previewArea.innerHTML = previewHtml('Year', data.slice(0, 3).map(d => ({ key: d.year, c: d.current, s: d.simulated })));
     } else if (tableGroup === 'plan') {
       tableHead.innerHTML = `<span>Plan</span><span>Current</span><span>Simulated</span><span>Δ</span>`;
-      const rows = plansData.map(p => ({ key: p.plan, current: p.current, simulated: p.current * SIM_MULT }));
+      const rows = plansData.map(p => ({ key: p.plan, current: p.current, simulated: p.current * simMult }));
       tableRows.innerHTML = rows.map(d => rowHtml(d.key, d.current, d.simulated)).join('');
       previewArea.innerHTML = previewHtml('Plan', rows.slice(0, 3).map(d => ({ key: d.key, c: d.current, s: d.simulated })));
     } else if (tableGroup === 'instrument') {
       tableHead.innerHTML = `<span>Kind</span><span>Current</span><span>Simulated</span><span>Δ</span>`;
-      const rows = instrumentsData.map(p => ({ key: p.kind, current: p.current, simulated: p.current * SIM_MULT }));
+      const rows = instrumentsData.map(p => ({ key: p.kind, current: p.current, simulated: p.current * simMult }));
       tableRows.innerHTML = rows.map(d => rowHtml(d.key, d.current, d.simulated)).join('');
       previewArea.innerHTML = previewHtml('Kind', rows.slice(0, 3).map(d => ({ key: d.key, c: d.current, s: d.simulated })));
     }
@@ -673,11 +708,13 @@
       renderChart();
     });
   });
-  document.querySelectorAll('[data-country]').forEach(btn => {
+  document.querySelectorAll('[data-scen]').forEach(btn => {
     btn.addEventListener('click', () => {
-      country = btn.dataset.country;
-      document.querySelectorAll('[data-country]').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
-      renderCounts();
+      ghostLine.setAttribute('points', simLine.getAttribute('points'));
+      setTimeout(() => ghostLine.setAttribute('points', ''), 1200);
+      simMult = parseInt(btn.dataset.scen);
+      document.querySelectorAll('[data-scen]').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      renderChart();
     });
   });
 
