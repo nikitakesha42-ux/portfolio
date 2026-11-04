@@ -195,16 +195,48 @@
   .section-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
   .section-head .sub { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin-top: 6px; }
 
-  .scen-chips { display: flex; gap: 10px; }
+  /* 2×2 so four choices keep readable labels and big tap targets */
+  .scen-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .scen-chip { appearance: none; border: 1px solid var(--rule-strong); background: #fff; color: var(--ink);
     padding: 14px 8px; border-radius: var(--r-card); font: inherit; font-size: 12.5px; font-weight: 500;
-    cursor: pointer; min-height: 82px; flex: 1;
+    cursor: pointer; min-height: 66px; min-width: 0;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
     text-align: center; line-height: 1.3;
   }
   .scen-chip:focus-visible { outline: var(--focus); outline-offset: 2px; }
   .scen-chip[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
   .scen-chip .px { font-family: var(--mono); font-size: 11px; opacity: 0.7; font-weight: 500; }
+
+  /* Your own price */
+  .custom-price {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 14px; border: 1px solid var(--rule); border-radius: var(--r-card); background: var(--panel);
+  }
+  .custom-price[hidden] { display: none; }
+  .custom-price label { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .cp-row { display: flex; align-items: stretch; gap: 8px; }
+  .cp-step {
+    appearance: none; cursor: pointer; flex-shrink: 0;
+    width: 52px; min-height: 52px; border: 1px solid var(--rule-strong); background: #fff; color: var(--ink);
+    border-radius: var(--r-input); font: inherit; font-size: 24px; font-weight: 500; line-height: 1;
+  }
+  .cp-step:focus-visible { outline: var(--focus); outline-offset: 2px; }
+  .cp-field {
+    flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px;
+    border: 1px solid var(--rule-strong); border-radius: var(--r-input); background: #fff; padding: 0 14px;
+  }
+  .cp-field:focus-within { outline: var(--focus); outline-offset: 2px; }
+  .cp-field[data-invalid="true"] { border-color: var(--warn); border-width: 2px; }
+  /* 20px text: big enough to read, and iOS won't zoom the page on focus (needs ≥16px) */
+  .cp-field input {
+    flex: 1; min-width: 0; width: 100%; border: 0; outline: 0; background: transparent; color: var(--ink);
+    font-family: var(--mono); font-size: 20px; font-weight: 700; min-height: 50px; padding: 0;
+  }
+  .cp-unit { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .cp-hint { font-size: 13px; color: var(--muted); line-height: 1.45; }
+  .cp-hint b { color: var(--ink); }
+  .cp-err { font-size: 13px; color: var(--warn); font-weight: 600; line-height: 1.45; }
+  .cp-err[hidden] { display: none; }
 
   /* Result card — focal element, needs breathing room around it */
   .result {
@@ -292,6 +324,7 @@
   .tile .d.muted { background: var(--rule-strong); }
   .tile[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
   .tile[aria-pressed="true"] .d.muted { background: #c8ccd4; }
+  .tile:disabled { opacity: 0.45; cursor: default; }
 
   /* Plain-language sort: a native picker everyone already knows */
   .sort-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
@@ -309,84 +342,97 @@
 
   /* Table: fixed columns so nothing ever scrolls sideways */
   .sim-table-wrap { border: 1px solid var(--rule); border-radius: var(--r-card); overflow: hidden; background: #fff; }
-  #simTable { border: 0; border-radius: 0; table-layout: fixed; width: 100%; }
+  :is(#simTable, #bdTable) { border: 0; border-radius: 0; table-layout: fixed; width: 100%; }
   /* Three data columns, not four: the change since 1 Nov rides under each
      amount, so labels have room on any phone, including the 375px ones */
-  #simTable col.c-year { width: 20%; }
-  #simTable col.c-value { width: 40%; }
-  #simTable col.c-status { width: 32%; }
-  #simTable col.c-chev { width: 8%; }
-  #simTable caption {
+  :is(#simTable, #bdTable) col.c-year { width: 20%; }
+  :is(#simTable, #bdTable) col.c-value { width: 40%; }
+  :is(#simTable, #bdTable) col.c-status { width: 32%; }
+  :is(#simTable, #bdTable) col.c-chev { width: 8%; }
+  /* Your shares: first column holds "Plan 2023" / "Warrants", not just a year */
+  #bdTable col.c-key { width: 31%; }
+  #bdTable col.c-value { width: 31%; }
+  #bdTable col.c-status { width: 30%; }
+  .detail-inner .det-what { padding-top: 8px; border-top: 1px dashed var(--rule-strong); }
+  :is(#simTable, #bdTable) caption {
     caption-side: top; text-align: left; padding: 12px 14px;
     font-size: 12.5px; line-height: 1.5; color: var(--muted); border-bottom: 1px solid var(--rule);
   }
-  #simTable caption b { color: var(--ink); font-family: var(--mono); font-weight: 600; }
+  :is(#simTable, #bdTable) caption b { color: var(--ink); font-family: var(--mono); font-weight: 600; }
 
   /* Headers: sentence case + a sort icon on every sortable column */
-  #simTable thead th, #simTable thead td {
+  :is(#simTable, #bdTable) thead th, :is(#simTable, #bdTable) thead td {
     padding: 0; background: var(--panel); border-bottom: 1px solid var(--rule); vertical-align: bottom;
     /* undo the base table's mono / uppercase / letter-spaced header style */
     font-family: var(--sans); letter-spacing: normal; text-transform: none;
   }
   /* "Show on chart" lands the chart just under the sticky header + price bar */
   #view-simulator > .chart-card { scroll-margin-top: calc(var(--header-h, 69px) + var(--pricebar-h, 76px) + 12px); }
-  #simTable .col-sort {
+  :is(#simTable, #bdTable) .col-sort {
     appearance: none; background: transparent; border: 0; cursor: pointer;
     width: 100%; min-height: 48px; padding: 8px 6px;
     display: flex; flex-direction: column; justify-content: flex-end; gap: 1px;
     font: inherit; color: var(--ink); text-align: left;
   }
-  #simTable th.num .col-sort { align-items: flex-end; text-align: right; }
-  #simTable .col-sort .h-main { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 600; line-height: 1.25; white-space: nowrap; }
-  #simTable th.num .col-sort .h-main { justify-content: flex-end; }
-  #simTable .col-sort .h-sub { font-size: 10px; color: var(--muted); line-height: 1.25; white-space: nowrap; }
-  #simTable .col-sort:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-  #simTable .sort-ind { font-size: 10px; color: var(--muted); }
+  :is(#simTable, #bdTable) th.num .col-sort { align-items: flex-end; text-align: right; }
+  :is(#simTable, #bdTable) .col-sort .h-main { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 600; line-height: 1.25; white-space: nowrap; }
+  :is(#simTable, #bdTable) th.num .col-sort .h-main { justify-content: flex-end; }
+  :is(#simTable, #bdTable) .col-sort .h-sub { font-size: 10px; color: var(--muted); line-height: 1.25; white-space: nowrap; }
+  :is(#simTable, #bdTable) .col-sort:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  :is(#simTable, #bdTable) .sort-ind { font-size: 10px; color: var(--muted); }
   /* ⇅ rather than ↕: iOS draws ↕ as a blue emoji box */
-  #simTable th[aria-sort="none"] .sort-ind::before { content: "\21C5"; }
-  #simTable th[aria-sort="ascending"] .sort-ind::before { content: "↑"; }
-  #simTable th[aria-sort="descending"] .sort-ind::before { content: "↓"; }
-  #simTable th[aria-sort="ascending"] .col-sort,
-  #simTable th[aria-sort="descending"] .col-sort { background: var(--accent-soft); }
-  #simTable th[aria-sort="ascending"] .h-main,
-  #simTable th[aria-sort="descending"] .h-main,
-  #simTable th[aria-sort="ascending"] .sort-ind,
-  #simTable th[aria-sort="descending"] .sort-ind { color: var(--accent); }
+  :is(#simTable, #bdTable) th[aria-sort="none"] .sort-ind::before { content: "\21C5"; }
+  :is(#simTable, #bdTable) th[aria-sort="ascending"] .sort-ind::before { content: "↑"; }
+  :is(#simTable, #bdTable) th[aria-sort="descending"] .sort-ind::before { content: "↓"; }
+  :is(#simTable, #bdTable) th[aria-sort="ascending"] .col-sort,
+  :is(#simTable, #bdTable) th[aria-sort="descending"] .col-sort { background: var(--accent-soft); }
+  :is(#simTable, #bdTable) th[aria-sort="ascending"] .h-main,
+  :is(#simTable, #bdTable) th[aria-sort="descending"] .h-main,
+  :is(#simTable, #bdTable) th[aria-sort="ascending"] .sort-ind,
+  :is(#simTable, #bdTable) th[aria-sort="descending"] .sort-ind { color: var(--accent); }
 
   /* Rows */
-  #simTable tbody tr.row { cursor: pointer; }
-  #simTable tbody td, #simTable tbody th {
+  :is(#simTable, #bdTable) tbody tr.row { cursor: pointer; }
+  :is(#simTable, #bdTable) tbody td, :is(#simTable, #bdTable) tbody th {
     padding: 14px 8px; font-size: 14px; vertical-align: middle;
     border-bottom: 1px solid var(--rule); text-align: left; font-weight: 400;
   }
-  #simTable tbody th.key { font-family: var(--mono); font-weight: 700; }
-  #simTable .row-toggle {
+  :is(#simTable, #bdTable) tbody th.key { font-family: var(--mono); font-weight: 700; }
+  :is(#simTable, #bdTable) .row-toggle {
     appearance: none; background: transparent; border: 0; padding: 0; cursor: pointer;
     font: inherit; color: inherit; min-height: 24px;
   }
-  #simTable .row-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
-  #simTable td.net { text-align: right; }
-  #simTable td.net .amt { display: block; font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 600; }
-  #simTable td.net .chg { display: block; margin-top: 2px; font-size: 11.5px; font-family: var(--sans); white-space: nowrap; }
-  #simTable .chg.up { color: var(--good); }
-  #simTable .chg.down { color: var(--warn); }
-  #simTable .chg.flat { color: var(--muted); }
-  #simTable td.action .chip { white-space: nowrap; font-size: 11.5px; padding: 3px 8px; }
-  #simTable td.chev { text-align: center; color: var(--muted); font-size: 16px; padding-left: 0; padding-right: 4px; }
-  #simTable td.chev span { display: inline-block; transition: transform 0.15s; }
-  html[data-motion="reduce"] #simTable td.chev span { transition: none; }
-  #simTable tr.row[aria-expanded="true"] td.chev span { transform: rotate(90deg); }
+  :is(#simTable, #bdTable) .row-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+  :is(#simTable, #bdTable) td.net { text-align: right; }
+  :is(#simTable, #bdTable) td.net .amt { display: block; font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 600; }
+  :is(#simTable, #bdTable) td.net .chg { display: block; margin-top: 2px; font-size: 11.5px; font-family: var(--sans); white-space: nowrap; }
+  :is(#simTable, #bdTable) .chg.up { color: var(--good); }
+  :is(#simTable, #bdTable) .chg.down { color: var(--warn); }
+  :is(#simTable, #bdTable) .chg.flat { color: var(--muted); }
+  :is(#simTable, #bdTable) td.action .chip { white-space: nowrap; font-size: 11.5px; padding: 3px 8px; }
+  :is(#simTable, #bdTable) td.chev { text-align: center; color: var(--muted); font-size: 16px; padding-left: 0; padding-right: 4px; }
+  :is(#simTable, #bdTable) td.chev span { display: inline-block; transition: transform 0.15s; }
+  html[data-motion="reduce"] :is(#simTable, #bdTable) td.chev span { transition: none; }
+  :is(#simTable, #bdTable) tr.row[aria-expanded="true"] td.chev span { transform: rotate(90deg); }
   /* Mouse-only: on iOS a :hover style turns the first tap into a hover,
      so the row would need two taps to open */
   @media (hover: hover) and (pointer: fine) {
-    #simTable tbody tr.row:hover > * { background: var(--panel); }
+    :is(#simTable, #bdTable) tbody tr.row:hover > * { background: var(--panel); }
   }
-  #simTable tbody tr.row[data-focused="true"] > * { background: var(--accent-soft); }
-  #simTable tbody tr.row[data-focused="true"] th.key { color: var(--accent); }
-  #simTable tbody tr.row[aria-expanded="true"] > * { border-bottom-color: transparent; }
+  :is(#simTable, #bdTable) tbody tr.row[data-focused="true"] > * { background: var(--accent-soft); }
+  :is(#simTable, #bdTable) tbody tr.row[data-focused="true"] th.key { color: var(--accent); }
+  :is(#simTable, #bdTable) tbody tr.row[aria-expanded="true"] > * { border-bottom-color: transparent; }
+  /* Your shares: "Plan 2024" and "Warrants" are words, so they use the text
+     font; "By year" stays in the number font, same as the Simulator table.
+     Kept after the shared rules so they win. */
+  #bdTable:not([data-group="year"]) tbody th.key { font-family: var(--sans); font-weight: 700; line-height: 1.3; }
+  #bdTable tbody th.key .key-sub { display: block; margin-top: 3px; font-size: 11.5px; font-weight: 400; line-height: 1.35; color: var(--muted); }
+  /* No chart here, so the open row itself carries the highlight */
+  #bdTable tbody tr.row[aria-expanded="true"] > * { background: var(--accent-soft); }
+  #bdTable tbody tr.row[aria-expanded="true"] th.key .row-toggle { color: var(--accent); }
 
   /* Detail row: the row explains itself in a sentence */
-  #simTable tr.detail > td { padding: 0 14px 16px; background: var(--accent-soft); border-bottom: 1px solid var(--rule); }
+  :is(#simTable, #bdTable) tr.detail > td { padding: 0 14px 16px; background: var(--accent-soft); border-bottom: 1px solid var(--rule); }
   .detail-inner { display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; line-height: 1.55; color: var(--ink); }
   .detail-inner b { font-weight: 700; }
   .detail-inner .det-status { display: flex; align-items: flex-start; gap: 8px; font-weight: 600; }
@@ -403,12 +449,12 @@
   .detail-inner .show-on-chart:focus-visible { outline: var(--focus); outline-offset: 2px; }
 
   /* Total for whatever is currently shown */
-  #simTable tfoot th, #simTable tfoot td {
+  :is(#simTable, #bdTable) tfoot th, :is(#simTable, #bdTable) tfoot td {
     padding: 14px 8px; background: var(--panel); font-size: 14px; text-align: left; vertical-align: middle;
   }
-  #simTable tfoot th { font-weight: 600; }
-  #simTable tfoot th .tot-sub { display: block; font-size: 11px; font-weight: 400; color: var(--muted); }
-  #simTable tfoot td.net .amt { font-weight: 700; }
+  :is(#simTable, #bdTable) tfoot th { font-weight: 600; }
+  :is(#simTable, #bdTable) tfoot th .tot-sub { display: block; font-size: 11px; font-weight: 400; color: var(--muted); }
+  :is(#simTable, #bdTable) tfoot td.net .amt { font-weight: 700; }
 
   /* Chart: whole chart is a scrubber; labels in the app font */
   #chart { touch-action: pan-y; cursor: pointer; }
@@ -554,13 +600,6 @@
   .data-table tbody .action .chip.muted { background: var(--panel2); border-color: var(--rule-strong); color: var(--muted); }
   .data-table tbody .action .chip.muted .d { background: var(--rule-strong); }
 
-  .totals-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 16px 18px; background: var(--panel);
-    border: 1px solid var(--rule); border-radius: 0 0 var(--r-card) var(--r-card); border-top: 0;
-  }
-  .totals-row .tot-lbl { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-family: var(--mono); }
-  .totals-row .tot-val { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--ink); }
 
   /* Compare */
   .compare-picker { display: flex; flex-direction: column; gap: 14px; }
@@ -729,6 +768,7 @@
       grid-template-areas:
         "head  head"
         "chart chips"
+        "chart custom"
         "chart result"
         "chart explore"
         "chart note"
@@ -737,6 +777,7 @@
     }
     #view-simulator > .section-head { grid-area: head; }
     #view-simulator > .scen-chips { grid-area: chips; }
+    #view-simulator > .custom-price { grid-area: custom; }
     #view-simulator > .result { grid-area: result; margin-top: 0; }
     #view-simulator > .chart-card { grid-area: chart; position: sticky; top: calc(var(--header-h, 56px) + 12px); scroll-margin-top: calc(var(--header-h, 56px) + 12px); }
     #view-simulator > .explore { grid-area: explore; }
@@ -864,6 +905,25 @@
           <span>Ten times</span>
           <span class="px">423 NOK</span>
         </button>
+        <button class="scen-chip" role="tab" aria-selected="false" data-scen="custom" id="scenCustom" aria-controls="customPricePanel">
+          <span>Your own price</span>
+          <span class="px" id="scenCustomPx">Try any price</span>
+        </button>
+      </div>
+
+      <div class="custom-price" id="customPricePanel" hidden>
+        <label for="customPriceInput">Price for 1 share</label>
+        <div class="cp-row">
+          <button type="button" class="cp-step" data-step="-1" aria-label="1 krone lower">−</button>
+          <div class="cp-field" id="customPriceField">
+            <input id="customPriceInput" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"
+              spellcheck="false" aria-describedby="customPriceHint customPriceErr" value="42,30">
+            <span class="cp-unit" aria-hidden="true">NOK</span>
+          </div>
+          <button type="button" class="cp-step" data-step="1" aria-label="1 krone higher">+</button>
+        </div>
+        <p class="cp-hint" id="customPriceHint">Same as today's price. Type the price you want to try.</p>
+        <p class="cp-err" id="customPriceErr" hidden>Type a price above 0, like 55 or 55,50.</p>
       </div>
 
       <section class="result" aria-live="polite" aria-atomic="true">
@@ -988,26 +1048,51 @@
       <div class="section-head">
         <span class="eyebrow">Your shares</span>
         <h2>What you have, what you can do</h2>
+        <p class="sub">At today's price. Choose how to group them, then tap a row to see what it means for you.</p>
       </div>
-      <div class="seg" role="tablist" aria-label="Group table by" id="tableSeg">
-        <button role="tab" aria-selected="true" data-group="year">Per year</button>
-        <button role="tab" aria-selected="false" data-group="plan">Per plan</button>
-        <button role="tab" aria-selected="false" data-group="inst">Per instrument</button>
+      <div class="seg" role="tablist" aria-label="Group your shares" id="tableSeg">
+        <button role="tab" aria-selected="true" data-group="year">By year</button>
+        <button role="tab" aria-selected="false" data-group="plan">By plan</button>
+        <button role="tab" aria-selected="false" data-group="type">By type</button>
       </div>
-      <table class="data-table" id="dataTable">
-        <caption id="tableCap">At today's price <b>42,30 NOK</b> · net NOK after Norwegian tax · grouped by year</caption>
-        <thead>
-          <tr>
-            <th scope="col" id="colKey">Year</th>
-            <th scope="col" class="num">Net NOK</th>
-            <th scope="col">What you can do</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-      <div class="totals-row">
-        <span class="tot-lbl">Total if you sold today</span>
-        <span class="tot-val" id="totalVal">≈ 4 250 NOK</span>
+
+      <div class="toolbar">
+        <div class="filter-tiles" role="group" aria-label="Show" id="bdFilterRow"></div>
+        <div class="sort-row">
+          <label class="sort-field" for="bdSortSel">Sort by
+            <select id="bdSortSel"></select>
+          </label>
+          <span class="showing" id="bdShowing" role="status"></span>
+        </div>
+      </div>
+
+      <div class="sim-table-wrap" id="bdWrap">
+        <table class="data-table" id="bdTable">
+          <caption id="bdCap"></caption>
+          <colgroup>
+            <col class="c-key"><col class="c-value"><col class="c-status"><col class="c-chev">
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col" aria-sort="ascending"><button type="button" class="col-sort" data-sort="key"><span class="h-main"><span id="bdKeyLbl">Year</span><span class="sort-ind" aria-hidden="true"></span></span></button></th>
+              <th scope="col" class="num" aria-sort="none"><button type="button" class="col-sort" data-sort="value"><span class="h-main">Take home<span class="sort-ind" aria-hidden="true"></span></span><span class="h-sub">NOK, after tax</span></button></th>
+              <th scope="col" aria-sort="none"><button type="button" class="col-sort" data-sort="status"><span class="h-main">Status<span class="sort-ind" aria-hidden="true"></span></span></button></th>
+              <td aria-hidden="true"></td>
+            </tr>
+          </thead>
+          <tbody id="bdBody"></tbody>
+          <tfoot>
+            <tr>
+              <th scope="row">Total<span class="tot-sub" id="bdTotalSub"></span></th>
+              <td class="net"><span class="amt" id="bdTotal">0</span><span class="chg" id="bdTotalChange"></span></td>
+              <td colspan="2"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="empty-state" id="bdEmpty" hidden>
+        <span>Nothing to show for this choice.</span>
+        <button type="button" id="bdShowAll">Show everything</button>
       </div>
     </section>
 
@@ -1172,12 +1257,43 @@
   ];
   // Prior-visit deltas per year (for the Change column) — in NOK, net of tax
   const YEAR_DELTA = { 2023: 0, 2024: 0, 2025: 30, 2026: 90, 2027: 35, 2028: 25 };
-  const PLANS = [{p:'Plan 2023', cur:2200},{p:'Plan 2024', cur:1700},{p:'Plan 2025', cur:1100}];
-  const INSTS = [{k:'RSU', cur:1800},{k:'Options', cur:1950},{k:'Warrants', cur:1250}];
+  // Your shares, grouped by plan and by type. Plain words only: no "strike",
+  // no "exercisable"; "what" explains the type for anyone who's never heard of it
+  // Same shares as YEARS, just grouped differently: each grouping must add up
+  // to the same totals (all, can sell, soon, later), or "how much can I sell?"
+  // would get a different answer depending on which tab you're on
+  const PLANS = [
+    { key: 'Plan 2023', order: 2023, cur: 1950, change: 30, status: 'sellable',
+      detail: 'All of this plan is yours to sell now.' },
+    { key: 'Plan 2024', order: 2024, cur: 1500, change: 90, status: 'soon',
+      detail: 'This plan unlocks in 23 days, on 19 November. You can sell it from then.' },
+    { key: 'Plan 2025', order: 2025, cur: 1050, change: 60, status: 'later',
+      detail: 'This plan unlocks in two parts, in March 2027 and October 2028. You can\'t sell it before then.' },
+  ];
+  const INSTS = [
+    { key: 'Options', sub: 'You pay 36 NOK each', cur: 1500, change: 90, status: 'soon',
+      detail: 'You can use these from 19 November, in 23 days.',
+      what: 'An option lets you buy a share for a fixed 36 NOK. It only pays off when the share is worth more than 36 NOK.' },
+    { key: 'RSU', sub: 'Given to you, free', cur: 1950, change: 30, status: 'sellable',
+      detail: 'You can sell these now.',
+      what: 'RSUs are shares the company gives you. You don\'t pay anything for them.' },
+    { key: 'Warrants', sub: 'You pay 48 NOK each', cur: 1050, change: 60, status: 'later',
+      detail: 'You can\'t use these before March 2027.',
+      what: 'A warrant works like an option: you buy each share for a fixed 48 NOK.' },
+  ];
+  // One vocabulary for status everywhere: filter tiles, chips, sorting
+  const STATUS_META = {
+    sellable: { short: 'Can sell', kind: 'good' },
+    soon:     { short: 'Soon',     kind: 'attn' },
+    later:    { short: 'Later',    kind: 'muted' },
+  };
 
   const views = ['home','simulator','breakdown','compare'];
   const titleMap = { home:'Home', simulator:'Simulator', breakdown:'Your shares', compare:'Compare' };
-  let currentView = 'home', scenMult = 2, yearIdx = 3, tableGroup = 'year';
+  let currentView = 'home', scenMult = 2, yearIdx = 3;
+  let customPrice = null; // NOK per share the person typed, once they've chosen "Your own price"
+  // Your shares state
+  let bdGroup = 'year', bdFilter = 'all', bdSortCol = 'key', bdSortDir = 'ascending', bdOpenKey = null;
   // Simulator-side exploration state
   let simFilter = 'all';          // 'all' | 'sellable' | 'soon' | 'later'
   let simSortCol = 'year';        // 'year' | 'value' | 'change' | 'status'
@@ -1198,7 +1314,8 @@
 
   // Non-breaking thousands space so "2 010" never splits across lines
   const fmt = v => Math.round(v).toLocaleString('en-US').replace(/,/g, ' ');
-  const fmtPx = v => v.toFixed(2).replace('.', ',');
+  // Norwegian price format: "42,30", "1 000,00" (non-breaking thousands space)
+  const fmtPx = v => v.toLocaleString('nb-NO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/\s/g, ' ');
 
   // --- Routing ---
   function navigate(view, push = true) {
@@ -1566,23 +1683,117 @@
     });
   });
 
-  document.querySelectorAll('#scenRow .scen-chip').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#scenRow .scen-chip').forEach(b => b.setAttribute('aria-selected','false'));
-      btn.setAttribute('aria-selected','true');
-      scenMult = parseInt(btn.dataset.scen);
+  // --- Scenario choice, including "Your own price" ---
+  const customPanel = document.getElementById('customPricePanel');
+  const customInput = document.getElementById('customPriceInput');
+  const customField = document.getElementById('customPriceField');
+  const customHint = document.getElementById('customPriceHint');
+  const customErr = document.getElementById('customPriceErr');
+  const customChip = document.getElementById('scenCustom');
+  const customChipPx = document.getElementById('scenCustomPx');
+  const fmtRatio = r => String(Math.round(r * 10) / 10).replace('.', ',');
+
+  // Accepts what people naturally type: "55", "55,5", "55.50", "1 000"
+  function parsePrice(text) {
+    const clean = String(text).replace(/[\s ]/g, '').replace(',', '.');
+    if (!/^\d*\.?\d*$/.test(clean)) return null;
+    const v = parseFloat(clean);
+    return v > 0 && v <= 100000 ? v : null;
+  }
+
+  // Puts the typed number in context, so "55" means something
+  function priceHint(p) {
+    const today = CONTEXT.priceToday;
+    const ratio = p / today;
+    if (Math.abs(ratio - 1) < 0.005) return `Same as today's price (<b>${fmtPx(today)} NOK</b>). Type the price you want to try.`;
+    if (ratio >= 2) return `About <b>${fmtRatio(ratio)}×</b> today's price (${fmtPx(today)} NOK).`;
+    const pct = Math.max(1, Math.round(Math.abs(ratio - 1) * 100));
+    return ratio > 1
+      ? `<b>${pct} % higher</b> than today's price (${fmtPx(today)} NOK).`
+      : `<b>${pct} % lower</b> than today's price (${fmtPx(today)} NOK).`;
+  }
+
+  function setCustomError(on) {
+    const wasHidden = customErr.hidden;
+    customErr.hidden = !on;
+    customField.dataset.invalid = String(on);
+    if (on) customInput.setAttribute('aria-invalid', 'true');
+    else customInput.removeAttribute('aria-invalid');
+    if (on && wasHidden) announce(customErr.textContent);
+  }
+
+  function applyCustomPrice(p) {
+    customPrice = Math.round(p * 100) / 100;
+    scenMult = customPrice / CONTEXT.priceToday;
+    customChipPx.textContent = `${fmtPx(customPrice)} NOK`;
+    customChip.setAttribute('aria-label', `Your own price, ${fmtPx(customPrice)} NOK per share`);
+    customHint.innerHTML = priceHint(customPrice);
+    setCustomError(false);
+    renderChart();
+  }
+
+  function selectScenario(btn, { viaPointer = false } = {}) {
+    document.querySelectorAll('#scenRow .scen-chip').forEach(b =>
+      b.setAttribute('aria-selected', String(b === btn)));
+    if (btn.dataset.scen === 'custom') {
+      customPanel.hidden = false;
+      const p = customPrice ?? parsePrice(customInput.value) ?? CONTEXT.priceToday;
+      customInput.value = fmtPx(p);
+      applyCustomPrice(p);
+      // A tap means "I want to type a price": open the keypad with the number
+      // selected, so typing replaces it. Keyboard users just Tab into the field.
+      if (viaPointer) {
+        customInput.focus();
+        customInput.setSelectionRange(0, customInput.value.length);
+      }
+    } else {
+      customPanel.hidden = true;
+      scenMult = parseFloat(btn.dataset.scen);
       renderChart();
-    });
+    }
+  }
+
+  document.querySelectorAll('#scenRow .scen-chip').forEach(btn => {
+    btn.addEventListener('click', e => selectScenario(btn, { viaPointer: e.detail > 0 }));
     btn.addEventListener('keydown', e => {
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         e.preventDefault();
         const all = [...document.querySelectorAll('#scenRow .scen-chip')];
         const i = all.indexOf(btn);
         const next = all[(i + (e.key === 'ArrowRight' ? 1 : all.length - 1)) % all.length];
-        next.focus(); next.click();
+        next.focus();
+        selectScenario(next);
       }
     });
   });
+
+  customInput.addEventListener('input', () => {
+    const raw = customInput.value.trim();
+    if (raw === '') {
+      setCustomError(false);
+      customHint.textContent = 'Type the price you want to try.';
+      return;
+    }
+    const p = parsePrice(raw);
+    if (p === null) { setCustomError(true); return; }
+    applyCustomPrice(p);
+  });
+  // Leaving the field empty or invalid puts back the last price that worked,
+  // so the field never disagrees with the chart
+  customInput.addEventListener('blur', () => {
+    const p = parsePrice(customInput.value) ?? customPrice ?? CONTEXT.priceToday;
+    customInput.value = fmtPx(p);
+    if (p !== customPrice) applyCustomPrice(p);
+    else { setCustomError(false); customHint.innerHTML = priceHint(p); }
+  });
+  customInput.addEventListener('keydown', e => { if (e.key === 'Enter') customInput.blur(); });
+
+  document.querySelectorAll('.cp-step').forEach(b => b.addEventListener('click', () => {
+    const base = parsePrice(customInput.value) ?? customPrice ?? CONTEXT.priceToday;
+    const next = Math.max(1, Math.round((base + Number(b.dataset.step)) * 100) / 100);
+    customInput.value = fmtPx(next);
+    applyCustomPrice(next);
+  }));
 
   const chart = document.getElementById('chart');
   function pointerToIdx(clientX) {
@@ -1745,66 +1956,179 @@
   });
 
   // --- Table ---
-  const tableBody = document.getElementById('tableBody');
-  const tableCap = document.getElementById('tableCap');
-  const colKey = document.getElementById('colKey');
-  const totalVal = document.getElementById('totalVal');
-  function renderTable() {
-    let rows, groupLabel;
-    if (tableGroup === 'year') {
-      rows = YEARS.map(d => ({ key: d.year, sub: '', net: d.cur * TAX }));
-      colKey.textContent = 'Year'; groupLabel = 'year';
-    } else if (tableGroup === 'plan') {
-      rows = PLANS.map(p => ({ key: p.p, sub: 'RSU / Options mix', net: p.cur * TAX }));
-      colKey.textContent = 'Plan'; groupLabel = 'plan';
-    } else {
-      rows = INSTS.map(p => ({ key: p.k, sub: p.k === 'Options' ? 'Strike 36 NOK' : p.k === 'Warrants' ? 'Strike 48 NOK' : 'No strike', net: p.cur * TAX }));
-      colKey.textContent = 'Instrument'; groupLabel = 'instrument';
-    }
-    tableCap.innerHTML = `At today's price <b>${fmtPx(CONTEXT.priceToday)} NOK</b> · net NOK after Norwegian tax · grouped by ${groupLabel}`;
-    const actions = {
-      2023: ['Vested — can sell today', 'good'],
-      2024: ['Vested — can sell today', 'good'],
-      2025: ['Vested — can sell today', 'good'],
-      2026: ['Unlocks in 23 days', 'attn'],
-      2027: ['Vests Mar 2027', 'muted'],
-      2028: ['Vests Oct 2028', 'muted'],
-      'Plan 2023': ['Can sell 820 today', 'good'],
-      'Plan 2024': ['Can sell 420 today', 'good'],
-      'Plan 2025': ['Vesting 2025–2027', 'attn'],
-      'RSU': ['Can sell 1 200 today', 'good'],
-      'Options': ['Exercisable above 36 NOK', 'good'],
-      'Warrants': ['Vests Mar 2027', 'muted'],
-    };
-    const deltas = {
-      2023: 0, 2024: 0, 2025: 30, 2026: 90, 2027: 35, 2028: 25,
-      'Plan 2023': 130, 'Plan 2024': 100, 'Plan 2025': 65,
-      'RSU': 110, 'Options': 115, 'Warrants': 75,
-    };
-    tableBody.innerHTML = rows.map(r => {
-      const [lbl, kind] = actions[r.key] || ['—', 'muted'];
-      const d = deltas[r.key] || 0;
-      const deltaCls = d > 0 ? 'up' : d < 0 ? 'down' : 'flat';
-      const deltaTxt = d === 0 ? '—' : `${d > 0 ? '+' : '−'} ${fmt(Math.abs(d))} NOK since 1 Nov`;
-      return `<tr>
-        <td class="key">${r.key}${r.sub ? `<span class="sub">${r.sub}</span>` : ''}</td>
-        <td class="net">${fmt(r.net)}<span class="delta ${deltaCls}">${deltaTxt}</span></td>
-        <td class="action"><span class="chip ${kind}"><span class="d" aria-hidden="true"></span>${lbl}</span></td>
-      </tr>`;
-    }).join('');
-    const sellableTotal = rows.filter(r => {
-      const [, kind] = actions[r.key] || ['', ''];
-      return kind === 'good';
-    }).reduce((a, r) => a + r.net, 0);
-    totalVal.textContent = `≈ ${fmt(sellableTotal)} NOK`;
+  // --- Your shares table ---
+  const BD_NOUN = { year: 'Year', plan: 'Plan', type: 'Type' };
+  const BD_ALL = { year: 'All years', plan: 'All plans', type: 'All types' };
+  const bdSortSel = document.getElementById('bdSortSel');
+
+  function bdRows() {
+    const src = bdGroup === 'year'
+      ? YEARS.map(d => ({ key: String(d.year), order: d.year, cur: d.cur, change: YEAR_DELTA[d.year] || 0, status: d.status, detail: d.detail }))
+      : bdGroup === 'plan' ? PLANS : INSTS;
+    return src.map(r => ({ ...r, order: r.order ?? r.key, value: r.cur * TAX }));
   }
+  const bdNoun = n => BD_NOUN[bdGroup].toLowerCase() + (n === 1 ? '' : 's');
+
+  // Rebuilt when the grouping changes: tile counts, sort wording, first-column name
+  function bdRenderControls() {
+    const rows = bdRows();
+    const count = s => rows.filter(r => r.status === s).length;
+    // A filter with nothing in it is disabled, so it can't lead to a dead end
+    if (bdFilter !== 'all' && count(bdFilter) === 0) bdFilter = 'all';
+    const tiles = [
+      ['all', BD_ALL[bdGroup], rows.length, ''],
+      ['sellable', STATUS_META.sellable.short, count('sellable'), 'good'],
+      ['soon', STATUS_META.soon.short, count('soon'), 'attn'],
+      ['later', STATUS_META.later.short, count('later'), 'muted'],
+    ];
+    document.getElementById('bdFilterRow').innerHTML = tiles.map(([f, lbl, n, dot]) =>
+      `<button type="button" class="tile" data-filter="${f}" aria-pressed="${bdFilter === f}"${n === 0 && f !== 'all' ? ' disabled' : ''}>` +
+      `<span class="t-lbl">${dot ? `<span class="d ${dot}" aria-hidden="true"></span>` : ''}${lbl}</span>` +
+      `<span class="t-num">${n}</span>${f === 'all' ? '' : `<span class="sr-only"> ${bdNoun(n)}</span>`}</button>`).join('');
+
+    const noun = BD_NOUN[bdGroup];
+    const [asc, desc] = bdGroup === 'type' ? ['A to Z', 'Z to A'] : ['oldest first', 'newest first'];
+    bdSortSel.innerHTML = [
+      ['key-ascending', `${noun}: ${asc}`], ['key-descending', `${noun}: ${desc}`],
+      ['value-descending', 'Take home: most first'], ['value-ascending', 'Take home: least first'],
+      ['change-descending', 'Change: biggest rise first'], ['change-ascending', 'Change: smallest first'],
+      ['status-ascending', 'Status: can sell first'], ['status-descending', 'Status: later first'],
+    ].map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
+    document.getElementById('bdKeyLbl').textContent = noun;
+    document.getElementById('bdTable').dataset.group = bdGroup;
+    bdSyncSortUI();
+  }
+
+  function bdSyncSortUI() {
+    bdSortSel.value = `${bdSortCol}-${bdSortDir}`;
+    const names = { key: BD_NOUN[bdGroup].toLowerCase(), value: 'take home', status: 'status' };
+    document.querySelectorAll('#bdTable thead th').forEach(th => {
+      const btn = th.querySelector('.col-sort');
+      if (!btn) return;
+      const col = btn.dataset.sort;
+      const active = col === bdSortCol;
+      th.setAttribute('aria-sort', active ? bdSortDir : 'none');
+      btn.setAttribute('aria-label', active ? `Sorted by ${names[col]}. Tap to reverse.` : `Sort by ${names[col]}`);
+    });
+  }
+
+  function bdDetailHTML(r) {
+    const meta = STATUS_META[r.status];
+    const verb = r.status === 'sellable' ? "you'd take home about" : "once they unlock, you'd take home about";
+    const changeSentence = r.change > 0 ? ` That's <b>${fmt(r.change)} NOK more</b> than on 1 November.`
+      : r.change < 0 ? ` That's <b>${fmt(Math.abs(r.change))} NOK less</b> than on 1 November.`
+      : ' Same as on 1 November.';
+    return `<div class="detail-inner">
+      <span class="det-status"><span class="d ${meta.kind}" aria-hidden="true"></span>${r.detail}</span>
+      <p>At today's price (<b>${fmtPx(CONTEXT.priceToday)} NOK</b> a share), ${verb} <b>${fmt(r.value)} NOK</b> after Norwegian tax.${changeSentence}</p>
+      ${r.what ? `<p class="det-what"><b>What is this?</b> ${r.what}</p>` : ''}
+    </div>`;
+  }
+
+  function bdRenderTable() {
+    const rows = bdRows();
+    const filtered = bdFilter === 'all' ? rows : rows.filter(r => r.status === bdFilter);
+    const keyFn = {
+      key: r => r.order, value: r => r.value, change: r => r.change,
+      status: r => STATUS_ORDER[r.status] ?? 99,
+    }[bdSortCol];
+    const sign = bdSortDir === 'ascending' ? 1 : -1;
+    const cmp = (a, b) => typeof a === 'string' ? a.localeCompare(b) : a - b;
+    filtered.sort((a, b) => {
+      const av = keyFn(a), bv = keyFn(b);
+      return av === bv ? cmp(a.order, b.order) : cmp(av, bv) * sign;
+    });
+
+    document.getElementById('bdCap').innerHTML =
+      `At today's price, <b>${fmtPx(CONTEXT.priceToday)} NOK</b> a share. Amounts are what you'd take home, in NOK, after Norwegian tax.`;
+    document.getElementById('bdShowing').textContent = filtered.length === rows.length
+      ? `Showing all ${rows.length} ${bdNoun(rows.length)}`
+      : `Showing ${filtered.length} of ${rows.length} ${bdNoun(rows.length)}`;
+
+    const wrap = document.getElementById('bdWrap');
+    const empty = document.getElementById('bdEmpty');
+    if (!filtered.length) { wrap.hidden = true; empty.hidden = false; return; }
+    wrap.hidden = false; empty.hidden = true;
+    if (bdOpenKey !== null && !filtered.some(r => r.key === bdOpenKey)) bdOpenKey = null;
+
+    document.getElementById('bdBody').innerHTML = filtered.map((r, i) => {
+      const open = r.key === bdOpenKey;
+      const meta = STATUS_META[r.status];
+      return `<tr class="row" data-key="${r.key}" aria-expanded="${open}">
+        <th scope="row" class="key"><button type="button" class="row-toggle" aria-expanded="${open}" aria-controls="bdDet${i}">${r.key}<span class="sr-only">, details</span></button>${r.sub ? `<span class="key-sub">${r.sub}</span>` : ''}</th>
+        <td class="net"><span class="amt">${fmt(r.value)}</span>${changeLine(r.change)}</td>
+        <td class="action"><span class="chip ${meta.kind}"><span class="d" aria-hidden="true"></span>${meta.short}</span></td>
+        <td class="chev" aria-hidden="true"><span>›</span></td>
+      </tr>
+      <tr class="detail" id="bdDet${i}"${open ? '' : ' hidden'}><td colspan="4">${bdDetailHTML(r)}</td></tr>`;
+    }).join('');
+
+    const total = filtered.reduce((a, r) => a + r.value, 0);
+    const totalChange = filtered.reduce((a, r) => a + r.change, 0);
+    document.getElementById('bdTotal').textContent = fmt(total);
+    const tc = document.getElementById('bdTotalChange');
+    tc.className = 'chg ' + (totalChange > 0 ? 'up' : totalChange < 0 ? 'down' : 'flat');
+    tc.textContent = changeText(totalChange);
+    document.getElementById('bdTotalSub').textContent = `${filtered.length} ${bdNoun(filtered.length)}`;
+  }
+
+  function renderBreakdown() { bdRenderControls(); bdRenderTable(); }
+
+  // Row tap opens its explanation in place (one at a time), no rebuild
+  document.getElementById('bdBody').addEventListener('click', e => {
+    const tr = e.target.closest('tr.row');
+    if (!tr) return;
+    bdOpenKey = bdOpenKey === tr.dataset.key ? null : tr.dataset.key;
+    document.querySelectorAll('#bdBody tr.row').forEach(row => {
+      const open = row.dataset.key === bdOpenKey;
+      row.setAttribute('aria-expanded', String(open));
+      row.querySelector('.row-toggle').setAttribute('aria-expanded', String(open));
+      row.nextElementSibling.hidden = !open;
+    });
+  });
+
+  function bdSetFilter(value) {
+    bdFilter = value;
+    document.querySelectorAll('#bdFilterRow .tile').forEach(t =>
+      t.setAttribute('aria-pressed', String(t.dataset.filter === value)));
+    bdRenderTable();
+  }
+  document.getElementById('bdFilterRow').addEventListener('click', e => {
+    const t = e.target.closest('.tile');
+    if (t && !t.disabled) bdSetFilter(t.dataset.filter);
+  });
+  document.getElementById('bdShowAll').addEventListener('click', () => {
+    bdSetFilter('all');
+    document.querySelector('#bdFilterRow .tile[data-filter="all"]').focus();
+  });
+
+  function bdApplySort(col, dir) {
+    bdSortCol = col; bdSortDir = dir;
+    bdSyncSortUI();
+    bdRenderTable();
+    announce(`Sorted: ${bdSortSel.selectedOptions[0]?.textContent || ''}.`);
+  }
+  bdSortSel.addEventListener('change', () => {
+    const [col, dir] = bdSortSel.value.split('-');
+    bdApplySort(col, dir);
+  });
+  document.querySelectorAll('#bdTable .col-sort').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const col = btn.dataset.sort;
+      const dir = col === bdSortCol
+        ? (bdSortDir === 'ascending' ? 'descending' : 'ascending')
+        : (col === 'key' ? 'ascending' : (DEFAULT_DIR[col] || 'ascending'));
+      bdApplySort(col, dir);
+    });
+  });
+
   document.querySelectorAll('#tableSeg button').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('#tableSeg button').forEach(b => b.setAttribute('aria-selected','false'));
-      btn.setAttribute('aria-selected','true');
-      tableGroup = btn.dataset.group;
-      renderTable();
-      announce(`Table grouped by ${tableGroup === 'inst' ? 'instrument' : tableGroup}`);
+      document.querySelectorAll('#tableSeg button').forEach(b => b.setAttribute('aria-selected', String(b === btn)));
+      bdGroup = btn.dataset.group;
+      bdOpenKey = null;
+      renderBreakdown();
+      announce(`Grouped by ${BD_NOUN[bdGroup].toLowerCase()}.`);
     });
   });
 
@@ -1971,7 +2295,7 @@
   window.addEventListener('resize', syncChromeHeights);
   window.addEventListener('orientationchange', () => setTimeout(syncChromeHeights, 250));
 
-  renderChart(); renderTable(); renderCompare(); updateSortIndicators();
+  renderChart(); renderBreakdown(); renderCompare(); updateSortIndicators();
   const initialView = location.hash.replace('#/','') || 'home';
   navigate(views.includes(initialView) ? initialView : 'home', false);
 </script>
