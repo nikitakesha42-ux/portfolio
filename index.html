@@ -28,8 +28,8 @@
         <a href="#reach" data-en="Contact" data-no="Kontakt">Contact</a>
       </nav>
       <div class="lang-switch" role="group" aria-label="Language">
-        <button type="button" data-lang="en" aria-pressed="true">EN</button>
-        <button type="button" data-lang="no" aria-pressed="false">NO</button>
+        <button type="button" data-lang="en" aria-pressed="true" lang="en">EN</button>
+        <button type="button" data-lang="no" aria-pressed="false" lang="no">NO</button>
       </div>
       <a class="cta-pill-dark" href="mailto:nikitakesha42@gmail.com">
         <span class="spark" aria-hidden="true">✦</span>
@@ -334,7 +334,10 @@
               <div class="label" data-en="Reporting prep time end-to-end, across multiple report types." data-no="Forberedelsestid fra start til slutt, på tvers av flere rapporttyper.">Reporting prep time end-to-end, across multiple report types.</div>
             </div>
           </div>
-          <a class="btn-pill-light" href="financial-reporting.html">
+          <a class="btn-pill-light" href="financial-reporting.html"
+             data-en-aria="Read the financial-reporting case"
+             data-no-aria="Les caset om finansiell rapportering"
+             aria-label="Read the financial-reporting case">
             <span data-en="Read the case" data-no="Les caset">Read the case</span>
             <span aria-hidden="true">→</span>
           </a>
@@ -371,7 +374,10 @@
               <div class="label" data-en="Biggest client kept through a chunked plan when the roadmap paused." data-no="Største kunde beholdt gjennom en oppdelt plan da roadmappen ble pauset.">Biggest client kept through a chunked plan when the roadmap paused.</div>
             </div>
           </div>
-          <a class="btn-pill-light" href="employee-portal.html">
+          <a class="btn-pill-light" href="employee-portal.html"
+             data-en-aria="Read the employee-portal case"
+             data-no-aria="Les caset om deltakerportalen"
+             aria-label="Read the employee-portal case">
             <span data-en="Read the case" data-no="Les caset">Read the case</span>
             <span aria-hidden="true">→</span>
           </a>
@@ -481,6 +487,6 @@
     <span data-en="Designed and built with care" data-no="Designet og bygget med omtanke">Designed and built with care</span>
   </footer>
 
-  <script src="i18n.js"></script>
+  <script src="i18n.js?v=2"></script>
 </body>
 </html>

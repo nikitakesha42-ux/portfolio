@@ -42,7 +42,10 @@ a { color: inherit; }
   left: -9999px;
   background: var(--ink);
   color: #fff;
-  padding: 8px 12px;
+  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 .skip-link:focus { left: 16px; top: 16px; z-index: 10; }
 
@@ -284,6 +287,9 @@ section { margin-bottom: 96px; }
   text-decoration-color: var(--soft);
   text-underline-offset: 4px;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 .behance-band a:hover { text-decoration-color: var(--ink); }
 .btn-pill {
@@ -320,7 +326,7 @@ section { margin-bottom: 96px; }
   gap: 8px;
   font-size: 15px;
 }
-.contact-list a { color: var(--ink); text-decoration: none; }
+.contact-list a { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; min-height: 24px; }
 .contact-list a:hover { text-decoration: underline; }
 
 footer.site {
@@ -344,7 +350,7 @@ footer.site {
   align-items: center;
   font-size: 14px;
 }
-.case-header a { color: var(--muted); text-decoration: none; }
+.case-header a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; min-height: 24px; }
 .case-header a:hover { color: var(--ink); }
 
 .case-hero {
@@ -714,6 +720,9 @@ footer.site {
   color: var(--muted);
   text-decoration: none;
   font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 .case-end a:hover { color: var(--ink); }
 
@@ -2556,6 +2565,9 @@ footer.site {
   font-weight: 500;
   letter-spacing: -0.005em;
   transition: color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 .primary-nav a:hover,
 .primary-nav a.is-current {
@@ -2618,6 +2630,9 @@ footer.site {
   text-decoration: underline;
   text-decoration-color: var(--soft);
   text-underline-offset: 5px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 .hero-email:hover { text-decoration-color: var(--ink); }
 

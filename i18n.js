@@ -20,6 +20,10 @@
       const html = el.dataset[lang + "Html"] || el.dataset[fallback + "Html"];
       if (html != null) el.innerHTML = html;
     });
+    document.querySelectorAll("[data-en-aria]").forEach((el) => {
+      const aria = el.dataset[lang + "Aria"] || el.dataset[fallback + "Aria"];
+      if (aria != null) el.setAttribute("aria-label", aria);
+    });
     document.querySelectorAll(".lang-switch button").forEach((btn) => {
       btn.classList.toggle("is-active", btn.dataset.lang === lang);
       btn.setAttribute("aria-pressed", btn.dataset.lang === lang ? "true" : "false");

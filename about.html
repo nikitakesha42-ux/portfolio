@@ -28,8 +28,8 @@
         <a href="about.html" class="is-current" data-en="About" data-no="Om meg">About</a>
       </nav>
       <div class="lang-switch" role="group" aria-label="Language">
-        <button type="button" data-lang="en" aria-pressed="true">EN</button>
-        <button type="button" data-lang="no" aria-pressed="false">NO</button>
+        <button type="button" data-lang="en" aria-pressed="true" lang="en">EN</button>
+        <button type="button" data-lang="no" aria-pressed="false" lang="no">NO</button>
       </div>
       <a class="cta-pill-dark" href="#contact">
         <span class="spark" aria-hidden="true">✦</span>
@@ -95,7 +95,10 @@
             <img src="assets/prompt-library.png" alt="" />
           </figure>
           <div>
-            <a class="btn-pill-light" href="prompt-library.html">
+            <a class="btn-pill-light" href="prompt-library.html"
+               data-en-aria="Check the Prompt Library project"
+               data-no-aria="Se Prompt-biblioteket-prosjektet"
+               aria-label="Check the Prompt Library project">
               <span data-en="Check this project" data-no="Se prosjektet">Check this project</span>
               <span aria-hidden="true">→</span>
             </a>
@@ -115,7 +118,10 @@
             <img src="assets/case/fr-hero.png" alt="" />
           </figure>
           <div>
-            <a class="btn-pill-light" href="financial-reporting.html">
+            <a class="btn-pill-light" href="financial-reporting.html"
+               data-en-aria="Check the financial-reporting project"
+               data-no-aria="Se prosjektet om finansiell rapportering"
+               aria-label="Check the financial-reporting project">
               <span data-en="Check this project" data-no="Se prosjektet">Check this project</span>
               <span aria-hidden="true">→</span>
             </a>
@@ -290,6 +296,6 @@
     <span data-en="Designed and built with care" data-no="Designet og bygget med omtanke">Designed and built with care</span>
   </footer>
 
-  <script src="i18n.js"></script>
+  <script src="i18n.js?v=2"></script>
 </body>
 </html>

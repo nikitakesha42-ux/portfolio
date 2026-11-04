@@ -13,7 +13,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    :root {
+      .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    background: #0D0D0D; color: #fff; padding: 10px 14px;
+    text-decoration: none; font: 500 13px 'Inter', sans-serif;
+    display: inline-flex; align-items: center; min-height: 24px; z-index: 100;
+  }
+  .skip-link:focus { left: 16px; top: 16px; outline: 2px solid #fff; outline-offset: 2px; }
+:root {
       --bg: #fafaf7;
       --surface: #ffffff;
       --ink: #0a0a0a;
@@ -65,6 +72,7 @@
       text-decoration: none;
       color: var(--muted);
       font-size: 13px;
+      min-height: 24px;
     }
     .topbar a.back:hover { color: var(--ink); }
     .topbar .proto-label {
@@ -464,6 +472,9 @@
       color: var(--muted);
       text-decoration: underline;
       padding: 0;
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
     }
     .reset-btn:hover { color: var(--ink); }
 
@@ -757,8 +768,8 @@
     <a href="share-simulator.html" class="back" data-en="← Back to case study" data-no="← Tilbake til caset">← Back to case study</a>
     <span class="proto-label" data-en="Live prototype · mock data" data-no="Live prototype · testdata">Live prototype · mock data</span>
     <div class="lang-switch" role="group" aria-label="Language">
-      <button type="button" data-lang="en" aria-pressed="true" class="is-active">EN</button>
-      <button type="button" data-lang="no" aria-pressed="false">NO</button>
+      <button type="button" data-lang="en" aria-pressed="true" class="is-active" lang="en">EN</button>
+      <button type="button" data-lang="no" aria-pressed="false" lang="no">NO</button>
     </div>
   </header>
 

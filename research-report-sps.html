@@ -7,7 +7,14 @@
 <meta name="description" content="Research report for the Share price simulator rebuild discovery sprint. PRIME framework synthesis of stakeholder interview, user interviews, survey responses, and usability testing." />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
+    .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    background: #0D0D0D; color: #fff; padding: 10px 14px;
+    text-decoration: none; font: 500 13px 'Inter', sans-serif;
+    display: inline-flex; align-items: center; min-height: 24px; z-index: 100;
+  }
+  .skip-link:focus { left: 16px; top: 16px; outline: 2px solid #fff; outline-offset: 2px; }
+:root {
     --bg: #F1F0ED;
     --ink: #0D0D0D;
     --muted: #666666;
@@ -29,6 +36,7 @@
     position: fixed; top: 24px; left: 28px; z-index: 10;
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
     color: var(--accent); text-decoration: none; letter-spacing: 0.06em;
+    display: inline-flex; align-items: center; min-height: 24px;
   }
   .back-link:hover { color: var(--ink); }
 
