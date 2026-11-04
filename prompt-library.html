@@ -56,7 +56,40 @@
       display: block;
       line-height: 0;         /* kill inline-image baseline gap */
       background: #fafafa;
+      position: relative;
     }
+
+    /* Pause/Play control for the hero walkthrough — WCAG 2.2.2 requires any
+       moving content >5s to be pausable. Sits in the bottom-right corner of
+       the canvas; inherits the dark navy brand tone. */
+    .pl-playpause {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px 6px 8px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      background: rgba(10,31,74,0.82);
+      color: #fff;
+      font: 500 12px/1 var(--sans, 'Inter', system-ui, sans-serif);
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .pl-playpause:hover   { background: rgba(10,31,74,0.94); }
+    .pl-playpause:focus-visible {
+      outline: 2px solid #ffe066;
+      outline-offset: 2px;
+    }
+    /* Toggle which glyph is visible based on aria-pressed */
+    .pl-playpause .pl-playpause__play  { display: none; }
+    .pl-playpause .pl-playpause__pause { display: inline-block; }
+    .pl-playpause[aria-pressed="false"] .pl-playpause__play  { display: inline-block; }
+    .pl-playpause[aria-pressed="false"] .pl-playpause__pause { display: none; }
     .pl-browser__canvas img {
       display: block;
       width: 100%;
@@ -268,12 +301,12 @@
       margin: 28px 0 0;
     }
     .pl-access article {
-      border: 1px solid var(--rule);
+      border: 1px solid var(--rule-strong);
       border-radius: 14px;
       padding: 20px 22px;
       background: var(--panel-warm);
     }
-    .pl-access h4 {
+    .pl-access h3 {
       margin: 0 0 6px;
       font-size: 15px;
       font-weight: 600;
@@ -353,12 +386,37 @@
   <figure class="case-banner">
     <div class="pl-browser pl-browser--hero">
       <div class="pl-browser__bar">
-        <span class="pl-browser__dots"><span></span><span></span><span></span></span>
-        <span class="pl-browser__url">anastasiianikitina.no / prompt-library-app.html</span>
+        <span class="pl-browser__dots" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="pl-browser__url" aria-hidden="true">anastasiianikitina.no / prompt-library-app.html</span>
       </div>
       <div class="pl-browser__canvas">
-        <img src="assets/case/pl-walkthrough.gif"
+        <img id="plWalkthrough"
+             src="assets/case/pl-walkthrough.gif"
+             data-animated="assets/case/pl-walkthrough.gif"
+             data-still="assets/case/pl-walkthrough-poster.png"
              alt="Looping walkthrough of the live Prompt Library — the home view, a tag filter, a prompt detail, the Add Prompt modal, the Sync modal, and two other disciplines." />
+        <button id="plWalkthroughToggle" type="button"
+                class="pl-playpause"
+                aria-pressed="true"
+                aria-controls="plWalkthrough"
+                data-en-pause="Pause walkthrough"
+                data-en-play="Play walkthrough"
+                data-no-pause="Pause gjennomgang"
+                data-no-play="Spill av gjennomgang"
+                aria-label="Pause walkthrough">
+          <!-- pause glyph (shown while playing) -->
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
+               class="pl-playpause__pause">
+            <rect x="3" y="2" width="3.5" height="12" rx="1"/>
+            <rect x="9.5" y="2" width="3.5" height="12" rx="1"/>
+          </svg>
+          <!-- play glyph (shown while paused) -->
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
+               class="pl-playpause__play">
+            <path d="M3.5 2.5v11a.5.5 0 0 0 .77.42l9-5.5a.5.5 0 0 0 0-.84l-9-5.5a.5.5 0 0 0-.77.42Z"/>
+          </svg>
+          <span class="pl-playpause__label" data-en="Pause" data-no="Pause">Pause</span>
+        </button>
       </div>
     </div>
   </figure>
@@ -519,10 +577,10 @@
       <div class="pl-access">
         <article>
           <span class="pl-access__tag">WCAG 2.2 AA</span>
-          <h4 data-en="Keyboard-first and screen-reader friendly"
+          <h3 data-en="Keyboard-first and screen-reader friendly"
               data-no="Tastatur-først og skjermleser-vennlig">
             Keyboard-first and screen-reader friendly
-          </h4>
+          </h3>
           <p data-en="Every action reachable without a mouse. Modals use role=&quot;dialog&quot; + aria-modal, trap focus, close on Escape. Focus states visible on every control."
              data-no="Hver handling er mulig uten mus. Modaler bruker role=&quot;dialog&quot; + aria-modal, låser fokus, lukkes med Escape. Fokus synlig på hver kontroll.">
             Every action reachable without a mouse. Modals use role=&quot;dialog&quot; + aria-modal, trap focus, close on Escape. Focus states visible on every control.
@@ -530,10 +588,10 @@
         </article>
         <article>
           <span class="pl-access__tag">WCAG 2.2 AA</span>
-          <h4 data-en="Contrast you can read in sunlight"
+          <h3 data-en="Contrast you can read in sunlight"
               data-no="Kontrast du kan lese i sollys">
             Contrast you can read in sunlight
-          </h4>
+          </h3>
           <p data-en="Body text ~20:1 (AAA). Navy sidebar ~16:1 (AAA). Secondary labels clear AA. Tag chips keep dark text on pastel so the gentle palette still stays above 4.5:1."
              data-no="Brødtekst ~20:1 (AAA). Marineblå sidemeny ~16:1 (AAA). Sekundære etiketter klarer AA. Tag-chips har mørk tekst på pastell, så den rolige paletten holder seg over 4,5:1.">
             Body text ~20:1 (AAA). Navy sidebar ~16:1 (AAA). Secondary labels clear AA. Tag chips keep dark text on pastel so the gentle palette still stays above 4.5:1.
@@ -543,10 +601,10 @@
           <span class="pl-access__tag"
                 data-en="Equitable access"
                 data-no="Likeverdig tilgang">Equitable access</span>
-          <h4 data-en="No sign-in, no tracking, works offline"
+          <h3 data-en="No sign-in, no tracking, works offline"
               data-no="Ingen innlogging, ingen sporing, fungerer uten nett">
             No sign-in, no tracking, works offline
-          </h4>
+          </h3>
           <p data-en="No account, no consent banner, no analytics. Once installed, it works without wifi — a contractor, a new hire on day one, and someone on a slow train all see the same 33 prompts."
              data-no="Ingen konto, ingen samtykkebanner, ingen analyse. Når det er installert, fungerer det uten wifi — en konsulent, en nyansatt på dag én og noen på et tregt tog ser alle de samme 33 promptene.">
             No account, no consent banner, no analytics. Once installed, it works without wifi — a contractor, a new hire on day one, and someone on a slow train all see the same 33 prompts.
@@ -573,5 +631,45 @@
   </div>
 
   <script src="i18n.js"></script>
+  <script>
+    // Pause/Play for the hero walkthrough GIF (WCAG 2.2.2 Pause, Stop, Hide).
+    // Starts paused when the user has prefers-reduced-motion set (WCAG 2.3.3).
+    (function () {
+      const img = document.getElementById('plWalkthrough');
+      const btn = document.getElementById('plWalkthroughToggle');
+      if (!img || !btn) return;
+      const animated = img.dataset.animated;
+      const still    = img.dataset.still;
+      const label    = btn.querySelector('.pl-playpause__label');
+
+      function setPlaying(playing) {
+        btn.setAttribute('aria-pressed', String(playing));
+        const lang = document.documentElement.lang === 'nb' ? 'no' : 'en';
+        const text = btn.getAttribute(`data-${lang}-${playing ? 'pause' : 'play'}`);
+        btn.setAttribute('aria-label', text);
+        if (label) label.textContent = playing
+          ? (lang === 'no' ? 'Pause' : 'Pause')
+          : (lang === 'no' ? 'Spill av' : 'Play');
+        if (playing) {
+          if (img.getAttribute('src') !== animated) img.setAttribute('src', animated);
+        } else {
+          img.setAttribute('src', still);
+        }
+      }
+
+      btn.addEventListener('click', () => {
+        setPlaying(btn.getAttribute('aria-pressed') !== 'true');
+      });
+
+      // Respect prefers-reduced-motion — start paused.
+      const prm = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (prm.matches) setPlaying(false);
+
+      // Keep the label in sync when the EN/NO toggle flips the page language.
+      const refresh = () => setPlaying(btn.getAttribute('aria-pressed') === 'true');
+      document.querySelectorAll('.lang-switch button').forEach(b =>
+        b.addEventListener('click', () => setTimeout(refresh, 0)));
+    })();
+  </script>
 </body>
 </html>
