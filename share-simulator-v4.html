@@ -258,6 +258,66 @@
     padding: 12px 14px; background: var(--panel); border-radius: var(--r-card);
     border: 1px dashed var(--rule-strong);
   }
+
+  /* Simulator exploration — filter / sort / table */
+  .explore { display: flex; flex-direction: column; gap: 14px; }
+  .toolbar { display: flex; flex-direction: column; gap: 6px; }
+  .toolbar .tb-label {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted); font-weight: 600;
+    margin-top: 2px;
+  }
+  .chip-row {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .chip-btn {
+    appearance: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 12px; min-height: 36px;
+    border: 1px solid var(--rule-strong); background: #fff; color: var(--ink);
+    border-radius: var(--r-pill);
+    font: inherit; font-size: 12.5px; font-weight: 500;
+  }
+  .chip-btn:focus-visible { outline: var(--focus); outline-offset: 2px; }
+  .chip-btn[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .chip-btn .count {
+    font-family: var(--mono); font-size: 11px; opacity: 0.6;
+    padding-left: 2px;
+  }
+  .chip-btn[aria-pressed="true"] .count { opacity: 0.75; }
+  .chip-btn .d { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .chip-btn .d.good { background: var(--good); }
+  .chip-btn .d.attn { background: var(--attn); }
+  .chip-btn .d.muted { background: var(--rule-strong); }
+
+  /* Interactive data table — reuses base .data-table styles */
+  .sim-table tbody tr { cursor: pointer; }
+  .sim-table tbody tr:hover td,
+  .sim-table tbody tr:focus-visible td {
+    background: var(--panel);
+  }
+  .sim-table tbody tr[data-focused="true"] td {
+    background: var(--accent-soft);
+  }
+  .sim-table tbody tr[data-focused="true"] .key {
+    color: var(--accent);
+  }
+  .sim-table tbody tr:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .sim-table .num.change { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+  .sim-table .num.change.up { color: var(--good); }
+  .sim-table .num.change.down { color: var(--warn); }
+  .sim-table .num.change.flat { color: var(--muted); }
+
+  /* Clickable year labels on the chart */
+  #xLabels text { cursor: pointer; }
+  #xLabels text:hover { fill: var(--accent); font-weight: 600; }
+  #xLabels text[data-focused="true"] { fill: var(--accent); font-weight: 700; }
+
+  .empty-state {
+    padding: 20px; text-align: center; font-size: 13px; color: var(--muted);
+    background: var(--panel); border: 1px dashed var(--rule-strong);
+    border-radius: var(--r-card);
+  }
   .source-note b { color: var(--ink); font-weight: 500; }
 
   /* AI drawer */
@@ -681,6 +741,44 @@
         </div>
       </div>
 
+      <section aria-labelledby="exploreTitle" class="explore">
+        <div class="section-head">
+          <span class="eyebrow">See it differently</span>
+          <h2 id="exploreTitle">All six years, your way</h2>
+          <p class="sub">Filter, sort, and tap any row to focus the chart above.</p>
+        </div>
+
+        <div class="toolbar">
+          <div class="tb-label" id="filterLbl">Filter</div>
+          <div class="chip-row" role="group" aria-labelledby="filterLbl" id="simFilterRow">
+            <button type="button" class="chip-btn" data-filter="all" aria-pressed="true">All <span class="count" id="cntAll">6</span></button>
+            <button type="button" class="chip-btn" data-filter="sellable" aria-pressed="false"><span class="d good" aria-hidden="true"></span>Can sell <span class="count" id="cntSellable">3</span></button>
+            <button type="button" class="chip-btn" data-filter="soon" aria-pressed="false"><span class="d attn" aria-hidden="true"></span>Soon <span class="count" id="cntSoon">1</span></button>
+            <button type="button" class="chip-btn" data-filter="later" aria-pressed="false"><span class="d muted" aria-hidden="true"></span>Later <span class="count" id="cntLater">2</span></button>
+          </div>
+          <div class="tb-label" id="sortLbl">Sort by</div>
+          <div class="chip-row" role="group" aria-labelledby="sortLbl" id="simSortRow">
+            <button type="button" class="chip-btn" data-sort="year-asc" aria-pressed="true">Year ↑</button>
+            <button type="button" class="chip-btn" data-sort="value-desc" aria-pressed="false">Value ↓</button>
+            <button type="button" class="chip-btn" data-sort="change-desc" aria-pressed="false">Change ↓</button>
+          </div>
+        </div>
+
+        <table class="data-table sim-table" id="simTable">
+          <caption id="simCap">6 years · net NOK after Norwegian tax at your scenario price</caption>
+          <thead>
+            <tr>
+              <th scope="col">Year</th>
+              <th scope="col" class="num">Net NOK</th>
+              <th scope="col" class="num">Change</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="simTableBody"></tbody>
+        </table>
+        <div class="empty-state" id="simEmpty" hidden>No years match this filter.</div>
+      </section>
+
       <p class="source-note">
         Numbers simulated at your selected price. <b>Norwegian tax applied at 33 %</b> (illustrative). Price source: <b>Internal 409A valuation</b>, updated today at 10:14 CET.
       </p>
@@ -865,16 +963,24 @@
   };
   const TAX = 0.67;
   const YEARS = [
-    { year: 2023, cur: 500 }, { year: 2024, cur: 650 },
-    { year: 2025, cur: 800 }, { year: 2026, cur: 1500 },
-    { year: 2027, cur: 550 }, { year: 2028, cur: 500 },
+    { year: 2023, cur: 500,  status: 'sellable', statusLabel: 'Can sell today',     statusKind: 'good' },
+    { year: 2024, cur: 650,  status: 'sellable', statusLabel: 'Can sell today',     statusKind: 'good' },
+    { year: 2025, cur: 800,  status: 'sellable', statusLabel: 'Can sell today',     statusKind: 'good' },
+    { year: 2026, cur: 1500, status: 'soon',     statusLabel: 'Unlocks in 23 days', statusKind: 'attn' },
+    { year: 2027, cur: 550,  status: 'later',    statusLabel: 'Vests Mar 2027',     statusKind: 'muted' },
+    { year: 2028, cur: 500,  status: 'later',    statusLabel: 'Vests Oct 2028',     statusKind: 'muted' },
   ];
+  // Prior-visit deltas per year (for the Change column) — in NOK, net of tax
+  const YEAR_DELTA = { 2023: 0, 2024: 0, 2025: 30, 2026: 90, 2027: 35, 2028: 25 };
   const PLANS = [{p:'Plan 2023', cur:2200},{p:'Plan 2024', cur:1700},{p:'Plan 2025', cur:1100}];
   const INSTS = [{k:'RSU', cur:1800},{k:'Options', cur:1950},{k:'Warrants', cur:1250}];
 
   const views = ['home','simulator','breakdown','compare'];
   const titleMap = { home:'Home', simulator:'Simulator', breakdown:'Your shares', compare:'Compare' };
   let currentView = 'home', scenMult = 2, yearIdx = 3, tableGroup = 'year';
+  // Simulator-side exploration state
+  let simFilter = 'all';          // 'all' | 'sellable' | 'soon' | 'later'
+  let simSort = 'year-asc';       // 'year-asc' | 'year-desc' | 'value-desc' | 'change-desc'
   let history_ = ['home'];
 
   const screenTitle = document.getElementById('screenTitle');
@@ -1015,8 +1121,19 @@
     }).join('');
     xLabels.innerHTML = data.map((d,i) => {
       const x = padL + i*xStep - 10;
-      return `<text x="${x}" y="200">${d.year}</text>`;
+      return `<text x="${x}" y="200" data-idx="${i}" tabindex="0" role="button" aria-label="Focus year ${d.year}">${d.year}</text>`;
     }).join('');
+    // Wire year-label click/keyboard
+    xLabels.querySelectorAll('text').forEach(t => {
+      t.addEventListener('click', () => { yearIdx = +t.dataset.idx; renderHandle(); });
+      t.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          yearIdx = +t.dataset.idx;
+          renderHandle();
+        }
+      });
+    });
     renderHandle();
   }
 
@@ -1055,7 +1172,99 @@
     axisHandle.setAttribute('aria-valuenow', yearIdx);
     axisHandle.setAttribute('aria-valuetext', `${d.year}, projected ${fmt(d.sim)} NOK after tax at ${fmtPx(scenPx)} NOK per share`);
     announce(`For ${d.year}, at ${fmtPx(scenPx)} NOK per share, you'd take home about ${fmt(d.sim)} NOK after Norwegian tax.`);
+    // Sync year-label focus + sim table row focus
+    xLabels.querySelectorAll('text').forEach(t => {
+      t.setAttribute('data-focused', +t.dataset.idx === yearIdx ? 'true' : 'false');
+    });
+    renderSimTable();
   }
+
+  // --- Simulator exploration table ---
+  function renderSimTable() {
+    const data = visible(); // all 6 years, chart order
+    // Attach metadata for sort/filter
+    const rows = data.map((d, idx) => ({
+      idx, year: d.year, sim: d.sim,
+      change: YEAR_DELTA[d.year] || 0,
+      status: YEARS[idx].status,
+      statusLabel: YEARS[idx].statusLabel,
+      statusKind: YEARS[idx].statusKind,
+    }));
+    // Filter
+    const filtered = simFilter === 'all' ? rows : rows.filter(r => r.status === simFilter);
+    // Sort
+    const sorters = {
+      'year-asc':  (a, b) => a.year - b.year,
+      'year-desc': (a, b) => b.year - a.year,
+      'value-desc': (a, b) => b.sim - a.sim,
+      'change-desc': (a, b) => b.change - a.change,
+    };
+    filtered.sort(sorters[simSort] || sorters['year-asc']);
+
+    const empty = document.getElementById('simEmpty');
+    const table = document.getElementById('simTable');
+    const body = document.getElementById('simTableBody');
+    const cap = document.getElementById('simCap');
+    const scenPxStr = fmtPx(CONTEXT.priceToday * scenMult);
+    cap.innerHTML = `${filtered.length} of 6 years · 1 share at <b>${scenPxStr} NOK</b> · net after Norwegian tax`;
+
+    if (filtered.length === 0) {
+      table.hidden = true; empty.hidden = false;
+      return;
+    }
+    table.hidden = false; empty.hidden = true;
+
+    body.innerHTML = filtered.map(r => {
+      const changeCls = r.change > 0 ? 'up' : r.change < 0 ? 'down' : 'flat';
+      const changeTxt = r.change === 0 ? '—' : `${r.change > 0 ? '+' : '−'} ${fmt(Math.abs(r.change))}`;
+      return `<tr data-idx="${r.idx}" data-focused="${r.idx === yearIdx ? 'true' : 'false'}" tabindex="0" aria-label="${r.year}, net ${fmt(r.sim)} NOK, ${r.statusLabel}">
+        <td class="key">${r.year}</td>
+        <td class="net">${fmt(r.sim)}</td>
+        <td class="num change ${changeCls}">${changeTxt}</td>
+        <td class="action"><span class="chip ${r.statusKind}"><span class="d" aria-hidden="true"></span>${r.statusLabel}</span></td>
+      </tr>`;
+    }).join('');
+
+    // Wire row clicks to focus the chart
+    body.querySelectorAll('tr').forEach(tr => {
+      const focus = () => { yearIdx = +tr.dataset.idx; renderHandle(); };
+      tr.addEventListener('click', focus);
+      tr.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focus(); }
+      });
+    });
+  }
+
+  // Filter chips
+  document.querySelectorAll('#simFilterRow .chip-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#simFilterRow .chip-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+      simFilter = btn.dataset.filter;
+      renderSimTable();
+      announce(`Filter: ${btn.textContent.trim()}`);
+    });
+  });
+  // Sort chips
+  document.querySelectorAll('#simSortRow .chip-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Tapping the already-active Year toggles asc/desc
+      if (btn.dataset.sort === 'year-asc' && simSort === 'year-asc') {
+        simSort = 'year-desc'; btn.textContent = 'Year ↓';
+      } else if (btn.dataset.sort === 'year-asc' && simSort === 'year-desc') {
+        simSort = 'year-asc'; btn.textContent = 'Year ↑';
+      } else {
+        simSort = btn.dataset.sort;
+        // Reset Year label to default direction when leaving it
+        const yearBtn = document.querySelector('#simSortRow .chip-btn[data-sort="year-asc"]');
+        if (yearBtn && simSort !== 'year-asc' && simSort !== 'year-desc') yearBtn.textContent = 'Year ↑';
+      }
+      document.querySelectorAll('#simSortRow .chip-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+      renderSimTable();
+      announce(`Sorted by ${btn.textContent.trim()}`);
+    });
+  });
 
   document.querySelectorAll('#scenRow .scen-chip').forEach(btn => {
     btn.addEventListener('click', () => {
