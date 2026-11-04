@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#1a1f2e" />
+<title>Share price simulator · v4 prototype</title>
+<style>
+  :root {
+    --ink: #1a1f2e; --ink-2: #2b3140; --muted: #5a606b;
+    --rule: #d8dce2; --rule-strong: #9aa0ab;
+    --accent: #3042a0; --accent-soft: #e5e9fa; --accent-strong: #202d75;
+    --good: #2b6a37; --good-soft: #e0efd9;
+    --warn: #8a3a3a; --warn-soft: #fcece6;
+    --attn: #9f6014; --attn-soft: #fcf1d7;
+    --paper: #fff; --panel: #f8f9fb; --panel2: #f1f3f6;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Inter', -apple-system, system-ui, sans-serif;
+    --focus: 3px solid var(--accent);
+    --radius: 12px;
+    --text-scale: 1;
+  }
+
+  /* --- HIGH-CONTRAST MODE --- */
+  html[data-contrast="high"] {
+    --ink: #000; --ink-2: #000; --muted: #333;
+    --rule: #000; --rule-strong: #000;
+    --accent: #003; --accent-soft: #d8d8ff;
+    --good: #0a3f1a; --good-soft: #ceecd4;
+    --warn: #5a0f0f; --attn: #5a3a08;
+    --panel: #fff; --panel2: #eee;
+  }
+
+  /* --- LARGE TEXT MODE --- */
+  html[data-text="large"] { --text-scale: 1.15; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { font-family: var(--sans); -webkit-font-smoothing: antialiased; color: var(--ink);
+    background: linear-gradient(180deg, #eef1ff 0%, #f6f8ff 100%); min-height: 100vh;
+    font-size: calc(16px * var(--text-scale));
+  }
+  body { min-height: 100vh; }
+
+  /* --- SKIP LINK --- */
+  a.skip-link {
+    position: absolute; left: -9999px; top: 10px;
+    background: var(--ink); color: #fff; padding: 10px 14px;
+    text-decoration: none; border-radius: 10px;
+    font-weight: 600; z-index: 100;
+  }
+  a.skip-link:focus { left: 10px; outline: 2px solid #fff; outline-offset: 2px; }
+
+  /* --- APP SHELL --- */
+  .app { max-width: 440px; margin: 0 auto; background: #fff; min-height: 100vh;
+    display: flex; flex-direction: column;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  header.top { display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px 12px; border-bottom: 1px solid var(--rule); background: #fff;
+    position: sticky; top: 0; z-index: 10;
+  }
+  header.top .back, header.top .set { appearance: none; border: 0; background: transparent;
+    color: var(--ink); font: inherit; font-size: 14px; cursor: pointer;
+    min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; gap: 4px;
+  }
+  header.top .back:focus-visible, header.top .set:focus-visible { outline: var(--focus); outline-offset: 2px; border-radius: 8px; }
+  header.top h1 { font-size: 15px; font-weight: 600; letter-spacing: -0.005em; }
+
+  main { padding: 16px 16px 90px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* --- LIVE REGION DEMO BANNER --- */
+  .live-demo { position: fixed; bottom: calc(10px + env(safe-area-inset-bottom)); left: 50%;
+    transform: translateX(-50%); max-width: 400px; width: calc(100% - 20px);
+    background: var(--ink); color: #fff; padding: 10px 14px; border-radius: 10px;
+    font-size: 11px; display: flex; align-items: center; gap: 8px; z-index: 50;
+    box-shadow: 0 8px 24px rgba(10,15,30,0.3);
+  }
+  .live-demo .lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; opacity: 0.7; text-transform: uppercase; }
+  .live-demo .txt { flex: 1; line-height: 1.4; min-width: 0; }
+  .live-demo button { appearance: none; border: 1px solid #fff; background: transparent; color: #fff;
+    font: inherit; font-size: 10px; padding: 3px 8px; border-radius: 999px; cursor: pointer;
+    min-height: 32px;
+  }
+
+  /* --- ELEMENTS --- */
+  h2.view-title { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; }
+  .lbl-eyebrow { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); font-weight: 600;
+  }
+
+  /* Priority banner */
+  .priority { background: var(--attn-soft); border: 1px solid var(--attn);
+    border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px;
+    cursor: pointer; text-align: left; width: 100%; appearance: none; font: inherit; color: var(--ink);
+  }
+  .priority:focus-visible { outline: var(--focus); outline-offset: 2px; }
+  .priority .ptag { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--attn); font-weight: 700;
+  }
+  .priority .ptitle { font-size: 16px; font-weight: 600; line-height: 1.3; }
+  .priority .psub { font-size: 12px; color: var(--ink-2); }
+
+  /* Value card */
+  .value-card { background: var(--accent-soft); border: 1px solid var(--accent);
+    border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px;
+  }
+  .value-card .lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); font-weight: 700;
+  }
+  .value-card .big { font-size: 28px; font-weight: 700; letter-spacing: -0.015em; color: var(--ink); }
+  .value-card .delta { font-size: 12px; color: var(--accent); font-weight: 500; }
+  .value-card .sub { font-size: 11px; color: var(--muted); }
+
+  /* Action chips */
+  .action-chip { display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; border-radius: 10px; border: 1px solid; text-align: left;
+    appearance: none; font: inherit; width: 100%; cursor: pointer; background: #fff;
+    min-height: 44px;
+  }
+  .action-chip:focus-visible { outline: var(--focus); outline-offset: 2px; }
+  .action-chip .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .action-chip .txt { font-size: 14px; color: var(--ink); line-height: 1.4; }
+  .action-chip.good { background: var(--good-soft); border-color: var(--good); }
+  .action-chip.good .dot { background: var(--good); }
+  .action-chip.attn { background: var(--attn-soft); border-color: var(--attn); }
+  .action-chip.attn .dot { background: var(--attn); }
+  .action-chip.muted { background: var(--panel); border-color: var(--rule-strong); color: var(--muted); }
+  .action-chip.muted .dot { background: var(--rule-strong); }
+
+  /* CTA */
+  .cta-primary { appearance: none; border: 0; background: var(--ink); color: #fff;
+    padding: 14px 18px; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 600;
+    cursor: pointer; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%;
+  }
+  .cta-primary:focus-visible { outline: var(--focus); outline-offset: 2px; }
+  .cta-secondary { appearance: none; border: 1px solid var(--rule-strong); background: #fff; color: var(--accent);
+    padding: 12px 18px; border-radius: 12px; font: inherit; font-size: 13px; font-weight: 500;
+    cursor: pointer; min-height: 44px; width: 100%;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .cta-secondary:focus-visible { outline: var(--focus); outline-offset: 2px; }
+
+  /* Scenario / filter chips */
+  .chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip-row.scroll { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .chip-row.scroll::-webkit-scrollbar { display: none; }
+  .chip { appearance: none; border: 1px solid var(--rule-strong); background: #fff; color: var(--ink);
+    padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 12px; font-weight: 500;
+    cursor: pointer; white-space: nowrap; min-height: 40px;
+  }
+  .chip:focus-visible { outline: var(--focus); outline-offset: 2px; }
+  .chip[aria-pressed="true"], .chip[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .chip .n { font-family: var(--mono); font-size: 9.5px; opacity: 0.7; margin-left: 2px; }
+
+  /* Totals row */
+  .totals { display: flex; gap: 8px; }
+  .totals .card { flex: 1; border: 1px solid var(--rule); background: #fff; border-radius: 12px;
+    padding: 10px 14px; display: flex; flex-direction: column; gap: 2px; min-height: 64px;
+  }
+  .totals .card.sim { background: var(--accent-soft); border-color: var(--accent); }
+  .totals .card .lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .totals .card.sim .lbl { color: var(--accent); }
+  .totals .card .val { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; }
+  .totals .card .delta { font-family: var(--mono); font-size: 10px; color: var(--good); }
+
+  /* Chart */
+  .chart-card { background: #fff; border: 1px solid var(--rule); border-radius: 14px; padding: 12px; position: relative; }
+  .chart-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 10px; }
+  .chart-head .cap { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .chart-card svg { width: 100%; height: auto; display: block; }
+  .describe { appearance: none; background: transparent; border: 1px solid var(--rule-strong); color: var(--muted);
+    padding: 6px 10px; border-radius: 999px; font: inherit; font-size: 10.5px; cursor: pointer; min-height: 32px; white-space: nowrap;
+  }
+  .describe:focus-visible { outline: var(--focus); outline-offset: 2px; }
+  .scroller-caption { display: flex; justify-content: space-between; align-items: center; padding: 6px 2px 0;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.05em; color: var(--accent); font-weight: 600;
+  }
+  .scroller-caption .arrow { animation: nudge 1.6s ease-in-out infinite; }
+  @keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+  html[data-motion="reduce"] .scroller-caption .arrow { animation: none !important; }
+  .year-badge { background: var(--accent); color: #fff; padding: 3px 10px; border-radius: 999px;
+    font-family: var(--mono); font-size: 11px;
+  }
+
+  /* AI */
+  .ai-head { display: flex; align-items: center; gap: 8px; }
+  .ai-tag { display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px 4px 8px; background: var(--accent-soft);
+    border: 1px solid var(--accent); color: var(--accent);
+    border-radius: 999px; min-height: 32px; flex-shrink: 0;
+  }
+  .ai-tag .spark { font-size: 13px; line-height: 1; }
+  .ai-tag .lbl { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; }
+  .ai-head .label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); font-weight: 600; flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .ask-row { display: flex; gap: 8px; align-items: stretch;
+    border: 1px solid var(--accent); background: #fff; border-radius: 12px; padding: 6px 6px 6px 12px;
+  }
+  .ask-row label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px;
+  }
+  .ask-wrap { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+  .ask-row input[type="text"] { border: 0; outline: 0; background: transparent; width: 100%;
+    font: inherit; font-size: 14px; padding: 4px 0; min-height: 32px; color: var(--ink);
+  }
+  .ask-row input[type="text"]::placeholder { color: var(--muted); }
+  .ask-row .send { appearance: none; border: 0; background: var(--accent); color: #fff;
+    width: 44px; min-height: 44px; border-radius: 10px; font-size: 16px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .ask-row .send:focus-visible { outline: var(--focus); outline-offset: 2px; }
+
+  .answer-card { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 12px;
+    padding: 12px 14px; font-size: 13px; line-height: 1.5; color: var(--ink); display: none;
+  }
+  .answer-card.visible { display: block; }
+  .answer-card .q { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 4px; display: block; text-transform: uppercase; font-weight: 700; }
+  .answer-card .foot { font-size: 10.5px; color: var(--muted); margin-top: 6px; }
+
+  /* Breakdown table */
+  details.drawer { border: 1px solid var(--rule); border-radius: 12px; background: #fff; overflow: hidden; }
+  details.drawer summary { list-style: none; cursor: pointer; padding: 12px 14px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase;
+    min-height: 44px;
+  }
+  details.drawer summary::-webkit-details-marker { display: none; }
+  details.drawer summary::after { content: '▸'; transition: transform 0.2s; }
+  details.drawer[open] summary::after { transform: rotate(90deg); }
+  html[data-motion="reduce"] details.drawer summary::after { transition: none; }
+  details.drawer summary:focus-visible { outline: var(--focus); outline-offset: -2px; }
+
+  .seg { display: flex; gap: 4px; padding: 4px; background: var(--panel); border-radius: 999px; }
+  .seg button { appearance: none; border: 0; background: transparent; color: var(--muted);
+    padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer; flex: 1;
+    min-height: 36px;
+  }
+  .seg button[aria-pressed="true"], .seg button[aria-selected="true"] { background: var(--ink); color: #fff; }
+  .seg button:focus-visible { outline: var(--focus); outline-offset: 2px; }
+
+  table.rows { width: 100%; border-collapse: collapse; }
+  table.rows caption { text-align: left; padding: 10px 0 8px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  table.rows th { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    text-align: left; padding: 8px 10px 4px; font-weight: 600;
+  }
+  table.rows th.num { text-align: right; }
+  .row-card { border: 1px solid var(--rule); background: #fff; border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+  .row-card .rtop { display: flex; justify-content: space-between; align-items: baseline; }
+  .row-card .rlbl { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .row-card .rnet { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; }
+  .row-card .rmid { display: flex; justify-content: space-between; margin-top: 2px; font-size: 11px; color: var(--muted); }
+  .row-card .rmid .delta { color: var(--accent); font-family: var(--mono); font-weight: 500; }
+  .row-card .racto { margin-top: 8px; display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 500;
+    border: 1px solid;
+  }
+  .row-card .racto .d { width: 7px; height: 7px; border-radius: 50%; }
+  .row-card .racto.good { background: var(--good-soft); border-color: var(--good); color: var(--ink); }
+  .row-card .racto.good .d { background: var(--good); }
+  .row-card .racto.attn { background: var(--attn-soft); border-color: var(--attn); color: var(--ink); }
+  .row-card .racto.attn .d { background: var(--attn); }
+  .row-card .racto.muted { background: var(--panel2); border-color: var(--rule-strong); color: var(--muted); }
+  .row-card .racto.muted .d { background: var(--rule-strong); }
+
+  /* Compare scenarios */
+  .scenario-card { padding: 16px; border-radius: 12px; border: 1px solid var(--rule-strong); background: #fff; display: flex; flex-direction: column; gap: 10px; }
+  .scenario-card.accent { background: var(--accent-soft); border-color: var(--accent); }
+  .scenario-card h3 { font-size: 15px; font-weight: 600; }
+  .scenario-card .tag-row { display: flex; }
+  .scenario-card .pill { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em;
+    padding: 3px 10px; border-radius: 999px; background: var(--panel); color: var(--muted);
+    border: 1px solid var(--rule-strong); text-transform: uppercase; font-weight: 700;
+  }
+  .scenario-card.accent .pill { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .scenario-card .rows { display: flex; flex-direction: column; gap: 6px; }
+  .scenario-card .rrow { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .scenario-card .rrow .k { font-size: 12px; color: var(--muted); }
+  .scenario-card .rrow .v { font-size: 13px; font-weight: 600; text-align: right; }
+  .scenario-card .rrow.good .v { color: var(--good); }
+  .scenario-card .rrow.warn .v { color: var(--warn); }
+  .scenario-card .rrow.attn .v { color: var(--attn); }
+
+  .delta-banner { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; }
+  .delta-banner .lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .delta-banner .val { font-weight: 700; font-size: 14px; color: var(--accent); margin-top: 2px; }
+
+  /* Equitable access sheet */
+  .sheet-back { position: fixed; inset: 0; background: rgba(10,15,30,0.35);
+    opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 80;
+  }
+  .sheet-back.open { opacity: 1; pointer-events: auto; }
+  html[data-motion="reduce"] .sheet-back { transition: none; }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; background: #fff;
+    border-radius: 20px 20px 0 0; padding: 12px 18px max(22px, env(safe-area-inset-bottom));
+    transform: translateY(100%); transition: transform 0.25s cubic-bezier(.3,.7,.3,1);
+    z-index: 90; max-height: 90vh; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 14px;
+    box-shadow: 0 -12px 30px rgba(10,15,30,0.15);
+  }
+  .sheet.open { transform: translateY(0); }
+  html[data-motion="reduce"] .sheet { transition: none; }
+  .sheet .grabber { width: 44px; height: 4px; background: var(--rule-strong); border-radius: 2px; margin: 0 auto; }
+  .sheet .sheet-head { display: flex; justify-content: space-between; align-items: center; }
+  .sheet .sheet-head h2 { font-size: 16px; font-weight: 600; }
+  .sheet .sheet-head button { appearance: none; border: 1px solid var(--rule-strong); background: #fff;
+    padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer; min-height: 36px;
+  }
+  .sheet .toggle { display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 14px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px;
+  }
+  .sheet .toggle:focus-within { outline: var(--focus); outline-offset: 2px; }
+  .sheet .toggle .t-info { display: flex; flex-direction: column; gap: 2px; }
+  .sheet .toggle .t-info .t-lbl { font-weight: 600; font-size: 14px; }
+  .sheet .toggle .t-info .t-sub { font-size: 11px; color: var(--muted); }
+  .sheet .toggle input[type="checkbox"] { appearance: none; width: 48px; height: 28px; background: var(--rule-strong);
+    border-radius: 999px; position: relative; cursor: pointer; transition: background 0.2s;
+  }
+  html[data-motion="reduce"] .sheet .toggle input[type="checkbox"] { transition: none; }
+  .sheet .toggle input[type="checkbox"]::after { content: ''; position: absolute; top: 2px; left: 2px;
+    width: 24px; height: 24px; background: #fff; border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  html[data-motion="reduce"] .sheet .toggle input[type="checkbox"]::after { transition: none; }
+  .sheet .toggle input[type="checkbox"]:checked { background: var(--accent); }
+  .sheet .toggle input[type="checkbox"]:checked::after { transform: translateX(20px); }
+  .sheet .toggle input[type="checkbox"]:focus-visible { outline: var(--focus); outline-offset: 2px; }
+
+  /* View transitions (none when motion reduced) */
+  .view { animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  html[data-motion="reduce"] .view { animation: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001s !important;
+      transition-duration: 0.001s !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Screen-reader live region (invisible) -->
+<div id="srLive" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<div class="app">
+  <header class="top">
+    <button class="back" id="backBtn" aria-label="Back">← Back</button>
+    <h1 id="screenTitle">Dashboard</h1>
+    <button class="set" id="a11yBtn" aria-haspopup="dialog" aria-expanded="false" aria-label="Open equitable access settings">⚙</button>
+  </header>
+
+  <main id="main">
+    <!-- VIEW: DASHBOARD -->
+    <section id="view-dashboard" class="view" hidden>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <span class="lbl-eyebrow">Hello</span>
+        <h2 class="view-title">Good morning, Maren</h2>
+        <p style="font-size:12px;color:var(--muted);">Your equity programme at a glance</p>
+      </div>
+
+      <button class="priority" id="goSimulator1">
+        <span class="ptag">Needs you · next 8 days</span>
+        <span class="ptitle">1 250 shares unlock on 19 November</span>
+        <span class="psub">Tap to plan what to do with them →</span>
+      </button>
+
+      <section class="value-card" aria-labelledby="val-lbl">
+        <span class="lbl" id="val-lbl">You'd receive today · after Norwegian tax</span>
+        <span class="big">4 250 NOK</span>
+        <span class="delta">+180 NOK since 1 September · 23 days ago</span>
+        <span class="sub">Pre-tax value 6 350 NOK · tap to see breakdown</span>
+      </section>
+
+      <div>
+        <span class="lbl-eyebrow" style="display:block;margin-bottom:8px;">What you can do with them now</span>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="action-chip good" type="button">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="txt">Sell 400 shares today  ·  about 2 400 NOK net</span>
+          </button>
+          <button class="action-chip attn" type="button">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="txt">Unlocks in 23 days  ·  1 250 shares</span>
+          </button>
+          <button class="action-chip muted" type="button" aria-label="Blocked until March 2027, 2 100 shares">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="txt">Blocked until Mar 2027  ·  2 100 shares</span>
+          </button>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+        <button class="cta-primary" id="goSimulator2">Simulate what-if  →</button>
+        <button class="cta-secondary" id="goBreakdown1">✦ Explain my shares in plain words</button>
+      </div>
+    </section>
+
+    <!-- VIEW: SIMULATOR -->
+    <section id="view-simulator" class="view" hidden>
+      <div>
+        <span class="lbl-eyebrow">Price scenario · tap one</span>
+        <div class="chip-row scroll" role="tablist" aria-label="Price scenario" id="scenRow" style="margin-top:6px;">
+          <button class="chip" role="tab" aria-selected="false" data-scen="1">Current · 1×</button>
+          <button class="chip" role="tab" aria-selected="false" data-scen="2">+100 % · 2×</button>
+          <button class="chip" role="tab" aria-selected="true" data-scen="4">+300 % · 4×</button>
+          <button class="chip" role="tab" aria-selected="false" data-scen="10">+900 % · 10×</button>
+        </div>
+      </div>
+
+      <div class="totals">
+        <div class="card">
+          <span class="lbl">Current <span id="curYearLbl">(2026)</span></span>
+          <span class="val" id="totCur">1 500 NOK</span>
+        </div>
+        <div class="card sim" aria-live="polite">
+          <span class="lbl">Simulated <span id="simYearLbl">(2026 · 4×)</span></span>
+          <span class="val" id="totSim">≈ 6 000 NOK</span>
+          <span class="delta" id="totDelta">+4 500 NOK · +300 %</span>
+        </div>
+      </div>
+
+      <section class="chart-card" aria-labelledby="chartTitle">
+        <div class="chart-head">
+          <span class="cap" id="chartTitle">Simulated gain over time</span>
+          <button class="describe" id="describeBtn">Describe this chart</button>
+        </div>
+        <svg id="chart" viewBox="0 0 320 210" role="img" aria-describedby="chartDesc">
+          <desc id="chartDesc">Line chart. Simulated gain across six years with a draggable year handle on the axis.</desc>
+          <g stroke="#e5e7eb" stroke-width="1">
+            <line x1="20" y1="10" x2="310" y2="10"/>
+            <line x1="20" y1="50" x2="310" y2="50"/>
+            <line x1="20" y1="90" x2="310" y2="90"/>
+            <line x1="20" y1="130" x2="310" y2="130"/>
+            <line x1="20" y1="170" x2="310" y2="170"/>
+          </g>
+          <rect id="highlight" x="0" y="10" width="0" height="160" fill="#3042a0" fill-opacity="0.12" rx="4" style="display:none;"/>
+          <path id="simArea" fill="#3042a0" fill-opacity="0.08" d=""/>
+          <polyline id="simLine" fill="none" stroke="#1a1f2e" stroke-width="2" points=""/>
+          <polyline id="curLine" fill="none" stroke="#9aa0ab" stroke-width="1.4" stroke-dasharray="4 3" points=""/>
+          <g id="simDots" fill="#1a1f2e"></g>
+          <circle id="emphDot" cx="0" cy="0" r="0" fill="#3042a0" stroke="#fff" stroke-width="1.5" style="display:none;"/>
+          <line x1="20" y1="182" x2="310" y2="182" stroke="#c8ccd4" stroke-width="2"/>
+          <line id="axisProg" x1="20" y1="182" x2="160" y2="182" stroke="#1a1f2e" stroke-width="2.5"/>
+          <circle id="axisHandle" cx="160" cy="182" r="10" fill="#fff" stroke="#1a1f2e" stroke-width="2.5" style="cursor:grab;" tabindex="0" role="slider"
+            aria-label="Scenario year" aria-valuemin="0" aria-valuemax="5" aria-valuenow="3" aria-valuetext="2026, 6000 NOK projected"/>
+          <line id="refLine" x1="160" y1="10" x2="160" y2="182" stroke="#3042a0" stroke-width="1" stroke-dasharray="2 3"/>
+          <g id="xLabels" fill="#5a606b" font-family="Inter" font-size="9"></g>
+          <g id="callout">
+            <rect id="calloutBg" x="100" y="22" width="160" height="22" rx="5" fill="#3042a0"/>
+            <text id="calloutTxt" x="108" y="37" fill="#fff" font-family="Inter" font-size="10" font-weight="700">2026 · 6 000 NOK</text>
+          </g>
+        </svg>
+        <div class="scroller-caption" aria-hidden="true">
+          <span><span class="arrow">↔</span> Drag the handle (or use arrow keys)</span>
+          <span class="year-badge" id="yearBadge">2026</span>
+        </div>
+      </section>
+
+      <div class="ai-head">
+        <span class="ai-tag" aria-hidden="true"><span class="spark">✦</span><span class="lbl">AI</span></span>
+        <span class="label">Ask the co-pilot</span>
+      </div>
+
+      <div class="chip-row scroll" role="toolbar" aria-label="Suggested questions" id="qChips">
+        <button class="chip" data-q="why-high">Why is 2026 higher?</button>
+        <button class="chip" data-q="leave-18m">Leave in 18 months?</button>
+        <button class="chip" data-q="no-uk">Compare NO vs UK tax</button>
+      </div>
+
+      <div class="ask-row">
+        <div class="ask-wrap">
+          <label for="askInput">Or type your own</label>
+          <input id="askInput" type="text" placeholder="Ask anything about your shares…" autocomplete="off" />
+        </div>
+        <button class="send" id="askSend" aria-label="Send question">↑</button>
+      </div>
+
+      <div class="answer-card" id="answerCard" aria-live="polite" aria-atomic="true"></div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="cta-secondary" id="goBreakdown2">See my shares as a table →</button>
+        <button class="cta-primary" id="goCompare">Compare two scenarios  →</button>
+      </div>
+    </section>
+
+    <!-- VIEW: BREAKDOWN -->
+    <section id="view-breakdown" class="view" hidden>
+      <div>
+        <span class="lbl-eyebrow">Your shares</span>
+        <h2 class="view-title">Shares as actions, not inventory</h2>
+      </div>
+      <div class="seg" role="tablist" aria-label="Group table by" id="tableSeg">
+        <button role="tab" aria-selected="true" data-group="year">Per year</button>
+        <button role="tab" aria-selected="false" data-group="plan">Per plan</button>
+        <button role="tab" aria-selected="false" data-group="inst">Per instrument</button>
+      </div>
+      <div id="tableBody"></div>
+      <button class="cta-secondary">✦ Explain any row in plain words</button>
+    </section>
+
+    <!-- VIEW: COMPARE -->
+    <section id="view-compare" class="view" hidden>
+      <div>
+        <span class="lbl-eyebrow">Compare two choices</span>
+        <h2 class="view-title">Side by side, in words</h2>
+        <p style="font-size:12px;color:var(--muted);margin-top:4px;">The co-pilot explains each column. It never recommends one.</p>
+      </div>
+
+      <div class="scenario-card">
+        <div class="tag-row"><span class="pill">Scenario A</span></div>
+        <h3>Sell 1 000 shares today</h3>
+        <div class="rows">
+          <div class="rrow"><span class="k">Net after tax</span><span class="v">≈ 11 200 NOK</span></div>
+          <div class="rrow warn"><span class="k">NO income tax</span><span class="v">− 4 800 NOK</span></div>
+          <div class="rrow"><span class="k">Remaining 2026 shares</span><span class="v">250 · will unlock</span></div>
+          <div class="rrow good"><span class="k">What you'd miss</span><span class="v">Nothing — vested already</span></div>
+        </div>
+      </div>
+
+      <div class="scenario-card accent">
+        <div class="tag-row"><span class="pill">Scenario B</span></div>
+        <h3>Wait 6 months, then sell 1 000 shares</h3>
+        <div class="rows">
+          <div class="rrow"><span class="k">Projected net after tax</span><span class="v">≈ 12 900 NOK</span></div>
+          <div class="rrow warn"><span class="k">NO income tax</span><span class="v">− 5 600 NOK</span></div>
+          <div class="rrow good"><span class="k">Remaining 2026 shares</span><span class="v">All already unlocked</span></div>
+          <div class="rrow attn"><span class="k">What you'd miss</span><span class="v">Blackout 1–14 Mar</span></div>
+        </div>
+      </div>
+
+      <div class="delta-banner">
+        <span class="lbl">If you wait · the difference</span>
+        <div class="val">+ 1 700 NOK net · but Mar blackout still applies</div>
+      </div>
+
+      <button class="cta-secondary">✦ AI · Ask the co-pilot about this decision</button>
+      <button class="cta-primary">Share with HR / accountant  →</button>
+    </section>
+  </main>
+</div>
+
+<!-- Live region demo banner (visible) -->
+<aside class="live-demo" aria-hidden="true" id="liveDemo">
+  <span class="lbl">🔊 ARIA-LIVE</span>
+  <span class="txt" id="liveDemoTxt">Scenario updated. For 2026, simulated net gain is 6 000 NOK, 300 percent above current.</span>
+  <button id="liveDemoHide" aria-label="Hide live-region banner">×</button>
+</aside>
+
+<!-- Equitable access settings sheet -->
+<div class="sheet-back" id="sheetBack" aria-hidden="true"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
+  <div class="grabber" aria-hidden="true"></div>
+  <div class="sheet-head">
+    <h2 id="sheetTitle">Equitable access</h2>
+    <button id="sheetClose">Close</button>
+  </div>
+  <p style="font-size:13px;color:var(--muted);line-height:1.5;">These settings apply across the whole simulator. Your OS settings are respected first — these let you override.</p>
+
+  <label class="toggle">
+    <div class="t-info">
+      <span class="t-lbl">Reduced motion</span>
+      <span class="t-sub">Instant transitions, no animated chart redraws</span>
+    </div>
+    <input type="checkbox" id="motionTog" aria-label="Reduced motion" />
+  </label>
+
+  <label class="toggle">
+    <div class="t-info">
+      <span class="t-lbl">Explain mode</span>
+      <span class="t-sub">Plain-language captions next to every number</span>
+    </div>
+    <input type="checkbox" id="explainTog" aria-label="Explain mode" checked />
+  </label>
+
+  <label class="toggle">
+    <div class="t-info">
+      <span class="t-lbl">Large text</span>
+      <span class="t-sub">15 % bigger body text</span>
+    </div>
+    <input type="checkbox" id="textTog" aria-label="Large text" />
+  </label>
+
+  <label class="toggle">
+    <div class="t-info">
+      <span class="t-lbl">High contrast</span>
+      <span class="t-sub">Stronger borders, maximum contrast palette</span>
+    </div>
+    <input type="checkbox" id="contrastTog" aria-label="High contrast" />
+  </label>
+
+  <label class="toggle">
+    <div class="t-info">
+      <span class="t-lbl">Show aria-live demo banner</span>
+      <span class="t-sub">Visible transcript of what screen readers hear</span>
+    </div>
+    <input type="checkbox" id="liveTog" aria-label="Show live-region banner" checked />
+  </label>
+
+  <p style="font-size:12px;color:var(--muted);line-height:1.5;">
+    All chips, buttons, and table rows are keyboard-operable (Tab, arrow keys, Enter). Press <kbd>Tab</kbd> at any time to reveal the Skip to content link at the top-left.
+  </p>
+</div>
+
+<script>
+  // ---------- Data ----------
+  const YEARS = [
+    { year: 2023, cur: 500 },
+    { year: 2024, cur: 650 },
+    { year: 2025, cur: 800 },
+    { year: 2026, cur: 1500 },
+    { year: 2027, cur: 550 },
+    { year: 2028, cur: 500 },
+  ];
+  const PLANS = [{p:'Plan 2023', cur:2200},{p:'Plan 2024', cur:1700},{p:'Plan 2025', cur:1100}];
+  const INSTS = [{k:'RSU', cur:1800},{k:'Options', cur:1950},{k:'Warrants', cur:1250}];
+
+  // ---------- State ----------
+  let currentView = 'dashboard';
+  let scenMult = 4;
+  let yearIdx = 3;
+  let tableGroup = 'year';
+  let viewHistory = ['dashboard'];
+
+  // ---------- Elements ----------
+  const views = ['dashboard','simulator','breakdown','compare'];
+  const titleMap = {
+    dashboard: 'Dashboard',
+    simulator: 'Simulator',
+    breakdown: 'Your shares',
+    compare: 'Compare scenarios',
+  };
+  const screenTitle = document.getElementById('screenTitle');
+  const backBtn = document.getElementById('backBtn');
+  const a11yBtn = document.getElementById('a11yBtn');
+  const srLive = document.getElementById('srLive');
+  const liveDemoTxt = document.getElementById('liveDemoTxt');
+  const liveDemo = document.getElementById('liveDemo');
+
+  // ---------- Routing ----------
+  function navigate(view, push = true) {
+    for (const v of views) {
+      document.getElementById('view-' + v).hidden = v !== view;
+    }
+    currentView = view;
+    screenTitle.textContent = titleMap[view];
+    if (push) {
+      viewHistory.push(view);
+      history.pushState({view}, '', '#/' + view);
+    }
+    // Focus main for screen-reader announce
+    document.getElementById('main').focus?.();
+    announce(`Navigated to ${titleMap[view]}`);
+    // Back button visible only if not dashboard
+    backBtn.style.visibility = view === 'dashboard' ? 'hidden' : 'visible';
+  }
+  function goBack() {
+    if (viewHistory.length > 1) {
+      viewHistory.pop();
+      const prev = viewHistory[viewHistory.length - 1];
+      navigate(prev, false);
+    } else {
+      navigate('dashboard', false);
+    }
+  }
+  backBtn.addEventListener('click', goBack);
+  window.addEventListener('popstate', (e) => {
+    if (e.state?.view) navigate(e.state.view, false);
+    else navigate('dashboard', false);
+  });
+
+  // ---------- Nav buttons ----------
+  document.getElementById('goSimulator1').addEventListener('click', () => navigate('simulator'));
+  document.getElementById('goSimulator2').addEventListener('click', () => navigate('simulator'));
+  document.getElementById('goBreakdown1').addEventListener('click', () => navigate('breakdown'));
+  document.getElementById('goBreakdown2').addEventListener('click', () => navigate('breakdown'));
+  document.getElementById('goCompare').addEventListener('click', () => navigate('compare'));
+
+  // ---------- Live region ----------
+  function announce(text) {
+    srLive.textContent = text;
+    liveDemoTxt.textContent = text;
+  }
+
+  // ---------- Chart math ----------
+  const padL=20, padR=10, w=320, h=210, padT=10, axisY=182;
+  const n = YEARS.length;
+  const xStep = (w - padL - padR) / (n - 1);
+  const fmt = v => Math.round(v).toLocaleString('en-US').replace(/,/g, ' ');
+
+  function visible() {
+    return YEARS.map(d => ({ year: d.year, cur: d.cur, sim: d.cur * scenMult }));
+  }
+  function layout(data){
+    const maxSim = Math.max(...data.map(d => d.sim), 1);
+    const yMax = maxSim * 1.1;
+    const yScale = (axisY - padT - 10) / yMax;
+    const simPts = data.map((d,i) => `${padL + i*xStep},${axisY - 10 - d.sim * yScale}`);
+    const curPts = data.map((d,i) => `${padL + i*xStep},${axisY - 10 - d.cur * yScale}`);
+    const areaD = `M${simPts[0]} L${simPts.slice(1).join(' L')} L${padL + (n-1)*xStep},${axisY - 10} L${padL},${axisY - 10} Z`;
+    return { simPts: simPts.join(' '), curPts: curPts.join(' '), areaD };
+  }
+
+  const simLine = document.getElementById('simLine');
+  const curLine = document.getElementById('curLine');
+  const simArea = document.getElementById('simArea');
+  const simDots = document.getElementById('simDots');
+  const xLabels = document.getElementById('xLabels');
+  const axisHandle = document.getElementById('axisHandle');
+  const axisProg = document.getElementById('axisProg');
+  const refLine = document.getElementById('refLine');
+  const callout = document.getElementById('callout');
+  const calloutBg = document.getElementById('calloutBg');
+  const calloutTxt = document.getElementById('calloutTxt');
+  const highlight = document.getElementById('highlight');
+  const emphDot = document.getElementById('emphDot');
+  const yearBadge = document.getElementById('yearBadge');
+  const totCur = document.getElementById('totCur');
+  const totSim = document.getElementById('totSim');
+  const totDelta = document.getElementById('totDelta');
+  const curYearLbl = document.getElementById('curYearLbl');
+  const simYearLbl = document.getElementById('simYearLbl');
+
+  function renderChart() {
+    const data = visible();
+    const { simPts, curPts, areaD } = layout(data);
+    simLine.setAttribute('points', simPts);
+    curLine.setAttribute('points', curPts);
+    simArea.setAttribute('d', areaD);
+    simDots.innerHTML = simPts.split(' ').map(p => {
+      const [x,y] = p.split(',');
+      return `<circle cx="${x}" cy="${y}" r="3"/>`;
+    }).join('');
+    xLabels.innerHTML = data.map((d,i) => {
+      const x = padL + i*xStep - 10;
+      return `<text x="${x}" y="200">${d.year}</text>`;
+    }).join('');
+    renderHandle();
+  }
+
+  function renderHandle() {
+    const data = visible();
+    const d = data[yearIdx];
+    const x = padL + yearIdx * xStep;
+    axisHandle.setAttribute('cx', x);
+    axisProg.setAttribute('x2', x);
+    refLine.setAttribute('x1', x);
+    refLine.setAttribute('x2', x);
+    let cx = x - 80;
+    if (cx < 10) cx = 10;
+    if (cx + 160 > 310) cx = 310 - 160;
+    calloutBg.setAttribute('x', cx);
+    calloutTxt.setAttribute('x', cx + 10);
+    calloutTxt.textContent = `${d.year} · ${fmt(d.sim)} NOK`;
+    yearBadge.textContent = d.year;
+    // Totals scoped to selected year
+    curYearLbl.textContent = `(${d.year})`;
+    simYearLbl.textContent = `(${d.year} · ${scenMult}×)`;
+    totCur.textContent = `${fmt(d.cur)} NOK`;
+    totSim.textContent = `≈ ${fmt(d.sim)} NOK`;
+    const delta = d.sim - d.cur;
+    const pct = Math.round((d.sim / d.cur - 1) * 100);
+    totDelta.textContent = `+${fmt(delta)} NOK · +${pct} %`;
+    axisHandle.setAttribute('aria-valuenow', yearIdx);
+    axisHandle.setAttribute('aria-valuetext', `${d.year}, ${fmt(d.sim)} NOK projected`);
+    announce(`Scenario updated. For ${d.year}, simulated net gain is ${fmt(d.sim)} NOK, ${pct} percent above current.`);
+  }
+
+  // ---------- Scenario chips ----------
+  document.querySelectorAll('#scenRow .chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#scenRow .chip').forEach(b => b.setAttribute('aria-selected','false'));
+      btn.setAttribute('aria-selected','true');
+      scenMult = parseInt(btn.dataset.scen);
+      renderChart();
+    });
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const all = [...document.querySelectorAll('#scenRow .chip')];
+        const i = all.indexOf(btn);
+        const next = all[(i + (e.key === 'ArrowRight' ? 1 : all.length - 1)) % all.length];
+        next.focus(); next.click();
+      }
+    });
+  });
+
+  // ---------- Axis handle (keyboard + pointer) ----------
+  const chart = document.getElementById('chart');
+  function pointerToIdx(clientX) {
+    const r = chart.getBoundingClientRect();
+    const scale = r.width / w;
+    const x = (clientX - r.left) / scale;
+    return Math.max(0, Math.min(n - 1, Math.round((x - padL) / xStep)));
+  }
+  let dragging = false;
+  axisHandle.addEventListener('pointerdown', e => {
+    dragging = true;
+    axisHandle.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  window.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    yearIdx = pointerToIdx(e.clientX);
+    renderHandle();
+  });
+  window.addEventListener('pointerup', () => { dragging = false; });
+  axisHandle.addEventListener('keydown', e => {
+    let c = true;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') yearIdx = Math.min(n-1, yearIdx+1);
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') yearIdx = Math.max(0, yearIdx-1);
+    else if (e.key === 'Home') yearIdx = 0;
+    else if (e.key === 'End') yearIdx = n-1;
+    else if (e.key === 'PageUp') yearIdx = Math.min(n-1, yearIdx+2);
+    else if (e.key === 'PageDown') yearIdx = Math.max(0, yearIdx-2);
+    else c = false;
+    if (c) { e.preventDefault(); renderHandle(); }
+  });
+
+  // ---------- AI chips ----------
+  const ANSWERS = {
+    'why-high': { text: 'In 2026 the biggest share tranche of your plan unlocks — about 30 % of the programme. Multiplied by your chosen price scenario, that year carries most of the climb. The highlighted range on the chart is 2025 to 2027.', range:[2,4], dot: 3 },
+    'leave-18m': { text: 'In 18 months (around 2027), 1 250 of your shares will have unlocked. You could sell them inside a 90-day window. The remaining 2 750 would return to the company. At today\'s price and Norwegian tax rules, that\'s about 12 500 EUR after tax.', range:[3,4], dot: 4 },
+    'no-uk': { text: 'Your shares are taxed under Norwegian rules — tax happens when each share unlocks, at your income tax rate. Under UK rules, you\'d only be taxed when you sell. Same programme, very different timing.', range:[0,5], dot: 2 },
+  };
+  const QLABELS = {
+    'why-high': 'Why is 2026 higher?',
+    'leave-18m': 'What if I leave in 18 months?',
+    'no-uk': 'Compare NO vs UK tax',
+  };
+  const answerCard = document.getElementById('answerCard');
+  function showAnswer(key, customQ){
+    const a = ANSWERS[key];
+    const qLabel = customQ || QLABELS[key] || 'Your question';
+    if (a) {
+      // Highlight range
+      const x0 = padL + a.range[0] * xStep;
+      const x1 = padL + a.range[1] * xStep;
+      highlight.setAttribute('x', Math.min(x0,x1) - 10);
+      highlight.setAttribute('width', Math.abs(x1-x0) + 20);
+      highlight.setAttribute('height', axisY - 10);
+      highlight.style.display = '';
+      const data = visible();
+      const d = data[a.dot];
+      const maxSim = Math.max(...data.map(x => x.sim));
+      const yScale = (axisY - padT - 10) / (maxSim * 1.1);
+      const dx = padL + a.dot * xStep;
+      const dy = axisY - 10 - d.sim * yScale;
+      emphDot.setAttribute('cx', dx); emphDot.setAttribute('cy', dy); emphDot.setAttribute('r', 5);
+      emphDot.style.display = '';
+      answerCard.innerHTML = `<span class="q">You asked: ${qLabel}</span>${a.text}<div class="foot">Co-pilot explains. It never recommends “sell” or “hold”.</div>`;
+    } else {
+      highlight.style.display = 'none'; emphDot.style.display = 'none';
+      answerCard.innerHTML = `<span class="q">You asked: ${qLabel}</span>In a real app, the co-pilot would answer against your actual programme. It never recommends — it explains the math and the rules.<div class="foot">Co-pilot explains. It never recommends “sell” or “hold”.</div>`;
+    }
+    answerCard.classList.add('visible');
+    document.querySelectorAll('#qChips .chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.q === key ? 'true' : 'false'));
+    announce(`Answer: ${answerCard.textContent.replace(/You asked:[^.]*\. /, '')}`);
+  }
+  document.querySelectorAll('#qChips .chip').forEach(btn => {
+    btn.addEventListener('click', () => showAnswer(btn.dataset.q));
+  });
+  const askInput = document.getElementById('askInput');
+  document.getElementById('askSend').addEventListener('click', () => {
+    const q = askInput.value.trim();
+    if (!q) return;
+    showAnswer(null, q);
+    askInput.value = '';
+  });
+  askInput.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('askSend').click(); });
+  document.getElementById('describeBtn').addEventListener('click', () => {
+    const data = visible();
+    const totS = data.reduce((a,d) => a + d.sim, 0);
+    const big = data.reduce((b,d) => d.sim > b.sim ? d : b, data[0]);
+    const txt = `The chart shows simulated gain across ${data[0].year} to ${data[data.length-1].year}. It starts at ${fmt(data[0].sim)} NOK and the biggest single year is ${big.year} at ${fmt(big.sim)} NOK, because that’s when the largest tranche of your plan unlocks. Total simulated gain across all years is ${fmt(totS)} NOK. The year handle is currently at ${data[yearIdx].year}.`;
+    answerCard.innerHTML = `<span class="q">Describe this chart</span>${txt}`;
+    answerCard.classList.add('visible');
+    highlight.style.display = 'none'; emphDot.style.display = 'none';
+    document.querySelectorAll('#qChips .chip').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    announce(`Chart description: ${txt}`);
+  });
+
+  // ---------- Breakdown table ----------
+  const tableBody = document.getElementById('tableBody');
+  function renderTable() {
+    let rows;
+    if (tableGroup === 'year') rows = visible().map(d => ({ key: d.year, cur: d.cur, sim: d.sim }));
+    else if (tableGroup === 'plan') rows = PLANS.map(p => ({ key: p.p, cur: p.cur, sim: p.cur * scenMult }));
+    else rows = INSTS.map(p => ({ key: p.k, cur: p.cur, sim: p.cur * scenMult }));
+
+    const actions = {
+      2023: { lbl: 'Already sold · archived', kind: 'muted' },
+      2024: { lbl: 'Already sold · archived', kind: 'muted' },
+      2025: { lbl: 'Can sell 320 shares today', kind: 'good' },
+      2026: { lbl: 'Unlocks in 23 days · 1 250', kind: 'attn' },
+      2027: { lbl: 'Blocked until Mar 2027', kind: 'muted' },
+      2028: { lbl: 'Blocked until Oct 2028', kind: 'muted' },
+      'Plan 2023': { lbl: 'All vested · 820 available', kind: 'good' },
+      'Plan 2024': { lbl: 'Partially vested · 420 available', kind: 'good' },
+      'Plan 2025': { lbl: 'Vesting 2025–2027', kind: 'attn' },
+      'RSU': { lbl: 'Can sell 1 200 today', kind: 'good' },
+      'Options': { lbl: 'Exercisable above 48 NOK', kind: 'attn' },
+      'Warrants': { lbl: 'Vests Mar 2027', kind: 'muted' },
+    };
+
+    const groupLbl = tableGroup === 'year' ? 'YEAR' : tableGroup === 'plan' ? 'PLAN' : 'INSTRUMENT';
+    tableBody.innerHTML = `<div style="margin-bottom:8px;font-family:var(--mono);font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">${groupLbl} · NET NOK (AFTER NO TAX) · ACTION</div>` +
+      rows.map(r => {
+        const a = actions[r.key] || { lbl: '—', kind: 'muted' };
+        return `<article class="row-card" aria-label="${r.key}, net ${fmt(r.cur)} NOK, ${a.lbl}">
+          <div class="rtop"><span class="rlbl">${r.key}</span><span class="rnet">${fmt(r.cur)} NOK</span></div>
+          <div class="rmid"><span>Pre-tax ${fmt(r.sim)}</span><span class="delta">+ since last visit</span></div>
+          <span class="racto ${a.kind}"><span class="d" aria-hidden="true"></span>${a.lbl}</span>
+        </article>`;
+      }).join('');
+  }
+  document.querySelectorAll('#tableSeg button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#tableSeg button').forEach(b => b.setAttribute('aria-selected','false'));
+      btn.setAttribute('aria-selected','true');
+      tableGroup = btn.dataset.group;
+      renderTable();
+      announce(`Table grouped by ${tableGroup === 'year' ? 'year' : tableGroup === 'plan' ? 'plan' : 'instrument'}`);
+    });
+  });
+
+  // ---------- Equitable access sheet ----------
+  const sheet = document.getElementById('sheet');
+  const sheetBack = document.getElementById('sheetBack');
+  const sheetClose = document.getElementById('sheetClose');
+  let lastFocused = null;
+  function openSheet() {
+    lastFocused = document.activeElement;
+    sheet.classList.add('open'); sheetBack.classList.add('open');
+    sheet.setAttribute('aria-hidden','false');
+    a11yBtn.setAttribute('aria-expanded','true');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => sheetClose.focus(), 100);
+  }
+  function closeSheet() {
+    sheet.classList.remove('open'); sheetBack.classList.remove('open');
+    sheet.setAttribute('aria-hidden','true');
+    a11yBtn.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+  a11yBtn.addEventListener('click', openSheet);
+  sheetClose.addEventListener('click', closeSheet);
+  sheetBack.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && sheet.classList.contains('open')) closeSheet();
+  });
+  // Tab trap
+  sheet.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const focusables = sheet.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
+    const first = focusables[0], last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+  });
+
+  // --- Settings toggles ---
+  const html = document.documentElement;
+  const motionTog = document.getElementById('motionTog');
+  const explainTog = document.getElementById('explainTog');
+  const textTog = document.getElementById('textTog');
+  const contrastTog = document.getElementById('contrastTog');
+  const liveTog = document.getElementById('liveTog');
+  // Respect OS prefs
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    html.setAttribute('data-motion','reduce');
+    motionTog.checked = true;
+  }
+  motionTog.addEventListener('change', () => {
+    html.setAttribute('data-motion', motionTog.checked ? 'reduce' : 'default');
+  });
+  textTog.addEventListener('change', () => {
+    html.setAttribute('data-text', textTog.checked ? 'large' : 'default');
+  });
+  contrastTog.addEventListener('change', () => {
+    html.setAttribute('data-contrast', contrastTog.checked ? 'high' : 'default');
+  });
+  liveTog.addEventListener('change', () => {
+    liveDemo.style.display = liveTog.checked ? 'flex' : 'none';
+  });
+  document.getElementById('liveDemoHide').addEventListener('click', () => {
+    liveDemo.style.display = 'none'; liveTog.checked = false;
+  });
+
+  // ---------- Init ----------
+  function init() {
+    renderChart();
+    renderTable();
+    // Start on dashboard
+    const initialView = (location.hash.replace('#/','')) || 'dashboard';
+    navigate(views.includes(initialView) ? initialView : 'dashboard', false);
+  }
+  init();
+</script>
+</body>
+</html>
