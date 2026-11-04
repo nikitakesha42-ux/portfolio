@@ -64,15 +64,29 @@
             <a class="hero-email" href="mailto:nikitakesha42@gmail.com">nikitakesha42@gmail.com</a>
           </div>
         </div>
-        <div class="about-photo about-photo-video">
-          <video
-            src="assets/portrait-video.m4v"
-            poster="assets/portrait-video-poster.jpg"
-            controls
-            playsinline
-            preload="metadata"
-            aria-label="Short video introduction by Anastasiia Nikitina"
-          ></video>
+        <div class="about-photo-wrap">
+          <div class="about-photo about-photo-video">
+            <video
+              poster="assets/portrait-video-poster.jpg"
+              controls
+              playsinline
+              preload="metadata"
+              crossorigin="anonymous"
+              aria-label="Short video introduction by Anastasiia Nikitina">
+              <source src="assets/portrait-video.m4v" type="video/mp4" />
+              <track kind="captions" src="assets/portrait-video.en.vtt" srclang="en" label="English" default />
+            </video>
+          </div>
+          <details class="video-transcript">
+            <summary data-en="Read transcript" data-no="Les transkripsjon">Read transcript</summary>
+            <div class="video-transcript-body" data-en-html="<p>Hi, Anastasiia here. I thought it would be easier to say hi in a video than in a post. So here I am.</p><p>What I like best about being a designer isn&rsquo;t the polish or the big picture &mdash; it&rsquo;s the moment when everything falls into place. The button is right, the text is right, and you know it works.</p><p>I work pretty fast at the start of a project, and slow down toward the end. I use AI tools and prompts in my work every day. Not because they&rsquo;re trendy, but because they give me more time for the parts I like best &mdash; sitting with the problem and finding the right way.</p><p>I&rsquo;ve lived in Oslo for four years, originally from Ukraine, and there&rsquo;s a lot I&rsquo;m proud of along the way.</p>"
+                                              data-no-html="<p>Hei, Anastasiia her. Jeg tenkte det var lettere å si hei i en video enn i et innlegg. Så her er jeg.</p><p>Det jeg liker best med å være designer er ikke det pene eller det store bildet &mdash; det er øyeblikket når alt faller på plass. Knappen er riktig, teksten er riktig, og du vet at det fungerer.</p><p>Jeg jobber ganske raskt i starten av et prosjekt, og roer meg mot slutten. Jeg bruker AI-verktøy og prompter i arbeidet mitt hver dag. Ikke fordi det er trendy, men fordi det gir meg mer tid til delene jeg liker best &mdash; å sitte med problemet og finne den riktige veien.</p><p>Jeg har bodd i Oslo i fire år, opprinnelig fra Ukraina, og det er mye jeg er stolt av underveis.</p>">
+              <p>Hi, Anastasiia here. I thought it would be easier to say hi in a video than in a post. So here I am.</p>
+              <p>What I like best about being a designer isn&rsquo;t the polish or the big picture &mdash; it&rsquo;s the moment when everything falls into place. The button is right, the text is right, and you know it works.</p>
+              <p>I work pretty fast at the start of a project, and slow down toward the end. I use AI tools and prompts in my work every day. Not because they&rsquo;re trendy, but because they give me more time for the parts I like best &mdash; sitting with the problem and finding the right way.</p>
+              <p>I&rsquo;ve lived in Oslo for four years, originally from Ukraine, and there&rsquo;s a lot I&rsquo;m proud of along the way.</p>
+            </div>
+          </details>
         </div>
       </div>
     </section>
