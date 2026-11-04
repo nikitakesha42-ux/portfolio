@@ -17,7 +17,11 @@
     --mono: 'JetBrains Mono', ui-monospace, monospace;
     --sans: 'Inter', -apple-system, system-ui, sans-serif;
     --focus: 3px solid var(--accent);
-    --radius: 12px;
+    /* Radius scale: 3 tokens, nothing in between */
+    --r-card: 14px;        /* default card radius */
+    --r-hero: 16px;        /* hero / output cards (result, compare A/B) */
+    --r-pill: 999px;       /* chips, pills, segments */
+    --r-input: 12px;       /* form controls */
     --text-scale: 1;
   }
   html[data-contrast="high"] {
@@ -134,7 +138,7 @@
 
   /* Position summary card */
   .pos-card {
-    background: var(--panel); border: 1px solid var(--rule); border-radius: 14px;
+    background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r-card);
     padding: 18px 20px;
     display: flex; flex-direction: column; gap: 16px;
   }
@@ -149,7 +153,7 @@
   /* Attention card */
   .attn-card {
     background: var(--attn-soft); border: 1px solid var(--attn);
-    border-radius: 14px; padding: 16px 18px;
+    border-radius: var(--r-card); padding: 16px 18px;
     display: flex; gap: 12px; align-items: flex-start;
   }
   .attn-card .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--attn); margin-top: 6px; flex-shrink: 0; }
@@ -158,7 +162,7 @@
 
   /* Primary action */
   .cta-primary { appearance: none; border: 0; background: var(--ink); color: #fff;
-    padding: 15px 20px; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 600;
+    padding: 15px 20px; border-radius: var(--r-card); font: inherit; font-size: 15px; font-weight: 600;
     cursor: pointer; min-height: 52px; width: 100%; text-align: left;
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
   }
@@ -167,7 +171,7 @@
 
   .cta-secondary { appearance: none; border: 1px solid var(--rule-strong);
     background: #fff; color: var(--ink);
-    padding: 13px 18px; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 500;
+    padding: 13px 18px; border-radius: var(--r-card); font: inherit; font-size: 14px; font-weight: 500;
     cursor: pointer; min-height: 48px; width: 100%; text-align: left;
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
   }
@@ -183,7 +187,7 @@
 
   .scen-chips { display: flex; gap: 10px; }
   .scen-chip { appearance: none; border: 1px solid var(--rule-strong); background: #fff; color: var(--ink);
-    padding: 14px 8px; border-radius: 14px; font: inherit; font-size: 12.5px; font-weight: 500;
+    padding: 14px 8px; border-radius: var(--r-card); font: inherit; font-size: 12.5px; font-weight: 500;
     cursor: pointer; min-height: 82px; flex: 1;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
     text-align: center; line-height: 1.3;
@@ -195,7 +199,7 @@
   /* Result card — focal element, needs breathing room around it */
   .result {
     background: var(--accent-soft); border: 1px solid var(--accent);
-    border-radius: 16px; padding: 22px 22px 18px;
+    border-radius: var(--r-hero); padding: 22px 22px 18px;
     display: flex; flex-direction: column; gap: 12px;
     margin-top: 8px;
   }
@@ -222,7 +226,7 @@
   .result .why:focus-visible { outline: var(--focus); outline-offset: 2px; border-radius: 4px; }
 
   /* Chart */
-  .chart-card { background: #fff; border: 1px solid var(--rule); border-radius: 14px; padding: 18px 16px 14px; }
+  .chart-card { background: #fff; border: 1px solid var(--rule); border-radius: var(--r-card); padding: 18px 16px 14px; }
   .chart-card svg { width: 100%; height: auto; display: block; }
   .chart-cap {
     font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.05em; color: var(--accent); font-weight: 600;
@@ -251,7 +255,7 @@
 
   .source-note {
     font-size: 11.5px; color: var(--muted); line-height: 1.6;
-    padding: 12px 14px; background: var(--panel); border-radius: 10px;
+    padding: 12px 14px; background: var(--panel); border-radius: var(--r-card);
     border: 1px dashed var(--rule-strong);
   }
   .source-note b { color: var(--ink); font-weight: 500; }
@@ -280,13 +284,13 @@
     display: inline-flex; align-items: center; gap: 6px;
     padding: 4px 10px 4px 8px; background: var(--accent-soft);
     border: 1px solid var(--accent); color: var(--accent);
-    border-radius: 999px;
+    border-radius: var(--r-pill);
   }
   .ai-drawer .ai-tag .spark { font-size: 13px; }
   .ai-drawer .ai-tag .lbl { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; }
   .ai-drawer .close-btn {
     appearance: none; border: 1px solid var(--rule-strong); background: #fff;
-    padding: 8px 14px; border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer; min-height: 36px;
+    padding: 8px 14px; border-radius: var(--r-pill); font: inherit; font-size: 12px; cursor: pointer; min-height: 36px;
   }
   .ai-drawer .close-btn:focus-visible { outline: var(--focus); outline-offset: 2px; }
   .ai-drawer .ai-intro { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
@@ -294,7 +298,7 @@
   .ai-drawer .suggested { display: flex; flex-direction: column; gap: 6px; }
   .ai-drawer .suggested button {
     appearance: none; border: 1px solid var(--rule); background: var(--panel); color: var(--ink);
-    padding: 9px 14px; border-radius: 999px; font: inherit; font-size: 12.5px; font-weight: 500;
+    padding: 9px 14px; border-radius: var(--r-pill); font: inherit; font-size: 12.5px; font-weight: 500;
     line-height: 1.4; cursor: pointer;
     text-align: left; min-height: 38px;
   }
@@ -305,7 +309,7 @@
   .ai-drawer .ask-row {
     display: flex; gap: 8px; align-items: center;
     border: 1px solid var(--accent); background: #fff;
-    border-radius: 12px; padding: 6px 6px 6px 12px;
+    border-radius: var(--r-input); padding: 6px 6px 6px 12px;
   }
   .ai-drawer .ask-row input {
     border: 0; outline: 0; background: transparent; flex: 1;
@@ -313,13 +317,13 @@
   }
   .ai-drawer .ask-row .send {
     appearance: none; border: 0; background: var(--accent); color: #fff;
-    width: 44px; min-height: 44px; border-radius: 10px; font-size: 16px;
+    width: 44px; min-height: 44px; border-radius: var(--r-input); font-size: 16px;
     display: flex; align-items: center; justify-content: center; cursor: pointer;
   }
   .ai-drawer .ask-row .send:focus-visible { outline: var(--focus); outline-offset: 2px; }
   .answer-card {
     background: var(--accent-soft); border: 1px solid var(--accent);
-    border-radius: 12px; padding: 14px 16px;
+    border-radius: var(--r-card); padding: 14px 16px;
     font-size: 14px; line-height: 1.5; color: var(--ink); display: none;
   }
   .answer-card.visible { display: block; }
@@ -335,16 +339,16 @@
   }
 
   /* Breakdown */
-  .seg { display: flex; gap: 4px; padding: 4px; background: var(--panel); border-radius: 999px; }
+  .seg { display: flex; gap: 4px; padding: 4px; background: var(--panel); border-radius: var(--r-pill); }
   .seg button { appearance: none; border: 0; background: transparent; color: var(--muted);
-    padding: 10px 12px; border-radius: 999px; font: inherit; font-size: 13px; cursor: pointer; flex: 1;
+    padding: 10px 12px; border-radius: var(--r-pill); font: inherit; font-size: 13px; cursor: pointer; flex: 1;
     min-height: 40px;
   }
   .seg button[aria-selected="true"] { background: var(--ink); color: #fff; }
   .seg button:focus-visible { outline: var(--focus); outline-offset: 2px; }
 
   .data-table { width: 100%; border-collapse: separate; border-spacing: 0;
-    background: #fff; border: 1px solid var(--rule); border-radius: 12px 12px 0 0; overflow: hidden;
+    background: #fff; border: 1px solid var(--rule); border-radius: var(--r-card) var(--r-card) 0 0; overflow: hidden;
   }
   .data-table caption {
     padding: 14px 16px; font-size: 11.5px; color: var(--muted);
@@ -384,7 +388,7 @@
   .totals-row {
     display: flex; justify-content: space-between; align-items: center;
     padding: 16px 18px; background: var(--panel);
-    border: 1px solid var(--rule); border-radius: 0 0 12px 12px; border-top: 0;
+    border: 1px solid var(--rule); border-radius: 0 0 var(--r-card) var(--r-card); border-top: 0;
   }
   .totals-row .tot-lbl { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-family: var(--mono); }
   .totals-row .tot-val { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--ink); }
@@ -398,7 +402,7 @@
   .picker-row select {
     appearance: none; -webkit-appearance: none;
     border: 1px solid var(--rule-strong); background: #fff;
-    padding: 12px 14px; border-radius: 10px; font: inherit; font-size: 14px;
+    padding: 12px 14px; border-radius: var(--r-input); font: inherit; font-size: 14px;
     min-height: 48px; color: var(--ink);
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%231a1f2e' stroke-width='1.5' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 12px center; background-size: 12px 8px;
@@ -408,7 +412,7 @@
 
   .compare-card {
     border: 1px solid var(--rule); background: #fff;
-    border-radius: 16px; padding: 20px 20px 18px;
+    border-radius: var(--r-hero); padding: 20px 20px 18px;
     display: flex; flex-direction: column; gap: 10px;
   }
   .compare-card.accent { background: var(--accent-soft); border-color: var(--accent); }
@@ -433,7 +437,7 @@
   .compare-card .risk.good .d { background: var(--good); }
 
   .delta-card {
-    background: var(--panel); border: 1px solid var(--rule); border-radius: 14px;
+    background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r-card);
     padding: 16px 18px;
   }
   .delta-card .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
@@ -486,8 +490,8 @@
   /* Source popover */
   .source-pop {
     position: fixed; top: 110px; right: 12px;
-    background: #fff; border: 1px solid var(--rule); border-radius: 10px;
-    padding: 12px; width: 260px; z-index: 95;
+    background: #fff; border: 1px solid var(--rule); border-radius: var(--r-card);
+    padding: 14px; width: 272px; z-index: 95;
     box-shadow: 0 8px 24px rgba(10,15,30,0.2);
     display: none; color: var(--ink);
     font-size: 12px; line-height: 1.5;
@@ -496,9 +500,14 @@
   .source-pop h3 { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--muted); font-weight: 700; margin-bottom: 8px; font-family: var(--mono);
   }
-  .source-pop dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; }
+  .source-pop dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin-bottom: 10px; }
   .source-pop dt { color: var(--muted); font-size: 11px; }
   .source-pop dd { font-weight: 500; font-size: 11.5px; }
+  .source-pop .defn {
+    font-size: 11.5px; line-height: 1.5; color: var(--muted);
+    padding-top: 10px; border-top: 1px dashed var(--rule);
+  }
+  .source-pop .defn b { color: var(--ink); font-weight: 600; }
   .source-pop button {
     appearance: none; border: 0; background: transparent; color: var(--accent);
     font: inherit; font-size: 11px; text-decoration: underline; text-underline-offset: 2px;
@@ -557,7 +566,7 @@
       </span>
     </div>
     <div class="row2">
-      <span class="status-chip open" id="pbStatus"><span class="d" aria-hidden="true"></span><span id="pbStatusTxt">Window open</span></span>
+      <span class="status-chip open" id="pbStatus"><span class="d" aria-hidden="true"></span><span id="pbStatusTxt">Can sell today</span></span>
       <span class="pos" id="pbPos">1 250 sellable · 3 850 total</span>
     </div>
   </section>
@@ -716,7 +725,7 @@
       <div class="section-head">
         <span class="eyebrow">Two choices, side by side</span>
         <h2>What would each one give you?</h2>
-        <p class="sub">Both reference today's price (42,30 NOK). Scenario B projects a price change. The co-pilot explains, never predicts.</p>
+        <p class="sub">Both reference today's price (42,30 NOK). Scenario B assumes a price change. The co-pilot explains, never predicts.</p>
       </div>
 
       <div class="compare-picker">
@@ -733,7 +742,7 @@
           <select id="pickB" aria-label="Scenario B">
             <option value="wait-6m" selected>Wait 6 months, then sell 1 000 shares</option>
             <option value="wait-12m">Wait 12 months, then sell 1 000 shares</option>
-            <option value="wait-blackout">Wait past the next blackout</option>
+            <option value="wait-blackout">Wait past the next sale pause</option>
           </select>
         </div>
       </div>
@@ -744,7 +753,7 @@
         <div class="big" id="cardAbig">≈ 28 341 NOK</div>
         <div class="at" id="cardAat">1 000 × 42,30 NOK − 33 % Norwegian tax</div>
         <div class="note" id="cardAnote">All 1 000 are already vested. You can execute today — the window is open.</div>
-        <span class="risk good" id="cardArisk"><span class="d" aria-hidden="true"></span>No waiting, no blackout risk</span>
+        <span class="risk good" id="cardArisk"><span class="d" aria-hidden="true"></span>No waiting, no company-rule pause</span>
       </div>
 
       <div class="compare-card accent" id="cardB">
@@ -752,8 +761,8 @@
         <h3 id="cardBtitle">Wait 6 months, then sell 1 000 shares</h3>
         <div class="big" id="cardBbig">≈ 30 410 NOK</div>
         <div class="at" id="cardBat">If price moves 42,30 → ~45,40 NOK (+7 %). An estimate, not a forecast.</div>
-        <div class="note" id="cardBnote">The 6-month window crosses the <b>Mar 1–14 blackout</b>. You'd need to pick a day after that.</div>
-        <span class="risk" id="cardBrisk"><span class="d" aria-hidden="true"></span>Blackout window in the middle</span>
+        <div class="note" id="cardBnote">The 6-month window crosses a <b>company sale pause (Mar 1–14)</b>. You'd need to pick a day after that.</div>
+        <span class="risk" id="cardBrisk"><span class="d" aria-hidden="true"></span>Sale paused 2 weeks in the middle</span>
       </div>
 
       <div class="delta-card">
@@ -778,7 +787,9 @@
     <dt>Updated</dt><dd>Today, 10:14 CET</dd>
     <dt>Source</dt><dd>Internal 409A valuation</dd>
     <dt>Next refresh</dt><dd>Tomorrow, 09:00 CET</dd>
+    <dt>Next sale pause</dt><dd>Mar 1–14, 2027 (earnings)</dd>
   </dl>
+  <p class="defn"><b>What's a sale pause?</b> A window when the company blocks you from selling shares — usually around earnings or other sensitive news. It applies to everyone on the programme.</p>
   <button id="sourceClose">Close</button>
 </div>
 
@@ -846,8 +857,9 @@
     lastVisitDate: '1 November',
     priceUpdated: 'today, 10:14 CET',
     priceSource: 'Internal 409A valuation',
-    blackoutOpen: true,
-    nextBlackout: 'Mar 1–14, 2027',
+    canSellToday: true,
+    nextPause: 'Mar 1–14, 2027',
+    nextPauseReason: 'earnings announcement',
     totalShares: 3850, vestedShares: 1250, vestingShares: 2600, soldLifetime: 0,
     nextUnlockDate: '19 November', nextUnlockShares: 1250,
   };
@@ -927,11 +939,11 @@
     }
     const status = document.getElementById('pbStatus');
     const statusTxt = document.getElementById('pbStatusTxt');
-    if (CONTEXT.blackoutOpen) {
-      status.className = 'status-chip open'; statusTxt.textContent = 'Window open';
+    if (CONTEXT.canSellToday) {
+      status.className = 'status-chip open'; statusTxt.textContent = 'Can sell today';
     } else {
       status.className = 'status-chip blackout';
-      statusTxt.textContent = `Blackout now · opens ${CONTEXT.nextBlackout}`;
+      statusTxt.textContent = `Paused · opens ${CONTEXT.nextPause}`;
     }
   })();
 
@@ -1171,7 +1183,7 @@
       // Unknown — honest fallback
       answerCard.classList.add('unknown');
       highlight.style.display='none'; emphDot.style.display='none';
-      answerCard.innerHTML = `<span class="q">You asked</span>${q}<br><br>I'm not sure about that specifically. Here's what I can tell you:<br><br>• Today's price is <b>42,30 NOK</b>, up 2,40 since 1 November.<br>• You have <b>1 250 sellable</b> shares and 2 600 still vesting.<br>• The sale window is open until the next blackout on <b>1 March 2027</b>.<br><br>For anything else — ask HR or a tax advisor.<div class="foot">The co-pilot never makes up answers. It falls back to what it knows.</div>`;
+      answerCard.innerHTML = `<span class="q">You asked</span>${q}<br><br>I'm not sure about that specifically. Here's what I can tell you:<br><br>• Today's price is <b>42,30 NOK</b>, up 2,40 since 1 November.<br>• You have <b>1 250 sellable</b> shares and 2 600 still vesting.<br>• You can sell today. The next company sale pause starts <b>1 March 2027</b>.<br><br>For anything else — ask HR or a tax advisor.<div class="foot">The co-pilot never makes up answers. It falls back to what it knows.</div>`;
     }
     answerCard.classList.add('visible');
     aiDrawer.querySelectorAll('button[data-q]').forEach(b => b.setAttribute('aria-pressed', b.dataset.q === key ? 'true' : 'false'));
@@ -1274,28 +1286,28 @@
   const COMPARE = {
     'now-1000': { title: 'Sell 1 000 shares today', shares: 1000, priceAt: CONTEXT.priceToday,
       priceLabel: `1 000 × ${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax`,
-      note: 'All 1 000 are already vested. You can execute today — the window is open.',
-      riskGood: true, riskText: 'No waiting, no blackout risk' },
+      note: 'All 1 000 are already vested. You can execute today — selling is open.',
+      riskGood: true, riskText: 'No waiting, no company-rule pause' },
     'now-500': { title: 'Sell 500 shares today', shares: 500, priceAt: CONTEXT.priceToday,
       priceLabel: `500 × ${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax`,
       note: 'Half your vested stake. Nothing you\'d miss.',
-      riskGood: true, riskText: 'No waiting, no blackout risk' },
+      riskGood: true, riskText: 'No waiting, no company-rule pause' },
     'now-all': { title: 'Sell everything vested today', shares: 1250, priceAt: CONTEXT.priceToday,
       priceLabel: `1 250 × ${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax`,
       note: 'Clears your vested position. Future unlocks still come through.',
-      riskGood: true, riskText: 'No waiting, no blackout risk' },
+      riskGood: true, riskText: 'No waiting, no company-rule pause' },
     'wait-6m': { title: 'Wait 6 months, then sell 1 000 shares', shares: 1000, priceAt: CONTEXT.priceToday * 1.0733,
       priceLabel: `If price moves 42,30 → ~${fmtPx(CONTEXT.priceToday * 1.0733)} NOK (+7 %). An estimate, not a forecast.`,
-      note: 'The 6-month window crosses the <b>Mar 1–14 blackout</b>. You\'d need to pick a day after that.',
-      riskGood: false, riskText: 'Blackout window in the middle' },
+      note: 'The 6-month window crosses a <b>company sale pause (Mar 1–14)</b>. During that time, no one on the programme can sell. You\'d need to pick a day after.',
+      riskGood: false, riskText: 'Sale paused 2 weeks in the middle' },
     'wait-12m': { title: 'Wait 12 months, then sell 1 000 shares', shares: 1000, priceAt: CONTEXT.priceToday * 1.1773,
       priceLabel: `If price moves 42,30 → ~${fmtPx(CONTEXT.priceToday * 1.1773)} NOK (+18 %). An estimate, not a forecast.`,
-      note: 'Two blackout windows along the way. Price could move either direction.',
-      riskGood: false, riskText: 'Two blackouts along the way' },
-    'wait-blackout': { title: 'Wait past the next blackout, then sell 1 000', shares: 1000, priceAt: CONTEXT.priceToday,
+      note: 'Two <b>sale pauses</b> set by the company along the way (earnings reports). Price could move either direction.',
+      riskGood: false, riskText: 'Two sale pauses along the way' },
+    'wait-blackout': { title: 'Wait past the next sale pause, then sell 1 000', shares: 1000, priceAt: CONTEXT.priceToday,
       priceLabel: `1 000 × ~${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax (price may shift)`,
-      note: 'Clears the rules. ~60 days of waiting. Price could move either way.',
-      riskGood: true, riskText: 'Avoids blackout' },
+      note: 'Clears the next company sale pause. ~60 days of waiting. Price could move either way.',
+      riskGood: true, riskText: 'Avoids the next sale pause' },
   };
   const pickA = document.getElementById('pickA');
   const pickB = document.getElementById('pickB');
