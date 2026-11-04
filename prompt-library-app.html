@@ -573,9 +573,13 @@
   }
   .field textarea {
     min-height: 68px;
+    max-height: 60vh;
     resize: vertical;
     font: inherit;
+    overflow: hidden;              /* no internal scroll while auto-growing */
+    field-sizing: content;         /* modern browsers grow with content for free */
   }
+  .field textarea:focus { overflow: auto; }
   .field .help {
     font-size: 12px;
     color: var(--muted);
@@ -1340,6 +1344,24 @@ function openDetail(id) {
 }
 
 /* ─── Edit modal ──────────────────────────────────── */
+// Auto-grow a textarea to fit its content (Firefox + anything without CSS field-sizing).
+// Capped by max-height from the CSS; past that the textarea gets its own scrollbar.
+const SUPPORTS_FIELD_SIZING = (typeof CSS !== 'undefined')
+  && CSS.supports && CSS.supports('field-sizing', 'content');
+function autoGrowTextarea(ta) {
+  if (SUPPORTS_FIELD_SIZING) return;  // browser handles it
+  ta.style.height = 'auto';
+  ta.style.height = Math.max(ta.scrollHeight, 68) + 'px';
+}
+function bindTextareaAutoGrow(root) {
+  if (SUPPORTS_FIELD_SIZING) return;
+  for (const ta of root.querySelectorAll('textarea')) {
+    if (ta.dataset.autoGrowBound) continue;
+    ta.dataset.autoGrowBound = '1';
+    ta.addEventListener('input', () => autoGrowTextarea(ta));
+  }
+}
+
 function openEdit(id) {
   state.editingId = id || null;
   const sel = $('#editDiscipline'); sel.innerHTML = '';
@@ -1370,6 +1392,11 @@ function openEdit(id) {
   }
   closeOverlay('detailOverlay');
   openOverlay('editOverlay');
+  // Make sure each textarea is bound + sized for its initial content
+  bindTextareaAutoGrow(form);
+  requestAnimationFrame(() => {
+    for (const ta of form.querySelectorAll('textarea')) autoGrowTextarea(ta);
+  });
   setTimeout(() => form.title.focus(), 100);
 }
 
