@@ -313,13 +313,34 @@ section { margin-bottom: 96px; }
   outline-offset: 3px;
 }
 .behance-tile figure { margin: 0; }
-.behance-tile img {
+.bt-cover {
+  position: relative;
+  overflow: hidden;
+  background: #0d0d0d;
+}
+.behance-tile .bt-cover > img {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   background: #0d0d0d;
+}
+
+/* Ribbon badges — sized to Behance's own 32x60-ish pennants, pinned top-right */
+.bt-ribbons {
+  position: absolute;
+  top: 0;
+  right: 14px;
+  display: inline-flex;
+  gap: 4px;
+  z-index: 1;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
+}
+.bt-ribbon {
+  display: block;
+  width: 24px;
+  height: auto;
 }
 .behance-tile figcaption {
   padding: 14px 16px 16px;
