@@ -602,6 +602,14 @@
     field-sizing: content;         /* modern browsers grow with content for free */
   }
   .field textarea:focus { overflow: auto; }
+  /* iOS zooms the whole page when a focused field's text is under 16px.
+     Keep every field at 16px on touch screens so focus never zooms. */
+  @media (pointer: coarse) {
+    .search input,
+    .field input,
+    .field select,
+    .field textarea { font-size: 16px; }
+  }
   .field .help {
     font-size: 12px;
     color: var(--muted);
