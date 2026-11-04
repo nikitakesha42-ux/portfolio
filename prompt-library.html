@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="format-detection" content="telephone=no" />
   <title>Prompt Library · Anastasiia Nikitina</title>
-  <meta name="description" content="A prompt library for the design team. One shape, 33 prompts, on every device. WCAG 2.2 AA, no sign-in, works offline." />
+  <meta name="description" content="A prompt library built for a design team, built twice. One shape, 33 prompts, on the Mac, the phone and inside Claude Code. WCAG 2.2 AA, no sign-in, works offline." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -269,6 +269,48 @@
       color: var(--muted);
     }
 
+    /* Hook under the H1. */
+    .pl-lead {
+      font-size: 19px;
+      line-height: 1.5;
+      color: var(--ink-2, #2b2f36);
+      max-width: 60ch;
+      margin: 16px 0 28px;
+    }
+
+    /* Version 1 vs version 2 comparison. */
+    .pl-compare {
+      width: 100%;
+      margin: 28px 0 8px;
+      border-collapse: collapse;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .pl-compare caption {
+      text-align: left;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-bottom: 10px;
+    }
+    .pl-compare th,
+    .pl-compare td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 14px 10px 0;
+      border-top: 1px solid var(--rule);
+    }
+    .pl-compare thead th,
+    .pl-compare thead td { border-top: 0; font-weight: 600; color: var(--ink); }
+    .pl-compare tbody th { width: 30%; font-weight: 500; color: var(--muted); }
+    .pl-compare tbody td { color: var(--muted); }
+    .pl-compare tbody td:last-child { color: var(--ink); font-weight: 500; }
+
+    /* Screenshots with small text need their full height. */
+    .sf-figure.pl-figure-full img { max-height: none; height: auto; }
+
     /* "Reasoning" callout — why each change earns its place. */
     .pl-why {
       display: block;
@@ -380,19 +422,27 @@
   <main id="main" class="case wide">
 
     <span class="case-eyebrow brand"
-          data-en="Internal team tool · 2026 · live"
-          data-no="Internt teamverktøy · 2026 · live">Internal team tool · 2026 · live</span>
+          data-en="Built for a design team · 2026 · live"
+          data-no="Bygget for et designteam · 2026 · live">Built for a design team · 2026 · live</span>
     <h1 class="case-h1"
         data-en="33 prompts. One shape. On every device. No sign-in required."
         data-no="33 prompts. Én form. På hver enhet. Ingen innlogging.">
       33 prompts. One shape. On every device. No sign-in required.
     </h1>
+    <p class="pl-lead"
+       data-en="I built this library twice. The first version worked, but it lived in a browser tab I had to go and find. The second is one web page that sits on my Mac, on my phone and inside Claude Code, where I actually write prompts."
+       data-no="Jeg bygde dette biblioteket to ganger. Den første versjonen fungerte, men den bodde i en nettleserfane jeg måtte lete fram. Den andre er én nettside som ligger på Macen, på telefonen og inne i Claude Code, der jeg faktisk skriver prompter.">
+      I built this library twice. The first version worked, but it lived in a browser tab I had to go and find. The second is one web page that sits on my Mac, on my phone and inside Claude Code, where I actually write prompts.
+    </p>
 
     <nav class="case-toc-pills" aria-label="On this page">
       <a href="#why"><span class="num">01</span> <span data-en="The problem" data-no="Problemet">The problem</span></a>
       <a href="#shape"><span class="num">02</span> <span data-en="The shape" data-no="Formen">The shape</span></a>
-      <a href="#homes"><span class="num">03</span> <span data-en="Three homes" data-no="Tre hjem">Three homes</span></a>
-      <a href="#everyone"><span class="num">04</span> <span data-en="Built for everyone" data-no="Bygget for alle">Built for everyone</span></a>
+      <a href="#v1"><span class="num">03</span> <span data-en="Version 1" data-no="Versjon 1">Version 1</span></a>
+      <a href="#rebuild"><span class="num">04</span> <span data-en="The rebuild" data-no="Ombyggingen">The rebuild</span></a>
+      <a href="#everyone"><span class="num">05</span> <span data-en="Built for everyone" data-no="Bygget for alle">Built for everyone</span></a>
+      <a href="#upkeep"><span class="num">06</span> <span data-en="Keeping it alive" data-no="Holde det i live">Keeping it alive</span></a>
+      <a href="#looking-back"><span class="num">07</span> <span data-en="Looking back" data-no="Tilbakeblikk">Looking back</span></a>
     </nav>
 
     <!-- SNAPSHOT ROW -->
@@ -400,9 +450,9 @@
       <div class="cell">
         <span class="label" data-en="When" data-no="Når">When</span>
         <span class="value">
-          <strong>Q1 2026 · live</strong>
-          <span class="aside" data-en="used by the design team daily"
-                              data-no="brukt av designteamet daglig">used by the design team daily</span>
+          <strong>Q1 2026 → Nov 2026</strong>
+          <span class="aside" data-en="v1 in Figma Make, rebuilt in November"
+                              data-no="v1 i Figma Make, bygget på nytt i november">v1 in Figma Make, rebuilt in November</span>
         </span>
       </div>
       <div class="cell">
@@ -426,7 +476,7 @@
     <section class="sf-section" style="margin-bottom: 56px;">
       <div style="background: var(--panel-warm); border: 1px solid var(--rule); border-radius: 18px; padding: 28px 32px; display: flex; gap: 24px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
         <div style="flex: 1; min-width: 280px;">
-          <span class="case-eyebrow ai" data-en="Live internal app" data-no="Live internt verktøy">Live internal app</span>
+          <span class="case-eyebrow ai" data-en="Live app" data-no="Live-app">Live app</span>
           <h2 style="font-size: 20px; font-weight: 700; line-height: 1.3; margin: 8px 0 6px;"
               data-en="Try the library yourself: add a prompt, filter by tag, open a detail"
               data-no="Prøv biblioteket selv: legg til en prompt, filtrer på tag, åpne en detalj">
@@ -458,6 +508,10 @@
          data-no="Skrevet klart gir det første svaret fra AI-assistenten mening. Skrevet vagt gjetter den, og du bruker neste time på å rydde opp.">
         Written clearly, the first answer from the AI assistant is useful. Written vaguely, it guesses, and you spend the next hour fixing a guess.
       </p>
+      <p data-en="I noticed it in my own work first. A prompt that gave a great answer one week was lost in a chat history the next, so I rewrote it from memory, in a new shape, and got a weaker answer. When a whole team does the same, the waste multiplies."
+         data-no="Jeg merket det i mitt eget arbeid først. En prompt som ga et godt svar én uke, var borte i en chat-historikk uka etter, så jeg skrev den på nytt etter hukommelsen, i en ny form, og fikk et svakere svar. Når et helt team gjør det samme, mangedobles sløsingen.">
+        I noticed it in my own work first. A prompt that gave a great answer one week was lost in a chat history the next, so I rewrote it from memory, in a new shape, and got a weaker answer. When a whole team does the same, the waste multiplies.
+      </p>
     </section>
 
     <!-- 02 · THE SHAPE =========================================== -->
@@ -485,21 +539,158 @@
       </div>
     </section>
 
-    <!-- 03 · THREE HOMES =========================================== -->
-    <section id="homes" class="sf-section">
-      <span class="case-eyebrow" data-en="03 · Three homes"
-                                 data-no="03 · Tre hjem">03 · Three homes</span>
-      <h2 data-en="One web page. On the Mac. In the pocket. Inside Claude Code."
-          data-no="Én nettside. På Macen. I lomma. Inne i Claude Code.">
-        One web page. On the Mac. In the pocket. Inside Claude Code.
+    <!-- 03 · VERSION 1 ============================================= -->
+    <section id="v1" class="sf-section">
+      <span class="case-eyebrow" data-en="03 · Version 1"
+                                 data-no="03 · Versjon 1">03 · Version 1</span>
+      <h2 data-en="Version 1 worked. It just lived in the wrong place."
+          data-no="Versjon 1 fungerte. Den bodde bare på feil sted.">
+        Version 1 worked. It just lived in the wrong place.
       </h2>
-      <p data-en="The whole library is a single HTML page, so it goes anywhere a browser does: pinned to a Mac dock, on a phone&rsquo;s home screen, and read directly by Claude Code when I design."
-         data-no="Hele biblioteket er en enkelt HTML-side, så det går dit en nettleser går: festet til Mac-dokken, på telefonens hjem-skjerm, og lest direkte av Claude Code når jeg designer.">
-        The whole library is a single HTML page, so it goes anywhere a browser does: pinned to a Mac dock, on a phone&rsquo;s home screen, and read directly by Claude Code when I design.
+      <p data-en="I built the first library in Figma Make while taking Memorisely&rsquo;s AI Design and AI Coding course, using three prompts written in the same RTCCF shape the library stores. It had everything a library needs: five disciplines, search, tag filters, a detail view and one-tap copy. Supabase kept the prompts, and an email sign-in kept it to the team."
+         data-no="Jeg bygde det første biblioteket i Figma Make mens jeg tok Memorisely-kurset AI Design and AI Coding, med tre prompter skrevet i den samme RTCCF-formen som biblioteket lagrer. Det hadde alt et bibliotek trenger: fem disipliner, søk, tag-filtre, en detaljvisning og kopiering med ett trykk. Supabase tok vare på promptene, og innlogging med e-post holdt det innenfor teamet.">
+        I built the first library in Figma Make while taking Memorisely&rsquo;s AI Design and AI Coding course, using three prompts written in the same RTCCF shape the library stores. It had everything a library needs: five disciplines, search, tag filters, a detail view and one-tap copy. Supabase kept the prompts, and an email sign-in kept it to the team.
+      </p>
+      <ul class="sf-ai-list">
+        <li data-en-html="<strong>Prompt 1 · The whole app.</strong> Every screen and interaction, described as one RTCCF prompt."
+            data-no-html="<strong>Prompt 1 · Hele appen.</strong> Hver skjerm og interaksjon, beskrevet som én RTCCF-prompt.">
+          <strong>Prompt 1 · The whole app.</strong> Every screen and interaction, described as one RTCCF prompt.
+        </li>
+        <li data-en-html="<strong>Prompt 2 · Storage.</strong> Connect Supabase to create, read, update and delete prompts. Nothing more."
+            data-no-html="<strong>Prompt 2 · Lagring.</strong> Koble til Supabase for å opprette, lese, oppdatere og slette prompter. Ikke noe mer.">
+          <strong>Prompt 2 · Storage.</strong> Connect Supabase to create, read, update and delete prompts. Nothing more.
+        </li>
+        <li data-en-html="<strong>Prompt 3 · Sign-in.</strong> Basic authentication, so only the team could get in."
+            data-no-html="<strong>Prompt 3 · Innlogging.</strong> Enkel autentisering, slik at bare teamet kom inn.">
+          <strong>Prompt 3 · Sign-in.</strong> Basic authentication, so only the team could get in.
+        </li>
+      </ul>
+
+      <figure class="sf-figure pl-figure-full">
+        <img src="assets/case/pl-v1-figma-make.jpg" width="2000" height="1202" loading="lazy"
+             alt="Version 1 in the Figma Make editor. On the left, the AI chat that built it in versions, including 'Add user authentication' as version 3 and 'Fix authentication errors' as version 4. On the right, the React code calling the Supabase backend." />
+        <figcaption data-en="Version 1 in Figma Make: the AI chat that built it, one version at a time, next to the code that talked to Supabase."
+                    data-no="Versjon 1 i Figma Make: AI-chatten som bygde den, én versjon om gangen, ved siden av koden som snakket med Supabase.">
+          Version 1 in Figma Make: the AI chat that built it, one version at a time, next to the code that talked to Supabase.
+        </figcaption>
+      </figure>
+
+      <p style="margin-top: 28px;"
+         data-en="Using it every day showed me the gap. I don&rsquo;t write prompts in a browser tab. I write them in Claude Code on my Mac, and sometimes on my phone. Each time I needed a prompt, I had to leave my work, open the site, copy and switch back. It only worked online, and the whole library depended on two platforms I didn&rsquo;t control."
+         data-no="Daglig bruk viste meg gapet. Jeg skriver ikke prompter i en nettleserfane. Jeg skriver dem i Claude Code på Macen, og noen ganger på telefonen. Hver gang jeg trengte en prompt, måtte jeg forlate arbeidet, åpne siden, kopiere og bytte tilbake. Den fungerte bare på nett, og hele biblioteket var avhengig av to plattformer jeg ikke styrte.">
+        Using it every day showed me the gap. I don&rsquo;t write prompts in a browser tab. I write them in Claude Code on my Mac, and sometimes on my phone. Each time I needed a prompt, I had to leave my work, open the site, copy and switch back. It only worked online, and the whole library depended on two platforms I didn&rsquo;t control.
+      </p>
+    </section>
+
+    <!-- 04 · THE REBUILD =========================================== -->
+    <section id="rebuild" class="sf-section">
+      <span class="case-eyebrow ai" data-en="04 · The rebuild"
+                                    data-no="04 · Ombyggingen">04 · The rebuild</span>
+      <h2 data-en="So I rebuilt it as one web page that goes wherever I work."
+          data-no="Så jeg bygde det på nytt som én nettside som er med meg der jeg jobber.">
+        So I rebuilt it as one web page that goes wherever I work.
+      </h2>
+      <p class="shift-quote"
+         data-en="33 prompts are just text. They don&rsquo;t need a database. They need to be within reach the moment I write."
+         data-no="33 prompter er bare tekst. De trenger ingen database. De må være innen rekkevidde i det øyeblikket jeg skriver.">
+        33 prompts are just text. They don&rsquo;t need a database. They need to be within reach the moment I write.
+      </p>
+      <p style="margin-top: 20px;"
+         data-en="I rebuilt it in Claude Code in November with one rule: the prompts live in one file, and everything else reads from it."
+         data-no="Jeg bygde det på nytt i Claude Code i november med én regel: promptene bor i én fil, og alt annet leser fra den.">
+        I rebuilt it in Claude Code in November with one rule: the prompts live in one file, and everything else reads from it.
+      </p>
+
+      <table class="pl-compare">
+        <caption data-en="Version 1 and version 2, side by side" data-no="Versjon 1 og versjon 2, side om side">Version 1 and version 2, side by side</caption>
+        <thead>
+          <tr>
+            <td></td>
+            <th scope="col" data-en="Version 1 · Q1 2026" data-no="Versjon 1 · Q1 2026">Version 1 · Q1 2026</th>
+            <th scope="col" data-en="Version 2 · Nov 2026" data-no="Versjon 2 · nov. 2026">Version 2 · Nov 2026</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" data-en="Built with" data-no="Bygget med">Built with</th>
+            <td data-en="Figma Make, from three prompts" data-no="Figma Make, fra tre prompter">Figma Make, from three prompts</td>
+            <td>Claude Code</td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Made of" data-no="Består av">Made of</th>
+            <td data-en="A React app and a Supabase database" data-no="En React-app og en Supabase-database">A React app and a Supabase database</td>
+            <td data-en="One HTML page and one JSON file" data-no="Én HTML-side og én JSON-fil">One HTML page and one JSON file</td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Sign-in" data-no="Innlogging">Sign-in</th>
+            <td data-en="Email and password" data-no="E-post og passord">Email and password</td>
+            <td data-en="None" data-no="Ingen">None</td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Works offline" data-no="Fungerer uten nett">Works offline</th>
+            <td data-en="No" data-no="Nei">No</td>
+            <td data-en="Yes, once installed" data-no="Ja, når den er installert">Yes, once installed</td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Inside Claude Code" data-no="Inne i Claude Code">Inside Claude Code</th>
+            <td data-en="No" data-no="Nei">No</td>
+            <td data-en="Five slash commands" data-no="Fem skråstrek-kommandoer">Five slash commands</td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="My edits on other devices" data-no="Endringene mine på andre enheter">My edits on other devices</th>
+            <td data-en="Synced through the database" data-no="Synket via databasen">Synced through the database</td>
+            <td data-en="Optional private GitHub Gist" data-no="Valgfri privat GitHub Gist">Optional private GitHub Gist</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="sf-decisions four">
+        <article class="sf-decision">
+          <span class="signal-tag strategic" data-en="Architecture" data-no="Arkitektur">Architecture</span>
+          <h3 data-en="One file feeds the app and the AI assistant"
+              data-no="Én fil mater både appen og AI-assistenten">One file feeds the app and the AI assistant</h3>
+          <p data-en="All 33 prompts live in prompts.json. The web page reads it, and a small script turns the same file into five Claude Code skills: /ux-research, /writing, /design-systems, /prototyping and /design-engineering. I edit once, and both stay in step."
+             data-no="Alle de 33 promptene bor i prompts.json. Nettsiden leser den, og et lite skript gjør den samme filen om til fem Claude Code-skills: /ux-research, /writing, /design-systems, /prototyping og /design-engineering. Jeg redigerer én gang, og begge holder tritt.">
+            All 33 prompts live in prompts.json. The web page reads it, and a small script turns the same file into five Claude Code skills: /ux-research, /writing, /design-systems, /prototyping and /design-engineering. I edit once, and both stay in step.
+          </p>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag built" data-en="Reach" data-no="Rekkevidde">Reach</span>
+          <h3 data-en="Installs like an app and works offline"
+              data-no="Installeres som en app og fungerer uten nett">Installs like an app and works offline</h3>
+          <p data-en="It installs to the Mac dock and the phone&rsquo;s home screen, and works without wifi once installed. A prompt is most useful the moment you need it, connected or not."
+             data-no="Den installeres i Mac-dokken og på telefonens hjem-skjerm, og fungerer uten wifi når den er installert. En prompt er mest nyttig i det øyeblikket du trenger den, med eller uten nett.">
+            It installs to the Mac dock and the phone&rsquo;s home screen, and works without wifi once installed. A prompt is most useful the moment you need it, connected or not.
+          </p>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag problem" data-en="Access" data-no="Tilgang">Access</span>
+          <h3 data-en="No backend, so no account"
+              data-no="Ingen backend, derfor ingen konto">No backend, so no account</h3>
+          <p data-en="Without a database, there was nothing left to guard with a login, so the login went too. Fewer moving parts, nothing to sign up for, and the library is no longer tied to Figma Make or Supabase."
+             data-no="Uten en database var det ikke noe igjen å beskytte med innlogging, så innloggingen forsvant også. Færre bevegelige deler, ingenting å registrere seg for, og biblioteket er ikke lenger bundet til Figma Make eller Supabase.">
+            Without a database, there was nothing left to guard with a login, so the login went too. Fewer moving parts, nothing to sign up for, and the library is no longer tied to Figma Make or Supabase.
+          </p>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag team" data-en="Sync" data-no="Synk">Sync</span>
+          <h3 data-en="Sync only when I ask for it"
+              data-no="Synk bare når jeg ber om det">Sync only when I ask for it</h3>
+          <p data-en="To keep my Mac and phone in step without bringing a server back, edits can sync through a private GitHub Gist. It&rsquo;s opt-in, the key stays in my browser, and it saves a second after each change."
+             data-no="For å holde Macen og telefonen i takt uten å hente tilbake en server, kan endringer synkes via en privat GitHub Gist. Det er frivillig, nøkkelen blir i nettleseren, og den lagrer et sekund etter hver endring.">
+            To keep my Mac and phone in step without bringing a server back, edits can sync through a private GitHub Gist. It&rsquo;s opt-in, the key stays in my browser, and it saves a second after each change.
+          </p>
+        </article>
+      </div>
+
+      <p style="margin-top: 32px;"
+         data-en="The result is one HTML page that goes anywhere a browser does: pinned to the Mac dock, on the phone&rsquo;s home screen, and read directly by Claude Code when I design."
+         data-no="Resultatet er én HTML-side som går dit en nettleser går: festet til Mac-dokken, på telefonens hjem-skjerm, og lest direkte av Claude Code når jeg designer.">
+        The result is one HTML page that goes anywhere a browser does: pinned to the Mac dock, on the phone&rsquo;s home screen, and read directly by Claude Code when I design.
       </p>
 
       <!-- Laptop + phone + Mac dock composite mockup -->
-      <figure class="pl-stage" aria-label="The same library shown on a MacBook, on a phone, and pinned to the macOS dock as a native app.">
+      <figure id="homes" class="pl-stage" aria-label="The same library shown on a MacBook, on a phone, and pinned to the macOS dock as a native app.">
         <!-- Mac: laptop with its dock -->
         <div class="pl-stage__mac">
           <div class="pl-laptop">
@@ -573,10 +764,10 @@
       </figure>
     </section>
 
-    <!-- 04 · BUILT FOR EVERYONE ==================================== -->
+    <!-- 05 · BUILT FOR EVERYONE ==================================== -->
     <section id="everyone" class="sf-section">
-      <span class="case-eyebrow" data-en="04 · Built for everyone"
-                                 data-no="04 · Bygget for alle">04 · Built for everyone</span>
+      <span class="case-eyebrow" data-en="05 · Built for everyone"
+                                 data-no="05 · Bygget for alle">05 · Built for everyone</span>
       <h2 data-en="Accessibility and equity weren&rsquo;t a checklist I did at the end. They shaped what the library became."
           data-no="Tilgjengelighet og likeverd var ikke en sjekkliste jeg tok til slutt. De formet hva biblioteket ble.">
         Accessibility and equity weren&rsquo;t a checklist I did at the end. They shaped what the library became.
@@ -623,8 +814,86 @@
           </p>
         </article>
       </div>
+    </section>
 
-      <p style="margin-top: 40px;">
+    <!-- 06 · KEEPING IT ALIVE ====================================== -->
+    <section id="upkeep" class="sf-section">
+      <span class="case-eyebrow" data-en="06 · Keeping it alive"
+                                 data-no="06 · Holde det i live">06 · Keeping it alive</span>
+      <h2 data-en="A library is only useful while it stays true. So keeping it up to date is part of the design."
+          data-no="Et bibliotek er bare nyttig så lenge det stemmer. Derfor er vedlikeholdet en del av designet.">
+        A library is only useful while it stays true. So keeping it up to date is part of the design.
+      </h2>
+      <p data-en="There&rsquo;s no admin panel. I edit a prompt in the app or straight in prompts.json, export, and commit. One command rebuilds the Claude Code skills from the same file. If my local edits drift, Reset from source brings the library back to the published version."
+         data-no="Det finnes ikke noe adminpanel. Jeg redigerer en prompt i appen eller direkte i prompts.json, eksporterer og committer. Én kommando bygger Claude Code-skillene på nytt fra den samme filen. Hvis de lokale endringene mine sklir ut, henter «Reset from source» biblioteket tilbake til den publiserte versjonen.">
+        There&rsquo;s no admin panel. I edit a prompt in the app or straight in prompts.json, export, and commit. One command rebuilds the Claude Code skills from the same file. If my local edits drift, Reset from source brings the library back to the published version.
+      </p>
+      <p data-en="Daily use is also how it gets better. I&rsquo;m its main user so far, so these changes came from noticing where it got in my way, not from a dashboard:"
+         data-no="Daglig bruk er også slik det blir bedre. Jeg er hovedbrukeren så langt, så disse endringene kom fra å merke hvor den sto i veien for meg, ikke fra et dashbord:">
+        Daily use is also how it gets better. I&rsquo;m its main user so far, so these changes came from noticing where it got in my way, not from a dashboard:
+      </p>
+      <ul class="sf-ai-list">
+        <li data-en-html="<strong>Required, in words.</strong> A red asterisk became a &ldquo;Required&rdquo; tag next to each required field. It reads the same to a screen reader and doesn&rsquo;t rely on colour."
+            data-no-html="<strong>Obligatorisk, med ord.</strong> En rød stjerne ble en «Required»-merkelapp ved hvert obligatoriske felt. Den leses likt av en skjermleser og er ikke avhengig av farge.">
+          <strong>Required, in words.</strong> A red asterisk became a &ldquo;Required&rdquo; tag next to each required field. It reads the same to a screen reader and doesn&rsquo;t rely on colour.
+        </li>
+        <li data-en-html="<strong>Room to write.</strong> Text boxes grow with what you type, so a long Context stays in view while you write it."
+            data-no-html="<strong>Plass til å skrive.</strong> Tekstfeltene vokser med det du skriver, så en lang Context forblir synlig mens du skriver den.">
+          <strong>Room to write.</strong> Text boxes grow with what you type, so a long Context stays in view while you write it.
+        </li>
+        <li data-en-html="<strong>Thumb-first on the phone.</strong> The buttons in the prompt view used to run off the screen. Now Copy, the main action, sits full width on top, with Edit and Delete below."
+            data-no-html="<strong>Tommel først på telefonen.</strong> Knappene i promptvisningen gikk tidligere ut over skjermen. Nå ligger Copy, hovedhandlingen, i full bredde øverst, med Edit og Delete under.">
+          <strong>Thumb-first on the phone.</strong> The buttons in the prompt view used to run off the screen. Now Copy, the main action, sits full width on top, with Edit and Delete below.
+        </li>
+        <li data-en-html="<strong>Targets you can hit.</strong> Every control is at least 24 by 24 pixels, the WCAG 2.2 minimum, after an accessibility pass across my whole portfolio."
+            data-no-html="<strong>Mål du treffer.</strong> Hver kontroll er minst 24 ganger 24 piksler, minimumet i WCAG 2.2, etter en tilgjengelighetsgjennomgang av hele porteføljen min.">
+          <strong>Targets you can hit.</strong> Every control is at least 24 by 24 pixels, the WCAG 2.2 minimum, after an accessibility pass across my whole portfolio.
+        </li>
+      </ul>
+    </section>
+
+    <!-- 07 · LOOKING BACK ========================================== -->
+    <section id="looking-back" class="sf-section">
+      <span class="case-eyebrow" data-en="07 · Looking back"
+                                 data-no="07 · Tilbakeblikk">07 · Looking back</span>
+      <h2 data-en="No dashboards yet. Just a tool I reach for every day, and three things I&rsquo;d tell myself at the start."
+          data-no="Ingen dashbord ennå. Bare et verktøy jeg bruker hver dag, og tre ting jeg ville sagt til meg selv i starten.">
+        No dashboards yet. Just a tool I reach for every day, and three things I&rsquo;d tell myself at the start.
+      </h2>
+
+      <div class="retrospective-grid">
+        <div class="impact-pillar">
+          <span class="pillar-label" data-en="Lesson 01" data-no="Lærdom 01">Lesson 01</span>
+          <h3 data-en="Build where the work happens" data-no="Bygg der arbeidet skjer">Build where the work happens</h3>
+          <p data-en="Version 1 was a good app in the wrong place. The rebuild earned its keep the day the prompts showed up inside Claude Code, where I actually write."
+             data-no="Versjon 1 var en god app på feil sted. Ombyggingen ble verdt det den dagen promptene dukket opp inne i Claude Code, der jeg faktisk skriver.">
+            Version 1 was a good app in the wrong place. The rebuild earned its keep the day the prompts showed up inside Claude Code, where I actually write.
+          </p>
+        </div>
+        <div class="impact-pillar">
+          <span class="pillar-label" data-en="Lesson 02" data-no="Lærdom 02">Lesson 02</span>
+          <h3 data-en="Match the tools to the content" data-no="Tilpass verktøyene til innholdet">Match the tools to the content</h3>
+          <p data-en="33 text prompts never needed a database. Taking it out also took away the login and the ties to two platforms, without losing anything I used."
+             data-no="33 tekstprompter trengte aldri en database. Da den forsvant, forsvant også innloggingen og bindingen til to plattformer, uten at jeg mistet noe jeg brukte.">
+            33 text prompts never needed a database. Taking it out also took away the login and the ties to two platforms, without losing anything I used.
+          </p>
+        </div>
+        <div class="impact-pillar">
+          <span class="pillar-label" data-en="Lesson 03" data-no="Lærdom 03">Lesson 03</span>
+          <h3 data-en="A strict format pays off later" data-no="Et strengt format lønner seg senere">A strict format pays off later</h3>
+          <p data-en="Because every prompt has the same five slots, one small script could turn the whole library into Claude Code skills. The rule I set for writing prompts is what made the rebuild quick."
+             data-no="Fordi hver prompt har de samme fem feltene, kunne ett lite skript gjøre hele biblioteket om til Claude Code-skills. Regelen jeg satte for å skrive prompter, er det som gjorde ombyggingen rask.">
+            Because every prompt has the same five slots, one small script could turn the whole library into Claude Code skills. The rule I set for writing prompts is what made the rebuild quick.
+          </p>
+        </div>
+      </div>
+
+      <p data-en="Next, I want a design team to use it for real. When they do, I&rsquo;ll measure how long it takes to get a first useful answer, which prompts get copied most and which ones nobody opens, and let that decide what the library keeps."
+         data-no="Neste steg er at et designteam tar det i bruk på ordentlig. Når de gjør det, vil jeg måle hvor lang tid det tar å få et første nyttig svar, hvilke prompter som kopieres mest og hvilke ingen åpner, og la det avgjøre hva biblioteket beholder.">
+        Next, I want a design team to use it for real. When they do, I&rsquo;ll measure how long it takes to get a first useful answer, which prompts get copied most and which ones nobody opens, and let that decide what the library keeps.
+      </p>
+
+      <p style="margin-top: 32px;">
         <a class="cta-pill-dark" href="prompt-library-app.html" target="_blank" rel="noopener"
            data-en="Open the live library ↗"
            data-no="Åpne det live biblioteket ↗">Open the live library ↗</a>
