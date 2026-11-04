@@ -32,10 +32,21 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { font-family: var(--sans); -webkit-font-smoothing: antialiased; color: var(--ink);
-    background: linear-gradient(180deg, #eef1ff 0%, #f6f8ff 100%); min-height: 100vh;
+    background: linear-gradient(180deg, #eef1ff 0%, #f6f8ff 100%);
     font-size: calc(16px * var(--text-scale));
+    height: 100%;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
   }
-  body { min-height: 100vh; }
+  body {
+    min-height: 100%;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+  /* Modal-open lock — never left on body style directly (hard to debug) */
+  body.locked { overflow: hidden; touch-action: none; }
 
   a.skip-link {
     position: absolute; left: -9999px; top: 10px;
@@ -870,7 +881,9 @@
     screenTitle.textContent = titleMap[view];
     if (push) { history_.push(view); history.pushState({view}, '', '#/' + view); }
     backBtn.style.visibility = view === 'home' ? 'hidden' : 'visible';
-    document.getElementById('main').focus?.();
+    // Defensive: never let a stale modal lock survive a route change
+    document.body.classList.remove('locked');
+    window.scrollTo(0, 0);
     announce(`On ${titleMap[view]}`);
   }
   function goBack() {
@@ -1091,14 +1104,14 @@
     aiDrawer.classList.add('open'); aiBack.classList.add('open');
     aiDrawer.setAttribute('aria-hidden','false');
     whyBtn.setAttribute('aria-expanded','true');
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('locked');
     setTimeout(() => aiDrawer.querySelector('button[data-q]')?.focus(), 100);
   }
   function closeAi() {
     aiDrawer.classList.remove('open'); aiBack.classList.remove('open');
     aiDrawer.setAttribute('aria-hidden','true');
     whyBtn.setAttribute('aria-expanded','false');
-    document.body.style.overflow = '';
+    document.body.classList.remove('locked');
     document.getElementById('answerCard').classList.remove('visible', 'unknown');
     highlight.style.display='none'; emphDot.style.display='none';
     if (lastAi) lastAi.focus();
@@ -1323,14 +1336,14 @@
     sheet.classList.add('open'); sheetBack.classList.add('open');
     sheet.setAttribute('aria-hidden','false');
     a11yBtn.setAttribute('aria-expanded','true');
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('locked');
     setTimeout(() => sheetClose.focus(), 100);
   }
   function closeSheet() {
     sheet.classList.remove('open'); sheetBack.classList.remove('open');
     sheet.setAttribute('aria-hidden','true');
     a11yBtn.setAttribute('aria-expanded','false');
-    document.body.style.overflow = '';
+    document.body.classList.remove('locked');
     if (lastSheet) lastSheet.focus();
   }
   a11yBtn.addEventListener('click', openSheet);
