@@ -49,7 +49,7 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
   header.top { display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 16px 12px; border-bottom: 1px solid var(--rule); background: #fff;
+    padding: 12px 16px; border-bottom: 1px solid var(--rule); background: #fff;
     position: sticky; top: 0; z-index: 10;
   }
   header.top .back, header.top .set { appearance: none; border: 0; background: transparent;
@@ -59,27 +59,93 @@
   header.top .back:focus-visible, header.top .set:focus-visible { outline: var(--focus); outline-offset: 2px; border-radius: 8px; }
   header.top h1 { font-size: 15px; font-weight: 600; letter-spacing: -0.005em; }
 
-  main { padding: 22px 18px 32px; display: flex; flex-direction: column; gap: 22px; flex: 1; }
+  /* PRICE BAR — the anchor every screen needs */
+  .price-bar {
+    position: sticky; top: 60px; z-index: 9;
+    background: var(--ink); color: #fff;
+    padding: 10px 16px;
+    display: flex; flex-direction: column; gap: 4px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .price-bar .row1 { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .price-bar .price {
+    font-family: var(--mono); font-size: 17px; font-weight: 700; letter-spacing: -0.3px;
+  }
+  .price-bar .price .cur { font-size: 10px; font-weight: 500; opacity: 0.7; margin-left: 2px; letter-spacing: 0.05em; }
+  .price-bar .delta {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    padding: 2px 7px; border-radius: 999px;
+  }
+  .price-bar .delta.up { background: rgba(126, 212, 139, 0.18); color: #a5e6b4; }
+  .price-bar .delta.down { background: rgba(253, 131, 131, 0.18); color: #fbb; }
+  .price-bar .delta.flat { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.75); }
+  .price-bar .as-of {
+    font-family: var(--mono); font-size: 10px; opacity: 0.6; margin-left: auto; white-space: nowrap;
+  }
+  .price-bar .as-of button {
+    appearance: none; background: transparent; border: 0; color: inherit; cursor: pointer;
+    font: inherit; text-decoration: underline; text-underline-offset: 2px;
+    padding: 4px 0; min-height: 28px;
+  }
+  .price-bar .as-of button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 4px; }
+  .price-bar .row2 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 11px; }
+  .price-bar .status-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 2px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 500;
+    font-family: var(--mono); letter-spacing: 0.02em;
+  }
+  .price-bar .status-chip .d { width: 6px; height: 6px; border-radius: 50%; }
+  .price-bar .status-chip.open { background: rgba(126, 212, 139, 0.18); color: #a5e6b4; }
+  .price-bar .status-chip.open .d { background: #7ed48b; }
+  .price-bar .status-chip.blackout { background: rgba(253, 131, 131, 0.2); color: #fbb; }
+  .price-bar .status-chip.blackout .d { background: #e36565; }
+  .price-bar .pos { opacity: 0.75; font-family: var(--mono); font-size: 10.5px; }
+
+  main { padding: 20px 18px 32px; display: flex; flex-direction: column; gap: 22px; flex: 1; }
 
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
   }
 
-  /* HOME — one sentence hero */
-  .hero {
-    display: flex; flex-direction: column; gap: 10px;
-  }
+  /* HOME */
+  .hero { display: flex; flex-direction: column; gap: 10px; }
   .hero .eyebrow { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--muted); font-weight: 600;
   }
-  .hero h1 { font-size: 26px; line-height: 1.25; font-weight: 700; letter-spacing: -0.5px; color: var(--ink); }
+  .hero h1 { font-size: 22px; line-height: 1.3; font-weight: 700; letter-spacing: -0.3px; color: var(--ink); }
   .hero h1 em { font-style: normal; color: var(--accent); font-weight: 700; }
-  .hero .meta { font-size: 13px; color: var(--muted); line-height: 1.5; margin-top: 6px; }
-  .hero .meta b { color: var(--accent); font-weight: 500; }
+  .hero .since { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .hero .since b { color: var(--good); font-weight: 600; font-family: var(--mono); }
+  .hero .since b.neg { color: var(--warn); }
+
+  /* Position summary card */
+  .pos-card {
+    background: var(--panel); border: 1px solid var(--rule); border-radius: 12px;
+    padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .pos-card .row {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+    padding: 2px 0;
+  }
+  .pos-card .row .lbl { font-size: 12px; color: var(--muted); }
+  .pos-card .row .val { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--ink); text-align: right; }
+  .pos-card .row .val .sub { font-size: 10px; color: var(--muted); margin-left: 4px; font-weight: 500; }
+
+  /* Attention card */
+  .attn-card {
+    background: var(--attn-soft); border: 1px solid var(--attn);
+    border-radius: 12px; padding: 12px 14px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .attn-card .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--attn); margin-top: 6px; flex-shrink: 0; }
+  .attn-card .txt { font-size: 13px; line-height: 1.5; color: var(--ink); }
+  .attn-card .txt b { font-weight: 600; }
 
   /* Primary action */
   .cta-primary { appearance: none; border: 0; background: var(--ink); color: #fff;
-    padding: 16px 20px; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 600;
+    padding: 15px 20px; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 600;
     cursor: pointer; min-height: 52px; width: 100%; text-align: left;
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
   }
@@ -99,29 +165,38 @@
   .section-head .eyebrow { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--muted); font-weight: 600;
   }
-  .section-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+  .section-head h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
+  .section-head .sub { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
 
   .scen-chips { display: flex; gap: 8px; }
   .scen-chip { appearance: none; border: 1px solid var(--rule-strong); background: #fff; color: var(--ink);
-    padding: 12px 10px; border-radius: 12px; font: inherit; font-size: 13px; font-weight: 500;
-    cursor: pointer; min-height: 56px; flex: 1;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    padding: 10px 6px; border-radius: 12px; font: inherit; font-size: 12px; font-weight: 500;
+    cursor: pointer; min-height: 68px; flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    text-align: center;
   }
   .scen-chip:focus-visible { outline: var(--focus); outline-offset: 2px; }
   .scen-chip[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .scen-chip .sub { font-family: var(--mono); font-size: 10px; opacity: 0.65; font-weight: 500; }
+  .scen-chip .px { font-family: var(--mono); font-size: 11px; opacity: 0.7; font-weight: 500; }
 
-  /* Result — one sentence */
+  /* Result card */
   .result {
     background: var(--accent-soft); border: 1px solid var(--accent);
-    border-radius: 14px; padding: 18px 20px;
+    border-radius: 14px; padding: 16px 18px;
     display: flex; flex-direction: column; gap: 8px;
   }
-  .result .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  .result .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
     text-transform: uppercase; color: var(--accent); font-weight: 700;
   }
-  .result .sentence { font-size: 19px; line-height: 1.35; font-weight: 600; color: var(--ink); }
-  .result .sentence b { color: var(--accent); font-weight: 700; letter-spacing: -0.2px; }
+  .result .sentence { font-size: 17px; line-height: 1.4; font-weight: 600; color: var(--ink); }
+  .result .sentence b { color: var(--accent); font-weight: 700; letter-spacing: -0.2px; font-family: var(--mono); }
+  .result .since-sim {
+    font-size: 12px; color: var(--muted); line-height: 1.4;
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .result .since-sim .d { font-family: var(--mono); font-weight: 600; }
+  .result .since-sim .d.up { color: var(--good); }
+  .result .since-sim .d.down { color: var(--warn); }
   .result .why {
     appearance: none; border: 0; background: transparent; color: var(--accent); text-decoration: underline;
     text-decoration-color: var(--accent); text-underline-offset: 3px;
@@ -150,7 +225,6 @@
   }
   .describe-btn:focus-visible { outline: var(--focus); outline-offset: 2px; }
 
-  /* Breadcrumb links */
   .inline-links { display: flex; gap: 0; align-items: center; }
   .inline-links a { color: var(--accent); font-size: 14px; text-decoration: none;
     padding: 10px 0; min-height: 44px; display: inline-flex; align-items: center; gap: 4px;
@@ -159,7 +233,14 @@
   .inline-links a:focus-visible { outline: var(--focus); outline-offset: 2px; border-radius: 4px; }
   .inline-links .sep { color: var(--muted); padding: 0 12px; }
 
-  /* AI drawer (slides up when Why tapped) */
+  .source-note {
+    font-size: 11.5px; color: var(--muted); line-height: 1.5;
+    padding: 10px 12px; background: var(--panel); border-radius: 8px;
+    border: 1px dashed var(--rule-strong);
+  }
+  .source-note b { color: var(--ink); font-weight: 500; }
+
+  /* AI drawer */
   .ai-drawer-back {
     position: fixed; inset: 0; background: rgba(10,15,30,0.35);
     opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 80;
@@ -178,9 +259,7 @@
   .ai-drawer.open { transform: translateY(0); }
   html[data-motion="reduce"] .ai-drawer { transition: none; }
   .ai-drawer .grabber { width: 44px; height: 4px; background: var(--rule-strong); border-radius: 2px; margin: 0 auto; }
-  .ai-drawer .ai-head {
-    display: flex; justify-content: space-between; align-items: center;
-  }
+  .ai-drawer .ai-head { display: flex; justify-content: space-between; align-items: center; }
   .ai-drawer .ai-tag {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 4px 10px 4px 8px; background: var(--accent-soft);
@@ -194,6 +273,8 @@
     padding: 8px 14px; border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer; min-height: 36px;
   }
   .ai-drawer .close-btn:focus-visible { outline: var(--focus); outline-offset: 2px; }
+  .ai-drawer .ai-intro { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .ai-drawer .ai-intro b { color: var(--ink); font-weight: 600; }
   .ai-drawer .suggested { display: flex; flex-direction: column; gap: 8px; }
   .ai-drawer .suggested button {
     appearance: none; border: 1px solid var(--rule-strong); background: #fff; color: var(--ink);
@@ -225,9 +306,18 @@
     font-size: 14px; line-height: 1.5; color: var(--ink); display: none;
   }
   .answer-card.visible { display: block; }
-  .answer-card .q { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px; display: block; text-transform: uppercase; font-weight: 700; }
+  .answer-card.unknown { background: var(--attn-soft); border-color: var(--attn); }
+  .answer-card .q {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--accent);
+    margin-bottom: 6px; display: block; text-transform: uppercase; font-weight: 700;
+  }
+  .answer-card.unknown .q { color: var(--attn); }
+  .answer-card .foot {
+    font-size: 11px; color: var(--muted); margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--rule-strong);
+    line-height: 1.4;
+  }
 
-  /* Breakdown — real table */
+  /* Breakdown */
   .seg { display: flex; gap: 4px; padding: 4px; background: var(--panel); border-radius: 999px; }
   .seg button { appearance: none; border: 0; background: transparent; color: var(--muted);
     padding: 10px 12px; border-radius: 999px; font: inherit; font-size: 13px; cursor: pointer; flex: 1;
@@ -237,20 +327,30 @@
   .seg button:focus-visible { outline: var(--focus); outline-offset: 2px; }
 
   .data-table { width: 100%; border-collapse: separate; border-spacing: 0;
-    background: #fff; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden;
+    background: #fff; border: 1px solid var(--rule); border-radius: 12px 12px 0 0; overflow: hidden;
   }
-  .data-table caption { padding: 10px 14px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--muted); text-align: left; border-bottom: 1px solid var(--rule); font-weight: 600;
+  .data-table caption {
+    padding: 10px 14px; font-size: 11.5px; color: var(--muted);
+    text-align: left; border-bottom: 1px solid var(--rule);
+    line-height: 1.5;
   }
+  .data-table caption b { color: var(--ink); font-weight: 600; font-family: var(--mono); }
   .data-table thead th { padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
     text-transform: uppercase; color: var(--muted); text-align: left; font-weight: 600;
     border-bottom: 1px solid var(--rule); background: var(--panel);
   }
   .data-table thead th.num { text-align: right; }
-  .data-table tbody td { padding: 14px 12px; font-size: 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .data-table tbody td { padding: 14px 12px; font-size: 13.5px; border-bottom: 1px solid var(--rule); vertical-align: top; }
   .data-table tbody tr:last-child td { border-bottom: 0; }
   .data-table tbody .key { font-weight: 600; }
+  .data-table tbody .key .sub { font-size: 10.5px; color: var(--muted); font-weight: 500; display: block; margin-top: 2px; font-family: var(--mono); }
   .data-table tbody .net { text-align: right; font-weight: 600; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .data-table tbody .net .delta {
+    display: block; font-size: 10px; font-weight: 500; margin-top: 2px;
+  }
+  .data-table tbody .net .delta.up { color: var(--good); }
+  .data-table tbody .net .delta.down { color: var(--warn); }
+  .data-table tbody .net .delta.flat { color: var(--muted); }
   .data-table tbody .action .chip {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 500;
@@ -263,6 +363,14 @@
   .data-table tbody .action .chip.attn .d { background: var(--attn); }
   .data-table tbody .action .chip.muted { background: var(--panel2); border-color: var(--rule-strong); color: var(--muted); }
   .data-table tbody .action .chip.muted .d { background: var(--rule-strong); }
+
+  .totals-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 14px; background: var(--panel);
+    border: 1px solid var(--rule); border-radius: 0 0 12px 12px; border-top: 0;
+  }
+  .totals-row .tot-lbl { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-family: var(--mono); }
+  .totals-row .tot-val { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--ink); }
 
   /* Compare */
   .compare-picker { display: flex; flex-direction: column; gap: 14px; }
@@ -283,18 +391,29 @@
 
   .compare-card {
     border: 1px solid var(--rule); background: #fff;
-    border-radius: 14px; padding: 18px;
-    display: flex; flex-direction: column; gap: 10px;
+    border-radius: 14px; padding: 16px;
+    display: flex; flex-direction: column; gap: 8px;
   }
   .compare-card.accent { background: var(--accent-soft); border-color: var(--accent); }
   .compare-card .tag { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--muted); font-weight: 700;
   }
   .compare-card.accent .tag { color: var(--accent); }
-  .compare-card h3 { font-size: 16px; line-height: 1.3; font-weight: 600; }
-  .compare-card .big { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; color: var(--ink); }
-  .compare-card .note { font-size: 13px; color: var(--muted); line-height: 1.45; }
+  .compare-card h3 { font-size: 15px; line-height: 1.35; font-weight: 600; }
+  .compare-card .big { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; color: var(--ink); font-family: var(--mono); }
+  .compare-card .at { font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.4; }
+  .compare-card .note { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
   .compare-card .note b { color: var(--ink); font-weight: 500; }
+  .compare-card .risk {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 500;
+    background: var(--attn-soft); border: 1px solid var(--attn); color: var(--ink);
+    align-self: flex-start;
+  }
+  .compare-card .risk.good { background: var(--good-soft); border-color: var(--good); }
+  .compare-card .risk .d { width: 7px; height: 7px; border-radius: 50%; background: var(--attn); }
+  .compare-card .risk.good .d { background: var(--good); }
 
   .delta-card {
     background: var(--panel); border: 1px solid var(--rule); border-radius: 12px;
@@ -304,9 +423,10 @@
     text-transform: uppercase; color: var(--muted); font-weight: 600;
   }
   .delta-card .sentence { font-size: 15px; font-weight: 600; line-height: 1.4; margin-top: 4px; }
-  .delta-card .sentence b { color: var(--accent); }
+  .delta-card .sentence b { color: var(--accent); font-family: var(--mono); }
+  .delta-card .note { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
 
-  /* Settings sheet (reuse pattern) */
+  /* Settings sheet */
   .sheet-back { position: fixed; inset: 0; background: rgba(10,15,30,0.35);
     opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 80;
   }
@@ -346,7 +466,29 @@
   .sheet .toggle input[type="checkbox"]:checked::after { transform: translateX(20px); }
   .sheet .toggle input[type="checkbox"]:focus-visible { outline: var(--focus); outline-offset: 2px; }
 
-  /* Live demo banner — opt-in only */
+  /* Source popover */
+  .source-pop {
+    position: fixed; top: 110px; right: 12px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 10px;
+    padding: 12px; width: 260px; z-index: 95;
+    box-shadow: 0 8px 24px rgba(10,15,30,0.2);
+    display: none; color: var(--ink);
+    font-size: 12px; line-height: 1.5;
+  }
+  .source-pop.open { display: block; }
+  .source-pop h3 { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); font-weight: 700; margin-bottom: 8px; font-family: var(--mono);
+  }
+  .source-pop dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; }
+  .source-pop dt { color: var(--muted); font-size: 11px; }
+  .source-pop dd { font-weight: 500; font-size: 11.5px; }
+  .source-pop button {
+    appearance: none; border: 0; background: transparent; color: var(--accent);
+    font: inherit; font-size: 11px; text-decoration: underline; text-underline-offset: 2px;
+    cursor: pointer; padding: 6px 0 0; min-height: 28px;
+  }
+
+  /* Live demo banner */
   .live-demo { position: fixed; bottom: calc(10px + env(safe-area-inset-bottom)); left: 50%;
     transform: translateX(-50%); max-width: 400px; width: calc(100% - 20px);
     background: var(--ink); color: #fff; padding: 10px 14px; border-radius: 10px;
@@ -365,18 +507,13 @@
   html[data-motion="reduce"] .view { animation: none; }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.001s !important;
-      transition-duration: 0.001s !important;
-    }
+    *, *::before, *::after { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
   }
 </style>
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to content</a>
-
-<!-- SR live region (invisible unless banner enabled) -->
 <div id="srLive" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
 <div class="app">
@@ -386,14 +523,58 @@
     <button class="set" id="a11yBtn" aria-haspopup="dialog" aria-expanded="false" aria-label="Open equitable access settings">⚙</button>
   </header>
 
+  <!-- PRICE BAR — the anchor every screen needs -->
+  <section class="price-bar" aria-label="Today's share price and your position">
+    <div class="row1">
+      <span class="price" aria-label="Today's share price">
+        <span id="pbPrice">42,30</span><span class="cur">NOK</span>
+      </span>
+      <span class="delta up" id="pbDelta" aria-label="Change since your last visit">
+        <span aria-hidden="true">↗</span>
+        <span id="pbDeltaTxt">+ 2,40</span>
+      </span>
+      <span class="as-of">
+        <button id="sourceBtn" aria-haspopup="dialog" aria-expanded="false" aria-label="Show price source and when it was last updated">
+          <span id="pbAsOf">today · 10:14</span>
+        </button>
+      </span>
+    </div>
+    <div class="row2">
+      <span class="status-chip open" id="pbStatus"><span class="d" aria-hidden="true"></span><span id="pbStatusTxt">Window open</span></span>
+      <span class="pos" id="pbPos">1 250 sellable · 3 850 total</span>
+    </div>
+  </section>
+
   <main id="main">
-    <!-- VIEW: HOME — one sentence, one action -->
+    <!-- VIEW: HOME -->
     <section id="view-home" class="view" hidden>
       <div class="hero">
         <span class="eyebrow">Hi Maren</span>
-        <h1>You have about <em>4 250 NOK</em> you could take home today after Norwegian tax.</h1>
-        <p class="meta">In <b>23 days</b>, another <b>1 250 shares</b> unlock. +180 NOK since 1 September.</p>
+        <h1>At today's price you could take home about <em>4 250 NOK</em> after Norwegian tax.</h1>
+        <p class="since">
+          <b class="pos-delta" id="homeSince">+ 180 NOK</b> since your last visit on 1 November.
+        </p>
       </div>
+
+      <section class="pos-card" aria-label="Your current position">
+        <div class="row">
+          <span class="lbl">Shares you can sell today</span>
+          <span class="val">1 250<span class="sub">of 3 850</span></span>
+        </div>
+        <div class="row">
+          <span class="lbl">Still vesting</span>
+          <span class="val">2 600<span class="sub">through 2028</span></span>
+        </div>
+        <div class="row">
+          <span class="lbl">Already sold</span>
+          <span class="val">0<span class="sub">lifetime</span></span>
+        </div>
+      </section>
+
+      <section class="attn-card" role="status" aria-label="Attention needed">
+        <span class="dot" aria-hidden="true"></span>
+        <p class="txt"><b>Next unlock: 19 November</b> — 1 250 shares. Roughly 2 100 NOK more to work with after tax, at today's price.</p>
+      </section>
 
       <button class="cta-primary" id="goSimulator">
         What if the price moved?
@@ -406,31 +587,36 @@
       </button>
     </section>
 
-    <!-- VIEW: SIMULATOR — one question -->
+    <!-- VIEW: SIMULATOR -->
     <section id="view-simulator" class="view" hidden>
       <div class="section-head">
         <span class="eyebrow">Price scenario</span>
         <h2>Pick a what-if</h2>
+        <p class="sub">Today 1 share is <b>42,30 NOK</b>. Each scenario shows what one share would be worth, then what you'd take home after Norwegian tax.</p>
       </div>
 
       <div class="scen-chips" role="tablist" aria-label="Price scenario" id="scenRow">
-        <button class="scen-chip" role="tab" aria-selected="false" data-scen="1">
+        <button class="scen-chip" role="tab" aria-selected="false" data-scen="1" aria-label="At today's price, 42.30 NOK per share">
           <span>At today's price</span>
-          <span class="sub">1×</span>
+          <span class="px">42,30 NOK</span>
         </button>
-        <button class="scen-chip" role="tab" aria-selected="true" data-scen="2">
+        <button class="scen-chip" role="tab" aria-selected="true" data-scen="2" aria-label="If price doubles, 84.60 NOK per share">
           <span>If price doubles</span>
-          <span class="sub">2×</span>
+          <span class="px">84,60 NOK</span>
         </button>
-        <button class="scen-chip" role="tab" aria-selected="false" data-scen="10">
+        <button class="scen-chip" role="tab" aria-selected="false" data-scen="10" aria-label="Ten times, 423 NOK per share">
           <span>Ten times</span>
-          <span class="sub">10×</span>
+          <span class="px">423 NOK</span>
         </button>
       </div>
 
       <section class="result" aria-live="polite" aria-atomic="true">
-        <span class="tag">For <span id="resYear">2026</span> · after Norwegian tax</span>
-        <div class="sentence">You'd take home <b id="resValue">≈ 3 000 NOK</b>.</div>
+        <span class="tag">For <span id="resYear">2026</span> · 1 share at <span id="resPx">84,60</span> NOK · after Norwegian tax</span>
+        <div class="sentence">You'd take home <b id="resValue">≈ 2 010 NOK</b>.</div>
+        <div class="since-sim">
+          <span>Since 1 November:</span>
+          <span class="d up" id="resDelta">+ 320 NOK</span>
+        </div>
         <button class="why" id="whyBtn" aria-haspopup="dialog" aria-expanded="false">Why? →</button>
       </section>
 
@@ -469,6 +655,10 @@
         </div>
       </div>
 
+      <p class="source-note">
+        Numbers simulated at your selected price. <b>Norwegian tax applied at 33 %</b> (illustrative). Price source: <b>Internal 409A valuation</b>, updated today at 10:14 CET.
+      </p>
+
       <div class="inline-links">
         <a href="#/breakdown" id="goBreakdown2">See the shares →</a>
         <span class="sep" aria-hidden="true">·</span>
@@ -476,7 +666,7 @@
       </div>
     </section>
 
-    <!-- VIEW: BREAKDOWN — real table -->
+    <!-- VIEW: BREAKDOWN -->
     <section id="view-breakdown" class="view" hidden>
       <div class="section-head">
         <span class="eyebrow">Your shares</span>
@@ -488,7 +678,7 @@
         <button role="tab" aria-selected="false" data-group="inst">Per instrument</button>
       </div>
       <table class="data-table" id="dataTable">
-        <caption id="tableCap">Grouped by year · net NOK after Norwegian tax</caption>
+        <caption id="tableCap">At today's price <b>42,30 NOK</b> · net NOK after Norwegian tax · grouped by year</caption>
         <thead>
           <tr>
             <th scope="col" id="colKey">Year</th>
@@ -498,13 +688,18 @@
         </thead>
         <tbody id="tableBody"></tbody>
       </table>
+      <div class="totals-row">
+        <span class="tot-lbl">Total if you sold today</span>
+        <span class="tot-val" id="totalVal">≈ 4 250 NOK</span>
+      </div>
     </section>
 
-    <!-- VIEW: COMPARE — pick two -->
+    <!-- VIEW: COMPARE -->
     <section id="view-compare" class="view" hidden>
       <div class="section-head">
         <span class="eyebrow">Two choices, side by side</span>
         <h2>What would each one give you?</h2>
+        <p class="sub">Both reference today's price (42,30 NOK). Scenario B projects a price change. The co-pilot explains, never predicts.</p>
       </div>
 
       <div class="compare-picker">
@@ -529,20 +724,25 @@
       <div class="compare-card" id="cardA">
         <span class="tag">Scenario A</span>
         <h3 id="cardAtitle">Sell 1 000 shares today</h3>
-        <div class="big" id="cardAbig">≈ 11 200 NOK</div>
-        <div class="note" id="cardAnote">After <b>4 800 NOK</b> Norwegian tax. All shares already vested. Nothing you'd miss.</div>
+        <div class="big" id="cardAbig">≈ 28 341 NOK</div>
+        <div class="at" id="cardAat">1 000 × 42,30 NOK − 33 % Norwegian tax</div>
+        <div class="note" id="cardAnote">All 1 000 are already vested. You can execute today — the window is open.</div>
+        <span class="risk good" id="cardArisk"><span class="d" aria-hidden="true"></span>No waiting, no blackout risk</span>
       </div>
 
       <div class="compare-card accent" id="cardB">
-        <span class="tag">Scenario B · recommended by math only</span>
+        <span class="tag">Scenario B</span>
         <h3 id="cardBtitle">Wait 6 months, then sell 1 000 shares</h3>
-        <div class="big" id="cardBbig">≈ 12 900 NOK</div>
-        <div class="note" id="cardBnote">After <b>5 600 NOK</b> Norwegian tax. All shares already unlocked. Mar blackout 1–14 still applies.</div>
+        <div class="big" id="cardBbig">≈ 30 410 NOK</div>
+        <div class="at" id="cardBat">If price moves 42,30 → ~45,40 NOK (+7 %). An estimate, not a forecast.</div>
+        <div class="note" id="cardBnote">The 6-month window crosses the <b>Mar 1–14 blackout</b>. You'd need to pick a day after that.</div>
+        <span class="risk" id="cardBrisk"><span class="d" aria-hidden="true"></span>Blackout window in the middle</span>
       </div>
 
       <div class="delta-card">
         <span class="lbl">The difference</span>
-        <div class="sentence" id="deltaText">If you wait, you'd keep about <b>+ 1 700 NOK</b> more after tax. The co-pilot explains, never recommends.</div>
+        <div class="sentence" id="deltaText">If you wait, you'd keep about <b>+ 2 069 NOK</b> more after tax — if the price holds.</div>
+        <p class="note">The co-pilot can explain the maths. It won't tell you what to do.</p>
       </div>
 
       <button class="cta-primary" id="shareBtn">
@@ -551,6 +751,18 @@
       </button>
     </section>
   </main>
+</div>
+
+<!-- Source popover -->
+<div class="source-pop" id="sourcePop" role="dialog" aria-labelledby="sourceTitle">
+  <h3 id="sourceTitle">About today's price</h3>
+  <dl>
+    <dt>Price</dt><dd>42,30 NOK</dd>
+    <dt>Updated</dt><dd>Today, 10:14 CET</dd>
+    <dt>Source</dt><dd>Internal 409A valuation</dd>
+    <dt>Next refresh</dt><dd>Tomorrow, 09:00 CET</dd>
+  </dl>
+  <button id="sourceClose">Close</button>
 </div>
 
 <!-- AI drawer -->
@@ -562,7 +774,7 @@
     <button class="close-btn" id="aiClose">Close</button>
   </div>
   <h2 id="aiTitle" class="sr-only">AI co-pilot</h2>
-  <p style="font-size:13px;color:var(--muted);line-height:1.5;">Pick a question, or type anything about your shares. The co-pilot explains the number. It never recommends.</p>
+  <p class="ai-intro"><b>The co-pilot explains, never recommends.</b> Pick a question, or type anything about your shares.</p>
   <div class="suggested">
     <button data-q="why-high">Why is 2026 higher than other years?</button>
     <button data-q="leave-18m">What if I leave in 18 months?</button>
@@ -586,31 +798,19 @@
   <p style="font-size:13px;color:var(--muted);line-height:1.5;">Your OS settings are respected first. These let you override.</p>
 
   <label class="toggle">
-    <div class="t-info">
-      <span class="t-lbl">Reduced motion</span>
-      <span class="t-sub">No animated transitions</span>
-    </div>
+    <div class="t-info"><span class="t-lbl">Reduced motion</span><span class="t-sub">No animated transitions</span></div>
     <input type="checkbox" id="motionTog" aria-label="Reduced motion" />
   </label>
   <label class="toggle">
-    <div class="t-info">
-      <span class="t-lbl">Large text</span>
-      <span class="t-sub">15 % bigger body text</span>
-    </div>
+    <div class="t-info"><span class="t-lbl">Large text</span><span class="t-sub">15 % bigger body text</span></div>
     <input type="checkbox" id="textTog" aria-label="Large text" />
   </label>
   <label class="toggle">
-    <div class="t-info">
-      <span class="t-lbl">High contrast</span>
-      <span class="t-sub">Stronger borders and colours</span>
-    </div>
+    <div class="t-info"><span class="t-lbl">High contrast</span><span class="t-sub">Stronger borders and colours</span></div>
     <input type="checkbox" id="contrastTog" aria-label="High contrast" />
   </label>
   <label class="toggle">
-    <div class="t-info">
-      <span class="t-lbl">Show aria-live demo banner</span>
-      <span class="t-sub">Visible transcript of what screen readers hear</span>
-    </div>
+    <div class="t-info"><span class="t-lbl">Show aria-live demo banner</span><span class="t-sub">Visible transcript of what screen readers hear</span></div>
     <input type="checkbox" id="liveTog" aria-label="Show live-region banner" />
   </label>
 </div>
@@ -623,28 +823,31 @@
 </aside>
 
 <script>
-  // Data
+  // --- Data ---
+  const CONTEXT = {
+    priceToday: 42.30, priceLastVisit: 39.90,
+    lastVisitDate: '1 November',
+    priceUpdated: 'today, 10:14 CET',
+    priceSource: 'Internal 409A valuation',
+    blackoutOpen: true,
+    nextBlackout: 'Mar 1–14, 2027',
+    totalShares: 3850, vestedShares: 1250, vestingShares: 2600, soldLifetime: 0,
+    nextUnlockDate: '19 November', nextUnlockShares: 1250,
+  };
+  const TAX = 0.67;
   const YEARS = [
-    { year: 2023, cur: 500 },
-    { year: 2024, cur: 650 },
-    { year: 2025, cur: 800 },
-    { year: 2026, cur: 1500 },
-    { year: 2027, cur: 550 },
-    { year: 2028, cur: 500 },
+    { year: 2023, cur: 500 }, { year: 2024, cur: 650 },
+    { year: 2025, cur: 800 }, { year: 2026, cur: 1500 },
+    { year: 2027, cur: 550 }, { year: 2028, cur: 500 },
   ];
   const PLANS = [{p:'Plan 2023', cur:2200},{p:'Plan 2024', cur:1700},{p:'Plan 2025', cur:1100}];
   const INSTS = [{k:'RSU', cur:1800},{k:'Options', cur:1950},{k:'Warrants', cur:1250}];
 
-  // State
   const views = ['home','simulator','breakdown','compare'];
   const titleMap = { home:'Home', simulator:'Simulator', breakdown:'Your shares', compare:'Compare' };
-  let currentView = 'home';
-  let scenMult = 2;        // default: "If price doubles"
-  let yearIdx = 3;         // 2026
-  let tableGroup = 'year';
+  let currentView = 'home', scenMult = 2, yearIdx = 3, tableGroup = 'year';
   let history_ = ['home'];
 
-  // Elements
   const screenTitle = document.getElementById('screenTitle');
   const backBtn = document.getElementById('backBtn');
   const a11yBtn = document.getElementById('a11yBtn');
@@ -652,52 +855,96 @@
   const liveDemoTxt = document.getElementById('liveDemoTxt');
   const liveDemo = document.getElementById('liveDemo');
 
+  const fmt = v => Math.round(v).toLocaleString('en-US').replace(/,/g, ' ');
+  const fmtPx = v => v.toFixed(2).replace('.', ',');
+
   // --- Routing ---
   function navigate(view, push = true) {
     for (const v of views) document.getElementById('view-' + v).hidden = v !== view;
     currentView = view;
     screenTitle.textContent = titleMap[view];
-    if (push) {
-      history_.push(view);
-      history.pushState({view}, '', '#/' + view);
-    }
+    if (push) { history_.push(view); history.pushState({view}, '', '#/' + view); }
     backBtn.style.visibility = view === 'home' ? 'hidden' : 'visible';
     document.getElementById('main').focus?.();
     announce(`On ${titleMap[view]}`);
   }
   function goBack() {
-    if (history_.length > 1) {
-      history_.pop();
-      navigate(history_[history_.length - 1], false);
-    } else navigate('home', false);
+    if (history_.length > 1) { history_.pop(); navigate(history_[history_.length - 1], false); }
+    else navigate('home', false);
   }
   backBtn.addEventListener('click', goBack);
-  window.addEventListener('popstate', e => {
-    navigate(e.state?.view || 'home', false);
-  });
+  window.addEventListener('popstate', e => navigate(e.state?.view || 'home', false));
 
-  // --- Nav buttons ---
   document.getElementById('goSimulator').addEventListener('click', () => navigate('simulator'));
   document.getElementById('goBreakdown').addEventListener('click', () => navigate('breakdown'));
   document.getElementById('goBreakdown2').addEventListener('click', e => { e.preventDefault(); navigate('breakdown'); });
   document.getElementById('goCompare').addEventListener('click', e => { e.preventDefault(); navigate('compare'); });
 
-  // --- Live region ---
-  function announce(text) {
-    srLive.textContent = text;
-    liveDemoTxt.textContent = text;
-  }
+  function announce(text) { srLive.textContent = text; liveDemoTxt.textContent = text; }
+
+  // --- Price bar ---
+  (() => {
+    const diff = CONTEXT.priceToday - CONTEXT.priceLastVisit;
+    const pbDelta = document.getElementById('pbDelta');
+    const pbDeltaTxt = document.getElementById('pbDeltaTxt');
+    if (diff > 0) {
+      pbDelta.className = 'delta up';
+      pbDelta.querySelector('span[aria-hidden]').textContent = '↗';
+      pbDeltaTxt.textContent = `+ ${fmtPx(diff)}`;
+      pbDelta.setAttribute('aria-label', `Up ${fmtPx(diff)} NOK since your last visit on 1 November`);
+    } else if (diff < 0) {
+      pbDelta.className = 'delta down';
+      pbDelta.querySelector('span[aria-hidden]').textContent = '↘';
+      pbDeltaTxt.textContent = `− ${fmtPx(Math.abs(diff))}`;
+      pbDelta.setAttribute('aria-label', `Down ${fmtPx(Math.abs(diff))} NOK since your last visit on 1 November`);
+    } else {
+      pbDelta.className = 'delta flat';
+      pbDelta.querySelector('span[aria-hidden]').textContent = '→';
+      pbDeltaTxt.textContent = '0,00';
+    }
+    const status = document.getElementById('pbStatus');
+    const statusTxt = document.getElementById('pbStatusTxt');
+    if (CONTEXT.blackoutOpen) {
+      status.className = 'status-chip open'; statusTxt.textContent = 'Window open';
+    } else {
+      status.className = 'status-chip blackout';
+      statusTxt.textContent = `Blackout now · opens ${CONTEXT.nextBlackout}`;
+    }
+  })();
+
+  // Source popover
+  const sourceBtn = document.getElementById('sourceBtn');
+  const sourcePop = document.getElementById('sourcePop');
+  const sourceClose = document.getElementById('sourceClose');
+  sourceBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = sourcePop.classList.toggle('open');
+    sourceBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) setTimeout(() => sourceClose.focus(), 50);
+  });
+  sourceClose.addEventListener('click', () => {
+    sourcePop.classList.remove('open');
+    sourceBtn.setAttribute('aria-expanded', 'false');
+    sourceBtn.focus();
+  });
+  document.addEventListener('click', e => {
+    if (!sourcePop.contains(e.target) && !sourceBtn.contains(e.target)) {
+      sourcePop.classList.remove('open');
+      sourceBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
 
   // --- Chart ---
   const padL=20, padR=10, w=320, h=210, padT=10, axisY=182;
   const n = YEARS.length;
   const xStep = (w - padL - padR) / (n - 1);
-  const fmt = v => Math.round(v).toLocaleString('en-US').replace(/,/g, ' ');
 
-  // Net-after-tax: current NOK × scenMult × 0.67 (33% tax approx)
   function visible() {
-    const TAX = 0.67;
     return YEARS.map(d => ({ year: d.year, cur: d.cur, sim: d.cur * scenMult * TAX }));
+  }
+  function simLastVisit() {
+    const ratio = CONTEXT.priceLastVisit / CONTEXT.priceToday;
+    return YEARS.map(d => d.cur * scenMult * TAX * ratio);
   }
 
   const simLine = document.getElementById('simLine');
@@ -707,7 +954,6 @@
   const axisHandle = document.getElementById('axisHandle');
   const axisProg = document.getElementById('axisProg');
   const refLine = document.getElementById('refLine');
-  const callout = document.getElementById('callout');
   const calloutBg = document.getElementById('calloutBg');
   const calloutTxt = document.getElementById('calloutTxt');
   const highlight = document.getElementById('highlight');
@@ -715,6 +961,8 @@
   const yearBadge = document.getElementById('yearBadge');
   const resYear = document.getElementById('resYear');
   const resValue = document.getElementById('resValue');
+  const resPx = document.getElementById('resPx');
+  const resDelta = document.getElementById('resDelta');
 
   function renderChart() {
     const data = visible();
@@ -722,8 +970,7 @@
     const yMax = maxSim * 1.1;
     const yScale = (axisY - padT - 10) / yMax;
     const simPts = data.map((d,i) => `${padL + i*xStep},${axisY - 10 - d.sim * yScale}`);
-    const pointsStr = simPts.join(' ');
-    simLine.setAttribute('points', pointsStr);
+    simLine.setAttribute('points', simPts.join(' '));
     simArea.setAttribute('d',
       `M${simPts[0]} L${simPts.slice(1).join(' L')} L${padL + (n-1)*xStep},${axisY - 10} L${padL},${axisY - 10} Z`
     );
@@ -741,6 +988,8 @@
   function renderHandle() {
     const data = visible();
     const d = data[yearIdx];
+    const last = simLastVisit()[yearIdx];
+    const diff = d.sim - last;
     const x = padL + yearIdx * xStep;
     axisHandle.setAttribute('cx', x);
     axisProg.setAttribute('x2', x);
@@ -756,12 +1005,23 @@
     yearBadge.textContent = d.year;
     resYear.textContent = d.year;
     resValue.textContent = `≈ ${fmt(d.sim)} NOK`;
+    const scenPx = CONTEXT.priceToday * scenMult;
+    resPx.textContent = fmtPx(scenPx);
+    if (diff > 0) {
+      resDelta.className = 'd up';
+      resDelta.textContent = `+ ${fmt(diff)} NOK`;
+    } else if (diff < 0) {
+      resDelta.className = 'd down';
+      resDelta.textContent = `− ${fmt(Math.abs(diff))} NOK`;
+    } else {
+      resDelta.className = 'd';
+      resDelta.textContent = '0 NOK';
+    }
     axisHandle.setAttribute('aria-valuenow', yearIdx);
-    axisHandle.setAttribute('aria-valuetext', `${d.year}, projected ${fmt(d.sim)} NOK after tax`);
-    announce(`For ${d.year}, you'd take home about ${fmt(d.sim)} NOK after Norwegian tax.`);
+    axisHandle.setAttribute('aria-valuetext', `${d.year}, projected ${fmt(d.sim)} NOK after tax at ${fmtPx(scenPx)} NOK per share`);
+    announce(`For ${d.year}, at ${fmtPx(scenPx)} NOK per share, you'd take home about ${fmt(d.sim)} NOK after Norwegian tax.`);
   }
 
-  // Scenario chips
   document.querySelectorAll('#scenRow .scen-chip').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#scenRow .scen-chip').forEach(b => b.setAttribute('aria-selected','false'));
@@ -780,7 +1040,6 @@
     });
   });
 
-  // Axis handle
   const chart = document.getElementById('chart');
   function pointerToIdx(clientX) {
     const r = chart.getBoundingClientRect();
@@ -831,7 +1090,7 @@
     aiDrawer.setAttribute('aria-hidden','true');
     whyBtn.setAttribute('aria-expanded','false');
     document.body.style.overflow = '';
-    document.getElementById('answerCard').classList.remove('visible');
+    document.getElementById('answerCard').classList.remove('visible', 'unknown');
     highlight.style.display='none'; emphDot.style.display='none';
     if (lastAi) lastAi.focus();
   }
@@ -842,6 +1101,7 @@
     if (e.key === 'Escape') {
       if (aiDrawer.classList.contains('open')) closeAi();
       else if (document.getElementById('sheet').classList.contains('open')) closeSheet();
+      else if (sourcePop.classList.contains('open')) sourceClose.click();
     }
   });
   aiDrawer.addEventListener('keydown', e => {
@@ -854,8 +1114,8 @@
 
   const ANSWERS = {
     'why-high': { text: 'In 2026 the biggest share tranche of your plan unlocks — about 30 % of the programme. Multiplied by your chosen price scenario, that year carries most of the climb.', range:[2,4], dot:3 },
-    'leave-18m': { text: 'In about 18 months (~2027), 1 250 of your shares will have unlocked. You could sell inside a 90-day window. The rest would return to the company. Around 12 500 NOK after Norwegian tax at current price.', range:[3,4], dot:4 },
-    'no-uk': { text: 'Norwegian tax hits when each share unlocks, at your income tax rate. UK would only tax you when you actually sell. Same shares, very different timing.', range:[0,5], dot:2 },
+    'leave-18m': { text: 'In about 18 months (~2027), 1 250 of your shares will have unlocked. You could sell inside a 90-day post-termination window. The rest would return to the company. At today\'s 42,30 NOK, that\'s roughly 35 400 NOK after Norwegian tax.', range:[3,4], dot:4 },
+    'no-uk': { text: 'Norwegian tax hits when each share unlocks, at your income tax rate (~33 % in this simulation). UK would only tax you when you actually sell. Same shares, very different timing.', range:[0,5], dot:2 },
   };
   const QLABELS = {
     'why-high': 'Why is 2026 higher than other years?',
@@ -863,9 +1123,11 @@
     'no-uk': 'How is Norwegian tax different from UK?',
   };
   const answerCard = document.getElementById('answerCard');
+
   function showAnswer(key, customQ) {
     const a = ANSWERS[key];
     const q = customQ || QLABELS[key] || 'Your question';
+    answerCard.classList.remove('unknown');
     if (a) {
       const x0 = padL + a.range[0]*xStep;
       const x1 = padL + a.range[1]*xStep;
@@ -881,14 +1143,16 @@
       const dy = axisY - 10 - d.sim * yScale;
       emphDot.setAttribute('cx', dx); emphDot.setAttribute('cy', dy); emphDot.setAttribute('r', 5);
       emphDot.style.display = '';
-      answerCard.innerHTML = `<span class="q">You asked</span>${q}<br><br>${a.text}`;
+      answerCard.innerHTML = `<span class="q">You asked</span>${q}<br><br>${a.text}<div class="foot">Based on your plan as of 1 November. The co-pilot explains, never recommends — talk to a tax advisor before acting.</div>`;
     } else {
+      // Unknown — honest fallback
+      answerCard.classList.add('unknown');
       highlight.style.display='none'; emphDot.style.display='none';
-      answerCard.innerHTML = `<span class="q">You asked</span>${q}<br><br>In a real app, the co-pilot explains against your actual programme. It never recommends.`;
+      answerCard.innerHTML = `<span class="q">You asked</span>${q}<br><br>I'm not sure about that specifically. Here's what I can tell you:<br><br>• Today's price is <b>42,30 NOK</b>, up 2,40 since 1 November.<br>• You have <b>1 250 sellable</b> shares and 2 600 still vesting.<br>• The sale window is open until the next blackout on <b>1 March 2027</b>.<br><br>For anything else — ask HR or a tax advisor.<div class="foot">The co-pilot never makes up answers. It falls back to what it knows.</div>`;
     }
     answerCard.classList.add('visible');
     aiDrawer.querySelectorAll('button[data-q]').forEach(b => b.setAttribute('aria-pressed', b.dataset.q === key ? 'true' : 'false'));
-    announce(`Answer: ${a?.text || answerCard.textContent}`);
+    announce(`Answer: ${answerCard.textContent.slice(0, 200)}`);
   }
   aiDrawer.querySelectorAll('button[data-q]').forEach(btn => {
     btn.addEventListener('click', () => showAnswer(btn.dataset.q));
@@ -903,15 +1167,16 @@
   });
   askInput.addEventListener('keydown', e => { if (e.key === 'Enter') askSend.click(); });
 
-  // Describe this chart
   document.getElementById('describeBtn').addEventListener('click', () => {
     const data = visible();
     const totS = data.reduce((a,d) => a + d.sim, 0);
     const big = data.reduce((b,d) => d.sim > b.sim ? d : b, data[0]);
-    const txt = `Take-home across six years, ${data[0].year} to ${data[data.length-1].year}. Biggest year is ${big.year} at ${fmt(big.sim)} NOK, because that's when the largest tranche unlocks. Total across all years: ${fmt(totS)} NOK. The handle is on ${data[yearIdx].year}.`;
+    const scenPx = CONTEXT.priceToday * scenMult;
+    const txt = `At ${fmtPx(scenPx)} NOK per share, your take-home across six years ranges from ${fmt(Math.min(...data.map(x=>x.sim)))} to ${fmt(Math.max(...data.map(x=>x.sim)))} NOK. Biggest year is ${big.year} at ${fmt(big.sim)} NOK, because that's when the largest tranche unlocks. Total across all years: ${fmt(totS)} NOK. The handle is on ${data[yearIdx].year}.`;
     openAi();
     setTimeout(() => {
-      answerCard.innerHTML = `<span class="q">Describe this chart</span><br>${txt}`;
+      answerCard.classList.remove('unknown');
+      answerCard.innerHTML = `<span class="q">Describe this chart</span><br>${txt}<div class="foot">All figures after 33 % Norwegian tax (illustrative).</div>`;
       answerCard.classList.add('visible');
       aiDrawer.querySelectorAll('button[data-q]').forEach(b => b.setAttribute('aria-pressed', 'false'));
       announce(`Chart description: ${txt}`);
@@ -922,44 +1187,55 @@
   const tableBody = document.getElementById('tableBody');
   const tableCap = document.getElementById('tableCap');
   const colKey = document.getElementById('colKey');
+  const totalVal = document.getElementById('totalVal');
   function renderTable() {
-    const TAX = 0.67;
-    let rows;
+    let rows, groupLabel;
     if (tableGroup === 'year') {
-      rows = YEARS.map(d => ({ key: d.year, net: d.cur * TAX }));
-      colKey.textContent = 'Year';
-      tableCap.textContent = 'Grouped by year · net NOK after Norwegian tax';
+      rows = YEARS.map(d => ({ key: d.year, sub: '', net: d.cur * TAX }));
+      colKey.textContent = 'Year'; groupLabel = 'year';
     } else if (tableGroup === 'plan') {
-      rows = PLANS.map(p => ({ key: p.p, net: p.cur * TAX }));
-      colKey.textContent = 'Plan';
-      tableCap.textContent = 'Grouped by plan · net NOK after Norwegian tax';
+      rows = PLANS.map(p => ({ key: p.p, sub: 'RSU / Options mix', net: p.cur * TAX }));
+      colKey.textContent = 'Plan'; groupLabel = 'plan';
     } else {
-      rows = INSTS.map(p => ({ key: p.k, net: p.cur * TAX }));
-      colKey.textContent = 'Instrument';
-      tableCap.textContent = 'Grouped by instrument · net NOK after Norwegian tax';
+      rows = INSTS.map(p => ({ key: p.k, sub: p.k === 'Options' ? 'Strike 36 NOK' : p.k === 'Warrants' ? 'Strike 48 NOK' : 'No strike', net: p.cur * TAX }));
+      colKey.textContent = 'Instrument'; groupLabel = 'instrument';
     }
+    tableCap.innerHTML = `At today's price <b>${fmtPx(CONTEXT.priceToday)} NOK</b> · net NOK after Norwegian tax · grouped by ${groupLabel}`;
     const actions = {
-      2023: ['Already sold', 'muted'],
-      2024: ['Already sold', 'muted'],
-      2025: ['Can sell 320 today', 'good'],
+      2023: ['Vested — can sell today', 'good'],
+      2024: ['Vested — can sell today', 'good'],
+      2025: ['Vested — can sell today', 'good'],
       2026: ['Unlocks in 23 days', 'attn'],
-      2027: ['Blocked until Mar 2027', 'muted'],
-      2028: ['Blocked until Oct 2028', 'muted'],
+      2027: ['Vests Mar 2027', 'muted'],
+      2028: ['Vests Oct 2028', 'muted'],
       'Plan 2023': ['Can sell 820 today', 'good'],
       'Plan 2024': ['Can sell 420 today', 'good'],
       'Plan 2025': ['Vesting 2025–2027', 'attn'],
       'RSU': ['Can sell 1 200 today', 'good'],
-      'Options': ['Exercisable above 48 NOK', 'attn'],
+      'Options': ['Exercisable above 36 NOK', 'good'],
       'Warrants': ['Vests Mar 2027', 'muted'],
+    };
+    const deltas = {
+      2023: 0, 2024: 0, 2025: 30, 2026: 90, 2027: 35, 2028: 25,
+      'Plan 2023': 130, 'Plan 2024': 100, 'Plan 2025': 65,
+      'RSU': 110, 'Options': 115, 'Warrants': 75,
     };
     tableBody.innerHTML = rows.map(r => {
       const [lbl, kind] = actions[r.key] || ['—', 'muted'];
+      const d = deltas[r.key] || 0;
+      const deltaCls = d > 0 ? 'up' : d < 0 ? 'down' : 'flat';
+      const deltaTxt = d === 0 ? '—' : `${d > 0 ? '+' : '−'} ${fmt(Math.abs(d))} NOK since 1 Nov`;
       return `<tr>
-        <td class="key">${r.key}</td>
-        <td class="net">${fmt(r.net)}</td>
+        <td class="key">${r.key}${r.sub ? `<span class="sub">${r.sub}</span>` : ''}</td>
+        <td class="net">${fmt(r.net)}<span class="delta ${deltaCls}">${deltaTxt}</span></td>
         <td class="action"><span class="chip ${kind}"><span class="d" aria-hidden="true"></span>${lbl}</span></td>
       </tr>`;
     }).join('');
+    const sellableTotal = rows.filter(r => {
+      const [, kind] = actions[r.key] || ['', ''];
+      return kind === 'good';
+    }).reduce((a, r) => a + r.net, 0);
+    totalVal.textContent = `≈ ${fmt(sellableTotal)} NOK`;
   }
   document.querySelectorAll('#tableSeg button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -973,29 +1249,57 @@
 
   // --- Compare ---
   const COMPARE = {
-    'now-1000': { title: 'Sell 1 000 shares today', big: '≈ 11 200 NOK', note: 'After <b>4 800 NOK</b> Norwegian tax. All shares already vested. Nothing you\'d miss.' },
-    'now-500':  { title: 'Sell 500 shares today',  big: '≈ 5 600 NOK',  note: 'After <b>2 400 NOK</b> Norwegian tax. Half your vested stake. Nothing you\'d miss.' },
-    'now-all':  { title: 'Sell everything vested today', big: '≈ 18 200 NOK', note: 'After <b>8 000 NOK</b> Norwegian tax. Clears your vested position. Nothing you\'d miss.' },
-    'wait-6m':  { title: 'Wait 6 months, then sell 1 000 shares', big: '≈ 12 900 NOK', note: 'After <b>5 600 NOK</b> Norwegian tax. All shares already unlocked. Mar 1–14 blackout still applies.' },
-    'wait-12m': { title: 'Wait 12 months, then sell 1 000 shares', big: '≈ 14 400 NOK', note: 'After <b>6 200 NOK</b> Norwegian tax. All shares already unlocked. Two blackout windows along the way.' },
-    'wait-blackout': { title: 'Wait past the next blackout, then sell 1 000', big: '≈ 11 800 NOK', note: 'After <b>5 000 NOK</b> Norwegian tax. Clears the rules. ~60 days of waiting.' },
+    'now-1000': { title: 'Sell 1 000 shares today', shares: 1000, priceAt: CONTEXT.priceToday,
+      priceLabel: `1 000 × ${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax`,
+      note: 'All 1 000 are already vested. You can execute today — the window is open.',
+      riskGood: true, riskText: 'No waiting, no blackout risk' },
+    'now-500': { title: 'Sell 500 shares today', shares: 500, priceAt: CONTEXT.priceToday,
+      priceLabel: `500 × ${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax`,
+      note: 'Half your vested stake. Nothing you\'d miss.',
+      riskGood: true, riskText: 'No waiting, no blackout risk' },
+    'now-all': { title: 'Sell everything vested today', shares: 1250, priceAt: CONTEXT.priceToday,
+      priceLabel: `1 250 × ${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax`,
+      note: 'Clears your vested position. Future unlocks still come through.',
+      riskGood: true, riskText: 'No waiting, no blackout risk' },
+    'wait-6m': { title: 'Wait 6 months, then sell 1 000 shares', shares: 1000, priceAt: CONTEXT.priceToday * 1.0733,
+      priceLabel: `If price moves 42,30 → ~${fmtPx(CONTEXT.priceToday * 1.0733)} NOK (+7 %). An estimate, not a forecast.`,
+      note: 'The 6-month window crosses the <b>Mar 1–14 blackout</b>. You\'d need to pick a day after that.',
+      riskGood: false, riskText: 'Blackout window in the middle' },
+    'wait-12m': { title: 'Wait 12 months, then sell 1 000 shares', shares: 1000, priceAt: CONTEXT.priceToday * 1.1773,
+      priceLabel: `If price moves 42,30 → ~${fmtPx(CONTEXT.priceToday * 1.1773)} NOK (+18 %). An estimate, not a forecast.`,
+      note: 'Two blackout windows along the way. Price could move either direction.',
+      riskGood: false, riskText: 'Two blackouts along the way' },
+    'wait-blackout': { title: 'Wait past the next blackout, then sell 1 000', shares: 1000, priceAt: CONTEXT.priceToday,
+      priceLabel: `1 000 × ~${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax (price may shift)`,
+      note: 'Clears the rules. ~60 days of waiting. Price could move either way.',
+      riskGood: true, riskText: 'Avoids blackout' },
   };
   const pickA = document.getElementById('pickA');
   const pickB = document.getElementById('pickB');
   function renderCompare() {
     const a = COMPARE[pickA.value], b = COMPARE[pickB.value];
+    const aNet = a.shares * a.priceAt * TAX;
+    const bNet = b.shares * b.priceAt * TAX;
     document.getElementById('cardAtitle').textContent = a.title;
-    document.getElementById('cardAbig').textContent = a.big;
+    document.getElementById('cardAbig').textContent = `≈ ${fmt(aNet)} NOK`;
+    document.getElementById('cardAat').textContent = a.priceLabel;
     document.getElementById('cardAnote').innerHTML = a.note;
+    const cardArisk = document.getElementById('cardArisk');
+    cardArisk.className = 'risk' + (a.riskGood ? ' good' : '');
+    cardArisk.innerHTML = `<span class="d" aria-hidden="true"></span>${a.riskText}`;
+
     document.getElementById('cardBtitle').textContent = b.title;
-    document.getElementById('cardBbig').textContent = b.big;
+    document.getElementById('cardBbig').textContent = `≈ ${fmt(bNet)} NOK`;
+    document.getElementById('cardBat').textContent = b.priceLabel;
     document.getElementById('cardBnote').innerHTML = b.note;
-    // Delta
-    const aVal = parseFloat(a.big.replace(/[^\d]/g,''));
-    const bVal = parseFloat(b.big.replace(/[^\d]/g,''));
-    const diff = bVal - aVal;
+    const cardBrisk = document.getElementById('cardBrisk');
+    cardBrisk.className = 'risk' + (b.riskGood ? ' good' : '');
+    cardBrisk.innerHTML = `<span class="d" aria-hidden="true"></span>${b.riskText}`;
+
+    const diff = bNet - aNet;
     const sign = diff >= 0 ? '+' : '−';
-    document.getElementById('deltaText').innerHTML = `Scenario B gives you about <b>${sign} ${fmt(Math.abs(diff))} NOK</b> more after tax. The co-pilot explains, never recommends.`;
+    const suffix = diff > 0 ? ' — if the price holds' : '';
+    document.getElementById('deltaText').innerHTML = `Scenario B gives you about <b>${sign} ${fmt(Math.abs(diff))} NOK</b> more after tax${suffix}.`;
   }
   pickA.addEventListener('change', renderCompare);
   pickB.addEventListener('change', renderCompare);
@@ -1037,8 +1341,7 @@
   const contrastTog = document.getElementById('contrastTog');
   const liveTog = document.getElementById('liveTog');
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    html.setAttribute('data-motion','reduce');
-    motionTog.checked = true;
+    html.setAttribute('data-motion','reduce'); motionTog.checked = true;
   }
   motionTog.addEventListener('change', () => html.setAttribute('data-motion', motionTog.checked ? 'reduce' : 'default'));
   textTog.addEventListener('change', () => html.setAttribute('data-text', textTog.checked ? 'large' : 'default'));
@@ -1051,16 +1354,13 @@
     liveDemo.classList.remove('on'); liveDemo.setAttribute('aria-hidden', 'true'); liveTog.checked = false;
   });
 
-  // Share
   document.getElementById('shareBtn').addEventListener('click', () => {
-    announce('Shared with HR.');
-    alert('A scenario snapshot would be shared with your HR partner (read-only).');
+    announce('Scenario shared with HR.');
+    alert('A scenario snapshot — including both choices, the delta, and today\'s price context — would be shared with your HR partner (read-only).');
   });
 
   // Init
-  renderChart();
-  renderTable();
-  renderCompare();
+  renderChart(); renderTable(); renderCompare();
   const initialView = location.hash.replace('#/','') || 'home';
   navigate(views.includes(initialView) ? initialView : 'home', false);
 </script>
