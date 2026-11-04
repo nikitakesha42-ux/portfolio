@@ -197,6 +197,128 @@
   .mobile-row .frame-cap { margin-bottom: 8px; }
   .mobile-note { font-size: 13px; color: var(--muted); line-height: 1.55; max-width: 48ch; }
 
+  /* Scenario row (several phones with captions) */
+  .scenarios-block { margin-top: 40px; }
+  .scenarios-block > h3 {
+    font-family: var(--wf-mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--wf-text); font-weight: 600;
+    margin: 0 0 18px;
+  }
+  .scenario-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    align-items: start;
+  }
+  .scenario {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .scenario .wf-phone { max-width: none; }
+  .scenario-cap {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .scenario-cap strong { display: block; font-weight: 600; color: var(--wf-ink); margin-bottom: 2px; }
+  .scenario-cap em { font-style: normal; color: var(--wf-ai); font-family: var(--wf-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+  /* Pros & cons */
+  .proscons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .proscons > div {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: #fff;
+  }
+  .proscons .pc-pros { border-color: #cfe0cf; background: #f5faf3; }
+  .proscons .pc-cons { border-color: #e5d2d2; background: #fcf6f4; }
+  .proscons h4 {
+    font-family: var(--wf-mono);
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    margin: 0 0 10px; color: var(--wf-ink); font-weight: 600;
+  }
+  .proscons .pc-pros h4 { color: #2b6a37; }
+  .proscons .pc-cons h4 { color: #8a3a3a; }
+  .proscons ul { list-style: none; padding: 0; margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ink); }
+  .proscons li { position: relative; padding-left: 20px; margin-bottom: 8px; }
+  .proscons li:last-child { margin-bottom: 0; }
+  .proscons .pc-pros li::before { content: "✓"; position: absolute; left: 0; color: #2b6a37; font-weight: 600; }
+  .proscons .pc-cons li::before { content: "✗"; position: absolute; left: 0; color: #8a3a3a; font-weight: 600; }
+
+  /* Accessibility analysis */
+  .a11y-block {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+  }
+  .a11y-block .case-eyebrow { color: var(--wf-ai); }
+  .a11y-block h2 { font-size: 30px; letter-spacing: -0.02em; margin: 6px 0 16px; line-height: 1.15; }
+  .a11y-block > p { color: var(--muted); font-size: 15.5px; line-height: 1.6; max-width: 70ch; margin: 0 0 32px; }
+
+  .verdict {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 18px 22px;
+    background: var(--wf-ai-soft);
+    border: 1px solid var(--wf-ai);
+    border-radius: 12px;
+    margin-bottom: 28px;
+  }
+  .verdict-tag {
+    flex-shrink: 0;
+    font-family: var(--wf-mono); font-size: 10.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--wf-ai); font-weight: 600;
+    background: #fff; padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--wf-ai); margin-top: 1px;
+  }
+  .verdict p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--wf-ink); }
+
+  .a11y-table {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 36px;
+  }
+  .a11y-table .a11y-head, .a11y-table .a11y-row {
+    display: grid; grid-template-columns: 1.1fr 1.4fr 1.4fr 0.6fr;
+    gap: 0;
+    font-size: 13px; line-height: 1.5;
+  }
+  .a11y-table .a11y-head {
+    background: var(--wf-fill); border-bottom: 1px solid var(--rule);
+    font-family: var(--wf-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--wf-text); font-weight: 600;
+  }
+  .a11y-table .a11y-head > div { padding: 10px 14px; }
+  .a11y-table .a11y-row { border-bottom: 1px dashed var(--rule); }
+  .a11y-table .a11y-row:last-child { border-bottom: none; }
+  .a11y-table .a11y-row > div { padding: 12px 14px; color: var(--ink); }
+  .a11y-table .a11y-dim { font-weight: 600; color: var(--wf-ink); }
+  .a11y-table .a11y-winner {
+    font-family: var(--wf-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 600;
+    display: flex; align-items: center;
+  }
+  .a11y-table .a11y-winner.a { color: #2b6a37; }
+  .a11y-table .a11y-winner.b { color: var(--wf-ai); }
+  .a11y-table .a11y-winner.tie { color: var(--wf-text); }
+
+  .a11y-improve {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  }
+  .a11y-improve article {
+    border: 1px solid var(--rule); border-radius: 12px; padding: 20px 22px; background: #fff;
+  }
+  .a11y-improve h3 { font-size: 16px; margin: 0 0 10px; color: var(--wf-ink); }
+  .a11y-improve h3 span { font-family: var(--wf-mono); font-size: 10.5px; letter-spacing: 0.1em; color: var(--wf-ai); margin-right: 6px; }
+  .a11y-improve ul { padding-left: 18px; margin: 0; color: var(--ink); font-size: 13.5px; line-height: 1.6; }
+  .a11y-improve li { margin-bottom: 6px; }
+
   /* Closing section */
   .wip-close { margin-top: 72px; padding: 28px 32px; background: var(--panel-warm, #f5f3ee); border: 1px solid var(--rule); border-radius: 18px; }
   .wip-close h2 { font-size: 22px; margin: 0 0 8px; letter-spacing: -0.015em; }
@@ -206,6 +328,13 @@
     .frames { grid-template-columns: 1fr; }
     .mobile-row { flex-direction: column; align-items: stretch; }
     .wf-phone { margin: 0; }
+    .scenario-row { grid-template-columns: repeat(2, 1fr); }
+    .proscons, .a11y-improve { grid-template-columns: 1fr; }
+    .a11y-table .a11y-head, .a11y-table .a11y-row { grid-template-columns: 1fr; }
+    .a11y-table .a11y-head > div, .a11y-table .a11y-row > div { padding: 6px 12px; }
+  }
+  @media (max-width: 560px) {
+    .scenario-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -419,6 +548,169 @@
         Same stack, vertical. Chat bar becomes a sticky bottom chip that sits above the OS gesture bar. Tapping it opens a bottom sheet with suggested questions and the full keyboard, the chart stays visible above.
       </div>
     </div>
+
+    <!-- CONCEPT A · mobile scenarios -->
+    <div class="scenarios-block">
+      <h3>Mobile scenarios · four key moments</h3>
+      <div class="scenario-row">
+
+        <!-- Scenario A1: Default -->
+        <figure class="scenario">
+          <div class="wf-phone">
+            <div class="wf-phone__notch" aria-hidden="true"></div>
+            <div class="wf-phone__scroll">
+              <div class="wf-row"><span>←</span><span class="wf-sub">Simulator</span><span>⋯</span></div>
+              <div class="wf-box">
+                <div style="flex:1;">
+                  <div class="wf-sub" style="margin-bottom:4px;">Scenario</div>
+                  <div class="wf-scroller" aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="wf-row"><span class="wf-chip">NOK 5</span><span class="wf-chip">% +400</span></div>
+              <div class="wf-box"><div><div class="wf-sub">Current</div><div class="wf-h">500 NOK</div></div></div>
+              <div class="wf-box" style="background:var(--wf-fill-2);"><div><div class="wf-sub">Simulated</div><div class="wf-h">≈ 2 500 NOK</div></div></div>
+              <div class="wf-pill-row"><span class="wf-chip wf-chip--on">Chart</span><span class="wf-chip">Table</span></div>
+              <div class="wf-chart" style="padding:6px;">
+                <svg viewBox="0 0 220 90" aria-hidden="true">
+                  <polyline fill="none" stroke="#9aa0ab" stroke-width="1.4" stroke-dasharray="3 2" points="10,70 50,66 90,62 130,58 170,54 210,50"/>
+                  <polyline fill="none" stroke="#1a1f2e" stroke-width="1.8" points="10,70 50,56 90,42 130,30 170,22 210,14"/>
+                </svg>
+              </div>
+              <div style="flex:1;"></div>
+              <div class="wf-chatbar"><span class="wf-chatbar__spark">✦</span><span class="wf-chatbar__text">Ask the co-pilot…</span></div>
+            </div>
+          </div>
+          <figcaption class="scenario-cap">
+            <em>A1 · Default</em>
+            <strong>At rest.</strong>
+            Scroller, current vs simulated cards, chart visible. Co-pilot sits quietly at the bottom.
+          </figcaption>
+        </figure>
+
+        <!-- Scenario A2: Scroller mid-drag -->
+        <figure class="scenario">
+          <div class="wf-phone">
+            <div class="wf-phone__notch" aria-hidden="true"></div>
+            <div class="wf-phone__scroll">
+              <div class="wf-row"><span>←</span><span class="wf-sub">Simulator</span><span>⋯</span></div>
+              <div class="wf-box">
+                <div style="flex:1;">
+                  <div class="wf-sub" style="margin-bottom:4px;">Scenario</div>
+                  <div class="wf-scroller" aria-hidden="true" style="--p:70%;"></div>
+                </div>
+              </div>
+              <div class="wf-row"><span class="wf-chip">NOK 8</span><span class="wf-chip">% +700</span></div>
+              <div class="wf-box"><div><div class="wf-sub">Current</div><div class="wf-h">500 NOK</div></div></div>
+              <div class="wf-box" style="background:var(--wf-ai-soft); border-color: var(--wf-ai);">
+                <div><div class="wf-sub" style="color:var(--wf-ai);">Simulated · updating</div><div class="wf-h">≈ 4 000 NOK</div></div>
+              </div>
+              <div class="wf-pill-row"><span class="wf-chip wf-chip--on">Chart</span><span class="wf-chip">Table</span></div>
+              <div class="wf-chart" style="padding:6px; border-color:var(--wf-ai);">
+                <svg viewBox="0 0 220 90" aria-hidden="true">
+                  <polyline fill="none" stroke="#9aa0ab" stroke-width="1.4" stroke-dasharray="3 2" points="10,70 50,66 90,62 130,58 170,54 210,50"/>
+                  <polyline fill="none" stroke="#3042a0" stroke-width="2" points="10,70 50,48 90,30 130,20 170,12 210,6"/>
+                  <g fill="#3042a0"><circle cx="90" cy="30" r="2.5"/><circle cx="130" cy="20" r="2.5"/></g>
+                  <rect x="100" y="4" width="70" height="12" rx="3" fill="#3042a0"/>
+                  <text x="106" y="13" fill="#fff" font-family="Inter" font-size="7.5" font-weight="600">2026 · 2 880</text>
+                </svg>
+              </div>
+              <div style="flex:1;"></div>
+              <div class="wf-chatbar"><span class="wf-chatbar__spark">✦</span><span class="wf-chatbar__text">Ask the co-pilot…</span></div>
+            </div>
+          </div>
+          <figcaption class="scenario-cap">
+            <em>A2 · Dragging the scroller</em>
+            <strong>Live update.</strong>
+            Chart line redraws in-place, Simulated card highlights, a tooltip shows the year under the thumb.
+          </figcaption>
+        </figure>
+
+        <!-- Scenario A3: Chat sheet expanded -->
+        <figure class="scenario">
+          <div class="wf-phone">
+            <div class="wf-phone__notch" aria-hidden="true"></div>
+            <div class="wf-phone__scroll" style="padding-bottom:0;">
+              <div class="wf-row"><span>←</span><span class="wf-sub">Simulator</span><span>⋯</span></div>
+              <div class="wf-chart" style="padding:6px;">
+                <svg viewBox="0 0 220 60" aria-hidden="true">
+                  <polyline fill="none" stroke="#1a1f2e" stroke-width="1.6" points="10,46 50,38 90,28 130,20 170,14 210,8"/>
+                </svg>
+              </div>
+              <!-- Bottom sheet -->
+              <div style="background:#fff; border:1px solid var(--wf-ai); border-top-left-radius:16px; border-top-right-radius:16px; padding:12px 10px 0; margin: 4px -10px 0; display:flex; flex-direction:column; gap:8px;">
+                <div style="width:36px; height:3px; background:var(--wf-line-strong); border-radius:2px; align-self:center;" aria-hidden="true"></div>
+                <div class="wf-sub" style="color:var(--wf-ai);">✦ Co-pilot · suggested</div>
+                <div class="wf-pill-row">
+                  <span class="wf-chip wf-chip--ai">Leave in 18 months?</span>
+                  <span class="wf-chip wf-chip--ai">Why 2026 higher?</span>
+                </div>
+                <div class="wf-box" style="background:var(--wf-fill); border-style:dashed; padding:8px 10px;">
+                  <span style="font-size:11px; color:var(--wf-text);">Ask anything about your shares…</span>
+                  <span class="wf-chip wf-chip--on" style="font-size:9.5px;">↑</span>
+                </div>
+                <div style="height:84px; background:linear-gradient(180deg, #f1f3f6, #e5e8ec); border-radius:4px 4px 0 0; display:flex; align-items:center; justify-content:center; font-family:var(--wf-mono); font-size:9px; color:var(--wf-text); letter-spacing:0.08em;">KEYBOARD</div>
+              </div>
+            </div>
+          </div>
+          <figcaption class="scenario-cap">
+            <em>A3 · Tapping the co-pilot bar</em>
+            <strong>Bottom sheet, chart stays.</strong>
+            Suggested questions + text input. Keyboard slides up; chart still readable above.
+          </figcaption>
+        </figure>
+
+        <!-- Scenario A4: Table view -->
+        <figure class="scenario">
+          <div class="wf-phone">
+            <div class="wf-phone__notch" aria-hidden="true"></div>
+            <div class="wf-phone__scroll">
+              <div class="wf-row"><span>←</span><span class="wf-sub">Simulator</span><span>⋯</span></div>
+              <div class="wf-box"><div style="flex:1;"><div class="wf-sub" style="margin-bottom:4px;">Scenario</div><div class="wf-scroller" aria-hidden="true"></div></div></div>
+              <div class="wf-pill-row"><span class="wf-chip">Chart</span><span class="wf-chip wf-chip--on">Table</span><span class="wf-chip">Per year ▼</span></div>
+              <div class="wf-table">
+                <div class="wf-tr"><span class="wf-th">YR</span><span class="wf-th">Curr</span><span class="wf-th">Sim</span><span class="wf-th">Δ</span></div>
+                <div class="wf-tr"><span>2023</span><span>300</span><span>1 200</span><span>+900</span></div>
+                <div class="wf-tr"><span>2024</span><span>300</span><span>1 200</span><span>+900</span></div>
+                <div class="wf-tr"><span>2025</span><span>350</span><span>1 400</span><span>+1 050</span></div>
+                <div class="wf-tr"><span>2026</span><span>450</span><span>1 800</span><span>+1 350</span></div>
+                <div class="wf-tr"><span>2027</span><span>500</span><span>2 000</span><span>+1 500</span></div>
+              </div>
+              <div style="flex:1;"></div>
+              <div class="wf-chatbar"><span class="wf-chatbar__spark">✦</span><span class="wf-chatbar__text">Ask the co-pilot…</span></div>
+            </div>
+          </div>
+          <figcaption class="scenario-cap">
+            <em>A4 · Table view</em>
+            <strong>Same data, spreadsheet-brain.</strong>
+            Same scroller + same chat bar. Table replaces the chart one toggle away.
+          </figcaption>
+        </figure>
+
+      </div>
+    </div>
+
+    <!-- CONCEPT A · pros & cons -->
+    <div class="proscons">
+      <div class="pc-pros">
+        <h4>Pros</h4>
+        <ul>
+          <li>Minimal relearning for existing Optio participants — layout echoes what they already know.</li>
+          <li>Chat is a <strong>standard text input</strong>: screen reader, keyboard, dictation and autocorrect all work out of the box.</li>
+          <li>Table stays a first-class view, not hidden behind a drawer — finance-minded users keep their mental model.</li>
+          <li>Faster to ship: the chart/table toggle is the only net-new behaviour on top of today's UI.</li>
+          <li>The scroller stays as a distinct target above the data, easy to hit precisely.</li>
+        </ul>
+      </div>
+      <div class="pc-cons">
+        <h4>Cons</h4>
+        <ul>
+          <li>Three separate zones (scroller, data, chat) mean more vertical real-estate on mobile.</li>
+          <li>Chat reads as "support" rather than a main capability — some users may never discover it.</li>
+          <li>A sticky bottom bar collides with iOS Safari's dynamic URL bar unless engineered carefully.</li>
+          <li>Chart and chat are not integrated: asking "why is 2026 high?" doesn't highlight 2026 by default.</li>
+        </ul>
+      </div>
+    </div>
   </section>
 
   <!-- =========================================================
@@ -585,6 +877,267 @@
       <div class="mobile-note">
         On mobile, the chart stays hero and the scroller still rides the axis (easy thumb target). Suggested-question chips sit right under the chart — one tap highlights and answers. The table becomes a single "▸ Table" line at the bottom, tap-to-expand.
       </div>
+    </div>
+
+    <!-- CONCEPT B · mobile scenarios -->
+    <div class="scenarios-block">
+      <h3>Mobile scenarios · four key moments</h3>
+      <div class="scenario-row">
+
+        <!-- Scenario B1: Default -->
+        <figure class="scenario">
+          <div class="wf-phone">
+            <div class="wf-phone__notch" aria-hidden="true"></div>
+            <div class="wf-phone__scroll">
+              <div class="wf-row"><span>←</span><span class="wf-sub">Simulator</span><span>⋯</span></div>
+              <div class="wf-pill-row"><span class="wf-chip">All plans ▼</span><span class="wf-chip">NO 🇳🇴</span></div>
+              <div class="wf-row"><span class="wf-chip">Current 500</span><span class="wf-chip wf-chip--on">Sim ≈ 2 500</span></div>
+              <div class="wf-chart" style="padding:8px;">
+                <svg viewBox="0 0 220 140" aria-hidden="true">
+                  <path d="M10,110 L50,88 L90,62 L130,42 L170,28 L210,16 L210,130 L10,130 Z" fill="#3042a0" fill-opacity="0.08"/>
+                  <polyline fill="none" stroke="#1a1f2e" stroke-width="1.8" points="10,110 50,88 90,62 130,42 170,28 210,16"/>
+                  <line x1="10" y1="135" x2="210" y2="135" stroke="#c8ccd4" stroke-width="1.5"/>
+                  <line x1="10" y1="135" x2="110" y2="135" stroke="#1a1f2e" stroke-width="2"/>
+                  <circle cx="110" cy="135" r="5" fill="#fff" stroke="#1a1f2e" stroke-width="1.5"/>
+                  <line x1="110" y1="10" x2="110" y2="135" stroke="#3042a0" stroke-width="1" stroke-dasharray="2 2"/>
+                </svg>
+              </div>
+              <div class="wf-pill-row"><span class="wf-chip wf-chip--ai">✦</span><span class="wf-chip">Leave in 18m?</span><span class="wf-chip">NO vs UK</span></div>
+              <div style="flex:1;"></div>
+              <div class="wf-box wf-box--dashed"><span class="wf-sub">▸ Table</span></div>
+            </div>
+          </div>
+          <figcaption class="scenario-cap">
+            <em>B1 · Default</em>
+            <strong>Chart hero.</strong>
+            Scroller rides the axis. Suggested questions beneath, table collapsed.
+          </figcaption>
+        </figure>
+
+        <!-- Scenario B2: Filter applied -->
+        <figure class="scenario">
+          <div class="wf-phone">
+            <div class="wf-phone__notch" aria-hidden="true"></div>
+            <div class="wf-phone__scroll">
+              <div class="wf-row"><span>←</span><span class="wf-sub">Simulator</span><span>⋯</span></div>
+              <div class="wf-pill-row">
+                <span class="wf-chip">All plans ▼</span>
+                <span class="wf-chip wf-chip--on">RSU only ×</span>
+                <span class="wf-chip">NO 🇳🇴</span>
+              </div>
+              <div class="wf-row"><span class="wf-chip">Current 220</span><span class="wf-chip wf-chip--on">Sim ≈ 1 100</span></div>
+              <div class="wf-chart" style="padding:8px;">
+                <svg viewBox="0 0 220 140" aria-hidden="true">
+                  <!-- faded previous line -->
+                  <polyline fill="none" stroke="#c8ccd4" stroke-width="1.2" stroke-dasharray="2 3" points="10,110 50,88 90,62 130,42 170,28 210,16"/>
+                  <!-- new RSU-only line -->
+                  <path d="M10,118 L50,104 L90,88 L130,72 L170,58 L210,46 L210,130 L10,130 Z" fill="#3042a0" fill-opacity="0.1"/>
+                  <polyline fill="none" stroke="#1a1f2e" stroke-width="1.8" points="10,118 50,104 90,88 130,72 170,58 210,46"/>
+                  <line x1="10" y1="135" x2="210" y2="135" stroke="#c8ccd4" stroke-width="1.5"/>
+                  <line x1="10" y1="135" x2="110" y2="135" stroke="#1a1f2e" stroke-width="2"/>
+                  <circle cx="110" cy="135" r="5" fill="#fff" stroke="#1a1f2e" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="wf-pill-row"><span class="wf-chip wf-chip--ai">✦</span><span class="wf-chip">RSU vs Options?</span></div>
+              <div style="flex:1;"></div>
+              <div class="wf-box wf-box--dashed"><span class="wf-sub">▸ Table · 24 rows</span></div>
+            </div>
+          </div>
+          <figcaption class="scenario-cap">
+            <em>B2 · Filter applied</em>
+            <strong>Chart reshapes.</strong>
+            Old line fades to a ghost, new RSU-only line animates in. Suggested questions adapt to the filter.
+          </figcaption>
+        </figure>
+
+        <!-- Scenario B3: AI chip tapped, inline answer -->
+        <figure class="scenario">
+          <div class="wf-phone">
+            <div class="wf-phone__notch" aria-hidden="true"></div>
+            <div class="wf-phone__scroll">
+              <div class="wf-row"><span>←</span><span class="wf-sub">Simulator</span><span>⋯</span></div>
+              <div class="wf-pill-row"><span class="wf-chip">All plans ▼</span><span class="wf-chip">NO 🇳🇴</span></div>
+              <div class="wf-chart" style="padding:8px;">
+                <svg viewBox="0 0 220 140" aria-hidden="true">
+                  <!-- Highlighted region (months 18-30) -->
+                  <rect x="60" y="10" width="60" height="125" fill="#3042a0" fill-opacity="0.12"/>
+                  <path d="M10,110 L50,88 L90,62 L130,42 L170,28 L210,16 L210,130 L10,130 Z" fill="#3042a0" fill-opacity="0.08"/>
+                  <polyline fill="none" stroke="#1a1f2e" stroke-width="1.8" points="10,110 50,88 90,62 130,42 170,28 210,16"/>
+                  <!-- Emphasis dot -->
+                  <circle cx="90" cy="62" r="4" fill="#3042a0" stroke="#fff" stroke-width="1.5"/>
+                  <line x1="10" y1="135" x2="210" y2="135" stroke="#c8ccd4" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="wf-pill-row"><span class="wf-chip wf-chip--on">Leave in 18m? ×</span><span class="wf-chip">NO vs UK</span></div>
+              <div class="wf-box" style="background:var(--wf-ai-soft); border-color:var(--wf-ai); padding:8px 10px;">
+                <div style="font-size:11px; color:var(--wf-ink); line-height:1.4;">
+                  <strong style="color:var(--wf-ai);">✦</strong> In 18 months, <strong>1 250</strong> of your shares unlock. You could sell in a 90-day window. ≈ €12 500 after Norwegian tax.
+                </div>
+              </div>
+              <div style="flex:1;"></div>
+              <div class="wf-box wf-box--dashed"><span class="wf-sub">▸ Table</span></div>
+            </div>
+          </div>
+          <figcaption class="scenario-cap">
+            <em>B3 · Chip tapped</em>
+            <strong>Chart becomes the lens.</strong>
+            Range highlighted, dot emphasised, answer card slots in. No modal, no screen change.
+          </figcaption>
+        </figure>
+
+        <!-- Scenario B4: Table drawer expanded -->
+        <figure class="scenario">
+          <div class="wf-phone">
+            <div class="wf-phone__notch" aria-hidden="true"></div>
+            <div class="wf-phone__scroll">
+              <div class="wf-row"><span>←</span><span class="wf-sub">Simulator</span><span>⋯</span></div>
+              <div class="wf-chart" style="padding:6px;">
+                <svg viewBox="0 0 220 56" aria-hidden="true">
+                  <polyline fill="none" stroke="#1a1f2e" stroke-width="1.6" points="10,44 50,36 90,26 130,18 170,12 210,6"/>
+                </svg>
+              </div>
+              <div class="wf-box" style="padding:6px 10px; background:#fff;">
+                <span class="wf-sub">▾ Table · Per year</span>
+                <span class="wf-chip" style="font-size:9.5px;">CSV</span>
+              </div>
+              <div class="wf-table">
+                <div class="wf-tr"><span class="wf-th">YR</span><span class="wf-th">Curr</span><span class="wf-th">Sim</span><span class="wf-th">Δ</span></div>
+                <div class="wf-tr"><span>2023</span><span>300</span><span>1 200</span><span>+900</span></div>
+                <div class="wf-tr"><span>2024</span><span>300</span><span>1 200</span><span>+900</span></div>
+                <div class="wf-tr"><span>2025</span><span>350</span><span>1 400</span><span>+1 050</span></div>
+                <div class="wf-tr"><span>2026</span><span>450</span><span>1 800</span><span>+1 350</span></div>
+                <div class="wf-tr"><span>2027</span><span>500</span><span>2 000</span><span>+1 500</span></div>
+              </div>
+            </div>
+          </div>
+          <figcaption class="scenario-cap">
+            <em>B4 · Table drawer</em>
+            <strong>Numbers-first view.</strong>
+            Chart compresses to a sparkline, table takes the stage. Export button sits in the drawer header.
+          </figcaption>
+        </figure>
+
+      </div>
+    </div>
+
+    <!-- CONCEPT B · pros & cons -->
+    <div class="proscons">
+      <div class="pc-pros">
+        <h4>Pros</h4>
+        <ul>
+          <li>Chart and AI are <strong>woven together</strong>: ask a question, see the chart respond. The co-pilot becomes part of the data, not a bolt-on.</li>
+          <li>The scroller rides the actual year axis — spatially matches what the user is thinking about (time).</li>
+          <li>Filter changes are visually obvious: the old line stays as a ghost while the new line animates in.</li>
+          <li>Less vertical real estate than Concept A — the chart doubles as both the data and the AI response surface.</li>
+          <li>Suggested-question chips make the AI's capability <strong>visible by default</strong> — no one has to find it.</li>
+        </ul>
+      </div>
+      <div class="pc-cons">
+        <h4>Cons</h4>
+        <ul>
+          <li>Bigger shift from today's Optio simulator — existing users need one short onboarding pass.</li>
+          <li>Scroller on the axis is a tighter touch target than a stand-alone slider — bad for shaky hands or small screens.</li>
+          <li>Table as a drawer means spreadsheet-brain users have an extra tap to reach their preferred view.</li>
+          <li>The "chart as answer" idea depends on a solid highlight pattern — requires more design/engineering work to land.</li>
+          <li>Free-form questions are one step away — only suggested chips visible by default. Users who want to type anything must find the input.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       ACCESSIBILITY ANALYSIS
+       ========================================================= -->
+  <section class="a11y-block">
+    <span class="case-eyebrow" data-en="Accessibility analysis"
+                               data-no="Tilgjengelighetsanalyse">Accessibility analysis</span>
+    <h2 data-en="Which concept is likelier to serve people with disabilities, and how to lift the other"
+        data-no="Hvilket konsept tjener trolig flere med funksjonsnedsettelser, og hvordan løfte det andre">
+      Which concept is likelier to serve people with disabilities, and how to lift the other
+    </h2>
+    <p data-en="A structured comparison across the disability contexts this tool is most likely to meet in a corporate equity programme: screen-reader users, keyboard-only users, low-vision users on magnification, users with motor impairments or tremor, and users with cognitive or attention differences."
+       data-no="En strukturert sammenligning på tvers av funksjonsnedsettelses-kontekster dette verktøyet sannsynligvis møter i et bedriftsaksjeprogram: skjermleserbrukere, tastatur-alene-brukere, svaksynte med forstørrelse, brukere med motoriske utfordringer eller skjelvinger, og brukere med kognitive eller oppmerksomhetsforskjeller.">
+      A structured comparison across the disability contexts this tool is most likely to meet in a corporate equity programme: screen-reader users, keyboard-only users, low-vision users on magnification, users with motor impairments or tremor, and users with cognitive or attention differences.
+    </p>
+
+    <div class="verdict">
+      <span class="verdict-tag">Verdict</span>
+      <p><strong>Concept A is likelier to be preferred by people with disabilities as it stands today.</strong> Its chat input is a standard text field (works with every assistive tech out of the box), its three-zone layout maps cleanly to screen-reader landmarks, and the scroller lives as a distinct target away from the chart — simpler to operate with a keyboard, a switch, or an imprecise tap. Concept B is more elegant for sighted mouse/touch users, but its reliance on spatial highlight-plus-text pairings and the on-axis scroller demand more design investment to reach parity.</p>
+    </div>
+
+    <div class="a11y-table" role="table" aria-label="Accessibility dimension comparison between Concept A and Concept B">
+      <div class="a11y-head" role="row">
+        <div role="columnheader">Dimension</div>
+        <div role="columnheader">Concept A — Toggle + sticky bar</div>
+        <div role="columnheader">Concept B — Chart-first + chips</div>
+        <div role="columnheader">Leans</div>
+      </div>
+      <div class="a11y-row" role="row">
+        <div class="a11y-dim" role="cell">Screen reader</div>
+        <div role="cell">Clear landmarks: scroller region, data region, chat region. Chat is a standard <code>&lt;input&gt;</code> that works with VoiceOver, TalkBack, NVDA, JAWS out of the box.</div>
+        <div role="cell">The "chip tap → chart highlights → inline answer" pattern needs explicit announcements ("Range 2025 – 2027 highlighted. Answer: …"). Possible, but needs discipline.</div>
+        <div class="a11y-winner a" role="cell">A</div>
+      </div>
+      <div class="a11y-row" role="row">
+        <div class="a11y-dim" role="cell">Keyboard only</div>
+        <div role="cell">Natural Tab order: scroller → toggle → chart/table → chat input. Scroller is a single control with native arrow-key stepping.</div>
+        <div role="cell">Works, but the on-axis scroller must behave as an ARIA slider with keyboard steps. Chart becomes the main focus zone — needs an alternative data table reachable via a single key.</div>
+        <div class="a11y-winner a" role="cell">A</div>
+      </div>
+      <div class="a11y-row" role="row">
+        <div class="a11y-dim" role="cell">Low vision / magnification</div>
+        <div role="cell">Three vertical zones zoom well — each one fits a 400% viewport. Numbers appear twice (cards + table), so the summary survives zoom.</div>
+        <div role="cell">Chart-first means more content fits a zoomed viewport at once, but inline AI answers can slip off-screen when the user is zoomed on the chart.</div>
+        <div class="a11y-winner tie" role="cell">Tie</div>
+      </div>
+      <div class="a11y-row" role="row">
+        <div class="a11y-dim" role="cell">Motor / tremor</div>
+        <div role="cell">Scroller is a single large target, visually separate from the chart. Chat bar is a tall tap area at the bottom of the screen (easy thumb reach).</div>
+        <div role="cell">Scroller riding the axis is a smaller precision target. Easy to accidentally hit the chart line instead of the handle. Chips are fine as tap targets.</div>
+        <div class="a11y-winner a" role="cell">A</div>
+      </div>
+      <div class="a11y-row" role="row">
+        <div class="a11y-dim" role="cell">Cognitive / attention</div>
+        <div role="cell">Familiar layout. Table is first-class so literal readers don't need to interpret a chart. Chat is unmistakable.</div>
+        <div role="cell">One surface doing multiple jobs can overwhelm. The ghost-line + highlight animation needs <code>prefers-reduced-motion</code> alternatives.</div>
+        <div class="a11y-winner a" role="cell">A</div>
+      </div>
+      <div class="a11y-row" role="row">
+        <div class="a11y-dim" role="cell">AI discoverability</div>
+        <div role="cell">Co-pilot is subtle — some users will never find it. Needs a one-time hint on first visit.</div>
+        <div role="cell">Suggested chips put the co-pilot's capability on the screen by default. No discovery problem.</div>
+        <div class="a11y-winner b" role="cell">B</div>
+      </div>
+      <div class="a11y-row" role="row">
+        <div class="a11y-dim" role="cell">Reduced motion</div>
+        <div role="cell">Minimal animation; mostly static. Toggle between chart and table can be instant.</div>
+        <div role="cell">Chart animation on filter change and highlight on chip tap both need reduced-motion fallbacks (cross-fade or instant redraw).</div>
+        <div class="a11y-winner a" role="cell">A</div>
+      </div>
+    </div>
+
+    <div class="a11y-improve">
+      <article>
+        <h3><span>Lift Concept A</span>Make the co-pilot less hidden</h3>
+        <ul>
+          <li>On first visit, add a single <strong>one-time coachmark</strong> pointing at the chat bar ("Ask the co-pilot in your own language"). Dismissible, never shown again.</li>
+          <li>When the user drags the scroller to an unusual value, surface <strong>one suggested question</strong> above the chat bar ("Ask why 2026 is so much higher?"). Opt-in prompt, not a nudge.</li>
+          <li>Give the chat bar a visible label (not just placeholder) so dictation users and SR users know what it is before they focus it.</li>
+          <li>On the Table view, make each row operable so screen readers can announce row totals and Δ.</li>
+          <li>Expose the per-year / per-plan / per-instrument tabs as a proper <code>tablist</code> + <code>tabpanel</code>, with arrow-key navigation.</li>
+        </ul>
+      </article>
+      <article>
+        <h3><span>Lift Concept B</span>Make the data-as-answer pattern work for everyone</h3>
+        <ul>
+          <li>When a chip is tapped, the inline answer card becomes an <code>aria-live="polite"</code> region and announces <strong>both</strong> the highlighted range and the sentence ("Range 2025 – 2027 shown. In 18 months, 1 250 of your shares unlock…").</li>
+          <li>Make the axis scroller a proper ARIA slider with keyboard steps (arrow, PageUp/Down, Home, End) and a visible value label beside the handle at all sizes.</li>
+          <li>Provide a <strong>"Describe this chart"</strong> button that drops a plain-language summary into the inline answer area — useful for screen readers and for sighted users who aren't chart-fluent.</li>
+          <li>Honour <code>prefers-reduced-motion</code>: replace the ghost-line transition and the highlight pulse with instant swaps.</li>
+          <li>Promote the table drawer: always show the first three rows collapsed (not just the toggle), so spreadsheet-brain users see numbers without a tap.</li>
+          <li>Ensure chip hit areas are at least 44 × 44 CSS px and chips stack rather than overflow horizontally on narrow viewports.</li>
+        </ul>
+      </article>
     </div>
   </section>
 
