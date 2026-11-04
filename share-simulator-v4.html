@@ -63,11 +63,11 @@
   .price-bar {
     position: sticky; top: 60px; z-index: 9;
     background: var(--ink); color: #fff;
-    padding: 10px 16px;
-    display: flex; flex-direction: column; gap: 4px;
+    padding: 12px 18px 14px;
+    display: flex; flex-direction: column; gap: 8px;
     border-bottom: 1px solid var(--ink);
   }
-  .price-bar .row1 { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .price-bar .row1 { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .price-bar .price {
     font-family: var(--mono); font-size: 17px; font-weight: 700; letter-spacing: -0.3px;
   }
@@ -89,7 +89,7 @@
     padding: 4px 0; min-height: 28px;
   }
   .price-bar .as-of button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 4px; }
-  .price-bar .row2 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 11px; }
+  .price-bar .row2 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 11px; }
   .price-bar .status-chip {
     display: inline-flex; align-items: center; gap: 5px;
     padding: 2px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 500;
@@ -102,32 +102,34 @@
   .price-bar .status-chip.blackout .d { background: #e36565; }
   .price-bar .pos { opacity: 0.75; font-family: var(--mono); font-size: 10.5px; }
 
-  main { padding: 20px 18px 32px; display: flex; flex-direction: column; gap: 22px; flex: 1; }
+  main { padding: 28px 20px 48px; display: flex; flex-direction: column; gap: 36px; flex: 1; }
+  .view { display: flex; flex-direction: column; gap: 24px; }
+  .view[hidden] { display: none; }
 
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
   }
 
   /* HOME */
-  .hero { display: flex; flex-direction: column; gap: 10px; }
+  .hero { display: flex; flex-direction: column; gap: 14px; padding-bottom: 4px; }
   .hero .eyebrow { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--muted); font-weight: 600;
   }
-  .hero h1 { font-size: 22px; line-height: 1.3; font-weight: 700; letter-spacing: -0.3px; color: var(--ink); }
+  .hero h1 { font-size: 23px; line-height: 1.3; font-weight: 700; letter-spacing: -0.3px; color: var(--ink); }
   .hero h1 em { font-style: normal; color: var(--accent); font-weight: 700; }
-  .hero .since { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .hero .since { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin-top: 2px; }
   .hero .since b { color: var(--good); font-weight: 600; font-family: var(--mono); }
   .hero .since b.neg { color: var(--warn); }
 
   /* Position summary card */
   .pos-card {
-    background: var(--panel); border: 1px solid var(--rule); border-radius: 12px;
-    padding: 14px 16px;
-    display: flex; flex-direction: column; gap: 10px;
+    background: var(--panel); border: 1px solid var(--rule); border-radius: 14px;
+    padding: 18px 20px;
+    display: flex; flex-direction: column; gap: 16px;
   }
   .pos-card .row {
     display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
-    padding: 2px 0;
+    padding: 4px 0;
   }
   .pos-card .row .lbl { font-size: 12px; color: var(--muted); }
   .pos-card .row .val { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--ink); text-align: right; }
@@ -136,11 +138,11 @@
   /* Attention card */
   .attn-card {
     background: var(--attn-soft); border: 1px solid var(--attn);
-    border-radius: 12px; padding: 12px 14px;
-    display: flex; gap: 10px; align-items: flex-start;
+    border-radius: 14px; padding: 16px 18px;
+    display: flex; gap: 12px; align-items: flex-start;
   }
   .attn-card .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--attn); margin-top: 6px; flex-shrink: 0; }
-  .attn-card .txt { font-size: 13px; line-height: 1.5; color: var(--ink); }
+  .attn-card .txt { font-size: 13.5px; line-height: 1.55; color: var(--ink); }
   .attn-card .txt b { font-weight: 600; }
 
   /* Primary action */
@@ -161,38 +163,41 @@
   .cta-secondary:focus-visible { outline: var(--focus); outline-offset: 2px; }
 
   /* Simulator */
-  .section-head { display: flex; flex-direction: column; gap: 4px; }
+  .section-head { display: flex; flex-direction: column; gap: 6px; padding-bottom: 4px; }
   .section-head .eyebrow { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--muted); font-weight: 600;
   }
-  .section-head h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
-  .section-head .sub { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
+  .section-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
+  .section-head .sub { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin-top: 6px; }
 
-  .scen-chips { display: flex; gap: 8px; }
+  .scen-chips { display: flex; gap: 10px; }
   .scen-chip { appearance: none; border: 1px solid var(--rule-strong); background: #fff; color: var(--ink);
-    padding: 10px 6px; border-radius: 12px; font: inherit; font-size: 12px; font-weight: 500;
-    cursor: pointer; min-height: 68px; flex: 1;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-    text-align: center;
+    padding: 14px 8px; border-radius: 14px; font: inherit; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; min-height: 82px; flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    text-align: center; line-height: 1.3;
   }
   .scen-chip:focus-visible { outline: var(--focus); outline-offset: 2px; }
   .scen-chip[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
   .scen-chip .px { font-family: var(--mono); font-size: 11px; opacity: 0.7; font-weight: 500; }
 
-  /* Result card */
+  /* Result card — focal element, needs breathing room around it */
   .result {
     background: var(--accent-soft); border: 1px solid var(--accent);
-    border-radius: 14px; padding: 16px 18px;
-    display: flex; flex-direction: column; gap: 8px;
+    border-radius: 16px; padding: 22px 22px 18px;
+    display: flex; flex-direction: column; gap: 12px;
+    margin-top: 8px;
   }
   .result .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
     text-transform: uppercase; color: var(--accent); font-weight: 700;
+    line-height: 1.5;
   }
-  .result .sentence { font-size: 17px; line-height: 1.4; font-weight: 600; color: var(--ink); }
+  .result .sentence { font-size: 18px; line-height: 1.4; font-weight: 600; color: var(--ink); }
   .result .sentence b { color: var(--accent); font-weight: 700; letter-spacing: -0.2px; font-family: var(--mono); }
   .result .since-sim {
-    font-size: 12px; color: var(--muted); line-height: 1.4;
+    font-size: 12.5px; color: var(--muted); line-height: 1.45;
     display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    margin-top: -2px;
   }
   .result .since-sim .d { font-family: var(--mono); font-weight: 600; }
   .result .since-sim .d.up { color: var(--good); }
@@ -206,7 +211,7 @@
   .result .why:focus-visible { outline: var(--focus); outline-offset: 2px; border-radius: 4px; }
 
   /* Chart */
-  .chart-card { background: #fff; border: 1px solid var(--rule); border-radius: 14px; padding: 14px; }
+  .chart-card { background: #fff; border: 1px solid var(--rule); border-radius: 14px; padding: 18px 16px 14px; }
   .chart-card svg { width: 100%; height: auto; display: block; }
   .chart-cap {
     font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.05em; color: var(--accent); font-weight: 600;
@@ -234,8 +239,8 @@
   .inline-links .sep { color: var(--muted); padding: 0 12px; }
 
   .source-note {
-    font-size: 11.5px; color: var(--muted); line-height: 1.5;
-    padding: 10px 12px; background: var(--panel); border-radius: 8px;
+    font-size: 11.5px; color: var(--muted); line-height: 1.6;
+    padding: 12px 14px; background: var(--panel); border-radius: 10px;
     border: 1px dashed var(--rule-strong);
   }
   .source-note b { color: var(--ink); font-weight: 500; }
@@ -330,9 +335,9 @@
     background: #fff; border: 1px solid var(--rule); border-radius: 12px 12px 0 0; overflow: hidden;
   }
   .data-table caption {
-    padding: 10px 14px; font-size: 11.5px; color: var(--muted);
+    padding: 14px 16px; font-size: 11.5px; color: var(--muted);
     text-align: left; border-bottom: 1px solid var(--rule);
-    line-height: 1.5;
+    line-height: 1.55;
   }
   .data-table caption b { color: var(--ink); font-weight: 600; font-family: var(--mono); }
   .data-table thead th { padding: 10px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
@@ -340,7 +345,7 @@
     border-bottom: 1px solid var(--rule); background: var(--panel);
   }
   .data-table thead th.num { text-align: right; }
-  .data-table tbody td { padding: 14px 12px; font-size: 13.5px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .data-table tbody td { padding: 16px 14px; font-size: 13.5px; border-bottom: 1px solid var(--rule); vertical-align: top; }
   .data-table tbody tr:last-child td { border-bottom: 0; }
   .data-table tbody .key { font-weight: 600; }
   .data-table tbody .key .sub { font-size: 10.5px; color: var(--muted); font-weight: 500; display: block; margin-top: 2px; font-family: var(--mono); }
@@ -366,7 +371,7 @@
 
   .totals-row {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 14px; background: var(--panel);
+    padding: 16px 18px; background: var(--panel);
     border: 1px solid var(--rule); border-radius: 0 0 12px 12px; border-top: 0;
   }
   .totals-row .tot-lbl { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-family: var(--mono); }
@@ -391,8 +396,8 @@
 
   .compare-card {
     border: 1px solid var(--rule); background: #fff;
-    border-radius: 14px; padding: 16px;
-    display: flex; flex-direction: column; gap: 8px;
+    border-radius: 16px; padding: 20px 20px 18px;
+    display: flex; flex-direction: column; gap: 10px;
   }
   .compare-card.accent { background: var(--accent-soft); border-color: var(--accent); }
   .compare-card .tag { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em;
@@ -416,8 +421,8 @@
   .compare-card .risk.good .d { background: var(--good); }
 
   .delta-card {
-    background: var(--panel); border: 1px solid var(--rule); border-radius: 12px;
-    padding: 14px 16px;
+    background: var(--panel); border: 1px solid var(--rule); border-radius: 14px;
+    padding: 16px 18px;
   }
   .delta-card .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--muted); font-weight: 600;
