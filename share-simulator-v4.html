@@ -291,11 +291,12 @@
   .ai-drawer .close-btn:focus-visible { outline: var(--focus); outline-offset: 2px; }
   .ai-drawer .ai-intro { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
   .ai-drawer .ai-intro b { color: var(--ink); font-weight: 600; }
-  .ai-drawer .suggested { display: flex; flex-direction: column; gap: 8px; }
+  .ai-drawer .suggested { display: flex; flex-direction: column; gap: 6px; }
   .ai-drawer .suggested button {
-    appearance: none; border: 1px solid var(--rule-strong); background: #fff; color: var(--ink);
-    padding: 12px 14px; border-radius: 10px; font: inherit; font-size: 14px; cursor: pointer;
-    text-align: left; min-height: 44px;
+    appearance: none; border: 1px solid var(--rule); background: var(--panel); color: var(--ink);
+    padding: 9px 14px; border-radius: 999px; font: inherit; font-size: 12.5px; font-weight: 500;
+    line-height: 1.4; cursor: pointer;
+    text-align: left; min-height: 38px;
   }
   .ai-drawer .suggested button:focus-visible { outline: var(--focus); outline-offset: 2px; }
   .ai-drawer .suggested button[aria-pressed="true"] {
@@ -761,9 +762,9 @@
         <p class="note">The co-pilot can explain the maths. It won't tell you what to do.</p>
       </div>
 
-      <button class="cta-primary" id="shareBtn">
-        Share this with HR or accountant
-        <span class="arrow" aria-hidden="true">→</span>
+      <button class="cta-primary" id="downloadBtn">
+        Download this scenario (.csv)
+        <span class="arrow" aria-hidden="true">↓</span>
       </button>
     </section>
   </main>
@@ -1376,9 +1377,41 @@
     liveDemo.classList.remove('on'); liveDemo.setAttribute('aria-hidden', 'true'); liveTog.checked = false;
   });
 
-  document.getElementById('shareBtn').addEventListener('click', () => {
-    announce('Scenario shared with HR.');
-    alert('A scenario snapshot — including both choices, the delta, and today\'s price context — would be shared with your HR partner (read-only).');
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    const a = COMPARE[pickA.value], b = COMPARE[pickB.value];
+    const aNet = a.shares * a.priceAt * TAX;
+    const bNet = b.shares * b.priceAt * TAX;
+    const aGross = a.shares * a.priceAt;
+    const bGross = b.shares * b.priceAt;
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const q = v => `"${String(v).replace(/"/g, '""')}"`;
+    const rows = [
+      ['Share scenario snapshot'],
+      ['Generated', new Date().toLocaleString('en-GB')],
+      ['Participant', 'Maren Åsheim'],
+      ['Reference price (NOK)', fmtPx(CONTEXT.priceToday), 'Source', CONTEXT.priceSource, 'Updated', CONTEXT.priceUpdated],
+      ['Change since last visit (NOK)', fmtPx(CONTEXT.priceToday - CONTEXT.priceLastVisit), 'Last visit', CONTEXT.lastVisitDate],
+      ['Sale window', CONTEXT.blackoutOpen ? 'Open' : 'Blackout', 'Next blackout', CONTEXT.nextBlackout],
+      [],
+      ['Scenario', 'Shares', 'Price per share (NOK)', 'Gross (NOK)', 'Norwegian tax (NOK)', 'Net after tax (NOK)', 'Risk', 'Notes'],
+      ['A — ' + a.title, a.shares, fmtPx(a.priceAt), Math.round(aGross), Math.round(aGross - aNet), Math.round(aNet), a.riskText, a.note.replace(/<\/?b>/g, '')],
+      ['B — ' + b.title, b.shares, fmtPx(b.priceAt), Math.round(bGross), Math.round(bGross - bNet), Math.round(bNet), b.riskText, b.note.replace(/<\/?b>/g, '')],
+      [],
+      ['Difference (B − A, NOK)', Math.round(bNet - aNet), (bNet - aNet) > 0 ? 'if the price holds' : ''],
+      [],
+      ['Disclaimer', 'Illustrative tax at 33 %. The AI co-pilot explains the maths, it does not recommend. Talk to a tax advisor before acting.'],
+    ];
+    const csv = rows.map(r => r.map(q).join(',')).join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `share-scenario-${dateStr}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    announce('Scenario downloaded as CSV.');
   });
 
   // Init
