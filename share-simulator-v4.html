@@ -256,6 +256,8 @@
     display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
     margin-top: -2px;
   }
+  .result .res-note { margin: -6px 0 0; font-size: 13px; line-height: 1.45; color: var(--ink); }
+  .result .res-note[hidden] { display: none; }
   .result .since-sim .d { font-family: var(--mono); font-weight: 600; }
   .result .since-sim .d.up { color: var(--good); }
   .result .since-sim .d.down { color: var(--warn); }
@@ -426,7 +428,8 @@
      font; "By year" stays in the number font, same as the Simulator table.
      Kept after the shared rules so they win. */
   #bdTable:not([data-group="year"]) tbody th.key { font-family: var(--sans); font-weight: 700; line-height: 1.3; }
-  #bdTable tbody th.key .key-sub { display: block; margin-top: 3px; font-size: 11.5px; font-weight: 400; line-height: 1.35; color: var(--muted); }
+  /* Under each name: how many shares, so the money ties back to Home */
+  :is(#simTable, #bdTable) tbody th.key .key-sub { display: block; margin-top: 3px; font-family: var(--sans); font-size: 11.5px; font-weight: 400; line-height: 1.35; color: var(--muted); }
   /* No chart here, so the open row itself carries the highlight */
   #bdTable tbody tr.row[aria-expanded="true"] > * { background: var(--accent-soft); }
   #bdTable tbody tr.row[aria-expanded="true"] th.key .row-toggle { color: var(--accent); }
@@ -847,20 +850,21 @@
     <section id="view-home" class="view" hidden>
       <div class="hero">
         <span class="eyebrow">Hi Maren</span>
-        <h1>At today's price you could take home about <em>4 250 NOK</em> after Norwegian tax.</h1>
+        <h1>At today's price you could take home about <em id="homeTake">35 426 NOK</em> after Norwegian tax.</h1>
         <p class="since">
-          <b class="pos-delta" id="homeSince">+ 180 NOK</b> since your last visit on 1 November.
+          From the <span id="homeSellN">1 250</span> shares you can sell today.
+          <b class="pos-delta" id="homeSince">+ 2 010 NOK</b> since your last visit on 1 November.
         </p>
       </div>
 
       <section class="pos-card" aria-label="Your current position">
         <div class="row">
           <span class="lbl">Shares you can sell today</span>
-          <span class="val">1 250<span class="sub">of 3 850</span></span>
+          <span class="val"><span id="homeSellVal">1 250</span><span class="sub">of <span id="homeAllN">3 850</span></span></span>
         </div>
         <div class="row">
-          <span class="lbl">Still vesting</span>
-          <span class="val">2 600<span class="sub">through 2028</span></span>
+          <span class="lbl">Still locked</span>
+          <span class="val"><span id="homeLockedN">2 600</span><span class="sub">through <span id="homeLastYear">2028</span></span></span>
         </div>
         <div class="row">
           <span class="lbl">Already sold</span>
@@ -870,7 +874,7 @@
 
       <section class="attn-card" role="status" aria-label="Attention needed">
         <span class="dot" aria-hidden="true"></span>
-        <p class="txt"><b>Next unlock: 19 November</b> — 1 250 shares. Roughly 2 100 NOK more to work with after tax, at today's price.</p>
+        <p class="txt" id="homeNext"><b>Next unlock: 19 November, in 15 days.</b> Your 1 250 options. At today's price they'd add about 5 276 NOK after tax, once you've paid 36 NOK for each share.</p>
       </section>
 
       <button class="cta-primary" id="goSimulator">
@@ -927,10 +931,11 @@
       </div>
 
       <section class="result" aria-live="polite" aria-atomic="true">
-        <span class="tag">For <span id="resYear">2026</span> · 1 share at <span id="resPx">84,60</span> NOK · after Norwegian tax</span>
-        <div class="sentence">You'd take home <b id="resValue">≈ 2 010 NOK</b>.</div>
+        <span class="tag">For <span id="resYear">2026</span> · <span id="resShares">1 250 options</span> · 1 share at <span id="resPx">84,60</span> NOK · after Norwegian tax</span>
+        <div class="sentence">You'd take home <b id="resValue">≈ 40 703 NOK</b>.</div>
+        <p class="res-note" id="resNote">That's after you pay 36 NOK for each share.</p>
         <div class="since-sim">
-          <span>Since 1 November:</span>
+          <span id="resDeltaLbl">Compared with today's price:</span>
           <span class="d up" id="resDelta">+ 320 NOK</span>
         </div>
         <button class="why" id="whyBtn" aria-haspopup="dialog" aria-expanded="false">Why? →</button>
@@ -1180,7 +1185,7 @@
   <h2 id="aiTitle" class="sr-only">AI co-pilot</h2>
   <p class="ai-intro"><b>The co-pilot explains, never recommends.</b> Pick a question, or type anything about your shares.</p>
   <div class="suggested">
-    <button data-q="why-high">Why is 2026 higher than other years?</button>
+    <button data-q="why-high">Why does 2026 change so much with the price?</button>
     <button data-q="leave-18m">What if I leave in 18 months?</button>
     <button data-q="no-uk">How is Norwegian tax different from UK?</button>
   </div>
@@ -1228,6 +1233,7 @@
 
 <script>
   // --- Data ---
+  // "Today" in this prototype is 4 November; the last visit was 1 November
   const CONTEXT = {
     priceToday: 42.30, priceLastVisit: 39.90,
     lastVisitDate: '1 November',
@@ -1236,51 +1242,61 @@
     canSellToday: true,
     nextPause: 'Mar 1–14, 2027',
     nextPauseReason: 'earnings announcement',
-    totalShares: 3850, vestedShares: 1250, vestingShares: 2600, soldLifetime: 0,
-    nextUnlockDate: '19 November', nextUnlockShares: 1250,
+    nextUnlockDate: '19 November', daysToUnlock: 15,
   };
-  const TAX = 0.67;
-  const YEARS = [
-    // statusShort uses the exact words of the filter tiles, so the two always match
-    { year: 2023, cur: 500,  status: 'sellable', statusLabel: 'Can sell today',     statusShort: 'Can sell', statusKind: 'good',
-      detail: 'You can sell these now.' },
-    { year: 2024, cur: 650,  status: 'sellable', statusLabel: 'Can sell today',     statusShort: 'Can sell', statusKind: 'good',
-      detail: 'You can sell these now.' },
-    { year: 2025, cur: 800,  status: 'sellable', statusLabel: 'Can sell today',     statusShort: 'Can sell', statusKind: 'good',
-      detail: 'You can sell these now.' },
-    { year: 2026, cur: 1500, status: 'soon',     statusLabel: 'Unlocks in 23 days', statusShort: 'Soon',     statusKind: 'attn',
-      detail: 'These unlock in 23 days, on 19 November. You can sell them from then.' },
-    { year: 2027, cur: 550,  status: 'later',    statusLabel: 'Vests Mar 2027',     statusShort: 'Later',    statusKind: 'muted',
-      detail: 'These unlock in March 2027. You can\'t sell them before then.' },
-    { year: 2028, cur: 500,  status: 'later',    statusLabel: 'Vests Oct 2028',     statusShort: 'Later',    statusKind: 'muted',
-      detail: 'These unlock in October 2028. You can\'t sell them before then.' },
-  ];
-  // Prior-visit deltas per year (for the Change column) — in NOK, net of tax
-  const YEAR_DELTA = { 2023: 0, 2024: 0, 2025: 30, 2026: 90, 2027: 35, 2028: 25 };
-  // Your shares, grouped by plan and by type. Plain words only: no "strike",
+  const TAX = 0.67; // what's left after ~33 % Norwegian tax (illustrative)
+
+  // What each kind of share costs you to use. Plain words only: no "strike",
   // no "exercisable"; "what" explains the type for anyone who's never heard of it
-  // Same shares as YEARS, just grouped differently: each grouping must add up
-  // to the same totals (all, can sell, soon, later), or "how much can I sell?"
-  // would get a different answer depending on which tab you're on
+  const TYPES = {
+    rsu:      { name: 'RSU', plural: 'RSUs', pay: 0, sub: 'Given to you, free',
+                what: 'RSUs are shares the company gives you. You don\'t pay anything for them.' },
+    options:  { name: 'Options', plural: 'options', pay: 36, sub: 'You pay 36 NOK each',
+                what: 'An option lets you buy a share for a fixed 36 NOK. It only pays off when the share is worth more than 36 NOK.' },
+    warrants: { name: 'Warrants', plural: 'warrants', pay: 48, sub: 'You pay 48 NOK each',
+                what: 'A warrant works like an option: you buy each share for a fixed 48 NOK. It only pays off when the share is worth more than 48 NOK.' },
+  };
+
+  // Every share you have, listed once: one row per unlock year.
+  // Every amount on every screen (Home, Simulator, Your shares, Compare, the
+  // AI assistant, the download) is worked out from this list, so no two
+  // screens can disagree. statusShort uses the exact words of the filter tiles.
+  const YEARS = [
+    { year: 2023, shares: 250,  type: 'rsu',      plan: 'Plan 2023', status: 'sellable', statusShort: 'Can sell', statusKind: 'good',
+      detail: 'You can sell these now.' },
+    { year: 2024, shares: 400,  type: 'rsu',      plan: 'Plan 2023', status: 'sellable', statusShort: 'Can sell', statusKind: 'good',
+      detail: 'You can sell these now.' },
+    { year: 2025, shares: 600,  type: 'rsu',      plan: 'Plan 2023', status: 'sellable', statusShort: 'Can sell', statusKind: 'good',
+      detail: 'You can sell these now.' },
+    { year: 2026, shares: 1250, type: 'options',  plan: 'Plan 2024', status: 'soon',     statusShort: 'Soon',     statusKind: 'attn',
+      detail: `These unlock in ${CONTEXT.daysToUnlock} days, on ${CONTEXT.nextUnlockDate}. From then you can buy the shares for 36 NOK each and sell them.` },
+    { year: 2027, shares: 700,  type: 'warrants', plan: 'Plan 2025', status: 'later',    statusShort: 'Later',    statusKind: 'muted',
+      detail: 'These unlock in March 2027. You can\'t use them before then.' },
+    { year: 2028, shares: 650,  type: 'warrants', plan: 'Plan 2025', status: 'later',    statusShort: 'Later',    statusKind: 'muted',
+      detail: 'These unlock in October 2028. You can\'t use them before then.' },
+  ];
+  // The same shares grouped by plan and by type (values come from YEARS)
   const PLANS = [
-    { key: 'Plan 2023', order: 2023, cur: 1950, change: 30, status: 'sellable',
-      detail: 'All of this plan is yours to sell now.' },
-    { key: 'Plan 2024', order: 2024, cur: 1500, change: 90, status: 'soon',
-      detail: 'This plan unlocks in 23 days, on 19 November. You can sell it from then.' },
-    { key: 'Plan 2025', order: 2025, cur: 1050, change: 60, status: 'later',
-      detail: 'This plan unlocks in two parts, in March 2027 and October 2028. You can\'t sell it before then.' },
+    { key: 'Plan 2023', order: 2023, detail: 'All of this plan is yours to sell now.' },
+    { key: 'Plan 2024', order: 2024, detail: `This plan unlocks in ${CONTEXT.daysToUnlock} days, on ${CONTEXT.nextUnlockDate}. You can use it from then.` },
+    { key: 'Plan 2025', order: 2025, detail: 'This plan unlocks in two parts, in March 2027 and October 2028. You can\'t use it before then.' },
   ];
   const INSTS = [
-    { key: 'Options', sub: 'You pay 36 NOK each', cur: 1500, change: 90, status: 'soon',
-      detail: 'You can use these from 19 November, in 23 days.',
-      what: 'An option lets you buy a share for a fixed 36 NOK. It only pays off when the share is worth more than 36 NOK.' },
-    { key: 'RSU', sub: 'Given to you, free', cur: 1950, change: 30, status: 'sellable',
-      detail: 'You can sell these now.',
-      what: 'RSUs are shares the company gives you. You don\'t pay anything for them.' },
-    { key: 'Warrants', sub: 'You pay 48 NOK each', cur: 1050, change: 60, status: 'later',
-      detail: 'You can\'t use these before March 2027.',
-      what: 'A warrant works like an option: you buy each share for a fixed 48 NOK.' },
+    { key: 'Options', type: 'options', detail: `You can use these from ${CONTEXT.nextUnlockDate}, in ${CONTEXT.daysToUnlock} days.` },
+    { key: 'RSU', type: 'rsu', detail: 'You can sell these now.' },
+    { key: 'Warrants', type: 'warrants', detail: 'You can\'t use these before March 2027.' },
   ];
+
+  // What you'd take home from one row of YEARS if 1 share is worth `price`:
+  // the price minus what you pay per share (never below 0), less tax.
+  // Rounded per row, and every total adds the rounded rows, so a column
+  // always sums to its total, on every screen.
+  const lotNet = (lot, price) => Math.round(lot.shares * Math.max(0, price - TYPES[lot.type].pay) * TAX);
+  const netOf = (lots, price) => lots.reduce((a, l) => a + lotNet(l, price), 0);
+  const sharesOf = lots => lots.reduce((a, l) => a + l.shares, 0);
+  const SELLABLE = YEARS.filter(l => l.status === 'sellable');
+  const NEXT_UNLOCK = YEARS.filter(l => l.status === 'soon');
+
   // One vocabulary for status everywhere: filter tiles, chips, sorting
   const STATUS_META = {
     sellable: { short: 'Can sell', kind: 'good' },
@@ -1303,6 +1319,12 @@
   const STATUS_ORDER = { sellable: 0, soon: 1, later: 2 };
   // Default direction when a column is first clicked
   const DEFAULT_DIR = { year: 'ascending', value: 'descending', change: 'descending', status: 'ascending' };
+  // The share price the chosen what-if stands for, to the øre
+  const scenPrice = () => Math.round(CONTEXT.priceToday * scenMult * 100) / 100;
+  // At today's price, "change" means since the last visit. In any other
+  // what-if it means the difference from today's price, which is the
+  // question a what-if answers ("how much more than if I sold today?")
+  const atToday = () => Math.abs(scenPrice() - CONTEXT.priceToday) < 0.005;
   let history_ = ['home'];
 
   const screenTitle = document.getElementById('screenTitle');
@@ -1405,11 +1427,13 @@
   const xStep = (w - padL - padR) / (n - 1);
 
   function visible() {
-    return YEARS.map(d => ({ year: d.year, cur: d.cur, sim: d.cur * scenMult * TAX }));
+    const p = scenPrice();
+    return YEARS.map(d => ({ year: d.year, shares: d.shares, type: d.type, sim: lotNet(d, p) }));
   }
-  function simLastVisit() {
-    const ratio = CONTEXT.priceLastVisit / CONTEXT.priceToday;
-    return YEARS.map(d => d.cur * scenMult * TAX * ratio);
+  function changeFor(lot) {
+    return atToday()
+      ? lotNet(lot, CONTEXT.priceToday) - lotNet(lot, CONTEXT.priceLastVisit)
+      : lotNet(lot, scenPrice()) - lotNet(lot, CONTEXT.priceToday);
   }
 
   const simLine = document.getElementById('simLine');
@@ -1456,8 +1480,7 @@
   function renderHandle() {
     const data = visible();
     const d = data[yearIdx];
-    const last = simLastVisit()[yearIdx];
-    const diff = d.sim - last;
+    const diff = changeFor(YEARS[yearIdx]);
     const x = padL + yearIdx * xStep;
     axisHandle.setAttribute('cx', x);
     axisProg.setAttribute('x2', x);
@@ -1479,8 +1502,17 @@
     yearBadge.textContent = d.year;
     resYear.textContent = d.year;
     resValue.textContent = `≈ ${fmt(d.sim)} NOK`;
-    const scenPx = CONTEXT.priceToday * scenMult;
+    const scenPx = scenPrice();
     resPx.textContent = fmtPx(scenPx);
+    const t = TYPES[d.type];
+    document.getElementById('resShares').textContent = `${fmt(d.shares)} ${t.plural}`;
+    document.getElementById('resDeltaLbl').textContent = atToday() ? 'Since 1 November:' : 'Compared with today\'s price:';
+    // Options and warrants: say what's been paid, or why they're worth nothing
+    const resNote = document.getElementById('resNote');
+    resNote.hidden = t.pay === 0;
+    resNote.textContent = t.pay === 0 ? ''
+      : scenPx <= t.pay ? `Worth nothing at this price: you'd pay ${t.pay} NOK for a share worth ${fmtPx(scenPx)} NOK. ${t.name} only pay off above ${t.pay} NOK.`
+      : `That's after you pay ${t.pay} NOK for each share.`;
     if (diff > 0) {
       resDelta.className = 'd up';
       resDelta.textContent = `+ ${fmt(diff)} NOK`;
@@ -1504,36 +1536,49 @@
   // --- Simulator exploration table ---
   function simRows() {
     return visible().map((d, idx) => ({
-      idx, year: d.year, sim: d.sim,
-      change: YEAR_DELTA[d.year] || 0,
+      idx, year: d.year, sim: d.sim, shares: d.shares, type: d.type,
+      change: changeFor(YEARS[idx]),
       status: YEARS[idx].status,
-      statusLabel: YEARS[idx].statusLabel,
       statusShort: YEARS[idx].statusShort,
       statusKind: YEARS[idx].statusKind,
       detail: YEARS[idx].detail,
     }));
   }
 
-  // "+30 since 1 Nov" reads on its own, no column header needed to decode it
-  function changeText(c) {
-    if (c === 0) return 'same as 1 Nov';
-    return `${c > 0 ? '+' : '−'}${fmt(Math.abs(c))} since 1 Nov`;
+  // "+402 since 1 Nov" / "+35 426 vs today" reads on its own, no column
+  // header needed to decode it. Your shares is always at today's price.
+  function changeText(c, today = atToday()) {
+    if (c === 0) return today ? 'same as 1 Nov' : 'same as today';
+    return `${c > 0 ? '+' : '−'}${fmt(Math.abs(c))} ${today ? 'since 1 Nov' : 'vs today'}`;
   }
-  function changeLine(c) {
+  function changeLine(c, today) {
     const cls = c > 0 ? 'up' : c < 0 ? 'down' : 'flat';
-    return `<span class="chg ${cls}">${changeText(c)}</span>`;
+    return `<span class="chg ${cls}">${changeText(c, today)}</span>`;
+  }
+  function changeSentence(c, today) {
+    const ref = today ? 'on 1 November' : 'at today\'s price';
+    if (c > 0) return ` That's <b>${fmt(c)} NOK more</b> than ${ref}.`;
+    if (c < 0) return ` That's <b>${fmt(-c)} NOK less</b> than ${ref}.`;
+    return today ? ' Same as on 1 November.' : ' Same as at today\'s price.';
+  }
+  // What a set of shares (all one type) is worth to you at a price, in one
+  // sentence: including what you pay for options and warrants, and the case
+  // where they're worth nothing because the price is below what you'd pay
+  function worthSentence(lots, price, lead) {
+    const t = TYPES[lots[0].type];
+    const what = `your ${fmt(sharesOf(lots))} ${t.plural}`;
+    if (t.pay > 0 && price <= t.pay)
+      return `${lead}, ${what} are worth <b>nothing</b> to you: you'd pay ${t.pay} NOK for a share worth ${fmtPx(price)} NOK. They only pay off above ${t.pay} NOK.`;
+    const when = lots.every(l => l.status === 'sellable') ? 'you\'d take home' : 'once they unlock, you\'d take home';
+    const after = t.pay > 0 ? `after paying ${t.pay} NOK for each share and Norwegian tax` : 'after Norwegian tax';
+    return `${lead}, ${when} about <b>${fmt(netOf(lots, price))} NOK</b> from ${what}, ${after}.`;
   }
 
   function detailHTML(r) {
-    const px = fmtPx(CONTEXT.priceToday * scenMult);
-    const verb = r.status === 'sellable' ? "you'd take home about" : "once they unlock, you'd take home about";
-    let changeLine = '';
-    if (r.change > 0) changeLine = ` That's <b>${fmt(r.change)} NOK more</b> than on 1 November.`;
-    else if (r.change < 0) changeLine = ` That's <b>${fmt(Math.abs(r.change))} NOK less</b> than on 1 November.`;
-    else changeLine = ' Same as on 1 November.';
+    const lead = `If 1 share is worth <b>${fmtPx(scenPrice())} NOK</b>`;
     return `<div class="detail-inner">
       <span class="det-status"><span class="d ${r.statusKind}" aria-hidden="true"></span>${r.detail}</span>
-      <p>If 1 share is worth <b>${px} NOK</b>, ${verb} <b>${fmt(r.sim)} NOK</b> from ${r.year} after Norwegian tax.${changeLine}</p>
+      <p>${worthSentence([YEARS[r.idx]], scenPrice(), lead)}${changeSentence(r.change, atToday())}</p>
       <button type="button" class="show-on-chart" data-idx="${r.idx}">Show ${r.year} on the chart ↑</button>
     </div>`;
   }
@@ -1557,8 +1602,9 @@
     const empty = document.getElementById('simEmpty');
     const wrap = document.querySelector('.sim-table-wrap');
     const body = document.getElementById('simTableBody');
-    document.getElementById('simCap').innerHTML =
-      `If 1 share is worth <b>${fmtPx(CONTEXT.priceToday * scenMult)} NOK</b>. Amounts are what you'd take home, in NOK, after Norwegian tax.`;
+    document.getElementById('simCap').innerHTML = atToday()
+      ? `At today's price, <b>${fmtPx(CONTEXT.priceToday)} NOK</b> a share. Amounts are what you'd take home, in NOK, after Norwegian tax.`
+      : `If 1 share is worth <b>${fmtPx(scenPrice())} NOK</b>. Amounts are what you'd take home, in NOK, after Norwegian tax. Under each amount: the difference from today's price.`;
     document.getElementById('simShowing').textContent =
       filtered.length === rows.length ? `Showing all ${rows.length} years`
       : `Showing ${filtered.length} of ${rows.length} years`;
@@ -1575,7 +1621,7 @@
     body.innerHTML = filtered.map(r => {
       const open = r.idx === simOpenIdx;
       return `<tr class="row" data-idx="${r.idx}" data-focused="${r.idx === yearIdx}" aria-expanded="${open}">
-        <th scope="row" class="key"><button type="button" class="row-toggle" aria-expanded="${open}" aria-controls="simDet${r.idx}">${r.year}<span class="sr-only">, details</span></button></th>
+        <th scope="row" class="key"><button type="button" class="row-toggle" aria-expanded="${open}" aria-controls="simDet${r.idx}">${r.year}<span class="sr-only">, details</span></button><span class="key-sub">${fmt(r.shares)} ${TYPES[r.type].plural}</span></th>
         <td class="net"><span class="amt">${fmt(r.sim)}</span>${changeLine(r.change)}</td>
         <td class="action"><span class="chip ${r.statusKind}"><span class="d" aria-hidden="true"></span>${r.statusShort}</span></td>
         <td class="chev" aria-hidden="true"><span>›</span></td>
@@ -1591,7 +1637,7 @@
     const totChg = document.getElementById('simTotalChange');
     totChg.className = 'chg ' + (totalChange > 0 ? 'up' : totalChange < 0 ? 'down' : 'flat');
     totChg.textContent = changeText(totalChange);
-    document.getElementById('simTotalSub').textContent = filtered.length === 1 ? '1 year' : `${filtered.length} years`;
+    document.getElementById('simTotalSub').textContent = `${fmt(filtered.reduce((a, r) => a + r.shares, 0))} shares`;
   }
 
   // Row tap: open its explanation (one at a time) and move the chart to it
@@ -1884,13 +1930,29 @@
     else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
   });
 
+  // Answers are worked out from the same data as the screens, so the
+  // assistant never quotes a number the app doesn't show
   const ANSWERS = {
-    'why-high': { text: 'In 2026 the biggest share tranche of your plan unlocks — about 30 % of the programme. Multiplied by your chosen price scenario, that year carries most of the climb.', range:[2,4], dot:3 },
-    'leave-18m': { text: 'In about 18 months (~2027), 1 250 of your shares will have unlocked. You could sell inside a 90-day post-termination window. The rest would return to the company. At today\'s 42,30 NOK, that\'s roughly 35 400 NOK after Norwegian tax.', range:[3,4], dot:4 },
+    'why-high': { range: [3,3], dot: 3, text: () => {
+      const o = TYPES.options, today = CONTEXT.priceToday;
+      const n = sharesOf(YEARS.filter(l => l.type === 'options'));
+      const p = atToday() ? Math.round(today * 200) / 100 : scenPrice();
+      const gNow = today - o.pay, g = p - o.pay;
+      const then = g <= 0
+        ? `At the price you picked (${fmtPx(p)} NOK), you'd gain nothing, because it's below ${o.pay} NOK.`
+        : `${atToday() ? 'If the price doubled to' : 'At the price you picked,'} ${fmtPx(p)} NOK, you'd gain ${fmtPx(g)} NOK a share, about ${fmtRatio(g / gNow)} times as much. So options swing much more than the price itself.`;
+      return `2026 is when your ${fmt(n)} options unlock. You pay ${o.pay} NOK for each share, so you only gain the part of the price above ${o.pay} NOK: ${fmtPx(gNow)} NOK a share at today's price. ${then} Your warrants (2027 and 2028) work the same way, but only above ${TYPES.warrants.pay} NOK.`;
+    } },
+    'leave-18m': { range: [0,4], dot: 4, text: () => {
+      const today = CONTEXT.priceToday;
+      const kept = YEARS.filter(l => l.year <= 2027), lost = YEARS.filter(l => l.year > 2027);
+      const by = k => fmt(netOf(kept.filter(l => l.type === k), today));
+      return `If you left in about 18 months (around May 2028), ${fmt(sharesOf(kept))} of your ${fmt(sharesOf(YEARS))} shares would have unlocked. The ${fmt(sharesOf(lost))} still locked would go back to the company. Unlocked RSUs stay yours. Options and warrants usually have to be used within 90 days of leaving. At today's price (${fmtPx(today)} NOK), that's about ${fmt(netOf(kept, today))} NOK after Norwegian tax: ${by('rsu')} from RSUs, ${by('options')} from options and ${by('warrants')} from warrants, which only pay off above ${TYPES.warrants.pay} NOK.`;
+    } },
     'no-uk': { text: 'Norwegian tax hits when each share unlocks, at your income tax rate (~33 % in this simulation). UK would only tax you when you actually sell. Same shares, very different timing.', range:[0,5], dot:2 },
   };
   const QLABELS = {
-    'why-high': 'Why is 2026 higher than other years?',
+    'why-high': 'Why does 2026 change so much with the price?',
     'leave-18m': 'What if I leave in 18 months?',
     'no-uk': 'How is Norwegian tax different from UK?',
   };
@@ -1915,12 +1977,12 @@
       const dy = axisY - 10 - d.sim * yScale;
       emphDot.setAttribute('cx', dx); emphDot.setAttribute('cy', dy); emphDot.setAttribute('r', 5);
       emphDot.style.display = '';
-      answerCard.innerHTML = `<span class="q">You asked</span>${q}<br><br>${a.text}<div class="foot">Based on your plan as of 1 November. The co-pilot explains, never recommends — talk to a tax advisor before acting.</div>`;
+      answerCard.innerHTML = `<span class="q">You asked</span>${q}<br><br>${typeof a.text === 'function' ? a.text() : a.text}<div class="foot">Based on your plan as of 1 November. The co-pilot explains, never recommends. Talk to a tax advisor before acting.</div>`;
     } else {
       // Unknown — honest fallback
       answerCard.classList.add('unknown');
       highlight.style.display='none'; emphDot.style.display='none';
-      answerCard.innerHTML = `<span class="q">You asked</span>${q}<br><br>I'm not sure about that specifically. Here's what I can tell you:<br><br>• Today's price is <b>42,30 NOK</b>, up 2,40 since 1 November.<br>• You have <b>1 250 sellable</b> shares and 2 600 still vesting.<br>• You can sell today. The next company sale pause starts <b>1 March 2027</b>.<br><br>For anything else — ask HR or a tax advisor.<div class="foot">The co-pilot never makes up answers. It falls back to what it knows.</div>`;
+      answerCard.innerHTML = `<span class="q">You asked</span>${q}<br><br>I'm not sure about that specifically. Here's what I can tell you:<br><br>• Today's price is <b>${fmtPx(CONTEXT.priceToday)} NOK</b>, up ${fmtPx(CONTEXT.priceToday - CONTEXT.priceLastVisit)} since 1 November.<br>• You have <b>${fmt(sharesOf(SELLABLE))} shares you can sell</b> and ${fmt(sharesOf(YEARS) - sharesOf(SELLABLE))} still locked.<br>• You can sell today. The next company sale pause starts <b>1 March 2027</b>.<br><br>For anything else, ask HR or a tax advisor.<div class="foot">The co-pilot never makes up answers. It falls back to what it knows.</div>`;
     }
     answerCard.classList.add('visible');
     aiDrawer.querySelectorAll('button[data-q]').forEach(b => b.setAttribute('aria-pressed', b.dataset.q === key ? 'true' : 'false'));
@@ -1943,8 +2005,11 @@
     const data = visible();
     const totS = data.reduce((a,d) => a + d.sim, 0);
     const big = data.reduce((b,d) => d.sim > b.sim ? d : b, data[0]);
-    const scenPx = CONTEXT.priceToday * scenMult;
-    const txt = `At ${fmtPx(scenPx)} NOK per share, your take-home across six years ranges from ${fmt(Math.min(...data.map(x=>x.sim)))} to ${fmt(Math.max(...data.map(x=>x.sim)))} NOK. Biggest year is ${big.year} at ${fmt(big.sim)} NOK, because that's when the largest tranche unlocks. Total across all years: ${fmt(totS)} NOK. The handle is on ${data[yearIdx].year}.`;
+    const scenPx = scenPrice();
+    const zero = data.filter(d => d.sim === 0).map(d => d.year);
+    const zeroTxt = !zero.length ? ''
+      : ` ${zero.join(' and ')} ${zero.length > 1 ? 'show' : 'shows'} 0 NOK, because at this price you'd pay more for those shares than they're worth.`;
+    const txt = `At ${fmtPx(scenPx)} NOK per share, your take-home across six years ranges from ${fmt(Math.min(...data.map(x=>x.sim)))} to ${fmt(Math.max(...data.map(x=>x.sim)))} NOK. Biggest year is ${big.year} at ${fmt(big.sim)} NOK, from ${fmt(big.shares)} ${TYPES[big.type].plural}.${zeroTxt} Total across all years: ${fmt(totS)} NOK. The handle is on ${data[yearIdx].year}.`;
     openAi();
     setTimeout(() => {
       answerCard.classList.remove('unknown');
@@ -1962,10 +2027,20 @@
   const bdSortSel = document.getElementById('bdSortSel');
 
   function bdRows() {
-    const src = bdGroup === 'year'
-      ? YEARS.map(d => ({ key: String(d.year), order: d.year, cur: d.cur, change: YEAR_DELTA[d.year] || 0, status: d.status, detail: d.detail }))
-      : bdGroup === 'plan' ? PLANS : INSTS;
-    return src.map(r => ({ ...r, order: r.order ?? r.key, value: r.cur * TAX }));
+    const groups = bdGroup === 'year'
+      ? YEARS.map(l => ({ key: String(l.year), order: l.year, detail: l.detail, lots: [l] }))
+      : bdGroup === 'plan'
+        ? PLANS.map(g => ({ ...g, lots: YEARS.filter(l => l.plan === g.key) }))
+        : INSTS.map(g => ({ ...g, order: g.key, what: TYPES[g.type].what, lots: YEARS.filter(l => l.type === g.type) }));
+    return groups.map(g => {
+      const t = TYPES[g.lots[0].type];
+      const shares = sharesOf(g.lots);
+      const value = netOf(g.lots, CONTEXT.priceToday);
+      // Groups never mix statuses; if one ever did, it shows the soonest
+      const status = g.lots.map(l => l.status).sort((a, b) => STATUS_ORDER[a] - STATUS_ORDER[b])[0];
+      const subs = [`${fmt(shares)} ${t.plural}`].concat(bdGroup === 'type' ? [t.sub] : []);
+      return { ...g, shares, value, status, subs, change: value - netOf(g.lots, CONTEXT.priceLastVisit) };
+    });
   }
   const bdNoun = n => BD_NOUN[bdGroup].toLowerCase() + (n === 1 ? '' : 's');
 
@@ -2014,13 +2089,10 @@
 
   function bdDetailHTML(r) {
     const meta = STATUS_META[r.status];
-    const verb = r.status === 'sellable' ? "you'd take home about" : "once they unlock, you'd take home about";
-    const changeSentence = r.change > 0 ? ` That's <b>${fmt(r.change)} NOK more</b> than on 1 November.`
-      : r.change < 0 ? ` That's <b>${fmt(Math.abs(r.change))} NOK less</b> than on 1 November.`
-      : ' Same as on 1 November.';
+    const lead = `At today's price (<b>${fmtPx(CONTEXT.priceToday)} NOK</b> a share)`;
     return `<div class="detail-inner">
       <span class="det-status"><span class="d ${meta.kind}" aria-hidden="true"></span>${r.detail}</span>
-      <p>At today's price (<b>${fmtPx(CONTEXT.priceToday)} NOK</b> a share), ${verb} <b>${fmt(r.value)} NOK</b> after Norwegian tax.${changeSentence}</p>
+      <p>${worthSentence(r.lots, CONTEXT.priceToday, lead)}${changeSentence(r.change, true)}</p>
       ${r.what ? `<p class="det-what"><b>What is this?</b> ${r.what}</p>` : ''}
     </div>`;
   }
@@ -2055,8 +2127,8 @@
       const open = r.key === bdOpenKey;
       const meta = STATUS_META[r.status];
       return `<tr class="row" data-key="${r.key}" aria-expanded="${open}">
-        <th scope="row" class="key"><button type="button" class="row-toggle" aria-expanded="${open}" aria-controls="bdDet${i}">${r.key}<span class="sr-only">, details</span></button>${r.sub ? `<span class="key-sub">${r.sub}</span>` : ''}</th>
-        <td class="net"><span class="amt">${fmt(r.value)}</span>${changeLine(r.change)}</td>
+        <th scope="row" class="key"><button type="button" class="row-toggle" aria-expanded="${open}" aria-controls="bdDet${i}">${r.key}<span class="sr-only">, details</span></button>${r.subs.map(x => `<span class="key-sub">${x}</span>`).join('')}</th>
+        <td class="net"><span class="amt">${fmt(r.value)}</span>${changeLine(r.change, true)}</td>
         <td class="action"><span class="chip ${meta.kind}"><span class="d" aria-hidden="true"></span>${meta.short}</span></td>
         <td class="chev" aria-hidden="true"><span>›</span></td>
       </tr>
@@ -2068,8 +2140,8 @@
     document.getElementById('bdTotal').textContent = fmt(total);
     const tc = document.getElementById('bdTotalChange');
     tc.className = 'chg ' + (totalChange > 0 ? 'up' : totalChange < 0 ? 'down' : 'flat');
-    tc.textContent = changeText(totalChange);
-    document.getElementById('bdTotalSub').textContent = `${filtered.length} ${bdNoun(filtered.length)}`;
+    tc.textContent = changeText(totalChange, true);
+    document.getElementById('bdTotalSub').textContent = `${fmt(filtered.reduce((a, r) => a + r.shares, 0))} shares`;
   }
 
   function renderBreakdown() { bdRenderControls(); bdRenderTable(); }
@@ -2132,6 +2204,30 @@
     });
   });
 
+  // --- Home: every number comes from YEARS ---
+  function renderHome() {
+    const today = CONTEXT.priceToday;
+    const sellN = sharesOf(SELLABLE), allN = sharesOf(YEARS);
+    const take = netOf(SELLABLE, today);
+    const since = take - netOf(SELLABLE, CONTEXT.priceLastVisit);
+    const setText = (id, v) => { document.getElementById(id).textContent = v; };
+    // Non-breaking spaces keep "+ 2 010 NOK" on one line
+    const nb = '\u00a0';
+    setText('homeTake', `${fmt(take)}${nb}NOK`);
+    setText('homeSellN', fmt(sellN));
+    setText('homeSince', since === 0 ? 'No change' : `${since > 0 ? '+' : '−'}${nb}${fmt(Math.abs(since))}${nb}NOK`);
+    setText('homeSellVal', fmt(sellN));
+    setText('homeAllN', fmt(allN));
+    setText('homeLockedN', fmt(allN - sellN));
+    setText('homeLastYear', YEARS[YEARS.length - 1].year);
+    setText('pbPos', `${fmt(sellN)} sellable · ${fmt(allN)} total`);
+    const t = TYPES[NEXT_UNLOCK[0].type];
+    document.getElementById('homeNext').innerHTML =
+      `<b>Next unlock: ${CONTEXT.nextUnlockDate}, in ${CONTEXT.daysToUnlock} days.</b> Your ${fmt(sharesOf(NEXT_UNLOCK))} ${t.plural}. ` +
+      `At today's price they'd add about ${fmt(netOf(NEXT_UNLOCK, today))}${nb}NOK after tax` +
+      (t.pay ? `, once you've paid ${t.pay} NOK for each share.` : '.');
+  }
+
   // --- Compare ---
   const COMPARE = {
     'now-1000': { title: 'Sell 1 000 shares today', shares: 1000, priceAt: CONTEXT.priceToday,
@@ -2142,8 +2238,8 @@
       priceLabel: `500 × ${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax`,
       note: 'Half your vested stake. Nothing you\'d miss.',
       riskGood: true, riskText: 'No waiting, no company-rule pause' },
-    'now-all': { title: 'Sell everything vested today', shares: 1250, priceAt: CONTEXT.priceToday,
-      priceLabel: `1 250 × ${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax`,
+    'now-all': { title: 'Sell everything vested today', shares: sharesOf(SELLABLE), priceAt: CONTEXT.priceToday,
+      priceLabel: `${fmt(sharesOf(SELLABLE))} × ${fmtPx(CONTEXT.priceToday)} NOK − 33 % Norwegian tax`,
       note: 'Clears your vested position. Future unlocks still come through.',
       riskGood: true, riskText: 'No waiting, no company-rule pause' },
     'wait-6m': { title: 'Wait 6 months, then sell 1 000 shares', shares: 1000, priceAt: CONTEXT.priceToday * 1.0733,
@@ -2181,10 +2277,11 @@
     cardBrisk.className = 'risk' + (b.riskGood ? ' good' : '');
     cardBrisk.innerHTML = `<span class="d" aria-hidden="true"></span>${b.riskText}`;
 
-    const diff = bNet - aNet;
-    const sign = diff >= 0 ? '+' : '−';
-    const suffix = diff > 0 ? ' — if the price holds' : '';
-    document.getElementById('deltaText').innerHTML = `Scenario B gives you about <b>${sign} ${fmt(Math.abs(diff))} NOK</b> more after tax${suffix}.`;
+    // Rounded the same way as the two cards, so the difference matches them
+    const diff = Math.round(bNet) - Math.round(aNet);
+    document.getElementById('deltaText').innerHTML = diff === 0
+      ? 'Both give you about the same after tax.'
+      : `Scenario B gives you about <b>${fmt(Math.abs(diff))} NOK ${diff > 0 ? 'more' : 'less'}</b> after tax${diff > 0 ? ', if the price holds' : ''}.`;
   }
   pickA.addEventListener('change', renderCompare);
   pickB.addEventListener('change', renderCompare);
@@ -2253,13 +2350,14 @@
       ['Participant', 'Maren Åsheim'],
       ['Reference price (NOK)', fmtPx(CONTEXT.priceToday), 'Source', CONTEXT.priceSource, 'Updated', CONTEXT.priceUpdated],
       ['Change since last visit (NOK)', fmtPx(CONTEXT.priceToday - CONTEXT.priceLastVisit), 'Last visit', CONTEXT.lastVisitDate],
-      ['Sale window', CONTEXT.blackoutOpen ? 'Open' : 'Blackout', 'Next blackout', CONTEXT.nextBlackout],
+      ['Selling', CONTEXT.canSellToday ? 'Open today' : 'Paused', 'Next company sale pause', CONTEXT.nextPause],
       [],
       ['Scenario', 'Shares', 'Price per share (NOK)', 'Gross (NOK)', 'Norwegian tax (NOK)', 'Net after tax (NOK)', 'Risk', 'Notes'],
-      ['A — ' + a.title, a.shares, fmtPx(a.priceAt), Math.round(aGross), Math.round(aGross - aNet), Math.round(aNet), a.riskText, a.note.replace(/<\/?b>/g, '')],
-      ['B — ' + b.title, b.shares, fmtPx(b.priceAt), Math.round(bGross), Math.round(bGross - bNet), Math.round(bNet), b.riskText, b.note.replace(/<\/?b>/g, '')],
+      // Tax = gross − net of the rounded figures, so each row adds up exactly
+      ['A: ' + a.title, a.shares, fmtPx(a.priceAt), Math.round(aGross), Math.round(aGross) - Math.round(aNet), Math.round(aNet), a.riskText, a.note.replace(/<\/?b>/g, '')],
+      ['B: ' + b.title, b.shares, fmtPx(b.priceAt), Math.round(bGross), Math.round(bGross) - Math.round(bNet), Math.round(bNet), b.riskText, b.note.replace(/<\/?b>/g, '')],
       [],
-      ['Difference (B − A, NOK)', Math.round(bNet - aNet), (bNet - aNet) > 0 ? 'if the price holds' : ''],
+      ['Difference (B − A, NOK)', Math.round(bNet) - Math.round(aNet), Math.round(bNet) > Math.round(aNet) ? 'if the price holds' : ''],
       [],
       ['Disclaimer', 'Illustrative tax at 33 %. The AI co-pilot explains the maths, it does not recommend. Talk to a tax advisor before acting.'],
     ];
@@ -2295,7 +2393,7 @@
   window.addEventListener('resize', syncChromeHeights);
   window.addEventListener('orientationchange', () => setTimeout(syncChromeHeights, 250));
 
-  renderChart(); renderBreakdown(); renderCompare(); updateSortIndicators();
+  renderHome(); renderChart(); renderBreakdown(); renderCompare(); updateSortIndicators();
   const initialView = location.hash.replace('#/','') || 'home';
   navigate(views.includes(initialView) ? initialView : 'home', false);
 </script>
