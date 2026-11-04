@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#1a1f2e" />
-<title>Simulator proto · Concept B (mobile)</title>
+<title>Simulator proto · Concept B v2 (mobile)</title>
 <style>
   :root {
     --ink: #1a1f2e;
@@ -17,6 +17,8 @@
     --ai: #3042a0;
     --ai-soft: #e5e9fa;
     --ai-strong: #202d75;
+    --good: #0b8554;
+    --warn: #b57300;
     --mono: 'JetBrains Mono', ui-monospace, monospace;
     --sans: 'Inter', -apple-system, system-ui, sans-serif;
   }
@@ -35,76 +37,155 @@
   }
   header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 16px 10px;
+    padding: 14px 16px 10px;
     border-bottom: 1px solid var(--rule);
   }
   header .back { color: var(--ink); text-decoration: none; font-size: 15px; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; min-width: 44px; }
   header h1 { font-size: 15px; font-weight: 600; letter-spacing: -0.005em; }
   header .more { width: 44px; text-align: right; color: var(--muted); font-size: 18px; min-height: 44px; display: inline-flex; align-items: center; justify-content: flex-end; }
-  main { padding: 14px 16px 22px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+  main { padding: 14px 16px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-  /* Filter chips */
-  .filters { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-  .filters::-webkit-scrollbar { display: none; }
-  .filters button {
+  .group-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); font-weight: 600;
+    margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+  }
+  .group-label .count {
+    display: inline-block; padding: 1px 6px; border: 1px solid var(--rule);
+    border-radius: 999px; font-size: 9.5px; color: var(--muted);
+  }
+  .chip-row { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip-row button {
     appearance: none; border: 1px solid var(--rule); background: #fff;
     padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 12px; color: var(--muted);
-    cursor: pointer; white-space: nowrap; min-height: 44px; min-width: 44px;
+    cursor: pointer; white-space: nowrap; min-height: 40px; min-width: 44px;
+    display: inline-flex; align-items: center; gap: 4px;
   }
-  .filters button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .filters button:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+  .chip-row button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .chip-row button:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+  .chip-row button .swatch { width: 8px; height: 8px; border-radius: 50%; }
+  .chip-row button .n { font-family: var(--mono); font-size: 9.5px; opacity: 0.7; margin-left: 2px; }
 
-  /* Totals pill */
-  .totals { display: flex; gap: 8px; }
-  .totals .t {
+  /* Totals */
+  .totals-row { display: flex; gap: 8px; }
+  .totals-row .t {
     flex: 1; border: 1px solid var(--rule); border-radius: 12px; padding: 10px 14px;
-    display: flex; flex-direction: column; gap: 2px;
     background: #fff;
-    min-height: 56px;
+    min-height: 60px;
+    display: flex; flex-direction: column; gap: 2px;
   }
-  .totals .t.sim { background: var(--ai-soft); border-color: var(--ai); }
-  .totals .t .lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-  .totals .t.sim .lbl { color: var(--ai); }
-  .totals .t .val { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; }
+  .totals-row .t.sim { background: var(--ai-soft); border-color: var(--ai); }
+  .totals-row .t .lbl { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .totals-row .t.sim .lbl { color: var(--ai); }
+  .totals-row .t .val { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; }
+  .totals-row .t .delta { font-family: var(--mono); font-size: 10px; color: var(--good); }
 
-  /* Chart area — hero */
+  /* Quick stats strip */
+  .stats-strip {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+    border: 1px solid var(--rule); border-radius: 12px; padding: 8px 6px; background: #fff;
+  }
+  .stats-strip .s {
+    display: flex; flex-direction: column; align-items: flex-start; padding: 0 8px;
+  }
+  .stats-strip .s + .s { border-left: 1px dashed var(--rule); }
+  .stats-strip .s .lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .stats-strip .s .v { font-size: 13px; font-weight: 600; margin-top: 1px; }
+
+  /* Chart hero */
   .chart-hero {
     background: #fff; border: 1px solid var(--rule); border-radius: 14px; padding: 12px; position: relative;
   }
-  .chart-hero .hint {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between;
-  }
+  .chart-hero-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; gap: 10px; }
+  .chart-hero .caption { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .chart-hero .caption b { color: var(--ink); font-weight: 600; }
   .chart-hero svg { width: 100%; height: auto; display: block; }
-  .chart-hero .describe {
+  .describe {
     appearance: none; background: transparent; border: 1px solid var(--rule); color: var(--muted);
     padding: 6px 10px; border-radius: 999px; font: inherit; font-size: 10.5px; cursor: pointer;
-    min-height: 32px;
+    min-height: 32px; white-space: nowrap;
   }
-  .chart-hero .describe:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+  .describe:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
 
-  /* AI chip row */
-  .ai-row { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-  .ai-row::-webkit-scrollbar { display: none; }
-  .ai-row .spark {
+  /* Scroller caption below chart — makes the axis handle discoverable */
+  .scroller-caption {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 2px 0;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em;
+    color: var(--ai); font-weight: 600;
+  }
+  .scroller-caption .left { display: inline-flex; align-items: center; gap: 6px; }
+  .scroller-caption .arrow { animation: nudge 1.6s ease-in-out infinite; }
+  @keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+  .scroller-caption .year-badge {
+    background: var(--ai); color: #fff;
+    padding: 3px 10px; border-radius: 999px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+  }
+
+  /* Pulse on axis handle for first visit */
+  .pulse-ring {
+    transform-origin: center;
+    animation: pulse 1.6s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    70% { transform: scale(2.6); opacity: 0; }
+    100% { transform: scale(2.6); opacity: 0; }
+  }
+
+  /* AI chips */
+  .ai-head { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+  .ai-head .spark {
     display: inline-flex; align-items: center; justify-content: center;
-    min-width: 44px; min-height: 44px;
+    min-width: 40px; min-height: 40px;
     border-radius: 999px; background: var(--ai-soft); color: var(--ai);
     border: 1px solid var(--ai);
-    font-size: 16px; flex-shrink: 0;
+    font-size: 15px;
   }
+  .ai-head .label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ai); font-weight: 600;
+    flex: 1;
+  }
+  .ai-row { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .ai-row::-webkit-scrollbar { display: none; }
   .ai-row button {
     appearance: none; border: 1px solid var(--rule); background: #fff; color: var(--ink);
     padding: 10px 14px; border-radius: 999px; font: inherit; font-size: 12.5px;
-    cursor: pointer; white-space: nowrap; min-height: 44px;
+    cursor: pointer; white-space: nowrap; min-height: 40px;
   }
-  .ai-row button[aria-pressed="true"] {
-    background: var(--ai); color: #fff; border-color: var(--ai);
-  }
+  .ai-row button[aria-pressed="true"] { background: var(--ai); color: #fff; border-color: var(--ai); }
   .ai-row button:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
 
-  /* Inline answer card */
+  /* Free-form input */
+  .ask-row {
+    display: flex; gap: 8px; align-items: stretch;
+    border: 1px solid var(--ai); background: #fff; border-radius: 12px;
+    padding: 6px 6px 6px 12px;
+  }
+  .ask-row label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+    display: block; margin-bottom: 4px;
+  }
+  .ask-wrap { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+  .ask-row input[type="text"] {
+    border: 0; outline: 0; background: transparent; width: 100%;
+    font: inherit; font-size: 14px; padding: 4px 0;
+    min-height: 32px;
+  }
+  .ask-row input[type="text"]::placeholder { color: var(--muted); }
+  .ask-row .send {
+    appearance: none; border: 0; background: var(--ai); color: #fff;
+    width: 44px; min-height: 44px; border-radius: 10px; font-size: 16px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .ask-row .send:focus-visible { outline: 2px solid var(--ai-strong); outline-offset: 2px; }
+
+  /* Inline answer */
   .answer-card {
     background: var(--ai-soft); border: 1px solid var(--ai); border-radius: 12px;
     padding: 12px 14px; font-size: 13.5px; line-height: 1.5; color: var(--ink);
@@ -127,27 +208,64 @@
   details.table-drawer summary::after { content: '▸'; transition: transform 0.2s; color: var(--muted); }
   details.table-drawer[open] summary::after { transform: rotate(90deg); }
   details.table-drawer summary:focus-visible { outline: 2px solid var(--ai); outline-offset: -2px; }
+
+  .table-toggle {
+    display: flex; gap: 4px; padding: 0 10px 8px; border-top: 1px solid var(--rule); padding-top: 10px;
+  }
+  .table-toggle button {
+    appearance: none; border: 1px solid var(--rule); background: #fff; color: var(--muted);
+    padding: 6px 10px; border-radius: 999px; font: inherit; font-size: 11px; cursor: pointer;
+    min-height: 32px;
+  }
+  .table-toggle button[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .table-toggle button:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+
   .table-head {
-    display: grid; grid-template-columns: 50px 1fr 1fr 60px; gap: 8px;
-    padding: 0 14px 6px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--muted); font-weight: 600; border-top: 1px solid var(--rule); padding-top: 10px;
+    display: grid; gap: 8px; padding: 6px 14px;
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); font-weight: 600;
   }
   .table-rows { padding: 0 14px 12px; }
   .table-rows .tr {
-    display: grid; grid-template-columns: 50px 1fr 1fr 60px; gap: 8px;
-    padding: 8px 0; border-bottom: 1px dashed var(--rule);
+    display: grid; gap: 8px; padding: 8px 0; border-bottom: 1px dashed var(--rule);
     font-size: 12.5px;
   }
   .table-rows .tr:last-child { border-bottom: none; }
   .table-rows .tr .delta { color: var(--ai); font-family: var(--mono); font-size: 11px; text-align: right; }
-  .preview-rows { padding: 0 14px 4px; opacity: 0.85; }
+  .table-head.cols4, .table-rows .tr.cols4 { grid-template-columns: 50px 1fr 1fr 60px; }
+  .table-head.cols4 span:last-child, .table-rows .tr.cols4 .delta { text-align: right; }
+
+  .preview-rows {
+    padding: 0 14px 4px; opacity: 0.9;
+  }
   details.table-drawer[open] .preview-rows { display: none; }
+  .preview-rows .preview-head {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600;
+    display: grid; grid-template-columns: 50px 1fr 1fr 60px; gap: 8px;
+    padding: 10px 0 6px; border-top: 1px solid var(--rule);
+  }
+  .preview-rows .preview-head span:last-child { text-align: right; }
+
+  /* Instrument legend */
+  .legend-row {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.04em;
+  }
+  .legend-row span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-row .sw { width: 10px; height: 10px; border-radius: 50%; }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; animation: none !important; }
-    .chart-hero svg polyline, .chart-hero svg path, .chart-hero svg rect { transition: none !important; }
+    .scroller-caption .arrow { animation: none !important; }
+    .pulse-ring { animation: none !important; display: none; }
   }
+
+  /* Color-coded instruments */
+  .sw-rsu { background: #3042a0; }
+  .sw-opt { background: #0b8554; }
+  .sw-war { background: #b57300; }
 </style>
 </head>
 <body>
@@ -161,35 +279,72 @@
 
   <main id="main">
 
-    <!-- Filters -->
-    <div class="filters" role="group" aria-label="Filters">
-      <button aria-pressed="true" data-filter="all">All plans ▾</button>
-      <button aria-pressed="false" data-filter="rsu">RSU only</button>
-      <button aria-pressed="false" data-filter="options">Options</button>
-      <button aria-pressed="true" data-filter="country">NO 🇳🇴</button>
-    </div>
+    <!-- INSTRUMENTS -->
+    <section aria-labelledby="instLabel">
+      <div class="group-label" id="instLabel">Instrument <span class="count" id="instCount">All · 3</span></div>
+      <div class="chip-row" role="group" aria-labelledby="instLabel">
+        <button aria-pressed="true" data-inst="all">All</button>
+        <button aria-pressed="false" data-inst="rsu"><span class="swatch sw-rsu"></span>RSU<span class="n">·1 800</span></button>
+        <button aria-pressed="false" data-inst="options"><span class="swatch sw-opt"></span>Options<span class="n">·1 950</span></button>
+        <button aria-pressed="false" data-inst="warrants"><span class="swatch sw-war"></span>Warrants<span class="n">·1 250</span></button>
+      </div>
+    </section>
 
-    <!-- Totals -->
-    <div class="totals" aria-live="polite">
+    <!-- PLANS (as chips, per your note) -->
+    <section aria-labelledby="planLabel">
+      <div class="group-label" id="planLabel">Plan <span class="count" id="planCount">All · 3</span></div>
+      <div class="chip-row" role="group" aria-labelledby="planLabel">
+        <button aria-pressed="true" data-plan="all">All plans</button>
+        <button aria-pressed="false" data-plan="2023">Plan 2023</button>
+        <button aria-pressed="false" data-plan="2024">Plan 2024</button>
+        <button aria-pressed="false" data-plan="2025">Plan 2025</button>
+      </div>
+    </section>
+
+    <!-- COUNTRY + totals -->
+    <section>
+      <div class="group-label">Country <span class="count" id="countryCount">NO</span></div>
+      <div class="chip-row" role="group" aria-label="Country">
+        <button aria-pressed="true" data-country="no">NO 🇳🇴</button>
+        <button aria-pressed="false" data-country="uk">UK 🇬🇧</button>
+        <button aria-pressed="false" data-country="us">US 🇺🇸</button>
+      </div>
+    </section>
+
+    <!-- TOTALS -->
+    <section class="totals-row" aria-live="polite">
       <div class="t">
         <span class="lbl">Current</span>
-        <span class="val" id="totalCurrent">500 NOK</span>
+        <span class="val" id="totalCurrent">5 000 NOK</span>
       </div>
       <div class="t sim">
         <span class="lbl">Simulated</span>
-        <span class="val" id="totalSim">≈ 2 500 NOK</span>
+        <span class="val" id="totalSim">≈ 20 000 NOK</span>
+        <span class="delta" id="totalDelta">+15 000 NOK · +300 %</span>
       </div>
-    </div>
+    </section>
 
-    <!-- Chart hero with on-axis scroller -->
+    <!-- QUICK STATS STRIP (density!) -->
+    <section class="stats-strip" aria-label="Quick stats">
+      <div class="s"><span class="lbl">Biggest year</span><span class="v" id="biggestYear">2026</span></div>
+      <div class="s"><span class="lbl">Total shares</span><span class="v" id="totalShares">5 000</span></div>
+      <div class="s"><span class="lbl">Next vest</span><span class="v" id="nextVest">Mar 2027</span></div>
+    </section>
+
+    <!-- CHART HERO with on-axis scroller -->
     <section class="chart-hero" aria-labelledby="chartTitle">
-      <div class="hint">
-        <span id="chartTitle">Simulated gain over time</span>
+      <div class="chart-hero-head">
+        <div class="caption"><b id="chartTitle">Simulated gain over time</b></div>
         <button class="describe" id="describeBtn" aria-controls="answerCard">Describe this chart</button>
       </div>
       <svg id="chart" viewBox="0 0 320 220" role="img" aria-describedby="chartDesc">
         <desc id="chartDesc">Line chart with a draggable year handle on the axis. Dragging changes the scenario year.</desc>
-        <!-- Grid -->
+        <defs>
+          <linearGradient id="simGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3042a0" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#3042a0" stop-opacity="0.01"/>
+          </linearGradient>
+        </defs>
         <g stroke="#e5e7eb" stroke-width="1">
           <line x1="20" y1="10" x2="310" y2="10"/>
           <line x1="20" y1="50" x2="310" y2="50"/>
@@ -197,55 +352,89 @@
           <line x1="20" y1="130" x2="310" y2="130"/>
           <line x1="20" y1="170" x2="310" y2="170"/>
         </g>
-        <!-- Ghost (previous) line when filter changes -->
         <polyline id="ghostLine" fill="none" stroke="#c8ccd4" stroke-width="1.4" stroke-dasharray="3 3" points=""/>
-        <!-- Area + line -->
-        <path id="simArea" fill="#3042a0" fill-opacity="0.08" d=""/>
+        <path id="simArea" fill="url(#simGrad)" d=""/>
         <polyline id="simLine" fill="none" stroke="#1a1f2e" stroke-width="2" points=""/>
-        <!-- Highlight region -->
+        <polyline id="currentLine" fill="none" stroke="#9aa0ab" stroke-width="1.4" stroke-dasharray="4 3" points=""/>
+        <g id="simDots" fill="#1a1f2e"></g>
         <rect id="highlight" x="0" y="10" width="0" height="160" fill="#3042a0" fill-opacity="0.12" rx="4" style="display:none;"/>
-        <!-- Emphasis dot -->
         <circle id="emphDot" cx="0" cy="0" r="0" fill="#3042a0" stroke="#fff" stroke-width="1.5" style="display:none;"/>
-        <!-- Axis track -->
+
+        <!-- Axis track + handle -->
         <line x1="20" y1="192" x2="310" y2="192" stroke="#c8ccd4" stroke-width="2"/>
         <line id="axisProgress" x1="20" y1="192" x2="160" y2="192" stroke="#1a1f2e" stroke-width="2.5"/>
-        <circle id="axisHandle" cx="160" cy="192" r="9" fill="#fff" stroke="#1a1f2e" stroke-width="2" style="cursor:grab;"/>
+        <!-- Pulse ring to invite interaction -->
+        <circle id="pulseRing" class="pulse-ring" cx="160" cy="192" r="9" fill="none" stroke="#3042a0" stroke-width="2" style="display:none;"/>
+        <circle id="axisHandle" cx="160" cy="192" r="10" fill="#fff" stroke="#1a1f2e" stroke-width="2.5" style="cursor:grab;"/>
         <line id="refLine" x1="160" y1="10" x2="160" y2="192" stroke="#3042a0" stroke-width="1" stroke-dasharray="2 3"/>
-        <!-- X labels -->
+
         <g id="xLabels" fill="#5a606b" font-family="JetBrains Mono, monospace" font-size="9"></g>
-        <!-- Callout at handle -->
-        <g id="callout" style="display:none;">
+        <g id="callout">
           <rect id="calloutBg" x="100" y="2" width="160" height="22" rx="5" fill="#3042a0"/>
           <text id="calloutTxt" x="108" y="17" fill="#fff" font-family="Inter" font-size="10" font-weight="600">2026 · 1 800 NOK</text>
         </g>
       </svg>
-      <!-- Hidden ARIA slider for keyboard/SR -->
+
+      <!-- Scroller caption — makes the axis-handle discoverable -->
+      <div class="scroller-caption" id="scrollerCaption" aria-hidden="true">
+        <span class="left">
+          <span class="arrow">↔</span> Drag the handle to simulate a year
+        </span>
+        <span class="year-badge" id="yearBadge">2026</span>
+      </div>
+
+      <!-- Hidden ARIA slider so keyboard/SR can operate the handle too -->
       <label class="sr-only" for="yearSlider">Scenario year</label>
       <input id="yearSlider" type="range" min="0" max="5" value="3" step="1"
              class="sr-only"
              aria-valuemin="0" aria-valuemax="5" aria-valuenow="3"
              aria-valuetext="2026, 1 800 NOK projected" />
+
+      <!-- Instrument legend -->
+      <div class="legend-row" style="margin-top:10px;" aria-hidden="true">
+        <span><span class="sw sw-rsu"></span>RSU</span>
+        <span><span class="sw sw-opt"></span>Options</span>
+        <span><span class="sw sw-war"></span>Warrants</span>
+        <span style="margin-left:auto; color:var(--muted);">— current · — simulated</span>
+      </div>
     </section>
 
-    <!-- AI chips -->
-    <div class="ai-row" role="toolbar" aria-label="Suggested questions">
-      <span class="spark" aria-hidden="true">✦</span>
-      <button aria-pressed="false" data-q="leave-18m">What if I leave in 18 months?</button>
-      <button aria-pressed="false" data-q="no-uk">Compare NO vs UK tax</button>
-      <button aria-pressed="false" data-q="why-high">Why is 2026 higher?</button>
-    </div>
+    <!-- AI: suggested + free-form -->
+    <section>
+      <div class="ai-head">
+        <span class="spark" aria-hidden="true">✦</span>
+        <span class="label">Ask the co-pilot</span>
+      </div>
+      <div class="ai-row" role="toolbar" aria-label="Suggested questions">
+        <button aria-pressed="false" data-q="leave-18m">What if I leave in 18 months?</button>
+        <button aria-pressed="false" data-q="no-uk">Compare NO vs UK tax</button>
+        <button aria-pressed="false" data-q="why-high">Why is 2026 higher?</button>
+        <button aria-pressed="false" data-q="rsu-vs-opt">RSU vs Options?</button>
+      </div>
+      <div class="ask-row" style="margin-top: 8px;">
+        <div class="ask-wrap">
+          <label for="askInput">Or type your own</label>
+          <input id="askInput" type="text" placeholder="Ask anything about your shares…" autocomplete="off" />
+        </div>
+        <button class="send" id="askSend" aria-label="Send">↑</button>
+      </div>
+    </section>
 
     <!-- Inline answer -->
     <div class="answer-card" id="answerCard" aria-live="polite" aria-atomic="true"></div>
 
     <!-- Table drawer -->
     <details class="table-drawer" id="tableDrawer">
-      <summary>▸ Table · per year</summary>
-      <div class="preview-rows" aria-hidden="true">
-        <!-- First 3 rows always visible even when drawer closed -->
+      <summary><span>▸ Table · <span id="tableGroupLabel">per year</span></span><span style="font-size:10px;">CSV</span></summary>
+      <!-- Preview: first 3 rows always visible -->
+      <div class="preview-rows" aria-hidden="true" id="previewArea"></div>
+      <div class="table-toggle" role="tablist" aria-label="Group table by">
+        <button role="tab" aria-selected="true" data-group="year">Per year</button>
+        <button role="tab" aria-selected="false" data-group="plan">Per plan</button>
+        <button role="tab" aria-selected="false" data-group="instrument">Per instrument</button>
       </div>
-      <div class="table-head" aria-hidden="true">
-        <span>Year</span><span>Current</span><span>Simulated</span><span style="text-align:right;">Δ</span>
+      <div class="table-head cols4" aria-hidden="true" id="tableHead">
+        <span id="th-key">Year</span><span>Current</span><span>Simulated</span><span>Δ</span>
       </div>
       <div class="table-rows" id="tableRows"></div>
     </details>
@@ -254,162 +443,245 @@
 </div>
 
 <script>
+  // ---- Mock data ---------------------------------------------------
   const yearsData = [
-    { year: 2023, current: 300 },
-    { year: 2024, current: 300 },
-    { year: 2025, current: 350 },
-    { year: 2026, current: 450 },
-    { year: 2027, current: 500 },
-    { year: 2028, current: 550 },
+    { year: 2023, current: 500,  shares: 500 },
+    { year: 2024, current: 650,  shares: 650 },
+    { year: 2025, current: 800,  shares: 800 },
+    { year: 2026, current: 1500, shares: 1500 },   // biggest unlock
+    { year: 2027, current: 800,  shares: 800 },
+    { year: 2028, current: 750,  shares: 750 },
   ];
-  let filter = 'all';          // all | rsu | options
-  let yearIdx = 3;              // 0..5 (which year the axis handle is on)
-  const SIM_MULT = 4;           // simulated = current × 4 (= +300%)
+  const plansData = [
+    { plan: '2023', current: 2200 },
+    { plan: '2024', current: 1700 },
+    { plan: '2025', current: 1100 },
+  ];
+  const instrumentsData = [
+    { kind: 'RSU',      current: 1800 },
+    { kind: 'Options',  current: 1950 },
+    { kind: 'Warrants', current: 1250 },
+  ];
+  const SIM_MULT = 4; // simulated = current × 4
 
+  // ---- State ------------------------------------------------------
+  let plan = 'all';
+  let inst = 'all';
+  let country = 'no';
+  let yearIdx = 3;      // handle starts at 2026
+  let tableGroup = 'year';
+
+  // ---- Elements ---------------------------------------------------
   const yearSlider = document.getElementById('yearSlider');
   const simLine = document.getElementById('simLine');
   const simArea = document.getElementById('simArea');
+  const currentLine = document.getElementById('currentLine');
   const ghostLine = document.getElementById('ghostLine');
+  const simDots = document.getElementById('simDots');
   const xLabels = document.getElementById('xLabels');
   const axisHandle = document.getElementById('axisHandle');
   const axisProgress = document.getElementById('axisProgress');
+  const pulseRing = document.getElementById('pulseRing');
   const refLine = document.getElementById('refLine');
   const callout = document.getElementById('callout');
   const calloutBg = document.getElementById('calloutBg');
   const calloutTxt = document.getElementById('calloutTxt');
   const highlight = document.getElementById('highlight');
   const emphDot = document.getElementById('emphDot');
+  const yearBadge = document.getElementById('yearBadge');
   const answerCard = document.getElementById('answerCard');
   const describeBtn = document.getElementById('describeBtn');
   const tableRows = document.getElementById('tableRows');
+  const tableHead = document.getElementById('tableHead');
+  const tableGroupLabel = document.getElementById('tableGroupLabel');
+  const previewArea = document.getElementById('previewArea');
   const totalCurrent = document.getElementById('totalCurrent');
   const totalSim = document.getElementById('totalSim');
-  const previewRows = document.querySelector('.preview-rows');
+  const totalDelta = document.getElementById('totalDelta');
+  const instCount = document.getElementById('instCount');
+  const planCount = document.getElementById('planCount');
+  const countryCount = document.getElementById('countryCount');
+  const biggestYear = document.getElementById('biggestYear');
+  const totalShares = document.getElementById('totalShares');
+  const nextVest = document.getElementById('nextVest');
+  const askInput = document.getElementById('askInput');
+  const askSend = document.getElementById('askSend');
   const chartSvg = document.getElementById('chart');
 
-  // X mapping
+  // Chart layout
   const padL = 20, padR = 10, w = 320, h = 220, padT = 10, axisY = 192;
   const n = yearsData.length;
   const xStep = (w - padL - padR) / (n - 1);
 
+  // ---- Chart data with filters applied ----------------------------
   function visibleData() {
-    // Filter demo: "rsu" reduces each year's current by ~50%, "options" keeps as-is
-    if (filter === 'rsu') return yearsData.map(d => ({ ...d, current: Math.round(d.current * 0.48) }));
-    if (filter === 'options') return yearsData.map(d => ({ ...d, current: Math.round(d.current * 0.52) }));
-    return yearsData;
+    // Each filter reduces the data a bit as a demo
+    let factor = 1;
+    if (inst === 'rsu') factor *= 0.36;
+    else if (inst === 'options') factor *= 0.39;
+    else if (inst === 'warrants') factor *= 0.25;
+    if (plan !== 'all') factor *= 0.4;
+    return yearsData.map(d => ({
+      ...d,
+      current: Math.round(d.current * factor),
+      simulated: Math.round(d.current * factor * SIM_MULT),
+    }));
   }
 
   function layout(data) {
-    const maxSim = Math.max(...data.map(d => d.current)) * SIM_MULT;
+    const maxSim = Math.max(...data.map(d => d.simulated), 1);
     const yMax = maxSim * 1.1;
     const yScale = (axisY - padT - 10) / yMax;
-    const points = data.map((d, i) => `${padL + i*xStep},${axisY - 10 - d.current * SIM_MULT * yScale}`);
-    const pointsStr = points.join(' ');
-    const areaD = `M${points[0]} L${points.slice(1).join(' L')} L${padL + (n-1)*xStep},${axisY - 10} L${padL},${axisY - 10} Z`;
-    return { pointsStr, areaD, points };
+    const simPts = data.map((d, i) => `${padL + i*xStep},${axisY - 10 - d.simulated * yScale}`);
+    const curPts = data.map((d, i) => `${padL + i*xStep},${axisY - 10 - d.current * yScale}`);
+    const areaD = `M${simPts[0]} L${simPts.slice(1).join(' L')} L${padL + (n-1)*xStep},${axisY - 10} L${padL},${axisY - 10} Z`;
+    return { simPts: simPts.join(' '), curPts: curPts.join(' '), areaD, pointsArr: simPts };
   }
 
-  function renderChart(animate = true) {
-    const data = visibleData();
-    const { pointsStr, areaD, points } = layout(data);
-    simLine.setAttribute('points', pointsStr);
-    simArea.setAttribute('d', areaD);
+  function fmt(n) { return Math.round(n).toLocaleString('en-US').replace(/,/g, ' '); }
 
+  function renderChart() {
+    const data = visibleData();
+    const { simPts, curPts, areaD, pointsArr } = layout(data);
+    simLine.setAttribute('points', simPts);
+    currentLine.setAttribute('points', curPts);
+    simArea.setAttribute('d', areaD);
+    // Dots
+    simDots.innerHTML = pointsArr.map(p => {
+      const [x, y] = p.split(',');
+      return `<circle cx="${x}" cy="${y}" r="3"/>`;
+    }).join('');
     // X labels
     xLabels.innerHTML = data.map((d, i) => {
       const x = padL + i * xStep - 10;
-      return `<text x="${x}" y="210">${d.year}</text>`;
+      return `<text x="${x}" y="212">${d.year}</text>`;
     }).join('');
 
-    // Table rows
-    tableRows.innerHTML = data.map(d => {
-      const sim = Math.round(d.current * SIM_MULT);
-      const delta = sim - d.current;
-      return `<div class="tr">
-        <span>${d.year}</span><span>${d.current}</span>
-        <span>${sim.toLocaleString('en-US').replace(/,/g, ' ')}</span>
-        <span class="delta">+${delta.toLocaleString('en-US').replace(/,/g, ' ')}</span>
-      </div>`;
-    }).join('');
-
-    // First 3 rows preview
-    previewRows.innerHTML = `
-      <div class="table-head" style="padding-top:12px;">
-        <span>Year</span><span>Current</span><span>Simulated</span><span style="text-align:right;">Δ</span>
-      </div>
-      <div class="table-rows" style="padding-bottom:0;">
-        ${data.slice(0,3).map(d => {
-          const sim = Math.round(d.current * SIM_MULT);
-          const delta = sim - d.current;
-          return `<div class="tr">
-            <span>${d.year}</span><span>${d.current}</span>
-            <span>${sim.toLocaleString('en-US').replace(/,/g, ' ')}</span>
-            <span class="delta">+${delta.toLocaleString('en-US').replace(/,/g, ' ')}</span>
-          </div>`;
-        }).join('')}
-      </div>
-    `;
-
-    // Totals
-    const totC = data.reduce((a, d) => a + d.current, 0);
-    const totS = totC * SIM_MULT;
-    totalCurrent.textContent = `${totC.toLocaleString('en-US').replace(/,/g, ' ')} NOK`;
-    totalSim.textContent = `≈ ${totS.toLocaleString('en-US').replace(/,/g, ' ')} NOK`;
-
-    // Handle position
     renderHandle();
+    renderTable();
+    renderTotals();
+    renderQuickStats();
+    renderCounts();
   }
 
   function renderHandle() {
     const x = padL + yearIdx * xStep;
     axisHandle.setAttribute('cx', x);
+    pulseRing.setAttribute('cx', x);
     axisProgress.setAttribute('x2', x);
-    refLine.setAttribute('x1', x);
-    refLine.setAttribute('x2', x);
-
+    refLine.setAttribute('x1', x); refLine.setAttribute('x2', x);
     const data = visibleData();
     const d = data[yearIdx];
-    const sim = Math.round(d.current * SIM_MULT);
-    // Position callout around handle
     const calloutWidth = 160;
     let cx = x - calloutWidth / 2;
     if (cx < 10) cx = 10;
     if (cx + calloutWidth > w - 10) cx = w - 10 - calloutWidth;
     calloutBg.setAttribute('x', cx);
     calloutTxt.setAttribute('x', cx + 10);
-    calloutTxt.textContent = `${d.year} · ${sim.toLocaleString('en-US').replace(/,/g, ' ')} NOK`;
-    callout.style.display = '';
-
+    calloutTxt.textContent = `${d.year} · ${fmt(d.simulated)} NOK`;
+    yearBadge.textContent = d.year;
     // Keep ARIA slider in sync
     yearSlider.value = yearIdx;
     yearSlider.setAttribute('aria-valuenow', yearIdx);
-    yearSlider.setAttribute('aria-valuetext', `${d.year}, ${sim.toLocaleString('en-US').replace(/,/g, ' ')} NOK projected`);
+    yearSlider.setAttribute('aria-valuetext', `${d.year}, ${fmt(d.simulated)} NOK projected`);
+    axisHandle.setAttribute('aria-valuenow', yearIdx);
+    axisHandle.setAttribute('aria-valuetext', `${d.year}, ${fmt(d.simulated)} NOK`);
   }
 
-  // Filter interaction
-  document.querySelectorAll('.filters button').forEach(btn => {
+  function renderTotals() {
+    const data = visibleData();
+    const totC = data.reduce((a, d) => a + d.current, 0);
+    const totS = totC * SIM_MULT;
+    totalCurrent.textContent = `${fmt(totC)} NOK`;
+    totalSim.textContent = `≈ ${fmt(totS)} NOK`;
+    totalDelta.textContent = `+${fmt(totS - totC)} NOK · +${Math.round((totS/totC - 1) * 100)} %`;
+  }
+
+  function renderQuickStats() {
+    const data = visibleData();
+    const big = data.reduce((best, d) => d.current > best.current ? d : best, data[0]);
+    biggestYear.textContent = big.year;
+    const sumShares = data.reduce((a, d) => a + d.shares, 0);
+    totalShares.textContent = fmt(sumShares);
+    // Next vest — next upcoming year > 2026
+    nextVest.textContent = 'Mar 2027';
+  }
+
+  function renderCounts() {
+    const instMap = { all: 'All · 3', rsu: 'RSU · 1 800', options: 'Options · 1 950', warrants: 'Warrants · 1 250' };
+    instCount.textContent = instMap[inst];
+    const planMap = { all: 'All · 3', '2023': 'Plan 2023 · 2 200', '2024': 'Plan 2024 · 1 700', '2025': 'Plan 2025 · 1 100' };
+    planCount.textContent = planMap[plan];
+    const countryMap = { no: 'NO', uk: 'UK', us: 'US' };
+    countryCount.textContent = countryMap[country];
+  }
+
+  // ---- Table per group --------------------------------------------
+  function renderTable() {
+    tableGroupLabel.textContent = `per ${tableGroup}`;
+    if (tableGroup === 'year') {
+      tableHead.innerHTML = `<span>Year</span><span>Current</span><span>Simulated</span><span>Δ</span>`;
+      const data = visibleData();
+      tableRows.innerHTML = data.map(d => rowHtml(d.year, d.current, d.simulated)).join('');
+      previewArea.innerHTML = previewHtml('Year', data.slice(0, 3).map(d => ({ key: d.year, c: d.current, s: d.simulated })));
+    } else if (tableGroup === 'plan') {
+      tableHead.innerHTML = `<span>Plan</span><span>Current</span><span>Simulated</span><span>Δ</span>`;
+      const rows = plansData.map(p => ({ key: p.plan, current: p.current, simulated: p.current * SIM_MULT }));
+      tableRows.innerHTML = rows.map(d => rowHtml(d.key, d.current, d.simulated)).join('');
+      previewArea.innerHTML = previewHtml('Plan', rows.slice(0, 3).map(d => ({ key: d.key, c: d.current, s: d.simulated })));
+    } else if (tableGroup === 'instrument') {
+      tableHead.innerHTML = `<span>Kind</span><span>Current</span><span>Simulated</span><span>Δ</span>`;
+      const rows = instrumentsData.map(p => ({ key: p.kind, current: p.current, simulated: p.current * SIM_MULT }));
+      tableRows.innerHTML = rows.map(d => rowHtml(d.key, d.current, d.simulated)).join('');
+      previewArea.innerHTML = previewHtml('Kind', rows.slice(0, 3).map(d => ({ key: d.key, c: d.current, s: d.simulated })));
+    }
+  }
+  function rowHtml(key, cur, sim) {
+    const delta = sim - cur;
+    return `<div class="tr cols4"><span>${key}</span><span>${fmt(cur)}</span><span>${fmt(sim)}</span><span class="delta">+${fmt(delta)}</span></div>`;
+  }
+  function previewHtml(label, rows) {
+    return `<div class="preview-head"><span>${label}</span><span>Current</span><span>Simulated</span><span style="text-align:right;">Δ</span></div>
+      <div class="table-rows" style="padding-bottom:0;">
+        ${rows.map(r => `<div class="tr cols4"><span>${r.key}</span><span>${fmt(r.c)}</span><span>${fmt(r.s)}</span><span class="delta">+${fmt(r.s - r.c)}</span></div>`).join('')}
+      </div>`;
+  }
+
+  // ---- Filter interactions ----------------------------------------
+  function pressGroup(selector, newValue, setter) {
+    document.querySelectorAll(selector).forEach(b => b.setAttribute('aria-pressed', 'false'));
+    const btn = document.querySelector(`${selector}[aria-pressed="false"][data-${setter}="${newValue}"]`);
+    if (btn) btn.setAttribute('aria-pressed', 'true');
+    else document.querySelector(`${selector}[data-${setter}="${newValue}"]`)?.setAttribute('aria-pressed', 'true');
+  }
+
+  document.querySelectorAll('[data-inst]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const f = btn.dataset.filter;
-      if (f === 'country') return;   // demo: country just toggles visually
-      if (f === 'all') {
-        filter = 'all';
-        document.querySelectorAll('.filters button').forEach(b => {
-          if (['all','rsu','options'].includes(b.dataset.filter)) b.setAttribute('aria-pressed', b.dataset.filter === 'all' ? 'true' : 'false');
-        });
-      } else {
-        filter = (filter === f) ? 'all' : f;
-        document.querySelectorAll('.filters button').forEach(b => {
-          if (['all','rsu','options'].includes(b.dataset.filter)) b.setAttribute('aria-pressed', b.dataset.filter === filter ? 'true' : 'false');
-        });
-      }
-      // Ghost: capture old line
       ghostLine.setAttribute('points', simLine.getAttribute('points'));
       setTimeout(() => ghostLine.setAttribute('points', ''), 1200);
+      inst = btn.dataset.inst;
+      document.querySelectorAll('[data-inst]').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
       renderChart();
     });
   });
+  document.querySelectorAll('[data-plan]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      ghostLine.setAttribute('points', simLine.getAttribute('points'));
+      setTimeout(() => ghostLine.setAttribute('points', ''), 1200);
+      plan = btn.dataset.plan;
+      document.querySelectorAll('[data-plan]').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      renderChart();
+    });
+  });
+  document.querySelectorAll('[data-country]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      country = btn.dataset.country;
+      document.querySelectorAll('[data-country]').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      renderCounts();
+    });
+  });
 
-  // Axis handle drag (pointer events)
+  // ---- Handle drag (pointer events) ------------------------------
   function pointerToIdx(clientX) {
     const rect = chartSvg.getBoundingClientRect();
     const scale = rect.width / w;
@@ -421,6 +693,7 @@
   axisHandle.addEventListener('pointerdown', e => {
     dragging = true;
     axisHandle.setPointerCapture(e.pointerId);
+    pulseRing.style.display = 'none';           // stop the invite once touched
     e.preventDefault();
   });
   window.addEventListener('pointermove', e => {
@@ -429,7 +702,7 @@
     renderHandle();
   });
   window.addEventListener('pointerup', () => { dragging = false; });
-  // Tap anywhere on axis to jump
+  // Tap on the axis to jump
   chartSvg.addEventListener('click', e => {
     const rect = chartSvg.getBoundingClientRect();
     const scale = rect.width / w;
@@ -437,6 +710,7 @@
     if (y > axisY - 14 && y < axisY + 14) {
       yearIdx = pointerToIdx(e.clientX);
       renderHandle();
+      pulseRing.style.display = 'none';
     }
   });
 
@@ -445,12 +719,12 @@
     yearIdx = parseInt(yearSlider.value);
     renderHandle();
   });
-  // Also catch keyboard focus on the visible handle (make it focusable)
+  // Also focusable handle
   axisHandle.setAttribute('tabindex', '0');
   axisHandle.setAttribute('role', 'slider');
   axisHandle.setAttribute('aria-valuemin', '0');
-  axisHandle.setAttribute('aria-valuemax', '5');
-  axisHandle.setAttribute('aria-label', 'Scenario year');
+  axisHandle.setAttribute('aria-valuemax', String(n - 1));
+  axisHandle.setAttribute('aria-label', 'Scenario year — drag or use arrow keys');
   axisHandle.addEventListener('keydown', e => {
     let changed = true;
     if (e.key === 'ArrowRight' || e.key === 'ArrowUp') yearIdx = Math.min(n - 1, yearIdx + 1);
@@ -460,73 +734,89 @@
     else if (e.key === 'PageUp') yearIdx = Math.min(n - 1, yearIdx + 2);
     else if (e.key === 'PageDown') yearIdx = Math.max(0, yearIdx - 2);
     else changed = false;
-    if (changed) { e.preventDefault(); renderHandle(); axisHandle.setAttribute('aria-valuenow', yearIdx); }
+    if (changed) { e.preventDefault(); renderHandle(); pulseRing.style.display = 'none'; }
   });
 
-  // AI chips → answer + highlight
+  // ---- Table group toggle -----------------------------------------
+  document.querySelectorAll('.table-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.table-toggle button').forEach(b => b.setAttribute('aria-selected', 'false'));
+      btn.setAttribute('aria-selected', 'true');
+      tableGroup = btn.dataset.group;
+      renderTable();
+    });
+  });
+
+  // ---- AI --------------------------------------------------------
   const ANSWERS = {
-    'leave-18m': {
-      text: `In 18 months (around 2027), 1 250 of your shares will have unlocked. You'd be able to sell them inside a 90-day window. The remaining 2 750 would go back to the company. At today's price and Norwegian tax rules, that's about €12 500 after tax.`,
-      range: [3, 4],
-      dot: 4,
-    },
-    'no-uk': {
-      text: `Your shares are taxed under Norwegian rules — tax happens when each share unlocks, at your income tax rate. A UK contract would tax only when you sell. Same programme, different timing.`,
-      range: [0, 5],
-      dot: 2,
-    },
-    'why-high': {
-      text: `2026 is where the biggest share tranche unlocks — about 30% of the programme. Multiplied by the simulated price, that year's slice carries most of the climb.`,
-      range: [3, 3],
-      dot: 3,
-    },
+    'leave-18m': { text: `In 18 months (around 2027), 1 250 of your shares will have unlocked. You'd be able to sell them inside a 90-day window. The remaining shares would go back to the company. At today's price and Norwegian tax rules, that's about €12 500 after tax.`, range: [3, 4], dot: 4 },
+    'no-uk':     { text: `Your shares are taxed under Norwegian rules — tax happens when each share unlocks, at your income tax rate. A UK contract would tax only when you sell. Same programme, different timing.`, range: [0, 5], dot: 2 },
+    'why-high':  { text: `2026 is where the biggest share tranche unlocks — about 30 % of the programme. Multiplied by the simulated price, that year's slice carries most of the climb.`, range: [3, 3], dot: 3 },
+    'rsu-vs-opt':{ text: `RSUs vest and you own the shares outright — gain = price × quantity. Options give you the right to buy at a strike price — gain = (price − strike) × quantity, and nothing if the price is below the strike. Your Options are strongest when the price moves a lot above today's.`, range: [2, 5], dot: 3 },
   };
-  function showAnswer(key) {
+  function showAnswer(key, qText) {
     const a = ANSWERS[key];
-    if (!a) return;
-    // Clear previous selection
-    document.querySelectorAll('.ai-row button').forEach(b => b.setAttribute('aria-pressed', b.dataset.q === key ? 'true' : 'false'));
-    // Range highlight
-    const x0 = padL + a.range[0] * xStep;
-    const x1 = padL + a.range[1] * xStep;
-    highlight.setAttribute('x', Math.min(x0, x1) - 10);
-    highlight.setAttribute('width', Math.abs(x1 - x0) + 20);
-    highlight.setAttribute('height', axisY - 10);
-    highlight.style.display = '';
-    // Dot emphasis
-    const data = visibleData();
-    const sim = data[a.dot].current * SIM_MULT;
-    const maxSim = Math.max(...data.map(d => d.current)) * SIM_MULT;
-    const yScale = (axisY - padT - 10) / (maxSim * 1.1);
-    const dx = padL + a.dot * xStep;
-    const dy = axisY - 10 - sim * yScale;
-    emphDot.setAttribute('cx', dx);
-    emphDot.setAttribute('cy', dy);
-    emphDot.setAttribute('r', 5);
-    emphDot.style.display = '';
-    // Answer card
-    const q = document.querySelector(`.ai-row button[data-q="${key}"]`)?.textContent || '';
-    answerCard.innerHTML = `<span class="q">You asked: ${q}</span>${a.text}`;
+    if (a) {
+      document.querySelectorAll('.ai-row button').forEach(b => b.setAttribute('aria-pressed', b.dataset.q === key ? 'true' : 'false'));
+      const x0 = padL + a.range[0] * xStep;
+      const x1 = padL + a.range[1] * xStep;
+      highlight.setAttribute('x', Math.min(x0, x1) - 10);
+      highlight.setAttribute('width', Math.abs(x1 - x0) + 20);
+      highlight.setAttribute('height', axisY - 10);
+      highlight.style.display = '';
+      const data = visibleData();
+      const sim = data[a.dot].simulated;
+      const maxSim = Math.max(...data.map(d => d.simulated));
+      const yScale = (axisY - padT - 10) / (maxSim * 1.1);
+      const dx = padL + a.dot * xStep;
+      const dy = axisY - 10 - sim * yScale;
+      emphDot.setAttribute('cx', dx); emphDot.setAttribute('cy', dy); emphDot.setAttribute('r', 5);
+      emphDot.style.display = '';
+      answerCard.innerHTML = `<span class="q">You asked: ${qText}</span>${a.text}`;
+    } else {
+      highlight.style.display = 'none'; emphDot.style.display = 'none';
+      document.querySelectorAll('.ai-row button').forEach(b => b.setAttribute('aria-pressed', 'false'));
+      answerCard.innerHTML = `<span class="q">You asked: ${qText}</span>In a real app, the co-pilot answers against your actual programme. It never recommends an action — only explains the math and the rules.`;
+    }
     answerCard.classList.add('visible');
   }
   document.querySelectorAll('.ai-row button[data-q]').forEach(btn => {
-    btn.addEventListener('click', () => showAnswer(btn.dataset.q));
+    btn.addEventListener('click', () => showAnswer(btn.dataset.q, btn.textContent.trim()));
   });
+  askSend.addEventListener('click', () => {
+    const q = askInput.value.trim();
+    if (!q) return;
+    showAnswer(null, q);
+    askInput.value = '';
+  });
+  askInput.addEventListener('keydown', e => { if (e.key === 'Enter') askSend.click(); });
 
-  // "Describe this chart" — plain-language summary
+  // Describe this chart
   describeBtn.addEventListener('click', () => {
     const data = visibleData();
     const first = data[0], last = data[data.length - 1];
-    const simFirst = first.current * SIM_MULT;
-    const simLast = last.current * SIM_MULT;
-    const totS = data.reduce((a, d) => a + d.current, 0) * SIM_MULT;
-    const txt = `The chart shows simulated gain across six years — ${data[0].year} through ${data[data.length-1].year}. It starts at ${simFirst.toLocaleString('en-US').replace(/,/g,' ')} NOK and climbs to ${simLast.toLocaleString('en-US').replace(/,/g,' ')} NOK, mostly because more of your shares unlock in the later years. Total simulated gain across all years is ${totS.toLocaleString('en-US').replace(/,/g,' ')} NOK. The handle on the year axis is currently at ${data[yearIdx].year}.`;
+    const totS = data.reduce((a, d) => a + d.simulated, 0);
+    const biggest = data.reduce((b, d) => d.simulated > b.simulated ? d : b, data[0]);
+    const txt = `Simulated gain across six years, ${first.year} to ${last.year}. It starts at ${fmt(first.simulated)} NOK and reaches ${fmt(last.simulated)} NOK. The biggest single year is ${biggest.year} at ${fmt(biggest.simulated)} NOK, because that's when the largest share tranche unlocks. Total simulated gain across all years is ${fmt(totS)} NOK. The year handle on the axis is currently at ${data[yearIdx].year}.`;
     answerCard.innerHTML = `<span class="q">Describe this chart</span>${txt}`;
     answerCard.classList.add('visible');
     document.querySelectorAll('.ai-row button').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    highlight.style.display = 'none'; emphDot.style.display = 'none';
   });
 
-  renderChart(false);
+  // ---- First-visit pulse ring ------------------------------------
+  const PULSE_KEY = 'ss.protoB.pulseSeen';
+  try {
+    if (!localStorage.getItem(PULSE_KEY)) {
+      pulseRing.style.display = '';
+      setTimeout(() => {
+        pulseRing.style.display = 'none';
+        try { localStorage.setItem(PULSE_KEY, '1'); } catch (e) {}
+      }, 7000);
+    }
+  } catch (e) {}
+
+  renderChart();
 </script>
 </body>
 </html>
