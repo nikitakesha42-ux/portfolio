@@ -879,6 +879,10 @@
   }
   backBtn.addEventListener('click', goBack);
   window.addEventListener('popstate', e => navigate(e.state?.view || 'home', false));
+  window.addEventListener('hashchange', () => {
+    const v = location.hash.replace('#/','') || 'home';
+    if (views.includes(v) && v !== currentView) navigate(v, false);
+  });
 
   document.getElementById('goSimulator').addEventListener('click', () => navigate('simulator'));
   document.getElementById('goBreakdown').addEventListener('click', () => navigate('breakdown'));
