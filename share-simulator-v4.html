@@ -764,6 +764,11 @@
     *, *::before, *::after { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
   }
 
+  /* iOS zooms the whole page when a focused field is under 16px */
+  @media (pointer: coarse) {
+    .ai-drawer .ask-row input, .picker-row select, .sort-field select { font-size: 16px; }
+  }
+
   /* ---------- Phone turned on its side ---------- */
   @media (orientation: landscape) and (max-height: 520px) {
     .app { max-width: none; }
@@ -904,6 +909,8 @@
     }
     .ai-drawer.open { transform: translateX(0); }
     .ai-drawer .grabber { display: none; }
+    /* Lighter backdrop: still says "this panel has focus", but the chart stays readable */
+    .ai-drawer-back { background: rgba(10, 15, 30, 0.12); }
     .sheet { max-width: 560px; margin-inline: auto; }
   }
 </style>
@@ -1283,7 +1290,7 @@
     <dt>Next refresh</dt><dd>Tomorrow, 09:00 CET</dd>
     <dt>Next sale pause</dt><dd>Mar 1–14, 2027 (earnings)</dd>
   </dl>
-  <p class="defn"><b>What's a sale pause?</b> A window when the company blocks you from selling shares — usually around earnings or other sensitive news. It applies to everyone on the programme.</p>
+  <p class="defn"><b>What's a sale pause?</b> A window when the company blocks you from selling shares, usually around earnings or other sensitive news. It applies to everyone on the programme.</p>
   <button id="sourceClose">Close</button>
 </div>
 
