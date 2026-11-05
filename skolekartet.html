@@ -24,6 +24,19 @@
     .sk-hero img { display: block; width: 100%; height: auto; border-radius: 18px; border: 1px solid var(--rule); }
     .sk-hero figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
 
+
+    /* Working prototype callout */
+    .sk-proto { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px 32px; align-items: center; margin: -24px 0 56px; padding: 24px 28px; border: 1px solid var(--rule-strong); border-radius: 18px; background: #edf5f3; }
+    .sk-proto .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0b5c48; font-weight: 600; display: block; margin-bottom: 6px; }
+    .sk-proto h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; margin: 0 0 8px; }
+    .sk-proto p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--ink); max-width: 60ch; }
+    .sk-proto p + p { margin-top: 8px; color: var(--muted); font-size: 13px; }
+    .sk-proto-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 22px; border-radius: 6px; background: #0d7a5f; color: #fff; font-weight: 600; font-size: 16px; text-decoration: none; white-space: nowrap; }
+    .sk-proto-btn:hover { background: #0b5c48; }
+    .sk-proto-btn:focus-visible { outline: 3px solid #0062ba; outline-offset: 3px; }
+    .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    @media (max-width: 720px) { .sk-proto { grid-template-columns: 1fr; padding: 20px; } .sk-proto-btn { justify-self: start; white-space: normal; } }
+
     .sk-wide img { max-height: none; height: auto; object-fit: contain; background: #fff; }
 
     /* Numbered issue list */
@@ -204,13 +217,32 @@
     </div>
 
     <figure class="sk-hero">
-      <img src="assets/case/sk/cover-v2.jpg" width="2000" height="1500"
+      <img src="assets/case/sk/cover-v2.jpg?v=3" width="2000" height="1500"
            alt="The redesigned Skolekartet on a laptop and a phone. On the laptop, schools near Kirkeveien 64A are sorted by how well they fit the family&apos;s priorities: good results, little bullying, step-free access for the parent and a short school route, with test results, wellbeing and bullying in words on every card. On the phone, the shared list in large text with the same numbers in words." />
       <figcaption data-en="The redesign: results, wellbeing and access as equal priorities, every number said in words, and a list the parent can open on their own phone."
                   data-no="Redesignet: resultater, trivsel og tilgjengelighet som likeverdige prioriteringer, hvert tall sagt med ord, og en liste forelderen kan åpne på sin egen telefon.">
         The redesign: results, wellbeing and access as equal priorities, every number said in words, and a list the parent can open on their own phone.
       </figcaption>
     </figure>
+
+    <aside class="sk-proto" aria-labelledby="sk-proto-h">
+      <div>
+        <span class="k" data-en="Working prototype" data-no="Fungerende prototype">Working prototype</span>
+        <h2 id="sk-proto-h" data-en="Try the prototype we&rsquo;ll test with parents"
+            data-no="Prøv prototypen vi skal teste med foreldre">Try the prototype we&rsquo;ll test with parents</h2>
+        <p data-en="This is the working website we&rsquo;ll put in front of parents in the next stages of design and implementation. It has every fix from the case study, is built on Designsystemet like the Figma screens, and runs on real open data for 152 Oslo schools in Norwegian, English and Ukrainian."
+           data-no="Dette er det fungerende nettstedet vi skal teste med foreldre i de neste stegene av design og utvikling. Det har alle forbedringene fra casen, er bygget på Designsystemet som Figma-skjermene, og bruker ekte åpne data for 152 skoler i Oslo på norsk, engelsk og ukrainsk.">
+          This is the working website we&rsquo;ll put in front of parents in the next stages of design and implementation. It has every fix from the case study, is built on Designsystemet like the Figma screens, and runs on real open data for 152 Oslo schools in Norwegian, English and Ukrainian.
+        </p>
+        <p data-en="Schools, addresses, wellbeing and bullying are real open data. National test results and access facts are example data until schools confirm them."
+           data-no="Skoler, adresser, trivsel og mobbing er ekte åpne data. Resultater på nasjonale prøver og tilgjengelighet er eksempeldata til skolene bekrefter dem.">
+          Schools, addresses, wellbeing and bullying are real open data. National test results and access facts are example data until schools confirm them.
+        </p>
+      </div>
+      <a class="sk-proto-btn" href="skolekartet-prototype/index.html" target="_blank" rel="noopener"
+         data-en-html="Open the prototype <span aria-hidden=&quot;true&quot;>&#8599;</span><span class=&quot;visually-hidden&quot;> (opens in a new tab)</span>"
+         data-no-html="Åpne prototypen <span aria-hidden=&quot;true&quot;>&#8599;</span><span class=&quot;visually-hidden&quot;> (åpnes i ny fane)</span>">Open the prototype <span aria-hidden="true">&#8599;</span><span class="visually-hidden"> (opens in a new tab)</span></a>
+    </aside>
 
     <!-- 01 · THE REVIEW =========================================== -->
     <section id="review" class="sf-section">
@@ -829,9 +861,9 @@
           data-no="Ett scenario, ti oppgaver, og foreldre som løser dem på sin egen måte.">
         One scenario, ten tasks, and parents doing them in their own way.
       </h2>
-      <p data-en="The prototype is getting its final touches. When it&rsquo;s ready, this is the session I&rsquo;ll run, on a laptop and on a phone, with people using their own assistive technology where they have it."
-         data-no="Prototypen får siste finpuss. Når den er klar, er dette økten jeg skal kjøre, på laptop og på mobil, med folk som bruker egne hjelpemidler der de har dem.">
-        The prototype is getting its final touches. When it&rsquo;s ready, this is the session I&rsquo;ll run, on a laptop and on a phone, with people using their own assistive technology where they have it.
+      <p data-en-html="The <a href=&quot;skolekartet-prototype/index.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>working prototype</a> is ready. This is the session I&rsquo;ll run with it, on a laptop and on a phone, with people using their own assistive technology where they have it."
+         data-no-html="Den <a href=&quot;skolekartet-prototype/index.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>fungerende prototypen</a> er klar. Dette er økten jeg skal kjøre med den, på laptop og på mobil, med folk som bruker egne hjelpemidler der de har dem.">
+        The <a href="skolekartet-prototype/index.html" target="_blank" rel="noopener">working prototype</a> is ready. This is the session I&rsquo;ll run with it, on a laptop and on a phone, with people using their own assistive technology where they have it.
       </p>
       <p class="sk-scenario"
          data-en="&ldquo;You&rsquo;ve moved to Kirkeveien 64A in Oslo. Your child uses a wheelchair and needs adapted teaching.&rdquo;"
@@ -860,13 +892,13 @@
     <!-- 09 · WHAT'S NEXT =========================================== -->
     <section id="next" class="sf-section">
       <span class="case-eyebrow" data-en="09 · What&rsquo;s next" data-no="09 · Veien videre">09 · What&rsquo;s next</span>
-      <h2 data-en="Final touches, then testing with real families."
-          data-no="Siste finpuss, så testing med ekte familier.">
-        Final touches, then testing with real families.
+      <h2 data-en="A working prototype, then testing with real families."
+          data-no="En fungerende prototype, så testing med ekte familier.">
+        A working prototype, then testing with real families.
       </h2>
-      <p data-en="Next come the final touches to the prototype and the first round of testing. Before anything goes live, four things are still open, and the design file is honest about all of them."
-         data-no="Neste steg er siste finpuss på prototypen og første testrunde. Før noe går live, er fire ting fortsatt åpne, og designfilen er ærlig om alle.">
-        Next come the final touches to the prototype and the first round of testing. Before anything goes live, four things are still open, and the design file is honest about all of them.
+      <p data-en="The prototype is built and ready for the first round of testing with parents. Before anything goes live, four things are still open, and both the design file and the prototype are honest about all of them."
+         data-no="Prototypen er bygget og klar for første testrunde med foreldre. Før noe går live, er fire ting fortsatt åpne, og både designfilen og prototypen er ærlige om alle.">
+        The prototype is built and ready for the first round of testing with parents. Before anything goes live, four things are still open, and both the design file and the prototype are honest about all of them.
       </p>
       <ul class="sf-ai-list">
         <li data-en-html="<strong>Usability testing</strong> with 8 to 10 people, including screen-reader, keyboard-only and low-vision users, and parents with limited Norwegian."

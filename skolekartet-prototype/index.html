@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="nb" data-color="brand1" data-color-scheme="auto">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Finn skolen som passer barnet ditt – også når barnet trenger tilrettelegging." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <title>Skolekartet – finn skolen som passer barnet ditt</title>
+    <script>
+      // Bruk lagrede visningsvalg før første tegning, så siden ikke blinker.
+      try {
+        var s = JSON.parse(localStorage.getItem('sk.settings') || '{}');
+        var d = document.documentElement;
+        d.dataset.text = s.textSize || 'normal';
+        d.dataset.contrast = s.contrast || 'standard';
+        d.dataset.theme = s.theme || 'system';
+        d.dataset.colorScheme = s.theme === 'light' || s.theme === 'dark' ? s.theme : 'auto';
+        if (s.reduceMotion) d.dataset.motion = 'reduce';
+      } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="./assets/index-DXRDTBOr.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-WkwZ5CU-.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-CBTrwdjb.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
