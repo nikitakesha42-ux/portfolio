@@ -2726,6 +2726,15 @@ footer.site {
   display: block;
 }
 
+/* One-line framing under a numbered work group (e.g. "02 AI in practice") */
+.work-intro {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 60ch;
+  margin: 12px 0 0;
+}
+
 /* Primary project snapshot block — full-width feature */
 .project-snapshot {
   display: grid;
