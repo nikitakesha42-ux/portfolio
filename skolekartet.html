@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1f4a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>Skolekartet, redesigned needs-first · Anastasiia Nikitina</title>
+  <meta name="description" content="A needs-first redesign of Skolekartet, the map of Norwegian schools: a 17-screen review, research, 21 redesigned screens, a stress test and a clickable prototype ready for testing with parents." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ============================================================
+       Page-scoped visuals. Everything else inherits the portfolio.
+       ============================================================ */
+    .sk-lead { font-size: 19px; line-height: 1.5; color: var(--ink-2, #2b2f36); max-width: 62ch; margin: 16px 0 28px; }
+    .sf-section > h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; margin: 40px 0 12px; }
+
+    .sk-hero { margin: 0 0 56px; }
+    .sk-hero img { display: block; width: 100%; height: auto; border-radius: 18px; border: 1px solid var(--rule); }
+    .sk-hero figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+
+    .sk-wide img { max-height: none; height: auto; object-fit: contain; background: #fff; }
+
+    /* Numbered issue list */
+    .sk-issues { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .case .sk-issues li {
+      margin: 0; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--panel-warm);
+      font-size: 14px; line-height: 1.5; color: var(--ink);
+    }
+    .case .sk-issues li::before { display: none; content: none; }
+    .sk-issues .n { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: #b42318; font-weight: 600; margin-bottom: 4px; }
+
+    /* Tables */
+    .sk-table { width: 100%; margin: 8px 0; border-collapse: collapse; font-size: 14px; line-height: 1.45; }
+    .sk-table caption { text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-bottom: 10px; }
+    .sk-table th, .sk-table td { text-align: left; vertical-align: top; padding: 11px 16px 11px 0; border-top: 1px solid var(--rule); }
+    .sk-table thead th { border-top: 0; font-weight: 600; color: var(--ink); font-size: 13px; }
+    .sk-table tbody th { font-weight: 500; color: var(--ink); width: 45%; }
+    .sk-table tbody td { color: var(--muted); }
+    .sk-table .code { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-right: 6px; }
+
+    /* Research boards: thumbnails that open full size */
+    .sk-boards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 28px 0 0; }
+    .sk-boards figure { margin: 0; }
+    .sk-boards a { display: block; border: 1px solid var(--rule-strong); border-radius: 12px; overflow: hidden; background: #fff; line-height: 0; }
+    .sk-boards a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .sk-boards img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top left; transition: transform 0.25s ease; }
+    .sk-boards a:hover img { transform: scale(1.02); }
+    .sk-boards figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
+    .sk-boards figcaption b { color: var(--ink); font-weight: 600; }
+
+    /* Personas */
+    .sk-people { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 24px 0 0; }
+    .sk-person { border: 1px solid var(--rule); border-radius: 14px; padding: 16px 18px; background: var(--panel-warm); display: flex; flex-direction: column; gap: 8px; }
+    .sk-person__head { display: flex; align-items: center; gap: 10px; }
+    .sk-person__av { width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #dcefe6; color: #0b5a43; font: 600 12px/1 var(--sans); }
+    .sk-person h3 { font-size: 14.5px; font-weight: 600; margin: 0; line-height: 1.3; }
+    .sk-person .role { font-size: 12.5px; color: var(--muted); margin: 0; line-height: 1.4; }
+    .sk-person blockquote { margin: 2px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--ink); font-style: italic; }
+
+    /* Principles */
+    .sk-principles { list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .case .sk-principles li { margin: 0; padding: 16px 18px; border-radius: 14px; background: #eef6f2; border: 1px solid #c7e1d5; font-size: 14px; line-height: 1.55; color: var(--muted); }
+    .case .sk-principles li:last-child { grid-column: 1 / -1; }
+    .case .sk-principles li::before { display: none; content: none; }
+    .sk-principles .n { display: block; font-family: var(--mono); font-size: 11px; color: #0b5a43; font-weight: 600; margin-bottom: 6px; letter-spacing: 0.06em; }
+    .sk-principles b { display: block; color: var(--ink); font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+
+    /* Redesign steps: text beside the screen */
+    .sk-step { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr); gap: 36px; align-items: start; margin: 44px 0 0; padding-top: 32px; border-top: 1px solid var(--rule); }
+    .sk-step .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0b5a43; font-weight: 600; }
+    .sk-step h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; margin: 8px 0 10px; }
+    .sk-step p { font-size: 15px; line-height: 1.6; color: var(--ink); margin: 0 0 10px; }
+    .sk-step figure { margin: 0; }
+    .sk-step img { display: block; width: 100%; height: auto; border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
+    .sk-step .tall { max-height: 720px; object-fit: cover; object-position: top; }
+    .sk-step figcaption { font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
+    .sk-step--phone { grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr); }
+    .sk-step__pair { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(0, 0.7fr); gap: 14px; align-items: start; }
+    .sk-step__pair img.phone { border-radius: 22px; border: 6px solid #111318; }
+
+    /* Before / after pairs */
+    .sk-ba { margin: 36px 0 0; padding-top: 28px; border-top: 1px solid var(--rule); }
+    .sk-ba:first-of-type { border-top: 0; padding-top: 0; }
+    .sk-ba h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 8px; }
+    .sk-ba > p { font-size: 15px; line-height: 1.6; color: var(--ink); margin: 0 0 18px; max-width: 64ch; }
+    .sk-ba__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+    .sk-ba__pair figure { margin: 0; }
+    .sk-ba__pair img { display: block; width: 100%; height: auto; border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
+    .sk-ba__label { display: inline-flex; align-items: center; margin-bottom: 8px; padding: 3px 10px; border-radius: 999px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+    .sk-ba__label.before { background: #f3f4f6; color: #3b4150; border: 1px solid #c9ccd3; }
+    .sk-ba__label.after { background: #dcefe6; color: #0b5a43; border: 1px solid #8cc4ab; }
+
+    /* Phone row (stress test) */
+    .sk-phones { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 24px 0 0; padding: 24px 20px 20px; border: 1px solid var(--rule); border-radius: 18px; background: linear-gradient(180deg, #f2f8f5 0%, #e8f2ed 100%); }
+    .sk-phones figure { margin: 0; }
+    .sk-phones img { display: block; width: 100%; height: auto; border-radius: 22px; border: 6px solid #111318; background: #fff; box-shadow: 0 18px 30px -18px rgba(10, 31, 74, 0.45); }
+    .sk-phones figcaption { font-size: 12.5px; color: var(--muted); margin-top: 10px; line-height: 1.4; text-align: center; }
+    .sk-trio { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); gap: 18px; margin: 18px 0 0; align-items: start; }
+    .sk-trio figure { margin: 0; }
+    .sk-trio img { display: block; width: 100%; height: auto; border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
+    .sk-trio figcaption { font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
+
+    /* Test plan */
+    .sk-tasks { margin: 10px 0 0; padding-left: 22px; max-width: 66ch; }
+    .case .sk-tasks li { padding-left: 4px; margin-bottom: 8px; font-size: 15px; line-height: 1.55; }
+    .case .sk-tasks li::before { display: none; content: none; }
+    .sk-scenario { margin: 18px 0 8px; padding: 16px 20px; border-left: 3px solid #0f6a4f; background: #eef6f2; border-radius: 0 12px 12px 0; font-size: 16px; line-height: 1.5; font-style: italic; max-width: 62ch; }
+
+    @media (max-width: 960px) {
+      .sk-people { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sk-principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sk-issues { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .sk-lead { font-size: 17px; }
+      .sk-people, .sk-principles, .sk-issues, .sk-boards { grid-template-columns: 1fr; }
+      .sk-step, .sk-step--phone, .sk-trio { grid-template-columns: 1fr; gap: 18px; }
+      .sk-step--phone .sk-step__text { order: -1; }
+      .sk-ba__pair { grid-template-columns: 1fr; }
+      .sk-phones { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 18px 14px; }
+      .sk-table thead { display: none; }
+      .sk-table tr { display: block; padding: 12px 0; border-top: 1px solid var(--rule); }
+      .sk-table th, .sk-table td { display: block; border: 0; padding: 2px 0; width: auto; }
+      .sk-table tbody th { width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-en="Skip to main content" data-no="Hopp til hovedinnhold">Skip to main content</a>
+
+  <header class="case-header">
+    <a href="index.html" data-en="← All work" data-no="← Alt arbeid">← All work</a>
+    <div class="header-right">
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="index.html#selected-work" data-en="Work" data-no="Arbeid">Work</a>
+        <a href="about.html" data-en="About" data-no="Om meg">About</a>
+      </nav>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true" lang="en">EN</button>
+        <button type="button" data-lang="no" aria-pressed="false" lang="no">NO</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="case wide">
+
+    <span class="case-eyebrow brand"
+          data-en="Redesign · 2026 · prototype ready for testing"
+          data-no="Redesign · 2026 · prototype klar for testing">Redesign · 2026 · prototype ready for testing</span>
+    <h1 class="case-h1"
+        data-en="Redesigning Skolekartet so families start with their child, not a test score."
+        data-no="Skolekartet redesignet slik at familier starter med barnet sitt, ikke med et testresultat.">
+      Redesigning Skolekartet so families start with their child, not a test score.
+    </h1>
+    <p class="sk-lead"
+       data-en="Skolekartet puts national test results for every school in Norway on a map. It&rsquo;s clean, honest about its data and built on Designsystemet. Then I used it the way one family would: a friend helping a parent with a disability find a school for their disabled child. It couldn&rsquo;t do the job. So I redesigned it around what the family needs to know, and the prototype is now ready for testing with parents."
+       data-no="Skolekartet viser resultater fra nasjonale prøver for alle skoler i Norge på et kart. Den er ryddig, ærlig om dataene sine og bygget på Designsystemet. Så brukte jeg den slik én familie ville gjort: en venn som hjelper en forelder med funksjonsnedsettelse å finne skole til et barn med funksjonsnedsettelse. Den klarte ikke jobben. Så jeg redesignet den rundt det familien trenger å vite, og prototypen er nå klar for testing med foreldre.">
+      Skolekartet puts national test results for every school in Norway on a map. It&rsquo;s clean, honest about its data and built on Designsystemet. Then I used it the way one family would: a friend helping a parent with a disability find a school for their disabled child. It couldn&rsquo;t do the job. So I redesigned it around what the family needs to know, and the prototype is now ready for testing with parents.
+    </p>
+
+    <nav class="case-toc-pills" aria-label="On this page" data-en-aria="On this page" data-no-aria="På denne siden">
+      <a href="#review"><span class="num">01</span> <span data-en="The review" data-no="Gjennomgangen">The review</span></a>
+      <a href="#research"><span class="num">02</span> <span data-en="Research" data-no="Innsikt">Research</span></a>
+      <a href="#people"><span class="num">03</span> <span data-en="People and journeys" data-no="Mennesker og reiser">People and journeys</span></a>
+      <a href="#principles"><span class="num">04</span> <span data-en="Principles" data-no="Prinsipper">Principles</span></a>
+      <a href="#redesign"><span class="num">05</span> <span data-en="The redesign" data-no="Redesignet">The redesign</span></a>
+      <a href="#before-after"><span class="num">06</span> <span data-en="Before and after" data-no="Før og etter">Before and after</span></a>
+      <a href="#stress-test"><span class="num">07</span> <span data-en="Stress test" data-no="Stresstest">Stress test</span></a>
+      <a href="#testing"><span class="num">08</span> <span data-en="Prototype and testing" data-no="Prototype og testing">Prototype and testing</span></a>
+      <a href="#next"><span class="num">09</span> <span data-en="What&rsquo;s next" data-no="Veien videre">What&rsquo;s next</span></a>
+    </nav>
+
+    <div class="snap-row">
+      <div class="cell">
+        <span class="label" data-en="When" data-no="Når">When</span>
+        <span class="value">
+          <strong>2026</strong>
+          <span class="aside" data-en="in progress" data-no="pågår">in progress</span>
+        </span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="Method" data-no="Metode">Method</span>
+        <span class="value" data-en="17-screen review → research → 21 screens → stress test → prototype"
+                            data-no="Gjennomgang av 17 skjermer → innsikt → 21 skjermer → stresstest → prototype">17-screen review → research → 21 screens → stress test → prototype</span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="Built on" data-no="Bygget på">Built on</span>
+        <span class="value">Designsystemet · WCAG 2.2 AA</span>
+      </div>
+      <div class="cell">
+        <span class="label" data-en="My role" data-no="Min rolle">My role</span>
+        <span class="value" data-en="Solo · review, research, UX writing and design"
+                            data-no="Alene · gjennomgang, innsikt, UX-tekst og design">Solo · review, research, UX writing and design</span>
+      </div>
+    </div>
+
+    <figure class="sk-hero">
+      <img src="assets/case/sk/cover.jpg" width="2000" height="1500"
+           alt="The redesigned Skolekartet on a laptop and a phone. On the laptop, schools near Kirkeveien 64A are sorted by how well they fit the family's priorities: wheelchair, step-free access for the parent, adapted teaching and low bullying. On the phone, a shared list in large text with a reason for each school." />
+      <figcaption data-en="The redesign: the family&rsquo;s priorities on top, every school explained in words, and a list the parent can open on their own phone."
+                  data-no="Redesignet: familiens prioriteringer øverst, hver skole forklart med ord, og en liste forelderen kan åpne på sin egen telefon.">
+        The redesign: the family&rsquo;s priorities on top, every school explained in words, and a list the parent can open on their own phone.
+      </figcaption>
+    </figure>
+
+    <!-- 01 · THE REVIEW =========================================== -->
+    <section id="review" class="sf-section">
+      <span class="case-eyebrow" data-en="01 · The review" data-no="01 · Gjennomgangen">01 · The review</span>
+      <h2 data-en="I used the site the way one family would. It couldn&rsquo;t do the job."
+          data-no="Jeg brukte nettstedet slik én familie ville gjort. Det klarte ikke jobben.">
+        I used the site the way one family would. It couldn&rsquo;t do the job.
+      </h2>
+      <p data-en="The scenario: I&rsquo;m a friend of a parent with a disability. Together we need to find the best school for their disabled child, and when I show the parent the result, it has to be obvious why that school. I reviewed all 17 screens of skolekartet.no through that lens, with numbered pins on each screen and a notes panel beside it."
+         data-no="Scenarioet: Jeg er venn av en forelder med funksjonsnedsettelse. Sammen skal vi finne den beste skolen for barnet deres, som også har en funksjonsnedsettelse, og når jeg viser forelderen resultatet, må det være tydelig hvorfor akkurat den skolen. Jeg gikk gjennom alle 17 skjermene på skolekartet.no med det blikket, med nummererte nåler på hver skjerm og et notatpanel ved siden av.">
+        The scenario: I&rsquo;m a friend of a parent with a disability. Together we need to find the best school for their disabled child, and when I show the parent the result, it has to be obvious why that school. I reviewed all 17 screens of skolekartet.no through that lens, with numbered pins on each screen and a notes panel beside it.
+      </p>
+      <p data-en="The site has a strong base. But for this family it defines &ldquo;best&rdquo; as test averages, hides everything a disabled child needs, depends on a map and colours that aren&rsquo;t accessible, and gives no way to compare, share or explain a choice."
+         data-no="Nettstedet har et sterkt utgangspunkt. Men for denne familien definerer det «best» som testsnitt, skjuler alt et barn med funksjonsnedsettelse trenger, er avhengig av et kart og farger som ikke er tilgjengelige, og gir ingen måte å sammenligne, dele eller forklare et valg på.">
+        The site has a strong base. But for this family it defines &ldquo;best&rdquo; as test averages, hides everything a disabled child needs, depends on a map and colours that aren&rsquo;t accessible, and gives no way to compare, share or explain a choice.
+      </p>
+      <figure class="sf-figure sk-wide">
+        <img src="assets/case/sk/review-composite.jpg" width="1800" height="1700" loading="lazy"
+             alt="Today's skolekartet.no start page with eight numbered review pins, next to a yellow notes panel. Without an address, the list shows ten schools in Rana sorted as nearest, beside a map of Norway with coloured clusters." />
+        <figcaption data-en="Today&rsquo;s start page next to its review notes. Without an address, it lists ten random schools in Rana, sorted &ldquo;nearest&rdquo;."
+                    data-no="Dagens forside ved siden av notatene fra gjennomgangen. Uten adresse viser den ti tilfeldige skoler i Rana, sortert «nærmest».">
+          Today&rsquo;s start page next to its review notes. Without an address, it lists ten random schools in Rana, sorted &ldquo;nearest&rdquo;.
+        </figcaption>
+      </figure>
+
+      <h3 data-en="Nine issues that break the whole journey" data-no="Ni problemer som ødelegger hele reisen">Nine issues that break the whole journey</h3>
+      <ol class="sk-issues">
+        <li><span class="n">01</span><span data-en="&ldquo;Best&rdquo; means test scores. Colours, filters, sorting and the main button all revolve around them." data-no="«Best» betyr testresultater. Farger, filtre, sortering og hovedknappen dreier seg om dem.">&ldquo;Best&rdquo; means test scores. Colours, filters, sorting and the main button all revolve around them.</span></li>
+        <li><span class="n">02</span><span data-en="Nothing about step-free access, lifts, accessible toilets or special education. Not on cards, not on school pages." data-no="Ingenting om trinnfri adkomst, heis, tilpassede toaletter eller spesialundervisning. Ikke på kortene, ikke på skolesidene.">Nothing about step-free access, lifts, accessible toilets or special education. Not on cards, not on school pages.</span></li>
+        <li><span class="n">03</span><span data-en="No way to explain &ldquo;why this school&rdquo;. Raw numbers and red and green dots instead of reasons." data-no="Ingen måte å forklare «hvorfor denne skolen» på. Rå tall og røde og grønne prikker i stedet for begrunnelser.">No way to explain &ldquo;why this school&rdquo;. Raw numbers and red and green dots instead of reasons.</span></li>
+        <li><span class="n">04</span><span data-en="Saved schools live in one browser. No comparing, sharing or printing, so the parent can&rsquo;t see them on their own device." data-no="Lagrede skoler bor i én nettleser. Ingen sammenligning, deling eller utskrift, så forelderen ser dem ikke på sin egen enhet.">Saved schools live in one browser. No comparing, sharing or printing, so the parent can&rsquo;t see them on their own device.</span></li>
+        <li><span class="n">05</span><span data-en="Map and colour first. Hard with a screen reader, low contrast in places, and red and green unsafe for colour-blind users." data-no="Kart og farge først. Vanskelig med skjermleser, lav kontrast enkelte steder, og rødt og grønt er utrygt for fargeblinde.">Map and colour first. Hard with a screen reader, low contrast in places, and red and green unsafe for colour-blind users.</span></li>
+        <li><span class="n">06</span><span data-en="A meaningless default view: random schools in Rana before you&rsquo;ve said where you live." data-no="En meningsløs standardvisning: tilfeldige skoler i Rana før du har sagt hvor du bor.">A meaningless default view: random schools in Rana before you&rsquo;ve said where you live.</span></li>
+        <li><span class="n">07</span><span data-en="Guidance for parents hidden in a menu, and no page about rights, PPT, IEPs or school transport." data-no="Veiledning for foreldre gjemt i en meny, og ingen side om rettigheter, PPT, IOP eller skoleskyss.">Guidance for parents hidden in a menu, and no page about rights, PPT, IEPs or school transport.</span></li>
+        <li><span class="n">08</span><span data-en="Distances that assume a child walking at 4.5 km/h. No step-free or wheelchair route." data-no="Avstander som forutsetter et barn som går 4,5 km/t. Ingen trinnfri rute eller rute for rullestol.">Distances that assume a child walking at 4.5 km/h. No step-free or wheelchair route.</span></li>
+        <li><span class="n">09</span><span data-en="One contact channel, and it&rsquo;s a written form. Parents who can&rsquo;t write easily are left out." data-no="Én kontaktkanal, og den er et skjema. Foreldre som ikke skriver lett, blir utelatt.">One contact channel, and it&rsquo;s a written form. Parents who can&rsquo;t write easily are left out.</span></li>
+      </ol>
+    </section>
+
+    <!-- 02 · RESEARCH ============================================== -->
+    <section id="research" class="sf-section">
+      <span class="case-eyebrow" data-en="02 · Research" data-no="02 · Innsikt">02 · Research</span>
+      <h2 data-en="From what families do, to what they need."
+          data-no="Fra hva familier gjør, til hva de trenger.">
+        From what families do, to what they need.
+      </h2>
+      <p data-en="I broke the problem into nine concrete behaviours, each with its trigger, what the family relies on, where the site falls short and the workaround they use instead. Then I clustered them into four needs, ordered by how badly each one blocks the decision."
+         data-no="Jeg delte problemet opp i ni konkrete atferder, hver med utløser, hva familien støtter seg på, hvor nettstedet svikter og omveien de bruker i stedet. Så grupperte jeg dem i fire behov, sortert etter hvor sterkt hvert av dem blokkerer beslutningen.">
+        I broke the problem into nine concrete behaviours, each with its trigger, what the family relies on, where the site falls short and the workaround they use instead. Then I clustered them into four needs, ordered by how badly each one blocks the decision.
+      </p>
+
+      <table class="sk-table">
+        <caption data-en="Nine behaviours, and what families do when the site falls short" data-no="Ni atferder, og hva familier gjør når nettstedet ikke strekker til">Nine behaviours, and what families do when the site falls short</caption>
+        <thead>
+          <tr>
+            <th scope="col" data-en="What they do on the site" data-no="Hva de gjør på nettstedet">What they do on the site</th>
+            <th scope="col" data-en="What they do instead" data-no="Hva de gjør i stedet">What they do instead</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row"><span class="code">B1</span><span data-en="Types the address and reads &ldquo;Probably the school district&rdquo;" data-no="Skriver adressen og leser «Trolig skolekrets»">Types the address and reads &ldquo;Probably the school district&rdquo;</span></th><td data-en="Opens the kommune&rsquo;s map in a new tab and calls the switchboard" data-no="Åpner kommunens kart i ny fane og ringer sentralbordet">Opens the kommune&rsquo;s map in a new tab and calls the switchboard</td></tr>
+          <tr><th scope="row"><span class="code">B2</span><span data-en="Scrolls a whole school page looking for wheelchair access" data-no="Blar gjennom en hel skoleside på jakt etter rullestoladkomst">Scrolls a whole school page looking for wheelchair access</span></th><td data-en="Zooms into the photos for steps, googles, asks in parent groups" data-no="Zoomer inn på bildene etter trapper, googler, spør i foreldregrupper">Zooms into the photos for steps, googles, asks in parent groups</td></tr>
+          <tr><th scope="row"><span class="code">B3</span><span data-en="Reads &ldquo;Bullying 26,1 %&rdquo; on a card" data-no="Leser «Mobbing 26,1 %» på et kort">Reads &ldquo;Bullying 26,1 %&rdquo; on a card</span></th><td data-en="Works out by hand that it&rsquo;s more than double Oslo&rsquo;s figure" data-no="Regner for hånd ut at det er over dobbelt så høyt som i Oslo">Works out by hand that it&rsquo;s more than double Oslo&rsquo;s figure</td></tr>
+          <tr><th scope="row"><span class="code">B4</span><span data-en="Looks through Filter for anything about adapted teaching" data-no="Leter gjennom Filter etter noe om tilrettelegging">Looks through Filter for anything about adapted teaching</span></th><td data-en="Gives up and opens every school in a new tab" data-no="Gir opp og åpner hver skole i ny fane">Gives up and opens every school in a new tab</td></tr>
+          <tr><th scope="row"><span class="code">B5</span><span data-en="Saves four schools to send to the parent" data-no="Lagrer fire skoler for å sende til forelderen">Saves four schools to send to the parent</span></th><td data-en="Screenshots, pasted links and a home-made spreadsheet" data-no="Skjermbilder, limte lenker og et hjemmelaget regneark">Screenshots, pasted links and a home-made spreadsheet</td></tr>
+          <tr><th scope="row"><span class="code">B6</span><span data-en="The parent asks &ldquo;why is that one red?&rdquo;" data-no="Forelderen spør «hvorfor er den rød?»">The parent asks &ldquo;why is that one red?&rdquo;</span></th><td data-en="The friend reads the numbers aloud and translates them" data-no="Vennen leser tallene høyt og oversetter dem">The friend reads the numbers aloud and translates them</td></tr>
+          <tr><th scope="row"><span class="code">B7</span><span data-en="Checks the walking route to the school" data-no="Sjekker gangruten til skolen">Checks the walking route to the school</span></th><td data-en="Uses Street View to look for kerbs and stairs, calls about school transport" data-no="Bruker Street View for å se etter kantsteiner og trapper, ringer om skoleskyss">Uses Street View to look for kerbs and stairs, calls about school transport</td></tr>
+          <tr><th scope="row"><span class="code">B8</span><span data-en="The parent zooms to 200 % or uses a screen reader" data-no="Forelderen zoomer til 200 % eller bruker skjermleser">The parent zooms to 200 % or uses a screen reader</span></th><td data-en="Asks the friend to read it out" data-no="Ber vennen lese det høyt">Asks the friend to read it out</td></tr>
+          <tr><th scope="row"><span class="code">B9</span><span data-en="Copies the school&rsquo;s general e-mail address" data-no="Kopierer skolens generelle e-postadresse">Copies the school&rsquo;s general e-mail address</span></th><td data-en="Calls the switchboard and gets passed around" data-no="Ringer sentralbordet og blir sendt videre">Calls the switchboard and gets passed around</td></tr>
+        </tbody>
+      </table>
+
+      <h3 data-en="Four needs, in priority order" data-no="Fire behov, i prioritert rekkefølge">Four needs, in priority order</h3>
+      <div class="sf-decisions four">
+        <article class="sf-decision">
+          <span class="signal-tag problem" data-en="Priority 1 · Blocks the decision" data-no="Prioritet 1 · Blokkerer beslutningen">Priority 1 · Blocks the decision</span>
+          <h3 data-en="Clarity about access and support" data-no="Klarhet om tilgjengelighet og støtte">Clarity about access and support</h3>
+          <p data-en="Know before visiting whether the child can get in and around the school, and what support they&rsquo;ll actually get. Today the site has no such data, and doesn&rsquo;t say it&rsquo;s missing."
+             data-no="Vite før besøket om barnet kommer seg inn og rundt på skolen, og hvilken støtte det faktisk får. I dag har nettstedet ingen slike data, og sier ikke at de mangler.">
+            Know before visiting whether the child can get in and around the school, and what support they&rsquo;ll actually get. Today the site has no such data, and doesn&rsquo;t say it&rsquo;s missing.
+          </p>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag strategic" data-en="Priority 2 · Excludes the decision-maker" data-no="Prioritet 2 · Utelater den som bestemmer">Priority 2 · Excludes the decision-maker</span>
+          <h3 data-en="A decision the parent shares" data-no="En beslutning forelderen er med på">A decision the parent shares</h3>
+          <p data-en="The parent, who has a disability, needs the same shortlist on their own device and assistive technology, and to understand why each school is on it."
+             data-no="Forelderen, som har en funksjonsnedsettelse, trenger den samme listen på sin egen enhet og sine egne hjelpemidler, og å forstå hvorfor hver skole er på den.">
+            The parent, who has a disability, needs the same shortlist on their own device and assistive technology, and to understand why each school is on it.
+          </p>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag team" data-en="Priority 3 · Risk of a wrong choice" data-no="Prioritet 3 · Risiko for feil valg">Priority 3 · Risk of a wrong choice</span>
+          <h3 data-en="Things worth checking" data-no="Ting som er verdt å sjekke">Things worth checking</h3>
+          <p data-en="Spot at once the facts that should change the decision: high bullying, missing data, a guessed school district. Today every number looks equally certain."
+             data-no="Se med en gang fakta som burde endre beslutningen: høy mobbing, manglende data, en gjettet skolekrets. I dag ser alle tall like sikre ut.">
+            Spot at once the facts that should change the decision: high bullying, missing data, a guessed school district. Today every number looks equally certain.
+          </p>
+        </article>
+        <article class="sf-decision">
+          <span class="signal-tag built" data-en="Priority 4 · Misleading frame" data-no="Prioritet 4 · Misvisende ramme">Priority 4 · Misleading frame</span>
+          <h3 data-en="Scores in context" data-no="Resultater i kontekst">Scores in context</h3>
+          <p data-en="Understand what results and colours mean for this child, in plain words. Children with special needs are often exempt from the very tests that drive the colours."
+             data-no="Forstå hva resultater og farger betyr for dette barnet, med vanlige ord. Barn med særskilte behov er ofte fritatt fra nettopp de prøvene som styrer fargene.">
+            Understand what results and colours mean for this child, in plain words. Children with special needs are often exempt from the very tests that drive the colours.
+          </p>
+        </article>
+      </div>
+
+      <h3 data-en="The question I chose to answer first" data-no="Spørsmålet jeg valgte å svare på først">The question I chose to answer first</h3>
+      <p class="shift-quote"
+         data-en="How might we reflect the child&rsquo;s reality, their needs, access and support, in the school list rather than test-score averages, so the family feels informed instead of guessing?"
+         data-no="Hvordan kan vi vise barnets virkelighet, behov, tilgjengelighet og støtte, i skolelisten i stedet for testsnitt, slik at familien føler seg informert i stedet for å gjette?">
+        How might we reflect the child&rsquo;s reality, their needs, access and support, in the school list rather than test-score averages, so the family feels informed instead of guessing?
+      </p>
+      <p style="margin-top: 16px;"
+         data-en="One of 17 How Might We statements across the four needs, each tied to an observed behaviour and none with a solution built in. Three ideas answer it, each with a way to measure it:"
+         data-no="Ett av 17 «Hvordan kan vi»-spørsmål på tvers av de fire behovene, hvert knyttet til en observert atferd og ingen med en ferdig løsning. Tre ideer svarer på det, hver med en måte å måle den på:">
+        One of 17 How Might We statements across the four needs, each tied to an observed behaviour and none with a solution built in. Three ideas answer it, each with a way to measure it:
+      </p>
+      <ul class="sf-ai-list">
+        <li data-en-html="<strong>A needs profile and a match line on every card.</strong> Three short questions, then every school says in words what fits and what&rsquo;s unknown. Target: a three-school shortlist in half the time."
+            data-no-html="<strong>En behovsprofil og en treff-linje på hvert kort.</strong> Tre korte spørsmål, så sier hver skole med ord hva som passer og hva som er ukjent. Mål: en liste med tre skoler på halve tiden.">
+          <strong>A needs profile and a match line on every card.</strong> Three short questions, then every school says in words what fits and what&rsquo;s unknown. Target: a three-school shortlist in half the time.
+        </li>
+        <li data-en-html="<strong>Known, unknown, ask.</strong> Every fact is Confirmed (with source and date), Unknown or Worth checking, with a named contact or a ready-made question. Target: 90 % answer &ldquo;is this confirmed?&rdquo; correctly."
+            data-no-html="<strong>Kjent, ukjent, spør.</strong> Hvert faktum er Bekreftet (med kilde og dato), Ukjent eller Verdt å sjekke, med en navngitt kontakt eller et ferdig spørsmål. Mål: 90 % svarer riktig på «er dette bekreftet?».">
+          <strong>Known, unknown, ask.</strong> Every fact is Confirmed (with source and date), Unknown or Worth checking, with a named contact or a ready-made question. Target: 90 % answer &ldquo;is this confirmed?&rdquo; correctly.
+        </li>
+        <li data-en-html="<strong>Compare and share a &ldquo;why&rdquo; shortlist.</strong> A screen-reader-friendly comparison with one sentence per school, shared as a link without personal data or printed. Target: SUS of 80 or more with assistive-technology users."
+            data-no-html="<strong>Sammenlign og del en liste med «hvorfor».</strong> En sammenligning som fungerer med skjermleser, med én setning per skole, delt som lenke uten personopplysninger eller skrevet ut. Mål: SUS på 80 eller mer med brukere av hjelpemidler.">
+          <strong>Compare and share a &ldquo;why&rdquo; shortlist.</strong> A screen-reader-friendly comparison with one sentence per school, shared as a link without personal data or printed. Target: SUS of 80 or more with assistive-technology users.
+        </li>
+      </ul>
+
+      <div class="sk-boards">
+        <figure>
+          <a href="assets/case/sk/review-summary.jpg" target="_blank" rel="noopener" data-en-aria="Open the review summary full size (opens in a new tab)" data-no-aria="Åpne oppsummeringen av gjennomgangen i full størrelse (åpnes i ny fane)" aria-label="Open the review summary full size (opens in a new tab)">
+            <img src="assets/case/sk/review-summary.jpg" width="1800" height="2579" loading="lazy" alt="" />
+          </a>
+          <figcaption data-en-html="<b>Review summary.</b> The verdict, nine holistic issues and the recommended needs-first journey." data-no-html="<b>Oppsummering av gjennomgangen.</b> Konklusjonen, ni helhetlige problemer og den anbefalte behov-først-reisen."><b>Review summary.</b> The verdict, nine holistic issues and the recommended needs-first journey.</figcaption>
+        </figure>
+        <figure>
+          <a href="assets/case/sk/research-behaviours.jpg" target="_blank" rel="noopener" data-en-aria="Open the behaviours board full size (opens in a new tab)" data-no-aria="Åpne atferdstavlen i full størrelse (åpnes i ny fane)" aria-label="Open the behaviours board full size (opens in a new tab)">
+            <img src="assets/case/sk/research-behaviours.jpg" width="2400" height="726" loading="lazy" alt="" />
+          </a>
+          <figcaption data-en-html="<b>Step 1 · Behaviours.</b> Nine actions with trigger, intent, what they rely on, the gap and the workaround." data-no-html="<b>Steg 1 · Atferd.</b> Ni handlinger med utløser, hensikt, hva de støtter seg på, hullet og omveien."><b>Step 1 · Behaviours.</b> Nine actions with trigger, intent, what they rely on, the gap and the workaround.</figcaption>
+        </figure>
+        <figure>
+          <a href="assets/case/sk/research-needs.jpg" target="_blank" rel="noopener" data-en-aria="Open the needs board full size (opens in a new tab)" data-no-aria="Åpne behovstavlen i full størrelse (åpnes i ny fane)" aria-label="Open the needs board full size (opens in a new tab)">
+            <img src="assets/case/sk/research-needs.jpg" width="2400" height="571" loading="lazy" alt="" />
+          </a>
+          <figcaption data-en-html="<b>Step 2 · Needs.</b> Four needs, each with the gap and its behavioural and emotional cost." data-no-html="<b>Steg 2 · Behov.</b> Fire behov, hvert med hullet og hva det koster i atferd og følelser."><b>Step 2 · Needs.</b> Four needs, each with the gap and its behavioural and emotional cost.</figcaption>
+        </figure>
+        <figure>
+          <a href="assets/case/sk/research-ideas.jpg" target="_blank" rel="noopener" data-en-aria="Open the ideas board full size (opens in a new tab)" data-no-aria="Åpne idétavlen i full størrelse (åpnes i ny fane)" aria-label="Open the ideas board full size (opens in a new tab)">
+            <img src="assets/case/sk/research-ideas.jpg" width="2400" height="634" loading="lazy" alt="" />
+          </a>
+          <figcaption data-en-html="<b>Steps 3 and 4 · How Might We and ideas.</b> The top question, three ideas, the evidence and the success metrics." data-no-html="<b>Steg 3 og 4 · Hvordan kan vi og ideer.</b> Det viktigste spørsmålet, tre ideer, begrunnelsen og suksesskriteriene."><b>Steps 3 and 4 · How Might We and ideas.</b> The top question, three ideas, the evidence and the success metrics.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 03 · PEOPLE AND JOURNEYS =================================== -->
+    <section id="people" class="sf-section">
+      <span class="case-eyebrow" data-en="03 · People and journeys" data-no="03 · Mennesker og reiser">03 · People and journeys</span>
+      <h2 data-en="Eight proto-personas and seven journeys, from Oslo to Hemnes."
+          data-no="Åtte proto-personas og sju reiser, fra Oslo til Hemnes.">
+        Eight proto-personas and seven journeys, from Oslo to Hemnes.
+      </h2>
+      <p data-en="They cover parents with and without disabilities, children with different needs, a family new to Norway, a family relocating, a rural family, a grandparent and a professional who helps families choose. They&rsquo;re proto-personas, built from the review, the behaviours and public knowledge of how school choice works in Norway. They need interviews before they count as research."
+         data-no="De dekker foreldre med og uten funksjonsnedsettelse, barn med ulike behov, en familie som er ny i Norge, en familie som flytter, en familie på bygda, en besteforelder og en fagperson som hjelper familier å velge. De er proto-personas, bygget på gjennomgangen, atferdene og offentlig kunnskap om hvordan skolevalg fungerer i Norge. De trenger intervjuer før de teller som innsikt.">
+        They cover parents with and without disabilities, children with different needs, a family new to Norway, a family relocating, a rural family, a grandparent and a professional who helps families choose. They&rsquo;re proto-personas, built from the review, the behaviours and public knowledge of how school choice works in Norway. They need interviews before they count as research.
+      </p>
+
+      <div class="sk-people">
+        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">AH</span><div><h3>Amina, 34 · Oslo</h3><p class="role" data-en="Her daughter uses a wheelchair" data-no="Datteren bruker rullestol">Her daughter uses a wheelchair</p></div></div>
+          <blockquote data-en="&ldquo;I don&rsquo;t need the &lsquo;best&rsquo; school. I need a school where Lina gets through the door and is seen.&rdquo;" data-no="«Jeg trenger ikke den ‘beste’ skolen. Jeg trenger en skole der Lina kommer seg inn døra og blir sett.»">&ldquo;I don&rsquo;t need the &lsquo;best&rsquo; school. I need a school where Lina gets through the door and is seen.&rdquo;</blockquote></article>
+        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">LB</span><div><h3>Lars, 41 · Bergen</h3><p class="role" data-en="Blind, uses JAWS and VoiceOver" data-no="Blind, bruker JAWS og VoiceOver">Blind, uses JAWS and VoiceOver</p></div></div>
+          <blockquote data-en="&ldquo;If the map is the only thing that works, the service isn&rsquo;t made for me.&rdquo;" data-no="«Hvis kartet er det eneste som fungerer, er tjenesten ikke laget for meg.»">&ldquo;If the map is the only thing that works, the service isn&rsquo;t made for me.&rdquo;</blockquote></article>
+        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">OK</span><div><h3>Olena, 38 · Drammen</h3><p class="role" data-en="New to Norway, two children" data-no="Ny i Norge, to barn">New to Norway, two children</p></div></div>
+          <blockquote data-en="&ldquo;I understand the numbers, but not the system. Who decides which school my children get?&rdquo;" data-no="«Jeg forstår tallene, men ikke systemet. Hvem bestemmer hvilken skole barna får?»">&ldquo;I understand the numbers, but not the system. Who decides which school my children get?&rdquo;</blockquote></article>
+        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">JL</span><div><h3>Jonas &amp; Mari, 36 · 35</h3><p class="role" data-en="Moving to Oslo, choosing a home by school" data-no="Flytter til Oslo, velger bolig etter skole">Moving to Oslo, choosing a home by school</p></div></div>
+          <blockquote data-en="&ldquo;We choose a flat by the school, so we have to compare districts, not one address.&rdquo;" data-no="«Vi velger leilighet ut fra skolen, så vi må sammenligne bydeler, ikke én adresse.»">&ldquo;We choose a flat by the school, so we have to compare districts, not one address.&rdquo;</blockquote></article>
+        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">SN</span><div><h3>Sara, 29 · Fredrikstad</h3><p class="role" data-en="Shift worker; her son is being bullied" data-no="Turnusarbeider; sønnen blir mobbet">Shift worker; her son is being bullied</p></div></div>
+          <blockquote data-en="&ldquo;Theo dreads every morning. I need to know the next school actually does something about bullying.&rdquo;" data-no="«Theo gruer seg hver morgen. Jeg må vite at neste skole faktisk gjør noe med mobbing.»">&ldquo;Theo dreads every morning. I need to know the next school actually does something about bullying.&rdquo;</blockquote></article>
+        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">KE</span><div><h3>Kari, 39 · Hemnes</h3><p class="role" data-en="Rural; daughter with a cochlear implant" data-no="Bor på bygda; datter med cochleaimplantat">Rural; daughter with a cochlear implant</p></div></div>
+          <blockquote data-en="&ldquo;There&rsquo;s one school here. The question isn&rsquo;t which, it&rsquo;s what everyday life will be like.&rdquo;" data-no="«Her finnes det én skole. Spørsmålet er ikke hvilken, men hvordan hverdagen blir.»">&ldquo;There&rsquo;s one school here. The question isn&rsquo;t which, it&rsquo;s what everyday life will be like.&rdquo;</blockquote></article>
+        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">EJ</span><div><h3>Erik, 67 · Hamar</h3><p class="role" data-en="Grandparent, low digital skills" data-no="Besteforelder, lite digital erfaring">Grandparent, low digital skills</p></div></div>
+          <blockquote data-en="&ldquo;Too much small text and too many buttons. I just want to know where the boy will go.&rdquo;" data-no="«Det er for mye smått og for mange knapper. Jeg vil bare vite hvor gutten skal gå.»">&ldquo;Too much small text and too many buttons. I just want to know where the boy will go.&rdquo;</blockquote></article>
+        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">IA</span><div><h3>Ingrid, 52 · Oslo</h3><p class="role" data-en="PP counsellor, 40+ families a year" data-no="PP-rådgiver, over 40 familier i året">PP counsellor, 40+ families a year</p></div></div>
+          <blockquote data-en="&ldquo;I want to send parents one link that shows the options honestly, including what we don&rsquo;t know.&rdquo;" data-no="«Jeg vil kunne sende foreldre én lenke som viser alternativene ærlig, også det vi ikke vet.»">&ldquo;I want to send parents one link that shows the options honestly, including what we don&rsquo;t know.&rdquo;</blockquote></article>
+      </div>
+
+      <h3 data-en="Seven journeys, six stages each" data-no="Sju reiser, seks faser hver">Seven journeys, six stages each</h3>
+      <p data-en="Each journey runs from the trigger to life after the decision, and plots today&rsquo;s site against the redesign. They added a second round of design: comparing several addresses, language support, a low-data mode, facts about hearing, schools confirming their own facts, help writing a school-change application, deadlines and read-aloud."
+         data-no="Hver reise går fra utløseren til livet etter beslutningen, og viser dagens nettsted mot redesignet. De ga en ny designrunde: sammenligne flere adresser, språkstøtte, en sparemodus for data, fakta om hørsel, skoler som bekrefter egne opplysninger, hjelp til å skrive søknad om skolebytte, frister og opplesning.">
+        Each journey runs from the trigger to life after the decision, and plots today&rsquo;s site against the redesign. They added a second round of design: comparing several addresses, language support, a low-data mode, facts about hearing, schools confirming their own facts, help writing a school-change application, deadlines and read-aloud.
+      </p>
+      <table class="sk-table">
+        <caption data-en="The seven journeys" data-no="De sju reisene">The seven journeys</caption>
+        <tbody>
+          <tr><th scope="row" data-en="Finding a school for a child who uses a wheelchair" data-no="Finne skole til et barn som bruker rullestol">Finding a school for a child who uses a wheelchair</th><td>Amina · Oslo</td></tr>
+          <tr><th scope="row" data-en="New to Norway with two children of different ages" data-no="Ny i Norge med to barn i ulik alder">New to Norway with two children of different ages</th><td>Olena · Drammen</td></tr>
+          <tr><th scope="row" data-en="Relocating and choosing a home by school" data-no="Flytte og velge bolig etter skole">Relocating and choosing a home by school</th><td>Jonas &amp; Mari · Oslo</td></tr>
+          <tr><th scope="row" data-en="A blind parent choosing a school on his own" data-no="En blind forelder som velger skole på egen hånd">A blind parent choosing a school on his own</th><td>Lars · Bergen</td></tr>
+          <tr><th scope="row" data-en="Changing school mid-year because of bullying" data-no="Bytte skole midt i året på grunn av mobbing">Changing school mid-year because of bullying</th><td>Sara · Fredrikstad</td></tr>
+          <tr><th scope="row" data-en="A long school journey and a child with hearing loss" data-no="Lang skolevei og et barn med hørselstap">A long school journey and a child with hearing loss</th><td>Kari · Hemnes</td></tr>
+          <tr><th scope="row" data-en="A grandparent with low digital skills helping out" data-no="En besteforelder med lite digital erfaring som hjelper til">A grandparent with low digital skills helping out</th><td>Erik · Hamar</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sk-boards">
+        <figure>
+          <a href="assets/case/sk/research-personas.jpg" target="_blank" rel="noopener" data-en-aria="Open the personas board full size (opens in a new tab)" data-no-aria="Åpne persona-tavlen i full størrelse (åpnes i ny fane)" aria-label="Open the personas board full size (opens in a new tab)">
+            <img src="assets/case/sk/research-personas.jpg" width="2400" height="1252" loading="lazy" alt="" />
+          </a>
+          <figcaption data-en-html="<b>Personas.</b> Context, goals, today&rsquo;s frustrations, what helps in the redesign and the key screens for each." data-no-html="<b>Personas.</b> Kontekst, mål, dagens frustrasjoner, hva som hjelper i redesignet og nøkkelskjermene for hver."><b>Personas.</b> Context, goals, today&rsquo;s frustrations, what helps in the redesign and the key screens for each.</figcaption>
+        </figure>
+        <figure>
+          <a href="assets/case/sk/research-journey1.jpg" target="_blank" rel="noopener" data-en-aria="Open journey 1 full size (opens in a new tab)" data-no-aria="Åpne reise 1 i full størrelse (åpnes i ny fane)" aria-label="Open journey 1 full size (opens in a new tab)">
+            <img src="assets/case/sk/research-journey1.jpg" width="2400" height="775" loading="lazy" alt="" />
+          </a>
+          <figcaption data-en-html="<b>Journey 1 · Amina.</b> Six stages of doing, thinking and feeling, today&rsquo;s site against the redesign." data-no-html="<b>Reise 1 · Amina.</b> Seks faser med handlinger, tanker og følelser, dagens nettsted mot redesignet."><b>Journey 1 · Amina.</b> Six stages of doing, thinking and feeling, today&rsquo;s site against the redesign.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 04 · PRINCIPLES ============================================ -->
+    <section id="principles" class="sf-section">
+      <span class="case-eyebrow" data-en="04 · Principles" data-no="04 · Prinsipper">04 · Principles</span>
+      <h2 data-en="Five principles, each traced to the issues it fixes."
+          data-no="Fem prinsipper, hvert sporet til problemene det løser.">
+        Five principles, each traced to the issues it fixes.
+      </h2>
+      <ol class="sk-principles">
+        <li><span class="n">01</span><b data-en="Needs before scores" data-no="Behov før resultater">Needs before scores</b><span data-en="The family defines &ldquo;best&rdquo;. Test results become one optional priority." data-no="Familien definerer «best». Testresultater blir én valgfri prioritering.">The family defines &ldquo;best&rdquo;. Test results become one optional priority.</span></li>
+        <li><span class="n">02</span><b data-en="Say what we don&rsquo;t know" data-no="Si hva vi ikke vet">Say what we don&rsquo;t know</b><span data-en="Every fact is Confirmed, Unknown or Worth checking, in words and icons. Silence is never read as &ldquo;no problem&rdquo;." data-no="Hvert faktum er Bekreftet, Ukjent eller Verdt å sjekke, med ord og ikoner. Taushet leses aldri som «ikke noe problem».">Every fact is Confirmed, Unknown or Worth checking, in words and icons. Silence is never read as &ldquo;no problem&rdquo;.</span></li>
+        <li><span class="n">03</span><b data-en="List first, map optional" data-no="Liste først, kart valgfritt">List first, map optional</b><span data-en="Everything on the map is also in the list, so nothing depends on seeing it." data-no="Alt på kartet står også i listen, så ingenting avhenger av å se det.">Everything on the map is also in the list, so nothing depends on seeing it.</span></li>
+        <li><span class="n">04</span><b data-en="Why, in one sentence" data-no="Hvorfor, i én setning">Why, in one sentence</b><span data-en="Every school says why it&rsquo;s on the list, then gives the next step: call, ask or share." data-no="Hver skole sier hvorfor den er på listen, og gir neste steg: ring, spør eller del.">Every school says why it&rsquo;s on the list, then gives the next step: call, ask or share.</span></li>
+        <li><span class="n">05</span><b data-en="The parent stays in control" data-no="Forelderen har kontrollen">The parent stays in control</b><span data-en="The list goes to their own device, their own assistive technology, their own text size." data-no="Listen går til deres egen enhet, egne hjelpemidler og egen tekststørrelse.">The list goes to their own device, their own assistive technology, their own text size.</span></li>
+      </ol>
+      <p style="margin-top: 20px;"
+         data-en="All of it is built on Designsystemet&rsquo;s tokens, with five new components: Header, Footer, Fakta, Valgkort and a new school card. Every redesigned screen has a rationale panel beside it: what was wrong, how I fixed it and why, what it does for accessibility, and what I considered and rejected."
+         data-no="Alt er bygget på Designsystemets tokens, med fem nye komponenter: Header, Footer, Fakta, Valgkort og et nytt skolekort. Hver redesignede skjerm har et begrunnelsespanel ved siden av: hva som var galt, hvordan jeg løste det og hvorfor, hva det gjør for tilgjengelighet, og hva jeg vurderte og forkastet.">
+        All of it is built on Designsystemet&rsquo;s tokens, with five new components: Header, Footer, Fakta, Valgkort and a new school card. Every redesigned screen has a rationale panel beside it: what was wrong, how I fixed it and why, what it does for accessibility, and what I considered and rejected.
+      </p>
+      <figure class="sf-figure sk-wide">
+        <img src="assets/case/sk/redesign-overview.jpg" width="1900" height="1758" loading="lazy"
+             alt="The redesign overview board: the five design principles, a traceability table from each of the nine holistic issues to the screens that fix it, and the second iteration's opportunities from the journeys mapped to screens." />
+        <figcaption data-en="The overview board traces every issue from the review to the screens that fix it."
+                    data-no="Oversiktstavlen sporer hvert problem fra gjennomgangen til skjermene som løser det.">
+          The overview board traces every issue from the review to the screens that fix it.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- 05 · THE REDESIGN ========================================== -->
+    <section id="redesign" class="sf-section">
+      <span class="case-eyebrow" data-en="05 · The redesign" data-no="05 · Redesignet">05 · The redesign</span>
+      <h2 data-en="21 screens, one journey: where you live, what matters, then the schools that fit."
+          data-no="21 skjermer, én reise: hvor dere bor, hva som er viktig, så skolene som passer.">
+        21 screens, one journey: where you live, what matters, then the schools that fit.
+      </h2>
+
+      <div class="sk-step">
+        <div class="sk-step__text">
+          <span class="kicker" data-en="Step 2 · What matters to you?" data-no="Steg 2 · Hva er viktig for dere?">Step 2 · What matters to you?</span>
+          <h3 data-en="The family defines &ldquo;best&rdquo; before any school appears" data-no="Familien definerer «best» før noen skole dukker opp">The family defines &ldquo;best&rdquo; before any school appears</h3>
+          <p data-en="After one question about where they live, large cards in everyday language: getting around, support, wellbeing, everyday life. Each option says what it changes, nothing is selected by default, and results are optional, with an honest note that many children with adapted teaching are exempt from the tests."
+             data-no="Etter ett spørsmål om hvor de bor, store kort med hverdagsspråk: komme seg rundt, støtte, trivsel, hverdagen. Hvert valg sier hva det endrer, ingenting er valgt fra start, og resultater er valgfritt, med en ærlig merknad om at mange barn med tilrettelagt opplæring er fritatt fra prøvene.">
+            After one question about where they live, large cards in everyday language: getting around, support, wellbeing, everyday life. Each option says what it changes, nothing is selected by default, and results are optional, with an honest note that many children with adapted teaching are exempt from the tests.
+          </p>
+          <p data-en="I asked about needs, not diagnoses. Needs decide what a school must offer, and choices about the child are never stored on a server."
+             data-no="Jeg spurte om behov, ikke diagnoser. Behovene avgjør hva en skole må tilby, og valg om barnet lagres aldri på en server.">
+            I asked about needs, not diagnoses. Needs decide what a school must offer, and choices about the child are never stored on a server.
+          </p>
+        </div>
+        <figure>
+          <img class="tall" src="assets/case/sk/r2-priorities.jpg" width="1440" height="1500" loading="lazy"
+               alt="Step 2 of 2, What is important for you: groups of large checkbox cards for getting around, senses and communication, support and adaptation, wellbeing and everyday life. Wheelchair, step-free access for the parent, adapted teaching and low bullying are selected." />
+        </figure>
+      </div>
+
+      <div class="sk-step">
+        <div class="sk-step__text">
+          <span class="kicker" data-en="Step 3 · The results" data-no="Steg 3 · Resultatene">Step 3 · The results</span>
+          <h3 data-en="Every card answers &ldquo;does this school work for us?&rdquo; in words" data-no="Hvert kort svarer på «passer denne skolen for oss?» med ord">Every card answers &ldquo;does this school work for us?&rdquo; in words</h3>
+          <p data-en="Sorted by fit, then distance. Each card says &ldquo;Fits 3 of 4 priorities&rdquo;, shows four facts with their status, and gives the step-free route, not the distance as the crow flies. The guessed school district is labelled as a guess, with a link to the kommune and the right to a local school."
+             data-no="Sortert etter hvor godt de passer, så avstand. Hvert kort sier «Passer 3 av 4 prioriteringer», viser fire fakta med status, og gir trinnfri rute, ikke avstand i luftlinje. Den gjettede skolekretsen er merket som et anslag, med lenke til kommunen og retten til nærskole.">
+            Sorted by fit, then distance. Each card says &ldquo;Fits 3 of 4 priorities&rdquo;, shows four facts with their status, and gives the step-free route, not the distance as the crow flies. The guessed school district is labelled as a guess, with a link to the kommune and the right to a local school.
+          </p>
+          <p data-en="I rejected a single &ldquo;match %&rdquo;. A count of priorities met is easier to check and to explain to someone else."
+             data-no="Jeg forkastet én samlet «treff-prosent». Antall oppfylte prioriteringer er lettere å sjekke og å forklare for andre.">
+            I rejected a single &ldquo;match %&rdquo;. A count of priorities met is easier to check and to explain to someone else.
+          </p>
+        </div>
+        <figure>
+          <img src="assets/case/sk/ba-results-after.jpg" width="1200" height="1042" loading="lazy"
+               alt="Results for Kirkeveien 64A: removable priority chips, a callout that the school district is an estimate, a legend for Confirmed, Unknown and Worth checking, and school cards with a four-step fit bar and fact chips." />
+        </figure>
+      </div>
+
+      <div class="sk-step">
+        <div class="sk-step__text">
+          <span class="kicker" data-en="Step 4 · The school page" data-no="Steg 4 · Skolesiden">Step 4 · The school page</span>
+          <h3 data-en="The hard question first, the details after" data-no="Det vanskelige spørsmålet først, detaljene etterpå">The hard question first, the details after</h3>
+          <p data-en="&ldquo;How the school fits you&rdquo; opens the page: the match, four facts with status, questions to ask the school, a call button and a copy button for the questions. Below it, a new table covers entrance, lift, toilet, adapted teaching, special groups, after-school care and quiet rooms, each with source and date."
+             data-no="«Slik passer skolen for dere» åpner siden: treffet, fire fakta med status, spørsmål å stille skolen, en ringeknapp og en knapp for å kopiere spørsmålene. Under ligger en ny tabell for inngang, heis, toalett, tilrettelagt opplæring, spesialgruppe, SFO/AKS og rolige rom, hver med kilde og dato.">
+            &ldquo;How the school fits you&rdquo; opens the page: the match, four facts with status, questions to ask the school, a call button and a copy button for the questions. Below it, a new table covers entrance, lift, toilet, adapted teaching, special groups, after-school care and quiet rooms, each with source and date.
+          </p>
+          <p data-en="The route is shown for a wheelchair, on foot and by public transport, and written out as text for anyone who can&rsquo;t read a map. Bullying and wellbeing are sentences with the comparison in words."
+             data-no="Ruten vises for rullestol, til fots og med kollektivt, og skrevet ut som tekst for alle som ikke kan lese et kart. Mobbing og trivsel er setninger med sammenligningen i ord.">
+            The route is shown for a wheelchair, on foot and by public transport, and written out as text for anyone who can&rsquo;t read a map. Bullying and wellbeing are sentences with the comparison in words.
+          </p>
+        </div>
+        <figure>
+          <img class="tall" src="assets/case/sk/r5-school.jpg" width="1440" height="2300" loading="lazy"
+               alt="Majorstuen school page: header with save, compare, share and print, then a How the school fits you band with Fits 3 of 4 priorities, four facts with status, questions to ask the school with Call the school and Copy the questions, important deadlines, and an access table." />
+        </figure>
+      </div>
+
+      <div class="sk-step">
+        <div class="sk-step__text">
+          <span class="kicker" data-en="Step 5 · Decide together" data-no="Steg 5 · Bestem sammen">Step 5 · Decide together</span>
+          <h3 data-en="A shortlist that travels to the parent&rsquo;s own phone" data-no="En liste som reiser til forelderens egen telefon">A shortlist that travels to the parent&rsquo;s own phone</h3>
+          <p data-en="Saved schools become a real comparison table, one row per priority, with a sentence for why each school is on the list. Share it as a link with no personal data, by SMS or e-mail, or print it. A warning appears when a school district isn&rsquo;t confirmed, before anyone buys a home."
+             data-no="Lagrede skoler blir en ekte sammenligningstabell, én rad per prioritering, med en setning om hvorfor hver skole er på listen. Del den som lenke uten personopplysninger, på SMS eller e-post, eller skriv den ut. En advarsel vises når en skolekrets ikke er bekreftet, før noen kjøper bolig.">
+            Saved schools become a real comparison table, one row per priority, with a sentence for why each school is on the list. Share it as a link with no personal data, by SMS or e-mail, or print it. A warning appears when a school district isn&rsquo;t confirmed, before anyone buys a home.
+          </p>
+          <p data-en="On the parent&rsquo;s phone the list opens in large text, with a text-size control, read-aloud, three languages and a call button on every school. No accounts: an anonymous link does the job without creating personal data."
+             data-no="På forelderens telefon åpner listen seg med stor tekst, tekststørrelse-knapper, opplesning, tre språk og en ringeknapp på hver skole. Ingen kontoer: en anonym lenke gjør jobben uten å skape personopplysninger.">
+            On the parent&rsquo;s phone the list opens in large text, with a text-size control, read-aloud, three languages and a call button on every school. No accounts: an anonymous link does the job without creating personal data.
+          </p>
+        </div>
+        <div class="sk-step__pair">
+          <figure>
+            <img class="tall" src="assets/case/sk/r6-compare.jpg" width="1440" height="1700" loading="lazy"
+                 alt="Saved schools (3): Share the list and Print or save as PDF, a share link with Copy link, Send as SMS and Send by e-mail, a warning that the school district is not confirmed for two schools, and a comparison table with one column per school." />
+          </figure>
+          <figure>
+            <img class="phone" src="assets/case/sk/r7-shared-phone.jpg" width="780" height="1688" loading="lazy"
+                 alt="The shared list on the parent's phone: Schools you have been sent, chosen for wheelchair, step-free access for the parent, adapted teaching and low bullying, text size buttons, Norwegian, Ukrainian and English, Listen to the list, and Marienlyst school with three confirmed facts." />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · BEFORE AND AFTER ====================================== -->
+    <section id="before-after" class="sf-section">
+      <span class="case-eyebrow" data-en="06 · Before and after" data-no="06 · Før og etter">06 · Before and after</span>
+      <h2 data-en="Six screens, today and redesigned."
+          data-no="Seks skjermer, i dag og redesignet.">
+        Six screens, today and redesigned.
+      </h2>
+
+      <article class="sk-ba">
+        <h3 data-en="From random schools in Rana to one clear question" data-no="Fra tilfeldige skoler i Rana til ett tydelig spørsmål">From random schools in Rana to one clear question</h3>
+        <p data-en="Today the start page ranks ten schools in Rana as &ldquo;nearest&rdquo; before you&rsquo;ve said where you live, and the address field has no visible label. The redesign asks one question, &ldquo;Where do you live?&rdquo;, with a visible label and help text, and shows no list until there&rsquo;s an answer."
+           data-no="I dag rangerer forsiden ti skoler i Rana som «nærmest» før du har sagt hvor du bor, og adressefeltet har ingen synlig ledetekst. Redesignet stiller ett spørsmål, «Hvor bor dere?», med synlig ledetekst og hjelpetekst, og viser ingen liste før det finnes et svar.">
+          Today the start page ranks ten schools in Rana as &ldquo;nearest&rdquo; before you&rsquo;ve said where you live, and the address field has no visible label. The redesign asks one question, &ldquo;Where do you live?&rdquo;, with a visible label and help text, and shows no list until there&rsquo;s an answer.
+        </p>
+        <div class="sk-ba__pair">
+          <figure><span class="sk-ba__label before" data-en="Today" data-no="I dag">Today</span>
+            <img src="assets/case/sk/ba-start-before.jpg" width="1200" height="958" loading="lazy" alt="Today's start page: a search field with a placeholder, a National tests button and Filter, ten schools in Rana sorted Nearest, and a map of Norway with coloured clusters." /></figure>
+          <figure><span class="sk-ba__label after" data-en="Redesign" data-no="Redesign">Redesign</span>
+            <img src="assets/case/sk/ba-start-after.jpg" width="1200" height="958" loading="lazy" alt="Redesigned start page: Step 1 of 2, Find a school that suits your child, one labelled field Where do you live, a Next button and Use my location, and three short promises on the right." /></figure>
+        </div>
+      </article>
+
+      <article class="sk-ba">
+        <h3 data-en="From bare numbers to fit, in words" data-no="Fra nakne tall til treff, med ord">From bare numbers to fit, in words</h3>
+        <p data-en="Today the cards show averages, wellbeing and bullying as numbers, a guessed school district that looks certain, and a map that takes two thirds of the screen. The redesign leads with the list, says how well each school fits, and labels every fact and every estimate."
+           data-no="I dag viser kortene snitt, trivsel og mobbing som tall, en gjettet skolekrets som ser sikker ut, og et kart som tar to tredjedeler av skjermen. Redesignet starter med listen, sier hvor godt hver skole passer, og merker hvert faktum og hvert anslag.">
+          Today the cards show averages, wellbeing and bullying as numbers, a guessed school district that looks certain, and a map that takes two thirds of the screen. The redesign leads with the list, says how well each school fits, and labels every fact and every estimate.
+        </p>
+        <div class="sk-ba__pair">
+          <figure><span class="sk-ba__label before" data-en="Today" data-no="I dag">Today</span>
+            <img src="assets/case/sk/ba-results-before.jpg" width="1200" height="1042" loading="lazy" alt="Today's results for Kirkeveien 64A: grey cards labelled Probably the school district, a list of schools with average, wellbeing and bullying numbers, and a large map." /></figure>
+          <figure><span class="sk-ba__label after" data-en="Redesign" data-no="Redesign">Redesign</span>
+            <img src="assets/case/sk/ba-results-after.jpg" width="1200" height="1042" loading="lazy" alt="Redesigned results: priority chips, an estimate callout, a status legend and school cards that say Fits 4 of 4 priorities with confirmed facts." /></figure>
+        </div>
+      </article>
+
+      <article class="sk-ba">
+        <h3 data-en="From score filters to needs" data-no="Fra resultatfiltre til behov">From score filters to needs</h3>
+        <p data-en="Today&rsquo;s filter starts with school type, ownership and score bands, with everything pre-checked, so nothing seems to happen. The redesign starts with accessibility and support, nothing is selected, and every group explains its terms."
+           data-no="Dagens filter starter med skoletype, eierform og resultatintervaller, med alt avkrysset, så ingenting ser ut til å skje. Redesignet starter med tilgjengelighet og støtte, ingenting er valgt, og hver gruppe forklarer begrepene sine.">
+          Today&rsquo;s filter starts with school type, ownership and score bands, with everything pre-checked, so nothing seems to happen. The redesign starts with accessibility and support, nothing is selected, and every group explains its terms.
+        </p>
+        <div class="sk-ba__pair">
+          <figure><span class="sk-ba__label before" data-en="Today" data-no="I dag">Today</span>
+            <img src="assets/case/sk/ba-filter-before.jpg" width="1200" height="750" loading="lazy" alt="Today's filter panel: school type, ownership, municipality, profile, national test bands and wellbeing bands, all with boxes already checked." /></figure>
+          <figure><span class="sk-ba__label after" data-en="Redesign" data-no="Redesign">Redesign</span>
+            <img src="assets/case/sk/ba-filter-after.jpg" width="1200" height="750" loading="lazy" alt="Redesigned filter panel: Filter schools, choose what matters, nothing is selected from the start, then groups for accessibility, adaptation, and wellbeing and bullying, each with an explanation link." /></figure>
+        </div>
+      </article>
+
+      <article class="sk-ba">
+        <h3 data-en="From 5 900 pixels of tables to an answer" data-no="Fra 5 900 piksler med tabeller til et svar">From 5 900 pixels of tables to an answer</h3>
+        <p data-en="Today&rsquo;s school page is a long run of tables and charts with no summary and nothing about access. The redesign answers &ldquo;can my child get in, move around and be supported here?&rdquo; first, then gives the next step."
+           data-no="Dagens skoleside er en lang rekke tabeller og diagrammer uten oppsummering og uten noe om tilgjengelighet. Redesignet svarer først på «kommer barnet mitt seg inn, rundt og får støtte her?», og gir så neste steg.">
+          Today&rsquo;s school page is a long run of tables and charts with no summary and nothing about access. The redesign answers &ldquo;can my child get in, move around and be supported here?&rdquo; first, then gives the next step.
+        </p>
+        <div class="sk-ba__pair">
+          <figure><span class="sk-ba__label before" data-en="Today" data-no="I dag">Today</span>
+            <img src="assets/case/sk/ba-school-before.jpg" width="1200" height="1125" loading="lazy" alt="Today's Majorstuen school page: a photo carousel, key figures and a section navigation for about the school, results, map and facilities." /></figure>
+          <figure><span class="sk-ba__label after" data-en="Redesign" data-no="Redesign">Redesign</span>
+            <img src="assets/case/sk/ba-school-after.jpg" width="1200" height="1125" loading="lazy" alt="Redesigned Majorstuen school page: How the school fits you, with facts by status and questions to ask the school, next to a call button." /></figure>
+        </div>
+      </article>
+
+      <article class="sk-ba">
+        <h3 data-en="From a list stuck in one browser to a shared decision" data-no="Fra en liste fast i én nettleser til en felles beslutning">From a list stuck in one browser to a shared decision</h3>
+        <p data-en="Today saved schools live in one browser, and the empty state points to an icon it doesn&rsquo;t show. The redesign compares the shortlist against the family&rsquo;s priorities and sends it anywhere: link, SMS, e-mail or paper."
+           data-no="I dag bor lagrede skoler i én nettleser, og den tomme tilstanden viser til et ikon den ikke viser. Redesignet sammenligner listen mot familiens prioriteringer og sender den hvor som helst: lenke, SMS, e-post eller papir.">
+          Today saved schools live in one browser, and the empty state points to an icon it doesn&rsquo;t show. The redesign compares the shortlist against the family&rsquo;s priorities and sends it anywhere: link, SMS, e-mail or paper.
+        </p>
+        <div class="sk-ba__pair">
+          <figure><span class="sk-ba__label before" data-en="Today" data-no="I dag">Today</span>
+            <img src="assets/case/sk/ba-saved-before.jpg" width="1200" height="1083" loading="lazy" alt="Today's empty Saved schools page with a short instruction, next to a map of every school in Norway." /></figure>
+          <figure><span class="sk-ba__label after" data-en="Redesign" data-no="Redesign">Redesign</span>
+            <img src="assets/case/sk/ba-saved-after.jpg" width="1200" height="1083" loading="lazy" alt="Redesigned Saved schools: share the list by link, SMS or e-mail, print or save as PDF, a school district warning and a comparison table." /></figure>
+        </div>
+      </article>
+
+      <article class="sk-ba">
+        <h3 data-en="From standard deviations to plain words" data-no="Fra standardavvik til vanlige ord">From standard deviations to plain words</h3>
+        <p data-en="Today &ldquo;Om fargefordelingen&rdquo; explains the colours with scale points, intervals and standard deviation. Its replacement, &ldquo;Slik leser du tallene&rdquo;, starts with four short truths: results are averages for a whole group, a difference of one or two points is uncertain, many pupils with adapted teaching are exempt, and the site uses words, not colours."
+           data-no="I dag forklarer «Om fargefordelingen» fargene med skalapoeng, intervaller og standardavvik. Erstatteren, «Slik leser du tallene», starter med fire korte sannheter: resultatene er snitt for en hel gruppe, en forskjell på ett eller to poeng er usikker, mange elever med tilrettelagt opplæring er fritatt, og nettstedet bruker ord, ikke farger.">
+          Today &ldquo;Om fargefordelingen&rdquo; explains the colours with scale points, intervals and standard deviation. Its replacement, &ldquo;Slik leser du tallene&rdquo;, starts with four short truths: results are averages for a whole group, a difference of one or two points is uncertain, many pupils with adapted teaching are exempt, and the site uses words, not colours.
+        </p>
+        <div class="sk-ba__pair">
+          <figure><span class="sk-ba__label before" data-en="Today" data-no="I dag">Today</span>
+            <img src="assets/case/sk/ba-numbers-before.jpg" width="1200" height="1042" loading="lazy" alt="Today's About the colour distribution page: the official scale, the data basis with mean, median and standard deviation, and a colour key." /></figure>
+          <figure><span class="sk-ba__label after" data-en="Redesign" data-no="Redesign">Redesign</span>
+            <img src="assets/case/sk/ba-numbers-after.jpg" width="1200" height="1042" loading="lazy" alt="Redesigned How to read the numbers page: a short summary with four points, a table of what the words mean, and why red and green were dropped." /></figure>
+        </div>
+      </article>
+    </section>
+
+    <!-- 07 · STRESS TEST =========================================== -->
+    <section id="stress-test" class="sf-section">
+      <span class="case-eyebrow" data-en="07 · Stress test" data-no="07 · Stresstest">07 · Stress test</span>
+      <h2 data-en="Then I tried to break it."
+          data-no="Så prøvde jeg å knekke det.">
+        Then I tried to break it.
+      </h2>
+      <p data-en="I walked every persona and journey through the redesign again, and checked each screen for states (empty, loading, error, success, permissions), devices (phone, desktop, print), settings (200 to 400 % zoom, high contrast, dark theme, reduced motion), assistive technology, languages, slow networks and the map. It found twelve gaps. Eighteen new screens close them."
+         data-no="Jeg gikk gjennom redesignet på nytt med hver persona og hver reise, og sjekket hver skjerm for tilstander (tom, laster, feil, suksess, tillatelser), enheter (mobil, PC, utskrift), innstillinger (200 til 400 % zoom, høy kontrast, mørkt tema, redusert bevegelse), hjelpemidler, språk, trege nett og kartet. Den fant tolv hull. Atten nye skjermer tetter dem.">
+        I walked every persona and journey through the redesign again, and checked each screen for states (empty, loading, error, success, permissions), devices (phone, desktop, print), settings (200 to 400 % zoom, high contrast, dark theme, reduced motion), assistive technology, languages, slow networks and the map. It found twelve gaps. Eighteen new screens close them.
+      </p>
+
+      <table class="sk-table">
+        <caption data-en="What the stress test found, who found it, and what it added" data-no="Hva stresstesten fant, hvem som fant det, og hva den la til">What the stress test found, who found it, and what it added</caption>
+        <thead><tr>
+          <th scope="col" data-en="Gap" data-no="Hull">Gap</th>
+          <th scope="col" data-en="Found by" data-no="Funnet av">Found by</th>
+          <th scope="col" data-en="New screens" data-no="Nye skjermer">New screens</th>
+        </tr></thead>
+        <tbody>
+          <tr><th scope="row" data-en="No real map, only a thumbnail" data-no="Ikke noe ekte kart, bare et miniatyrbilde">No real map, only a thumbnail</th><td>Jonas &amp; Mari, Kari</td><td data-en="Map view, school selected, map on a phone" data-no="Kartvisning, skole valgt, kart på mobil">Map view, school selected, map on a phone</td></tr>
+          <tr><th scope="row" data-en="Search errors and permissions undefined" data-no="Søkefeil og tillatelser udefinert">Search errors and permissions undefined</th><td data-en="State check" data-no="Tilstandssjekk">State check</td><td data-en="Suggestions, address not found, location denied" data-no="Forslag, adressen finnes ikke, posisjon ikke tillatt">Suggestions, address not found, location denied</td></tr>
+          <tr><th scope="row" data-en="Zero results when needs are strict" data-no="Null treff når behovene er strenge">Zero results when needs are strict</th><td>Amina, Kari</td><td data-en="No results, with ways forward" data-no="Ingen treff, med veier videre">No results, with ways forward</td></tr>
+          <tr><th scope="row" data-en="Nothing shown while loading on a slow network" data-no="Ingenting vises mens det laster på tregt nett">Nothing shown while loading on a slow network</th><td>Kari</td><td data-en="Skeleton and status" data-no="Skjelett og status">Skeleton and status</td></tr>
+          <tr><th scope="row" data-en="Search and school page only at desktop size" data-no="Søk og skoleside bare i PC-størrelse">Search and school page only at desktop size</th><td>Olena, Sara</td><td data-en="Results and school page on a phone" data-no="Resultater og skoleside på mobil">Results and school page on a phone</td></tr>
+          <tr><th scope="row" data-en="Display settings offered but never designed" data-no="Visningsinnstillinger tilbudt, men aldri designet">Display settings offered but never designed</th><td>Lars, Sara, Erik</td><td data-en="High contrast with large text, dark theme" data-no="Høy kontrast med stor tekst, mørkt tema">High contrast with large text, dark theme</td></tr>
+          <tr><th scope="row" data-en="Language support never shown" data-no="Språkstøtte aldri vist">Language support never shown</th><td>Olena</td><td data-en="Start page in Ukrainian" data-no="Forside på ukrainsk">Start page in Ukrainian</td></tr>
+          <tr><th scope="row" data-en="&ldquo;Print&rdquo; with no defined output" data-no="«Skriv ut» uten definert resultat">&ldquo;Print&rdquo; with no defined output</th><td>Erik, Ingrid</td><td data-en="A4 print and PDF" data-no="A4-utskrift og PDF">A4 print and PDF</td></tr>
+          <tr><th scope="row" data-en="Accessibility intent not testable" data-no="Tilgjengelighetsintensjon ikke testbar">Accessibility intent not testable</th><td>Lars</td><td data-en="Accessibility specification for developers" data-no="Tilgjengelighetsspesifikasjon for utviklere">Accessibility specification for developers</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sk-phones">
+        <figure><img src="assets/case/sk/m11-mobile-results.jpg" width="780" height="1688" loading="lazy" alt="Results on a phone: address, two priority chips, list and map toggle, sort and filter, and Marienlyst school with confirmed facts." />
+          <figcaption data-en="Results on a phone" data-no="Resultater på mobil">Results on a phone</figcaption></figure>
+        <figure><img src="assets/case/sk/m3-mobile-map.jpg" width="780" height="1688" loading="lazy" alt="Map on a phone with numbered markers and a bottom sheet for Majorstuen school with a confirmed fact." />
+          <figcaption data-en="Map with a bottom sheet" data-no="Kart med bunnark">Map with a bottom sheet</figcaption></figure>
+        <figure><img src="assets/case/sk/m13-contrast.jpg" width="780" height="1688" loading="lazy" alt="High contrast and extra large text on a phone: black and white, larger buttons and chips that wrap." />
+          <figcaption data-en="High contrast, extra large text" data-no="Høy kontrast, ekstra stor tekst">High contrast, extra large text</figcaption></figure>
+        <figure><img src="assets/case/sk/m14-dark.jpg" width="780" height="1688" loading="lazy" alt="Dark theme on a phone in calm charcoal and muted teal, with bordered status chips." />
+          <figcaption data-en="A calmer dark theme" data-no="Et roligere mørkt tema">A calmer dark theme</figcaption></figure>
+      </div>
+
+      <div class="sk-trio">
+        <figure>
+          <img src="assets/case/sk/m1-map.jpg" width="1440" height="1150" loading="lazy"
+               alt="Desktop map view: a list on the left synced with the map on the right, markers showing number, school name and match, a legend, labelled zoom buttons and a keyboard hint." />
+          <figcaption data-en="The map came back, but never as the only way in: every marker is also a row in the list." data-no="Kartet kom tilbake, men aldri som eneste vei inn: hver markør er også en rad i listen.">The map came back, but never as the only way in: every marker is also a row in the list.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/case/sk/m17-print.jpg" width="794" height="1123" loading="lazy"
+               alt="An A4 print of the comparison: the family's priorities, three schools with the reason each is on the list, a comparison table and questions to ask." />
+          <figcaption data-en="An A4 print for Erik, and for anyone who brings paper to a meeting." data-no="En A4-utskrift for Erik, og for alle som tar med papir på et møte.">An A4 print for Erik, and for anyone who brings paper to a meeting.</figcaption>
+        </figure>
+      </div>
+
+      <h3 data-en="Two more rounds on the map markers" data-no="To runder til på kartmarkørene">Two more rounds on the map markers</h3>
+      <p data-en="Design review found that same-coloured shapes were hard to tell apart, and that coloured number badges made markers harder to read. The fifth version follows WCAG: one neutral style, a white number on a near-black disc, a type icon with text, the school name and its match on every marker, and distinct selected and focus states."
+         data-no="Designgjennomgangen viste at former i samme farge var vanskelige å skille, og at fargede nummermerker gjorde markørene vanskeligere å lese. Femte versjon følger WCAG: én nøytral stil, hvitt tall på en nesten svart sirkel, et typeikon med tekst, skolens navn og treff på hver markør, og tydelige tilstander for valgt og fokus.">
+        Design review found that same-coloured shapes were hard to tell apart, and that coloured number badges made markers harder to read. The fifth version follows WCAG: one neutral style, a white number on a near-black disc, a type icon with text, the school name and its match on every marker, and distinct selected and focus states.
+      </p>
+      <figure class="sf-figure sk-wide">
+        <img src="assets/case/sk/m15-ukrainian.jpg" width="1440" height="1150" loading="lazy"
+             alt="The start page in Ukrainian: the same layout and the same two-step journey, with navigation and help text translated." />
+        <figcaption data-en="The start page in Ukrainian, for Olena. Translations still need a human review before launch."
+                    data-no="Forsiden på ukrainsk, for Olena. Oversettelsene må fortsatt gjennomgås av et menneske før lansering.">
+          The start page in Ukrainian, for Olena. Translations still need a human review before launch.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- 08 · PROTOTYPE AND TESTING ================================= -->
+    <section id="testing" class="sf-section">
+      <span class="case-eyebrow" data-en="08 · Prototype and testing" data-no="08 · Prototype og testing">08 · Prototype and testing</span>
+      <h2 data-en="80 screens, one clickable prototype, and a script for testing with parents."
+          data-no="80 skjermer, én klikkbar prototype og et manus for testing med foreldre.">
+        80 screens, one clickable prototype, and a script for testing with parents.
+      </h2>
+      <p data-en="Everything from the redesign and the stress test is linked into one Figma prototype with 12 starting flows, including mobile, high contrast, dark theme and Ukrainian, plus dialogs, sheets and confirmations that open over the screen, the way they would in the product."
+         data-no="Alt fra redesignet og stresstesten er koblet sammen i én Figma-prototype med 12 startflyter, blant annet mobil, høy kontrast, mørkt tema og ukrainsk, pluss dialoger, ark og bekreftelser som åpnes over skjermen slik de ville gjort i produktet.">
+        Everything from the redesign and the stress test is linked into one Figma prototype with 12 starting flows, including mobile, high contrast, dark theme and Ukrainian, plus dialogs, sheets and confirmations that open over the screen, the way they would in the product.
+      </p>
+
+      <h3 data-en="The test, as I&rsquo;ll run it" data-no="Testen, slik jeg skal kjøre den">The test, as I&rsquo;ll run it</h3>
+      <p class="sk-scenario"
+         data-en="&ldquo;You&rsquo;ve moved to Kirkeveien 64A in Oslo. Your child uses a wheelchair and needs adapted teaching.&rdquo;"
+         data-no="«Dere har flyttet til Kirkeveien 64A i Oslo. Barnet deres bruker rullestol og trenger tilrettelagt opplæring.»">
+        &ldquo;You&rsquo;ve moved to Kirkeveien 64A in Oslo. Your child uses a wheelchair and needs adapted teaching.&rdquo;
+      </p>
+      <ol class="sk-tasks">
+        <li data-en="Find the schools that fit your child best. Which would you look at more closely, and why?" data-no="Finn skolene som passer best for barnet deres. Hvilken ville du sett nærmere på, og hvorfor?">Find the schools that fit your child best. Which would you look at more closely, and why?</li>
+        <li data-en="Find them on the map. Which is closest, and how well does it fit?" data-no="Se skolene i kartet. Hvilken er nærmest, og hvor godt passer den?">Find them on the map. Which is closest, and how well does it fit?</li>
+        <li data-en="Find out whether Majorstuen school has a lift, and what you should ask the school." data-no="Finn ut om Majorstuen skole har heis, og hva du bør spørre skolen om.">Find out whether Majorstuen school has a lift, and what you should ask the school.</li>
+        <li data-en="Save three schools and send the list to someone in your family." data-no="Lagre tre skoler og send listen til en i familien.">Save three schools and send the list to someone in your family.</li>
+        <li data-en="The text is too small for you. Make it bigger." data-no="Teksten er for liten for deg. Gjør den større.">The text is too small for you. Make it bigger.</li>
+        <li data-en="You want to report wrong information. How do you do it?" data-no="Du vil gi beskjed om feil informasjon. Hvordan gjør du det?">You want to report wrong information. How do you do it?</li>
+        <li data-en="On a phone, do tasks 1 and 3 again." data-no="Gjør oppgave 1 og 3 på nytt på telefonen.">On a phone, do tasks 1 and 3 again.</li>
+      </ol>
+      <p style="margin-top: 16px;"
+         data-en="I&rsquo;ll watch whether people understand &ldquo;3/4&rdquo; and the status words without the legend, whether they can tell Confirmed, Unknown and Worth checking apart, and where they hesitate or go back. I&rsquo;ll note time per task, misclicks, and how sure they are of each answer from 1 to 5. Participants: parents with and without disabilities, parents new to Norway, grandparents, and professionals from PPT and schools."
+         data-no="Jeg skal se om folk forstår «3/4» og statusordene uten tegnforklaringen, om de skiller Bekreftet, Ukjent og Verdt å sjekke, og hvor de nøler eller går tilbake. Jeg noterer tid per oppgave, feilklikk og hvor sikre de er på hvert svar fra 1 til 5. Deltakere: foreldre med og uten funksjonsnedsettelse, foreldre som er nye i Norge, besteforeldre og fagfolk fra PPT og skoler.">
+        I&rsquo;ll watch whether people understand &ldquo;3/4&rdquo; and the status words without the legend, whether they can tell Confirmed, Unknown and Worth checking apart, and where they hesitate or go back. I&rsquo;ll note time per task, misclicks, and how sure they are of each answer from 1 to 5. Participants: parents with and without disabilities, parents new to Norway, grandparents, and professionals from PPT and schools.
+      </p>
+      <p data-en="A Figma prototype has limits, and the guide names them: fields are pre-filled, sorting doesn&rsquo;t reorder, and screen readers and keyboard use can&rsquo;t be tested in Figma at all. Those need a coded prototype or a moderated session where I read the content aloud."
+         data-no="En Figma-prototype har begrensninger, og guiden nevner dem: feltene er forhåndsutfylt, sortering endrer ikke rekkefølgen, og skjermlesere og tastaturbruk kan ikke testes i Figma i det hele tatt. Det krever en kodet prototype eller en moderert økt der jeg leser innholdet høyt.">
+        A Figma prototype has limits, and the guide names them: fields are pre-filled, sorting doesn&rsquo;t reorder, and screen readers and keyboard use can&rsquo;t be tested in Figma at all. Those need a coded prototype or a moderated session where I read the content aloud.
+      </p>
+      <figure class="sf-figure sk-wide">
+        <img src="assets/case/sk/testguide.jpg" width="2400" height="482" loading="lazy"
+             alt="The test guide board in Figma: how to share the prototype with participants, the twelve starting flows, the tasks to read aloud, what to observe and ask, and the limits of a Figma prototype." />
+        <figcaption data-en="The test guide sits next to the prototype in Figma, so anyone on a team can run a session."
+                    data-no="Testguiden ligger ved siden av prototypen i Figma, så hvem som helst i et team kan kjøre en økt.">
+          The test guide sits next to the prototype in Figma, so anyone on a team can run a session.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- 09 · WHAT'S NEXT =========================================== -->
+    <section id="next" class="sf-section">
+      <span class="case-eyebrow" data-en="09 · What&rsquo;s next" data-no="09 · Veien videre">09 · What&rsquo;s next</span>
+      <h2 data-en="Final touches, then testing with real families."
+          data-no="Siste finpuss, så testing med ekte familier.">
+        Final touches, then testing with real families.
+      </h2>
+      <p data-en="The prototype is ready for its first round. Before anything goes live, four things are still open, and the file is honest about all of them."
+         data-no="Prototypen er klar for første runde. Før noe går live, er fire ting fortsatt åpne, og filen er ærlig om alle.">
+        The prototype is ready for its first round. Before anything goes live, four things are still open, and the file is honest about all of them.
+      </p>
+      <ul class="sf-ai-list">
+        <li data-en-html="<strong>Usability testing</strong> with 8 to 10 people, including screen-reader, keyboard-only and low-vision users, and parents with limited Norwegian."
+            data-no-html="<strong>Brukertesting</strong> med 8 til 10 personer, blant dem skjermleser-, tastatur- og svaksynte brukere, og foreldre med lite norsk.">
+          <strong>Usability testing</strong> with 8 to 10 people, including screen-reader, keyboard-only and low-vision users, and parents with limited Norwegian.
+        </li>
+        <li data-en-html="<strong>Real data.</strong> Access and support facts and contact details in the prototype are illustrative placeholders. Bullying, wellbeing, results and distances come from skolekartet.no. A new screen lets schools confirm their own facts, which is how the placeholders become real."
+            data-no-html="<strong>Ekte data.</strong> Fakta om tilgjengelighet og støtte og kontaktinformasjon i prototypen er illustrerende eksempler. Mobbing, trivsel, resultater og avstander kommer fra skolekartet.no. En ny skjerm lar skolene bekrefte egne opplysninger, og slik blir eksemplene ekte.">
+          <strong>Real data.</strong> Access and support facts and contact details in the prototype are illustrative placeholders. Bullying, wellbeing, results and distances come from skolekartet.no. A new screen lets schools confirm their own facts, which is how the placeholders become real.
+        </li>
+        <li data-en-html="<strong>Human review</strong> of the translations, and a legal review of the rights texts against the Education Act."
+            data-no-html="<strong>Menneskelig gjennomgang</strong> av oversettelsene, og juridisk gjennomgang av rettighetstekstene mot opplæringsloven.">
+          <strong>Human review</strong> of the translations, and a legal review of the rights texts against the Education Act.
+        </li>
+        <li data-en-html="<strong>Map performance</strong> and clustering at kommune level, and low-data behaviour on real devices."
+            data-no-html="<strong>Kartytelse</strong> og gruppering på kommunenivå, og oppførsel ved lite data på ekte enheter.">
+          <strong>Map performance</strong> and clustering at kommune level, and low-data behaviour on real devices.
+        </li>
+      </ul>
+
+      <div class="retrospective-grid">
+        <div class="impact-pillar">
+          <span class="pillar-label" data-en="Measure 01" data-no="Mål 01">Measure 01</span>
+          <h3 data-en="A shortlist in half the time" data-no="En liste på halve tiden">A shortlist in half the time</h3>
+          <p data-en="Time to a three-school shortlist, and school pages opened before the first save." data-no="Tid til en liste med tre skoler, og antall skolesider åpnet før første lagring.">Time to a three-school shortlist, and school pages opened before the first save.</p>
+        </div>
+        <div class="impact-pillar">
+          <span class="pillar-label" data-en="Measure 02" data-no="Mål 02">Measure 02</span>
+          <h3 data-en="Facts people read correctly" data-no="Fakta folk leser riktig">Facts people read correctly</h3>
+          <p data-en="90 % or more answer &ldquo;is this confirmed?&rdquo; correctly in a comprehension test." data-no="90 % eller flere svarer riktig på «er dette bekreftet?» i en forståelsestest.">90 % or more answer &ldquo;is this confirmed?&rdquo; correctly in a comprehension test.</p>
+        </div>
+        <div class="impact-pillar">
+          <span class="pillar-label" data-en="Measure 03" data-no="Mål 03">Measure 03</span>
+          <h3 data-en="Works with assistive technology" data-no="Fungerer med hjelpemidler">Works with assistive technology</h3>
+          <p data-en="SUS of 80 or more with assistive-technology users, and shared lists opened on another device." data-no="SUS på 80 eller mer med brukere av hjelpemidler, og delte lister åpnet på en annen enhet.">SUS of 80 or more with assistive-technology users, and shared lists opened on another device.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="case-end">
+    <h2 data-en="Next: Prompt Library" data-no="Neste: Prompt-bibliotek">Next: Prompt Library</h2>
+    <a href="prompt-library.html" data-en="See the tool →" data-no="Se verktøyet →">See the tool →</a>
+  </div>
+
+  <script src="i18n.js?v=2"></script>
+</body>
+</html>
