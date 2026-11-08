@@ -60,7 +60,7 @@
 
     /* Visual frames */
     .sk-fig { margin: 24px 0 36px; }
-    .sk-fig img { display: block; width: 100%; height: auto; }
+    .sk-fig img, .sk-fig video { display: block; width: 100%; height: auto; }
     .sk-paper img { border-radius: 6px; box-shadow: 0 1px 0 rgba(0,0,0,.05), 0 18px 34px -20px rgba(60, 40, 10, .45); }
     .sk-paper.tilt-l img { transform: rotate(-0.6deg); }
     .sk-paper.tilt-r img { transform: rotate(0.6deg); }
@@ -69,7 +69,7 @@
       radial-gradient(circle at 16px 13px, #ff5f57 5px, transparent 5.5px),
       radial-gradient(circle at 34px 13px, #febc2e 5px, transparent 5.5px),
       radial-gradient(circle at 52px 13px, #28c840 5px, transparent 5.5px), #f3f4f6; }
-    .sk-phone img { border-radius: 26px; border: 7px solid #111318; background: #fff; box-shadow: 0 18px 30px -18px rgba(10, 31, 74, 0.45); }
+    .sk-phone img, .sk-phone video { border-radius: 26px; border: 7px solid #111318; background: #fff; box-shadow: 0 18px 30px -18px rgba(10, 31, 74, 0.45); }
     .sk-live { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sk-green); font-weight: 600; }
     .sk-live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #d1242f; box-shadow: 0 0 0 3px rgba(209,36,47,.18); }
     .sk-img { border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
@@ -380,11 +380,7 @@
         <figure class="sk-fig">
           <span class="sk-live" data-en="Live prototype" data-no="Ekte prototype">Live prototype</span>
           <div class="sk-browser">
-            <picture>
-              <source srcset="assets/case/sk/clip-flow-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-              <img src="assets/case/sk/clip-flow.webp" width="1200" height="750" loading="lazy"
-                   alt="Screen recording: typing Kirkeveien 64 Oslo, picking the address, choosing three priorities on the next page, then the results list with cards that say how many priorities each school fits." />
-            </picture>
+            <video class="clip" src="assets/case/sk/clip-flow.mp4" poster="assets/case/sk/clip-flow-poster.jpg" width="1200" height="750" muted loop playsinline controls preload="metadata" aria-label="Screen recording: typing Kirkeveien 64 Oslo, picking the address, choosing three priorities on the next page, then the results list with cards that say how many priorities each school fits."></video>
           </div>
         </figure>
         <div class="sk-why">
@@ -444,10 +440,7 @@
             <img src="assets/case/sk/sketch-legend.jpg?v=2" width="1600" height="931" loading="lazy" alt="My hand-drawn map with roads and numbered pins in green, orange and grey, and a panel titled Vis på kartet with view buttons and colour chips, where the Under chip is crossed out to hide those schools. Note in red: same order as the list." /></figure>
           <figure class="sk-fig"><span class="sk-live" data-en="Live prototype" data-no="Ekte prototype">Live prototype</span>
             <div class="sk-browser">
-              <picture>
-                <source srcset="assets/case/sk/clip-lens-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-                <img src="assets/case/sk/clip-lens.webp" width="1200" height="750" loading="lazy" alt="Screen recording of the map: switching what the map shows between fit, results, wellbeing and bullying, while the numbered list on the left stays in the same order." />
-              </picture>
+              <video class="clip" src="assets/case/sk/clip-lens.mp4" poster="assets/case/sk/clip-lens-poster.jpg" width="1200" height="750" muted loop playsinline controls preload="metadata" aria-label="Screen recording of the map: switching what the map shows between fit, results, wellbeing and bullying, while the numbered list on the left stays in the same order."></video>
             </div></figure>
         </div>
         <div class="sk-why">
@@ -479,10 +472,7 @@
            data-no="Lagre noen skoler, sammenlign dem, og send én lenke. Den åpnes på forelderens egen telefon, med stor tekst, på deres språk, eller lest høyt.">Save a few schools, compare them, then send one link. It opens on the parent&rsquo;s own phone, in large text, in their language, or read aloud.</p>
         <figure class="sk-fig"><span class="sk-live" data-en="Live prototype" data-no="Ekte prototype">Live prototype</span>
           <div class="sk-browser">
-            <picture>
-              <source srcset="assets/case/sk/clip-save-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-              <img src="assets/case/sk/clip-save.webp" width="1200" height="750" loading="lazy" alt="Screen recording: pressing Lagre on two school cards, the saved counter in the header going up, then the saved schools page with share and print buttons and Send the list to myself." />
-            </picture>
+            <video class="clip" src="assets/case/sk/clip-save.mp4" poster="assets/case/sk/clip-save-poster.jpg" width="1200" height="750" muted loop playsinline controls preload="metadata" aria-label="Screen recording: pressing Lagre on two school cards, the saved counter in the header going up, then the saved schools page with share and print buttons and Send the list to myself."></video>
           </div></figure>
         <div class="sk-pair">
           <figure class="sk-fig sk-paper tilt-l">
@@ -491,10 +481,7 @@
           </figure>
           <span class="arrow" aria-hidden="true">&rarr;</span>
           <figure class="sk-fig sk-phone"><span class="sk-live" data-en="On the phone" data-no="På telefonen">On the phone</span>
-            <picture>
-              <source srcset="assets/case/sk/clip-shared-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-              <img src="assets/case/sk/clip-shared.webp" width="430" height="931" loading="lazy" alt="Screen recording on a phone: the shared list switching to larger text, then to English and Ukrainian, with a Listen to the list button and school cards in words." />
-            </picture></figure>
+            <video class="clip" src="assets/case/sk/clip-shared.mp4" poster="assets/case/sk/clip-shared-poster.jpg" width="430" height="931" muted loop playsinline controls preload="metadata" aria-label="Screen recording on a phone: the shared list switching to larger text, then to English and Ukrainian, with a Listen to the list button and school cards in words."></video></figure>
         </div>
         <div class="sk-why">
           <span class="k" data-en="why?" data-no="hvorfor?">why?</span>
@@ -612,5 +599,6 @@
   </div>
 
   <script src="i18n.js?v=2"></script>
+  <script src="clips.js" defer></script>
 </body>
 </html>

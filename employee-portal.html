@@ -11,8 +11,143 @@
   <meta name="description" content="Redesigning a portal employees only open twice a year — around the two questions they actually ask: what do I have, what should I do." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ============================================================
+       Employee portal: a "two questions" look. Speech bubbles,
+       app-like tiles and notification cards, in violet.
+       ============================================================ */
+    :root { --ep: #6d28d9; --ep-bg: #f3efff; --ep-line: #d9ccfb; --ep-q2: #0f766e; --ep-q2-bg: #e6f6f3; --ep-red: #9f1d14; --ep-red-bg: #fdecec; }
+    .sf-section > p { max-width: 62ch; }
+    .sf-section > h2 { max-width: 22ch; }
+    .ep-lead { font-size: 20px; line-height: 1.5; color: var(--ink); max-width: 56ch; margin: 16px 0 28px; }
+    .ep-hl { background: linear-gradient(transparent 55%, #ddd0ff 55%, #ddd0ff 92%, transparent 92%); padding: 0 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+    .case figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+    .ep-fig { margin: 24px 0 36px; }
+    .ep-fig img { display: block; width: 100%; height: auto; border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
+
+    /* The two questions */
+    .ep-qs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin: 0 0 32px; }
+    .ep-q { position: relative; padding: 26px 26px 24px; border-radius: 22px 22px 22px 6px; background: var(--ep); color: #fff; box-shadow: 0 22px 34px -26px rgba(76, 29, 149, .9); }
+    .ep-q + .ep-q { border-radius: 22px 22px 6px 22px; background: var(--ep-q2); box-shadow: 0 22px 34px -26px rgba(15, 118, 110, .9); }
+    .ep-q .k { display: block; font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; opacity: .8; margin-bottom: 8px; }
+    .ep-q b { display: block; font-size: clamp(26px, 3.6vw, 38px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 700; }
+    .ep-q small { display: block; margin-top: 12px; font-size: 14.5px; line-height: 1.45; opacity: .9; }
+
+    /* Story in 30 seconds as notifications */
+    .ep-notes { display: grid; gap: 10px; margin: 0 0 32px; max-width: 720px; }
+    .ep-note { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; align-items: start; padding: 14px 16px; border-radius: 16px; background: #fff; border: 1px solid var(--rule); box-shadow: 0 10px 22px -18px rgba(10, 31, 74, .5); }
+    .ep-note .ic { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; font-size: 20px; background: var(--ep-bg); }
+    .ep-note .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+    .ep-note p { margin: 0; font-size: 16px; line-height: 1.45; }
+    .ep-note.win { border-color: #a7e3c4; background: #f3fbf6; } .ep-note.win .ic { background: #dff5e8; }
+
+    .ep-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 36px; }
+    .ep-facts > div { padding: 12px 0 0; border-top: 2px solid var(--ink); }
+    .ep-facts .k { display: block; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
+    .ep-facts p { margin: 0; font-size: 15px; line-height: 1.45; }
+    .ep-banner { margin: 0 0 48px; }
+    .ep-banner img { display: block; width: 100%; height: auto; border-radius: 16px; }
+
+    .ep-rule { margin: 32px 0 0; padding: 22px 24px; border-radius: 16px; border: 2px solid var(--ep); background: var(--ep-bg); }
+    .ep-rule .k { display: block; font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ep); margin-bottom: 8px; }
+    .case .ep-rule p { margin: 0; font-size: clamp(19px, 2.4vw, 24px); line-height: 1.3; font-weight: 600; max-width: 36ch; }
+
+    /* The wheel, per instrument */
+    .ep-wheels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 24px 0 0; }
+    .ep-wheel { padding: 18px 16px 16px; border-radius: 16px; background: #fff; border: 1px solid var(--rule); text-align: center; }
+    .ep-wheel .pie { width: 92px; height: 92px; margin: 0 auto 12px; border-radius: 50%; position: relative; }
+    .ep-wheel .pie::after { content: ""; position: absolute; inset: 22px; border-radius: 50%; background: #fff; }
+    .ep-wheel .pie span { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; font-weight: 700; font-size: 18px; }
+    .ep-wheel b { display: block; font-size: 16px; margin-bottom: 4px; }
+    .ep-wheel p { margin: 0; font-size: 13.5px; line-height: 1.4; color: var(--muted); }
+    .ep-wheel .v { display: inline-block; margin-top: 10px; font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px; }
+    .ep-wheel .v.ok { background: #dff5e8; color: #1d6b3a; } .ep-wheel .v.empty { background: #f3f4f6; color: #3b4150; } .ep-wheel .v.wrong { background: var(--ep-red-bg); color: var(--ep-red); }
+    .ep-wheel.bad { border-style: dashed; }
+
+    .ep-pair { display: grid; grid-template-columns: 1.55fr 1fr; gap: 16px; margin: 20px 0 0; align-items: center; }
+    .ep-pair figure { margin: 0; }
+    .ep-pair img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--rule); }
+
+    .ep-small { margin: 28px 0 0; padding: 18px 20px; border-radius: 14px; background: #fffbea; border: 1px solid #f3e1a0; }
+    .ep-small .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #8a5300; margin-bottom: 6px; }
+    .case .ep-small p { margin: 0; font-size: 16px; line-height: 1.5; }
+
+    /* Research filmstrip */
+    .ep-strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(240px, 1fr); gap: 12px; overflow-x: auto; padding: 4px 2px 14px; margin: 20px 0 0; scroll-snap-type: x mandatory; }
+    .ep-strip figure { margin: 0; scroll-snap-align: start; }
+    .ep-strip a { display: block; border-radius: 12px; overflow: hidden; border: 1px solid var(--rule-strong); background: #fff; line-height: 0; }
+    .ep-strip a:focus-visible { outline: 3px solid var(--ep); outline-offset: 2px; }
+    .ep-strip img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: top left; }
+    .ep-strip figcaption b { display: block; color: var(--ink); font-size: 14px; }
+
+    /* Decisions */
+    .ep-decisions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 24px 0 0; }
+    .ep-dec { display: flex; flex-direction: column; border: 1px solid var(--rule); border-radius: 18px; background: #fff; overflow: hidden; }
+    .ep-dec__body { padding: 20px 20px 14px; }
+    .ep-dec .ans { display: inline-flex; gap: 6px; align-items: center; font-size: 12.5px; font-weight: 600; padding: 4px 10px; border-radius: 999px; margin-bottom: 10px; }
+    .ep-dec .ans.q1 { background: var(--ep-bg); color: var(--ep); } .ep-dec .ans.q2 { background: var(--ep-q2-bg); color: var(--ep-q2); }
+    .ep-dec h3 { font-size: 19px; line-height: 1.3; margin: 0 0 8px; font-weight: 600; }
+    .case .ep-dec__body p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+    .ep-dec figure { margin: auto 0 0; padding: 0 16px 16px; }
+    .ep-dec img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--rule); aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+
+    /* Feedback loop */
+    .ep-flow { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+    .case .ep-flow li { position: relative; margin: 0; padding: 16px; border-radius: 14px; background: var(--ep-bg); border: 1px solid var(--ep-line); font-size: 14.5px; line-height: 1.4; }
+    .case .ep-flow li::before { display: none; content: none; }
+    .case .ep-flow li:not(:last-child)::after { content: "→"; position: absolute; right: -22px; top: 50%; transform: translateY(-50%); color: var(--ep); font-weight: 700; }
+    .ep-flow b { display: block; color: var(--ink); font-size: 15.5px; margin-bottom: 2px; }
+    .ep-flow span { color: var(--muted); }
+    .ep-two { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; margin: 20px 0 36px; align-items: start; }
+    .ep-two figure { margin: 0; }
+    .ep-two img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--rule); }
+
+    /* Timeline */
+    .ep-time { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; position: relative; }
+    .ep-time::before { content: ""; position: absolute; left: 0; right: 0; top: 13px; height: 3px; background: linear-gradient(90deg, #cfc2f7, var(--ep)); border-radius: 3px; }
+    .case .ep-time li { position: relative; margin: 0; padding: 34px 14px 0 0; font-size: 14px; line-height: 1.45; color: var(--muted); }
+    .case .ep-time li::before { content: ""; position: absolute; left: 0; top: 4px; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 3px solid var(--ep); }
+    .case .ep-time li.stop::before { border-color: var(--ep-red); background: var(--ep-red); box-shadow: 0 0 0 4px var(--ep-red-bg); }
+    .case .ep-time li.win::before { border-color: #1d6b3a; background: #1d6b3a; }
+    .ep-time b { display: block; color: var(--ink); font-size: 15.5px; margin-bottom: 4px; line-height: 1.3; }
+    .ep-time li.stop b { color: var(--ep-red); }
+
+    /* Card sort */
+    .ep-sort { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin: 24px 0 0; }
+    .ep-sort > div { padding: 18px 20px; border-radius: 16px; border: 1px solid var(--rule); background: #fff; }
+    .ep-sort > div.users { border: 2px solid var(--ep); background: var(--ep-bg); }
+    .ep-sort .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .ep-sort .users .k { color: var(--ep); }
+    .ep-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ep-chips span { padding: 7px 12px; border-radius: 10px; background: #f3f4f6; font-size: 14.5px; font-weight: 500; }
+    .ep-sort .users .ep-chips span { background: #fff; border: 1px solid var(--ep-line); }
+
+    /* Impact */
+    .ep-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0 0; }
+    .ep-tile { padding: 20px; border-radius: 18px; background: #fff; border: 1px solid var(--rule); }
+    .ep-tile .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .ep-tile .num { display: block; font-size: clamp(28px, 3.6vw, 38px); line-height: 1.05; font-weight: 700; letter-spacing: -0.03em; color: var(--ep); margin-bottom: 10px; }
+    .case .ep-tile p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+
+    @media (max-width: 860px) {
+      .ep-wheels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ep-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ep-time { grid-template-columns: 1fr; }
+      .ep-time::before { left: 10px; right: auto; top: 0; bottom: 0; width: 3px; height: auto; }
+      .case .ep-time li { padding: 0 0 18px 40px; }
+      .case .ep-time li::before { top: 0; }
+      .ep-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 28px; }
+      .case .ep-flow li:nth-child(2)::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: -24px; transform: none; }
+    }
+    @media (max-width: 680px) {
+      .ep-lead { font-size: 17.5px; }
+      .ep-qs, .ep-decisions, .ep-pair, .ep-two, .ep-sort, .ep-tiles { grid-template-columns: 1fr; }
+      .ep-flow { grid-template-columns: 1fr; gap: 26px; }
+      .case .ep-flow li:not(:last-child)::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: -24px; transform: none; }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main" data-en="Skip to main content" data-no="Hopp til hovedinnhold">Skip to main content</a>
@@ -31,362 +166,213 @@
     </div>
   </header>
 
-  <figure class="case-banner">
-    <img src="assets/case/ep-hero.png" alt="Employee portal — redesigned dashboard around the two questions employees actually ask" />
-    <figcaption data-en="The dashboard, reorganised around two questions: what do I have right now, and what should I do next."
-                data-no="Dashbordet, omorganisert rundt to spørsmål: hva har jeg akkurat nå, og hva bør jeg gjøre nå.">
-      The dashboard, reorganised around two questions: what do I have right now, and what should I do next.
-    </figcaption>
-  </figure>
-
   <main id="main" class="case wide">
 
     <span class="case-eyebrow brand" data-en="Optio Incentives · 2022 — 2024" data-no="Optio Incentives · 2022 — 2024">Optio Incentives · 2022 — 2024</span>
     <h1 class="case-h1"
-        data-en="Redesigning a portal employees only open twice a year, around the two questions they actually ask"
-        data-no="Redesign av en portal ansatte bare åpner to ganger i året, rundt de to spørsmålene de faktisk stiller">
-      Redesigning a portal employees only open twice a year, around the two questions they actually ask
+        data-en="People open their equity portal twice a year. Every visit starts with the same two questions."
+        data-no="Folk åpner aksjeportalen sin to ganger i året. Hvert besøk starter med de samme to spørsmålene.">
+      People open their equity portal twice a year. Every visit starts with the same two questions.
     </h1>
+    <p class="ep-lead"
+       data-en-html="Once when something unlocks, once at tax time. Each time, people landed in a tool they only half remembered. So I rebuilt the dashboard to <span class=&quot;ep-hl&quot;>answer those two questions first.</span>"
+       data-no-html="Én gang når noe blir opptjent, én gang ved skattetid. Hver gang landet folk i et verktøy de bare så vidt husket. Så bygde jeg om dashbordet til å <span class=&quot;ep-hl&quot;>svare på de to spørsmålene først.</span>">
+      Once when something unlocks, once at tax time. Each time, people landed in a tool they only half remembered. So I rebuilt the dashboard to <span class="ep-hl">answer those two questions first.</span>
+    </p>
 
-    <nav class="case-toc-pills" aria-label="On this page">
-      <a href="#problem"><span class="num">01</span> <span data-en="Problem" data-no="Problem">Problem</span></a>
-      <a href="#insight"><span class="num">02</span> <span data-en="The insight" data-no="Innsikten">The insight</span></a>
-      <a href="#decisions"><span class="num">03</span> <span data-en="Decisions" data-no="Valg">Decisions</span></a>
-      <a href="#opportunity"><span class="num">04</span> <span data-en="An opportunity" data-no="En mulighet">An opportunity</span></a>
-      <a href="#judgment"><span class="num">05</span> <span data-en="Business judgment" data-no="Forretningsskjønn">Business judgment</span></a>
-      <a href="#tradeoff"><span class="num">06</span> <span data-en="Trade-off" data-no="Avveining">Trade-off</span></a>
-      <a href="#impact"><span class="num">07</span> <span data-en="Impact" data-no="Effekt">Impact</span></a>
-    </nav>
-
-    <!-- SNAPSHOT ROW -->
-    <div class="snap-row">
-      <div class="cell">
-        <span class="label" data-en="Years" data-no="År">Years</span>
-        <span class="value">
-          <strong>2022 — 2024</strong>
-          <span class="aside" data-en="in parallel with Financial Reporting (2023 — 2025)" data-no="parallelt med Finansiell rapportering (2023 — 2025)">in parallel with Financial Reporting (2023 — 2025)</span>
-        </span>
-      </div>
-      <div class="cell">
-        <span class="label" data-en="Company" data-no="Selskap">Company</span>
-        <span class="value">Optio Incentives</span>
-      </div>
-      <div class="cell">
-        <span class="label" data-en="My role" data-no="Min rolle">My role</span>
-        <span class="value" data-en="Product Designer · UX end-to-end" data-no="Produktdesigner · UX ende-til-ende">Product Designer · UX end-to-end</span>
-      </div>
-      <div class="cell">
-        <span class="label" data-en="In one line" data-no="På én linje">In one line</span>
-        <span class="value" data-en="Made the portal answer two questions instead of demanding people learn its vocabulary."
-                            data-no="Fikk portalen til å svare på to spørsmål i stedet for å kreve at folk lærte vokabularet dens.">Made the portal answer two questions instead of demanding people learn its vocabulary.</span>
-      </div>
+    <div class="ep-qs">
+      <div class="ep-q"><span class="k" data-en="Question 1" data-no="Spørsmål 1">Question 1</span><b data-en="What do I have right now?" data-no="Hva har jeg akkurat nå?">What do I have right now?</b><small data-en="Every share type, in one view, in plain words." data-no="Alle aksjetyper, i én visning, med vanlige ord.">Every share type, in one view, in plain words.</small></div>
+      <div class="ep-q"><span class="k" data-en="Question 2" data-no="Spørsmål 2">Question 2</span><b data-en="What should I do next?" data-no="Hva bør jeg gjøre nå?">What should I do next?</b><small data-en="Clear actions, checked and previewed before you commit." data-no="Tydelige handlinger, sjekket og forhåndsvist før du bekrefter.">Clear actions, checked and previewed before you commit.</small></div>
     </div>
 
-    <!-- 01 PROBLEM -->
+    <div class="ep-notes" role="list" aria-label="The story in 30 seconds" data-en-aria="The story in 30 seconds" data-no-aria="Historien på 30 sekunder">
+      <div class="ep-note" role="listitem"><span class="ic" aria-hidden="true">🧩</span><div><span class="k" data-en="The problem" data-no="Problemet">The problem</span><p data-en="A portal built for stock options had to start serving every share type." data-no="En portal laget for aksjeopsjoner måtte begynne å fungere for alle aksjetyper.">A portal built for stock options had to start serving every share type.</p></div></div>
+      <div class="ep-note" role="listitem"><span class="ic" aria-hidden="true">💡</span><div><span class="k" data-en="What I found" data-no="Det jeg fant">What I found</span><p data-en="Almost every visit opened with the same two questions." data-no="Nesten hvert besøk startet med de samme to spørsmålene.">Almost every visit opened with the same two questions.</p></div></div>
+      <div class="ep-note win" role="listitem"><span class="ic" aria-hidden="true">📈</span><div><span class="k" data-en="What happened" data-no="Hva som skjedde">What happened</span><p data-en="One dashboard for every share type, a direct line to users, and the biggest client stayed." data-no="Ett dashbord for alle aksjetyper, en direkte linje til brukerne, og den største kunden ble.">One dashboard for every share type, a direct line to users, and the biggest client stayed.</p></div></div>
+    </div>
+
+    <div class="ep-facts">
+      <div><span class="k" data-en="When" data-no="Når">When</span><p data-en="2022 — 2024, next to Financial Reporting" data-no="2022 — 2024, ved siden av finansrapportering">2022 — 2024, next to Financial Reporting</p></div>
+      <div><span class="k" data-en="Company" data-no="Selskap">Company</span><p>Optio Incentives</p></div>
+      <div><span class="k" data-en="My role" data-no="Min rolle">My role</span><p data-en="Product Designer, UX end to end" data-no="Produktdesigner, UX fra start til slutt">Product Designer, UX end to end</p></div>
+      <div><span class="k" data-en="With" data-no="Med">With</span><p data-en="Engineers, a Product Owner and Customer Success" data-no="Utviklere, en produkteier og Customer Success">Engineers, a Product Owner and Customer Success</p></div>
+    </div>
+
+    <figure class="ep-banner">
+      <img src="assets/case/ep-hero.png" width="4120" height="2160" alt="The redesigned participant dashboard: what you own across share types, its value, and what you can do next." />
+    </figure>
+
+    <nav class="case-toc-pills" aria-label="On this page" data-en-aria="On this page" data-no-aria="På denne siden">
+      <a href="#problem"><span class="num">01</span> <span data-en="The cracks" data-no="Sprekkene">The cracks</span></a>
+      <a href="#wheel"><span class="num">02</span> <span data-en="The wheel" data-no="Hjulet">The wheel</span></a>
+      <a href="#insight"><span class="num">03</span> <span data-en="Two questions" data-no="To spørsmål">Two questions</span></a>
+      <a href="#decisions"><span class="num">04</span> <span data-en="Four decisions" data-no="Fire valg">Four decisions</span></a>
+      <a href="#listening"><span class="num">05</span> <span data-en="A direct line" data-no="En direkte linje">A direct line</span></a>
+      <a href="#client"><span class="num">06</span> <span data-en="Keeping the client" data-no="Beholde kunden">Keeping the client</span></a>
+      <a href="#tradeoff"><span class="num">07</span> <span data-en="What I&rsquo;d change" data-no="Det jeg ville endret">What I&rsquo;d change</span></a>
+      <a href="#impact"><span class="num">08</span> <span data-en="Impact" data-no="Effekt">Impact</span></a>
+    </nav>
+
+    <!-- 01 -->
     <section id="problem" class="sf-section">
-      <span class="case-eyebrow" data-en="01 · Problem" data-no="01 · Problem">01 · Problem</span>
-      <h2 data-en="A portal built for stock options only — that had to start serving everyone"
-          data-no="En portal bygget kun for aksjeopsjoner — som måtte begynne å tjene alle">
-        A portal built for stock options only — that had to start serving everyone
-      </h2>
-      <p data-en="When I joined, the portal was mid-implementation — built essentially for stock options only, and the company was going through a major redesign. As more share types, markets and company-specific rules got added, the experience started to crack. Risky actions felt unsafe. People couldn't see a clear picture of what they actually owned."
-         data-no="Da jeg startet, var portalen midt i implementering — bygget i hovedsak for aksjeopsjoner, og selskapet var i gang med et stort redesign. Etter hvert som flere aksjetyper, markeder og selskapsspesifikke regler kom til, begynte opplevelsen å sprekke. Risikable handlinger føltes utrygge. Folk så ikke et tydelig bilde av hva de faktisk eide.">
-        When I joined, the portal was mid-implementation — built essentially for stock options only, and the company was going through a major redesign. As more share types, markets and company-specific rules got added, the experience started to crack. Risky actions felt unsafe. People couldn't see a clear picture of what they actually owned.
-      </p>
-      <p data-en="And we had almost no direct insight from the people using it. Most opened the portal twice a year — once when something unlocked, once at tax time — and landed back inside a tool they only half-remembered. The screens treated every visit like the user already knew the language."
-         data-no="Og vi hadde nesten ingen direkte innsikt fra folkene som brukte den. De fleste åpnet portalen to ganger i året — én gang når noe ble låst opp, én gang ved skattetid — og landet tilbake i et verktøy de bare halvveis husket. Skjermene behandlet hvert besøk som om brukeren allerede kunne språket.">
-        And we had almost no direct insight from the people using it. Most opened the portal twice a year — once when something unlocked, once at tax time — and landed back inside a tool they only half-remembered. The screens treated every visit like the user already knew the language.
-      </p>
+      <span class="case-eyebrow" data-en="01 · The cracks" data-no="01 · Sprekkene">01 · The cracks</span>
+      <h2 data-en="Built for one share type, asked to serve them all." data-no="Laget for én aksjetype, bedt om å tjene alle.">Built for one share type, asked to serve them all.</h2>
+      <p data-en="When I joined, the portal was still being built, mostly for stock options, and the company was in the middle of a big redesign. Then more share types, markets and company rules arrived, and the portal started to crack."
+         data-no="Da jeg begynte, var portalen fortsatt under bygging, mest for aksjeopsjoner, og selskapet var midt i et stort redesign. Så kom flere aksjetyper, markeder og selskapsregler, og portalen begynte å sprekke.">When I joined, the portal was still being built, mostly for stock options, and the company was in the middle of a big redesign. Then more share types, markets and company rules arrived, and the portal started to crack.</p>
+      <p data-en-html="Risky actions felt unsafe. People couldn&rsquo;t see what they actually owned. And we had <span class=&quot;ep-hl&quot;>almost no direct insight from the people using it.</span>"
+         data-no-html="Risikable handlinger føltes utrygge. Folk så ikke hva de faktisk eide. Og vi hadde <span class=&quot;ep-hl&quot;>nesten ingen direkte innsikt fra dem som brukte den.</span>">Risky actions felt unsafe. People couldn&rsquo;t see what they actually owned. And we had <span class="ep-hl">almost no direct insight from the people using it.</span></p>
     </section>
 
-    <!-- THE SHIFT — verbatim italic rule -->
-    <section class="sf-section" style="margin-bottom: 48px;">
-      <span class="case-eyebrow" data-en="The rule I designed against" data-no="Regelen jeg designet mot">The rule I designed against</span>
-      <p class="shift-quote" data-en="“If a piece of the UI doesn't help with what do I have or what should I do, it doesn't earn its space.”"
-                             data-no="“Hvis et stykke UI ikke hjelper med hva har jeg eller hva bør jeg gjøre, fortjener det ikke plassen sin.”">
-        “If a piece of the UI doesn't help with what do I have or what should I do, it doesn't earn its space.”
-      </p>
+    <!-- 02 -->
+    <section id="wheel" class="sf-section">
+      <span class="case-eyebrow" data-en="02 · The wheel" data-no="02 · Hjulet">02 · The wheel</span>
+      <h2 data-en="One chart made sense for options. For the rest, it didn&rsquo;t." data-no="Ett diagram ga mening for opsjoner. For resten gjorde det ikke det.">One chart made sense for options. For the rest, it didn&rsquo;t.</h2>
+      <p data-en="The old dashboard was built around a wheel that split your holding into cost and gain. Here&rsquo;s what that wheel said for each share type:"
+         data-no="Det gamle dashbordet var bygget rundt et hjul som delte beholdningen din i kostnad og gevinst. Dette er hva hjulet sa for hver aksjetype:">The old dashboard was built around a wheel that split your holding into cost and gain. Here&rsquo;s what that wheel said for each share type:</p>
+      <div class="ep-wheels">
+        <div class="ep-wheel"><div class="pie" aria-hidden="true" style="background: conic-gradient(#6d28d9 0 40%, #c4b5fd 40% 100%)"></div><b data-en="Options" data-no="Opsjoner">Options</b><p data-en="There&rsquo;s a strike price, so cost vs. gain means something." data-no="Det finnes en innløsningskurs, så kostnad mot gevinst betyr noe.">There&rsquo;s a strike price, so cost vs. gain means something.</p><span class="v ok" data-en="✓ makes sense" data-no="✓ gir mening">✓ makes sense</span></div>
+        <div class="ep-wheel bad"><div class="pie" aria-hidden="true" style="background: #c4b5fd"></div><b>RSU</b><p data-en="No purchase cost, so the wheel is one colour and says nothing." data-no="Ingen kjøpskostnad, så hjulet blir én farge og sier ingenting.">No purchase cost, so the wheel is one colour and says nothing.</p><span class="v empty" data-en="○ empty" data-no="○ tomt">○ empty</span></div>
+        <div class="ep-wheel bad"><div class="pie" aria-hidden="true" style="background: repeating-conic-gradient(#c4b5fd 0 10deg, #ede9fe 10deg 20deg)"><span>?</span></div><b>PSU</b><p data-en="The share count depends on performance: zero, or double. One fixed value misleads." data-no="Antallet avhenger av resultater: null, eller det doble. Én fast verdi villeder.">The share count depends on performance: zero, or double. One fixed value misleads.</p><span class="v wrong" data-en="✕ wrong" data-no="✕ feil">✕ wrong</span></div>
+        <div class="ep-wheel bad"><div class="pie" aria-hidden="true" style="background: #e5e7eb"></div><b data-en="Shares" data-no="Aksjer">Shares</b><p data-en="You already own them. There&rsquo;s no cost and gain to split." data-no="Du eier dem allerede. Det er ingen kostnad og gevinst å dele.">You already own them. There&rsquo;s no cost and gain to split.</p><span class="v empty" data-en="○ empty" data-no="○ tomt">○ empty</span></div>
+      </div>
+      <div class="ep-pair">
+        <figure><img src="assets/case/ep-original-dashboard.jpg" width="1340" height="425" loading="lazy" alt="The original participant dashboard, organised around a single wheel chart." /></figure>
+        <figure><img src="assets/case/ep-original-wheel.png" width="1152" height="872" loading="lazy" alt="The wheel in close-up, with tabs for Warrants, PSU, RSU and Options." /></figure>
+      </div>
+      <p class="ep-cap" style="font-size:13px;color:var(--muted);margin-top:10px" data-en="The original dashboard and its wheel, with a tab per share type." data-no="Det opprinnelige dashbordet og hjulet, med en fane per aksjetype.">The original dashboard and its wheel, with a tab per share type.</p>
+      <div class="ep-small">
+        <span class="k" data-en="My first move" data-no="Mitt første grep">My first move</span>
+        <p data-en="Small on purpose: high impact, low cost. A quick fix went live first, and it bought time to gather insight for the real redesign." data-no="Lite med vilje: stor effekt, lav kostnad. En rask løsning gikk live først, og den kjøpte tid til å samle innsikt for det ordentlige redesignet.">Small on purpose: high impact, low cost. A quick fix went live first, and it bought time to gather insight for the real redesign.</p>
+      </div>
     </section>
 
-    <!-- 02 THE INSIGHT -->
+    <!-- 03 -->
     <section id="insight" class="sf-section">
-      <span class="case-eyebrow" data-en="02 · The insight the whole dashboard was built on"
-                                 data-no="02 · Innsikten hele dashbordet ble bygd på">02 · The insight the whole dashboard was built on</span>
-      <h2 data-en="The same two questions opened almost every session"
-          data-no="De samme to spørsmålene åpnet nesten hver økt">
-        The same two questions opened almost every session
-      </h2>
-      <p data-en="Research wasn't one big study — it was a steady drip of small ones. Card sorting, prototype tests on desktop and mobile, moderated and unmoderated sessions, a Lean UX canvas to sanity-check assumptions, and the in-portal feedback widget that ran continuously. Most of it confirmed what the team already suspected."
-         data-no="Researchen var ikke én stor studie — det var et jevnt drypp av små. Kortsortering, prototype-tester på desktop og mobil, modererte og umodererte økter, en Lean UX-canvas for å validere antakelser, og tilbakemeldings-widgeten i portalen som gikk kontinuerlig. Det meste bekreftet det teamet allerede mistenkte.">
-        Research wasn't one big study — it was a steady drip of small ones. Card sorting, prototype tests on desktop and mobile, moderated and unmoderated sessions, a Lean UX canvas to sanity-check assumptions, and the in-portal feedback widget that ran continuously. Most of it confirmed what the team already suspected.
-      </p>
-      <p data-en="One pattern kept showing up, and it changed how I designed everything else. People open the portal infrequently. Almost every session starts with the same two questions: what do I have right now, and what should I do next?"
-         data-no="Ett mønster dukket opp igjen og igjen, og det endret hvordan jeg designet alt annet. Folk åpner portalen sjelden. Nesten hver økt starter med de samme to spørsmålene: hva har jeg akkurat nå, og hva bør jeg gjøre nå?">
-        One pattern kept showing up, and it changed how I designed everything else. People open the portal infrequently. Almost every session starts with the same two questions: what do I have right now, and what should I do next?
-      </p>
-      <figure class="sf-figure">
-        <img src="assets/images/Lean UX Canvas & Hypothesis mapping.png" alt="" />
-        <figcaption data-en="The Lean UX canvas the team aligned on — users, hypotheses, the most important thing to learn first, and the outcomes we'd track."
-                    data-no="Lean UX-canvasen teamet samkjørte rundt — brukere, hypoteser, det viktigste å lære først, og resultatene vi ville måle.">
-          The Lean UX canvas the team aligned on — users, hypotheses, the most important thing to learn first, and the outcomes we'd track.
-        </figcaption>
-      </figure>
+      <span class="case-eyebrow" data-en="03 · Two questions" data-no="03 · To spørsmål">03 · Two questions</span>
+      <h2 data-en="Lots of small studies, one pattern." data-no="Mange små studier, ett mønster.">Lots of small studies, one pattern.</h2>
+      <p data-en-html="Research wasn&rsquo;t one big study. It was a steady drip of small ones. Most confirmed what the team suspected. One pattern changed everything: <span class=&quot;ep-hl&quot;>almost every visit started with &ldquo;what do I have?&rdquo; and &ldquo;what should I do?&rdquo;</span>"
+         data-no-html="Researchen var ikke én stor studie. Det var et jevnt drypp av små. De fleste bekreftet det teamet mistenkte. Ett mønster endret alt: <span class=&quot;ep-hl&quot;>nesten hvert besøk startet med «hva har jeg?» og «hva bør jeg gjøre?»</span>">Research wasn&rsquo;t one big study. It was a steady drip of small ones. Most confirmed what the team suspected. One pattern changed everything: <span class="ep-hl">almost every visit started with &ldquo;what do I have?&rdquo; and &ldquo;what should I do?&rdquo;</span></p>
+      <div class="ep-strip" role="list" tabindex="0" aria-label="Research artefacts, scroll sideways" data-en-aria="Research artefacts, scroll sideways" data-no-aria="Researchmateriale, rull sidelengs">
+        <figure role="listitem"><a href="assets/case/ep-lean-canvas.png" target="_blank" rel="noopener"><img src="assets/case/ep-lean-canvas.png" loading="lazy" alt="Lean UX canvas with users, hypotheses and outcomes." /></a><figcaption><b data-en="Lean UX canvas" data-no="Lean UX-canvas">Lean UX canvas</b><span data-en="what to learn first" data-no="hva vi måtte lære først">what to learn first</span></figcaption></figure>
+        <figure role="listitem"><a href="assets/case/ep-sales-feedback.png" target="_blank" rel="noopener"><img src="assets/case/ep-sales-feedback.png" loading="lazy" alt="A colour-coded sheet of feedback from Sales demos and Customer Success calls." /></a><figcaption><b data-en="Sales and CS calls" data-no="Salgs- og CS-samtaler">Sales and CS calls</b><span data-en="feedback, sorted by theme" data-no="tilbakemeldinger sortert etter tema">feedback, sorted by theme</span></figcaption></figure>
+        <figure role="listitem"><a href="assets/case/ep-prototypes.png" target="_blank" rel="noopener"><img src="assets/case/ep-prototypes.png" loading="lazy" alt="A Figma prototype map with many connected screens, labelled 4th iteration." /></a><figcaption><b data-en="Prototype tests" data-no="Prototypetester">Prototype tests</b><span data-en="desktop and mobile, iteration after iteration" data-no="PC og mobil, runde etter runde">desktop and mobile, iteration after iteration</span></figcaption></figure>
+        <figure role="listitem"><a href="assets/case/ep-usertesting.png" target="_blank" rel="noopener"><img src="assets/case/ep-usertesting.png" loading="lazy" alt="UserTesting results comparing a dropdown version with a listed cards version, with session recordings." /></a><figcaption><b data-en="Unmoderated tests" data-no="Umodererte tester">Unmoderated tests</b><span data-en="two versions, side by side" data-no="to versjoner, side om side">two versions, side by side</span></figcaption></figure>
+        <figure role="listitem"><a href="assets/case/ep-card-sorting.png" target="_blank" rel="noopener"><img src="assets/case/ep-card-sorting.png" loading="lazy" alt="Card sorting results for the portal's navigation." /></a><figcaption><b data-en="Card sorting" data-no="Kortsortering">Card sorting</b><span data-en="how people group the words" data-no="hvordan folk grupperer ordene">how people group the words</span></figcaption></figure>
+        <figure role="listitem"><a href="assets/case/ep-final-test.png" target="_blank" rel="noopener"><img src="assets/case/ep-final-test.png" loading="lazy" alt="A recorded usability task on the dashboard prototype: Step 1 of 10." /></a><figcaption><b data-en="Final test" data-no="Siste test">Final test</b><span data-en="flows and words, before build" data-no="flyter og ord, før utvikling">flows and words, before build</span></figcaption></figure>
+      </div>
+      <div class="ep-rule">
+        <span class="k" data-en="The rule I designed against" data-no="Regelen jeg designet etter">The rule I designed against</span>
+        <p data-en="If part of the screen doesn&rsquo;t help with &ldquo;what do I have&rdquo; or &ldquo;what should I do&rdquo;, it doesn&rsquo;t earn its space." data-no="Hvis en del av skjermen ikke hjelper med «hva har jeg» eller «hva bør jeg gjøre», fortjener den ikke plassen.">If part of the screen doesn&rsquo;t help with &ldquo;what do I have&rdquo; or &ldquo;what should I do&rdquo;, it doesn&rsquo;t earn its space.</p>
+      </div>
     </section>
 
-    <!-- Interlude — the interim fix that bought time -->
-    <section id="interim-fix" class="sf-section">
-      <span class="case-eyebrow" data-en="Before the redesign — the interim fix that bought time"
-                                 data-no="Før redesignet — den midlertidige løsningen som kjøpte tid">Before the redesign — the interim fix that bought time</span>
-      <h2 data-en="The chart the whole dashboard was built on didn't work for most instruments"
-          data-no="Diagrammet hele dashbordet var bygd rundt fungerte ikke for de fleste instrumentene">
-        The chart the whole dashboard was built on didn't work for most instruments
-      </h2>
-      <p data-en="The original dashboard was built around this wheel. For options it works — an option always has a strike price, so the circle splits meaningfully into cost-to-exercise vs. gain. But an RSU has no purchase cost, so the wheel collapses into one colour and says nothing. A PSU's actual share count depends on performance — could be zero, could be double — so a wheel showing one fixed value is actively misleading. And ordinary shares you already own: there's no cost-vs-gain to split. Same chart: meaningful for one instrument, empty for two, wrong for one."
-         data-no="Det opprinnelige dashbordet var bygd rundt dette hjulet. For opsjoner fungerer det — en opsjon har alltid en strike-pris, så sirkelen deles meningsfullt i innløsningskostnad vs. gevinst. Men en RSU har ingen kjøpskostnad, så hjulet kollapser til én farge og sier ingenting. En PSUs faktiske antall aksjer avhenger av ytelse — kan bli null, kan bli det doble — så et hjul som viser én fast verdi er direkte villedende. Og vanlige aksjer du allerede eier: det finnes ingen kostnad-vs-gevinst å dele. Samme diagram: meningsfullt for ett instrument, tomt for to, feil for ett.">
-        The original dashboard was built around this wheel. For options it works — an option always has a strike price, so the circle splits meaningfully into cost-to-exercise vs. gain. But an RSU has no purchase cost, so the wheel collapses into one colour and says nothing. A PSU's actual share count depends on performance — could be zero, could be double — so a wheel showing one fixed value is actively misleading. And ordinary shares you already own: there's no cost-vs-gain to split. Same chart: meaningful for one instrument, empty for two, wrong for one.
-      </p>
-      <figure class="sf-figure ep-wheel-pair">
-        <div class="sf-figure-row">
-          <figure>
-            <img src="assets/case/ep-original-dashboard.jpg" alt="The original Participant Platform organised around a single wheel chart" style="object-position: left center;" />
-          </figure>
-          <figure>
-            <img src="assets/case/ep-original-wheel.png" alt="The wheel chart in close-up, with per-instrument tabs for Warrants, PSU, RSU and Options" />
-          </figure>
-        </div>
-        <figcaption style="max-width: none;"
-                    data-en="Same wheel, per-instrument tabs. For RSU, PSU and shares, the split had no meaning to show."
-                    data-no="Samme hjul, faner per instrument. For RSU, PSU og aksjer hadde delingen ingen mening å vise.">
-          Same wheel, per-instrument tabs. For RSU, PSU and shares, the split had no meaning to show.
-        </figcaption>
-      </figure>
-      <p class="shift-quote" data-en="&ldquo;My first move was deliberately small — high impact, low cost — buying time for the real solution while I gathered insight with the interim fix live in production.&rdquo;"
-         data-no="&ldquo;Mitt første grep var bevisst lite — høy effekt, lav kostnad — som kjøpte tid til den ordentlige løsningen mens jeg samlet innsikt med den midlertidige løsningen i produksjon.&rdquo;">
-        &ldquo;My first move was deliberately small — high impact, low cost — buying time for the real solution while I gathered insight with the interim fix live in production.&rdquo;
-      </p>
-    </section>
-
-    <!-- 03 DECISIONS -->
+    <!-- 04 -->
     <section id="decisions" class="sf-section">
-      <span class="case-eyebrow" data-en="03 · What I did" data-no="03 · Det jeg gjorde">03 · What I did</span>
-      <h2 data-en="Four decisions, all of them downstream of the two questions"
-          data-no="Fire valg, alle som følge av de to spørsmålene">
-        Four decisions, all of them downstream of the two questions
-      </h2>
+      <span class="case-eyebrow" data-en="04 · Four decisions" data-no="04 · Fire valg">04 · Four decisions</span>
+      <h2 data-en="Every decision answers one of the two questions." data-no="Hvert valg svarer på ett av de to spørsmålene.">Every decision answers one of the two questions.</h2>
+      <div class="ep-decisions">
+        <article class="ep-dec"><div class="ep-dec__body">
+          <span class="ans q1" data-en="● What do I have?" data-no="● Hva har jeg?">● What do I have?</span>
+          <h3 data-en="One dashboard that fits what you hold" data-no="Ett dashbord som passer det du eier">One dashboard that fits what you hold</h3>
+          <p data-en="Options, RSUs, PSUs, warrants or shares: the dashboard adapts to what each person actually holds, instead of pretending everything is an option." data-no="Opsjoner, RSU-er, PSU-er, warrants eller aksjer: dashbordet tilpasser seg det hver person faktisk eier, i stedet for å late som alt er opsjoner.">Options, RSUs, PSUs, warrants or shares: the dashboard adapts to what each person actually holds, instead of pretending everything is an option.</p></div>
+          <figure><img src="assets/images/Multi-Instrument Dashboard &amp; My Overview-2.png" width="1348" height="856" loading="lazy" alt="The new dashboard showing holdings across several share types with values and next unlocks." /></figure></article>
+        <article class="ep-dec"><div class="ep-dec__body">
+          <span class="ans q2" data-en="● What should I do?" data-no="● Hva bør jeg gjøre?">● What should I do?</span>
+          <h3 data-en="The simulator got its own page" data-no="Simulatoren fikk sin egen side">The simulator got its own page</h3>
+          <p data-en="It used to be a small widget for show. On its own page, with a slider, people could finally ask: what if the price goes up or down?" data-no="Den var en liten widget til pynt. På sin egen side, med en glidebryter, kunne folk endelig spørre: hva om kursen går opp eller ned?">It used to be a small widget for show. On its own page, with a slider, people could finally ask: what if the price goes up or down?</p></div>
+          <figure><img src="assets/case/ep-simulator.png" width="3616" height="2290" loading="lazy" alt="The share price simulator page with a slider and current and simulated totals." /></figure></article>
+        <article class="ep-dec"><div class="ep-dec__body">
+          <span class="ans q1" data-en="● What do I have?" data-no="● Hva har jeg?">● What do I have?</span>
+          <h3 data-en="Each company&rsquo;s own words and colours" data-no="Hvert selskaps egne ord og farger">Each company&rsquo;s own words and colours</h3>
+          <p data-en="Clients can set their own wording, explanations and brand colours, while the portal keeps one shared design system. No one-off builds." data-no="Kundene kan sette egne ord, forklaringer og merkefarger, mens portalen beholder ett felles designsystem. Ingen spesialbygg.">Clients can set their own wording, explanations and brand colours, while the portal keeps one shared design system. No one-off builds.</p></div>
+          <figure><img src="assets/case/ep-education.png" width="3616" height="2290" loading="lazy" alt="The content settings: a step-by-step purchase flow where the client edits the introduction text and media." /></figure></article>
+        <article class="ep-dec"><div class="ep-dec__body">
+          <span class="ans q2" data-en="● Built unprompted" data-no="● Bygget uten oppdrag">● Built unprompted</span>
+          <h3 data-en="Ready for mobile before anyone asked" data-no="Klar for mobil før noen spurte">Ready for mobile before anyone asked</h3>
+          <p data-en-html="Mobile was low priority, but I used parts that adapt easily anyway. When the portal moved into the mobile app, <span class=&quot;ep-hl&quot;>the rollout shipped much faster.</span>"
+             data-no-html="Mobil var lavt prioritert, men jeg brukte deler som lett kunne tilpasses likevel. Da portalen flyttet inn i mobilappen, <span class=&quot;ep-hl&quot;>gikk utrullingen mye raskere.</span>">Mobile was low priority, but I used parts that adapt easily anyway. When the portal moved into the mobile app, <span class="ep-hl">the rollout shipped much faster.</span></p></div>
+          <figure><img src="assets/images/ep-mobile-cover.png" width="2000" height="1551" loading="lazy" alt="The Optio mobile app: loading, dashboard and simulations, from the same components as the web portal." /></figure></article>
+      </div>
+      <figure class="ep-fig" style="max-width:760px">
+        <img src="assets/images/Equity Actions &amp; Processes.png" width="3616" height="2290" loading="lazy" alt="The action flows: each step with a clear state, validation and a preview before you confirm." />
+        <figcaption data-en="Every risky action follows the same pattern: clear state, a check, and a preview before you commit." data-no="Hver risikabel handling følger samme mønster: tydelig tilstand, en sjekk og forhåndsvisning før du bekrefter.">Every risky action follows the same pattern: clear state, a check, and a preview before you commit.</figcaption>
+      </figure>
+    </section>
 
-      <div class="sf-decisions four">
-        <article class="sf-decision">
-          <span class="signal-tag problem" data-en="Problem reframed" data-no="Problem omformulert">Problem reframed</span>
-          <h3 data-en="One configurable dashboard that adapts to whatever someone actually holds"
-              data-no="Ett konfigurerbart dashbord som tilpasser seg det folk faktisk eier">One configurable dashboard that adapts to whatever someone actually holds</h3>
-          <p data-en="The original Dashboard was designed only for options. As the platform evolved to support RSUs, PSUs, warrants and shares, the UI broke down and didn't match how different instruments behave. I redesigned the Dashboard so it adapts to whatever instruments the employee actually holds, not just options."
-             data-no="Det opprinnelige dashbordet var designet kun for opsjoner. Etter hvert som plattformen utviklet seg til å støtte RSU-er, PSU-er, warrants og aksjer, brøt UI-en sammen og samsvarte ikke med hvordan ulike instrumenter oppfører seg. Jeg redesignet dashbordet slik at det tilpasser seg de instrumentene den ansatte faktisk har, ikke bare opsjoner.">
-            The original Dashboard was designed only for options. As the platform evolved to support RSUs, PSUs, warrants and shares, the UI broke down and didn't match how different instruments behave. I redesigned the Dashboard so it adapts to whatever instruments the employee actually holds, not just options.
-          </p>
-          <figure><img src="assets/images/Multi-Instrument Dashboard & My Overview-2.png" alt="" /></figure>
-        </article>
-        <article class="sf-decision">
-          <span class="signal-tag strategic" data-en="Strategic" data-no="Strategisk">Strategic</span>
-          <h3 data-en="Pulled the share-price simulator out of the dashboard"
-              data-no="Tok aksjeprissimulatoren ut av dashbordet">Pulled the share-price simulator out of the dashboard</h3>
-          <p data-en="It used to live as a small decorative widget. I gave it its own page with a slider, so people could actually answer: what happens if the price goes up or down."
-             data-no="Den bodde før som en liten dekorativ widget. Jeg ga den sin egen side med en glider, slik at folk faktisk kan svare: hva skjer hvis kursen går opp eller ned.">
-            It used to live as a small decorative widget. I gave it its own page with a slider, so people could actually answer: what happens if the price goes up or down.
-          </p>
-          <figure><img src="assets/case/ep-simulator.png" alt="" /></figure>
-        </article>
-        <article class="sf-decision">
-          <span class="signal-tag problem" data-en="Decision" data-no="Valg">Decision</span>
-          <h3 data-en="A content + theming system clients can configure themselves"
-              data-no="Et innholds- og temasystem kundene kan konfigurere selv">A content + theming system clients can configure themselves</h3>
-          <p data-en="Some clients wanted their own branding, wording and process variations without turning the portal into a one-off for every company. I created a custom content and wording system so clients can localise tone, labels and explanations without losing consistency. And worked on brand theming so the portal can adopt each company's primary colours and key assets while still using a shared design system."
-             data-no="Noen kunder ønsket egen merkevare, ordvalg og prosessvarianter uten å gjøre portalen til en engangsleveranse for hvert selskap. Jeg laget et eget innholds- og ordvalgssystem slik at kunder kan lokalisere tone, etiketter og forklaringer uten å miste konsistens. Og jobbet med temasetting slik at portalen kan ta i bruk hver kundes primærfarger og nøkkelassets, samtidig som den bruker et delt designsystem.">
-            Some clients wanted their own branding, wording and process variations without turning the portal into a one-off for every company. I created a custom content and wording system so clients can localise tone, labels and explanations without losing consistency. And worked on brand theming so the portal can adopt each company's primary colours and key assets while still using a shared design system.
-          </p>
-          <figure><img src="assets/case/ep-education.png" alt="" /></figure>
-        </article>
-        <article class="sf-decision">
-          <span class="signal-tag built" data-en="Built unprompted" data-no="Bygget uten oppdrag">Built unprompted</span>
-          <h3 data-en="Mobile-ready by default — no separate mobile track"
-              data-no="Mobilklar fra start — ingen egen mobilløype">Mobile-ready by default — no separate mobile track</h3>
-          <p data-en="Mobile was low priority at the start. I used components that were easy to adapt anyway. When the portal was later integrated into the mobile app, the design was already structured for smooth adoption — the rollout shipped meaningfully faster."
-             data-no="Mobil var lavt prioritert i begynnelsen. Jeg brukte komponenter som var enkle å tilpasse uansett. Da portalen senere ble integrert i mobilappen, var designet allerede strukturert for jevn adopsjon — utrullingen ble vesentlig raskere.">
-            Mobile was low priority at the start. I used components that were easy to adapt anyway. When the portal was later integrated into the mobile app, the design was already structured for smooth adoption — the rollout shipped meaningfully faster.
-          </p>
-          <figure><img src="assets/images/ep-mobile-cover.png" alt="The Optio mobile app — loading, dashboard and simulations, all from the same component library that powered the web portal" /></figure>
-        </article>
+    <!-- 05 -->
+    <section id="listening" class="sf-section">
+      <span class="case-eyebrow built" data-en="05 · A direct line" data-no="05 · En direkte linje">05 · A direct line</span>
+      <h2 data-en="I put a listening tool inside the product." data-no="Jeg la et lytteverktøy inn i produktet.">I put a listening tool inside the product.</h2>
+      <p data-en="Most teams hear from users through Customer Success, support tickets and surveys. That&rsquo;s a long chain with a lot of filtering. I argued for something shorter:"
+         data-no="De fleste team hører fra brukerne gjennom Customer Success, supportsaker og undersøkelser. Det er en lang kjede med mye filtrering. Jeg argumenterte for noe kortere:">Most teams hear from users through Customer Success, support tickets and surveys. That&rsquo;s a long chain with a lot of filtering. I argued for something shorter:</p>
+      <ol class="ep-flow">
+        <li><b data-en="Someone acts" data-no="Noen handler">Someone acts</b><span data-en="in the portal" data-no="i portalen">in the portal</span></li>
+        <li><b data-en="A small widget asks" data-no="En liten widget spør">A small widget asks</b><span data-en="right next to the action" data-no="rett ved handlingen">right next to the action</span></li>
+        <li><b data-en="Design reads it" data-no="Design leser det">Design reads it</b><span data-en="in their own words, NO or EN" data-no="med deres egne ord, norsk eller engelsk">in their own words, NO or EN</span></li>
+        <li><b data-en="It becomes a ticket" data-no="Det blir en sak">It becomes a ticket</b><span data-en="where we already worked" data-no="der vi allerede jobbet">where we already worked</span></li>
+      </ol>
+      <p style="margin-top:24px" data-en-html="A small build with a big payoff. <span class=&quot;ep-hl&quot;>Within two months we had feedback we couldn&rsquo;t get any other way,</span> at the moment of the action."
+         data-no-html="Et lite bygg med stor gevinst. <span class=&quot;ep-hl&quot;>Innen to måneder hadde vi tilbakemeldinger vi ikke kunne fått på noen annen måte,</span> i øyeblikket handlingen skjedde.">A small build with a big payoff. <span class="ep-hl">Within two months we had feedback we couldn&rsquo;t get any other way,</span> at the moment of the action.</p>
+      <div class="ep-two">
+        <figure><img src="assets/images/Feedback Loop &amp; Mobile-1.png" width="2696" height="1709" loading="lazy" alt="The feedback widget placed next to an action in the portal." />
+          <figcaption data-en="The widget sits next to the action, so the question reaches the team in context." data-no="Widgeten sitter ved handlingen, så spørsmålet når teamet i sammenheng.">The widget sits next to the action, so the question reaches the team in context.</figcaption></figure>
+        <figure><img src="assets/images/Mixpanel outcome 2.png" width="1208" height="1341" loading="lazy" alt="A list of real feedback submissions in Norwegian and English, dated through 2024." />
+          <figcaption data-en="Real answers in users&rsquo; own words, through 2024." data-no="Ekte svar med brukernes egne ord, gjennom 2024.">Real answers in users&rsquo; own words, through 2024.</figcaption></figure>
       </div>
     </section>
 
-    <!-- Behind the decisions — evidence row -->
-    <section class="sf-section">
-      <span class="case-eyebrow" data-en="Behind the decisions" data-no="Bak valgene">Behind the decisions</span>
-      <h2 data-en="The work the decisions sat on top of"
-          data-no="Arbeidet valgene satt på toppen av">
-        The work the decisions sat on top of
-      </h2>
-      <div class="sf-figure-row sf-figure-row-three">
-        <figure>
-          <img src="assets/images/Equity Actions & Processes.png" alt="" />
-          <figcaption data-en="The action flows — same principle for every move: clear state, validation, preview before commit."
-                      data-no="Handlingsflytene — samme prinsipp for hvert trekk: tydelig tilstand, validering, forhåndsvisning før bekreftelse.">
-            The action flows — same principle for every move: clear state, validation, preview before commit.
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/Moderated and unmoderated testing internally and through User Testing platform-2.png" alt="" />
-          <figcaption data-en="Moderated and unmoderated rounds — internal and external — comparing variants side by side."
-                      data-no="Modererte og umodererte runder — internt og eksternt — variantene sammenlignet side om side.">
-            Moderated and unmoderated rounds — internal and external — comparing variants side by side.
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/Final usability test pass before implementation to validate flows and copy.-1.png" alt="" />
-          <figcaption data-en="The final usability pass before implementation — to validate flows and copy in real conditions."
-                      data-no="Den siste brukbarhetsrunden før implementering — for å validere flyter og copy i ekte forhold.">
-            The final usability pass before implementation — to validate flows and copy in real conditions.
-          </figcaption>
-        </figure>
-      </div>
+    <!-- 06 -->
+    <section id="client" class="sf-section">
+      <span class="case-eyebrow strategic" data-en="06 · Keeping the client" data-no="06 · Beholde kunden">06 · Keeping the client</span>
+      <h2 data-en="We kept the biggest client by shipping less, sooner." data-no="Vi beholdt den største kunden ved å levere mindre, tidligere.">We kept the biggest client by shipping less, sooner.</h2>
+      <p data-en="One unsolved problem on the dashboard mattered to one client: Optio&rsquo;s largest. They had explained it three times and were starting to sound like a customer with options."
+         data-no="Ett uløst problem på dashbordet betydde mye for én kunde: Optios største. De hadde forklart det tre ganger og begynte å høres ut som en kunde med andre valg.">One unsolved problem on the dashboard mattered to one client: Optio&rsquo;s largest. They had explained it three times and were starting to sound like a customer with options.</p>
+      <ol class="ep-time">
+        <li><b data-en="Months of asking" data-no="Månedsvis med spørsmål">Months of asking</b><span data-en="The client keeps raising the same problem." data-no="Kunden tar opp det samme problemet igjen og igjen.">The client keeps raising the same problem.</span></li>
+        <li><b data-en="Interviews and tests" data-no="Intervjuer og tester">Interviews and tests</b><span data-en="With their own participants. Direction agreed with engineering." data-no="Med deres egne deltakere. Retning avtalt med utviklerne.">With their own participants. Direction agreed with engineering.</span></li>
+        <li class="stop"><b data-en="&ldquo;Pause&rdquo;" data-no="«Pause»">&ldquo;Pause&rdquo;</b><span data-en="Other projects took the quarter. That pause was the real risk." data-no="Andre prosjekter tok kvartalet. Den pausen var den egentlige risikoen.">Other projects took the quarter. That pause was the real risk.</span></li>
+        <li><b data-en="Cut into slices" data-no="Delt i biter">Cut into slices</b><span data-en="With our Product Owner, shown at the quarterly OKR review." data-no="Sammen med produkteieren, vist på den kvartalsvise OKR-gjennomgangen.">With our Product Owner, shown at the quarterly OKR review.</span></li>
+        <li class="win"><b data-en="The client stayed" data-no="Kunden ble">The client stayed</b><span data-en="The new dashboard rolled out in pieces over the next quarters." data-no="Det nye dashbordet ble rullet ut i biter over de neste kvartalene.">The new dashboard rolled out in pieces over the next quarters.</span></li>
+      </ol>
+      <p style="margin-top:28px" data-en-html="The idea: ship the parts that fixed their pain inside releases we&rsquo;d already promised, and move the rest later. <span class=&quot;ep-hl&quot;>Leadership said yes, and the roadmap stayed honest.</span>"
+         data-no-html="Ideen: levere delene som løste problemet deres i releaser vi allerede hadde lovet, og flytte resten til senere. <span class=&quot;ep-hl&quot;>Ledelsen sa ja, og veikartet forble ærlig.</span>">The idea: ship the parts that fixed their pain inside releases we&rsquo;d already promised, and move the rest later. <span class="ep-hl">Leadership said yes, and the roadmap stayed honest.</span></p>
     </section>
 
-    <!-- 04 AN OPPORTUNITY -->
-    <section id="opportunity" class="sf-section">
-      <span class="case-eyebrow built" data-en="04 · An opportunity I spotted" data-no="04 · En mulighet jeg så">04 · An opportunity I spotted</span>
-      <h2 data-en="A direct line from users to designers, built into the product"
-          data-no="En direkte linje fra brukere til designere, bygd inn i produktet">
-        A direct line from users to designers, built into the product
-      </h2>
-      <p data-en="Most product teams hear from their users through Customer Success, support tickets and quarterly surveys — a long chain with a lot of filtering. I argued the portal could host its own listening tool. A small in-product feedback widget, owned by design, with replies routed to the same place we already wrote tickets."
-         data-no="De fleste produktteam hører fra brukerne sine gjennom Customer Success, support-saker og kvartalsvise undersøkelser — en lang kjede med mye filtrering. Jeg argumenterte for at portalen kunne ha sitt eget lyttende verktøy. En liten tilbakemeldingswidget i produktet, eid av design, med svar rutet til samme sted vi allerede skrev saker.">
-        Most product teams hear from their users through Customer Success, support tickets and quarterly surveys — a long chain with a lot of filtering. I argued the portal could host its own listening tool. A small in-product feedback widget, owned by design, with replies routed to the same place we already wrote tickets.
-      </p>
-      <p data-en="It was a small build with an outsized payoff. Inside two months we had qualitative data we couldn't get any other way — at the moment of an action, in the user's own words, in Norwegian and English."
-         data-no="Det var en liten utbygging med uforholdsmessig stor avkastning. Innen to måneder hadde vi kvalitative data vi ikke kunne fått på noen annen måte — i øyeblikket av en handling, i brukerens egne ord, på norsk og engelsk.">
-        It was a small build with an outsized payoff. Inside two months we had qualitative data we couldn't get any other way — at the moment of an action, in the user's own words, in Norwegian and English.
-      </p>
-      <div class="sf-figure-row">
-        <figure>
-          <img src="assets/images/Feedback Loop & Mobile-1.png" alt="" />
-          <figcaption data-en="The in-portal widget — placed next to the action, so the question reached the team in context."
-                      data-no="Den innebygde widgeten — plassert ved siden av handlingen, slik at spørsmålet nådde teamet i kontekst.">
-            The in-portal widget — placed next to the action, so the question reached the team in context.
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/Mixpanel outcome 2.png" alt="" />
-          <figcaption data-en="Real submissions in users' own words — in Norwegian and English, dated through 2024."
-                      data-no="Faktiske innsendinger i brukernes egne ord — på norsk og engelsk, datert gjennom 2024.">
-            Real submissions in users' own words — in Norwegian and English, dated through 2024.
-          </figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- 05 BUSINESS JUDGMENT -->
-    <section id="judgment" class="sf-section">
-      <span class="case-eyebrow strategic" data-en="05 · A business-judgment moment" data-no="05 · Et øyeblikk for forretningsskjønn">05 · A business-judgment moment</span>
-      <h2 data-en="Keeping the biggest client by shrinking what we shipped"
-          data-no="Beholde den største kunden ved å krympe det vi leverte">
-        Keeping the biggest client by shrinking what we shipped
-      </h2>
-      <p data-en="One of the dashboard's unresolved frictions mattered to a single client — Optio's largest, with a contract on a slow simmer of frustration. They'd been asking us to address it for months, and they had started talking like a customer with options."
-         data-no="En av dashbordets uløste friksjoner betydde noe for én enkelt kunde — Optios største, med en kontrakt på en sakte ulmende frustrasjon. De hadde bedt oss om å ta tak i det i månedsvis, og de hadde begynt å snakke som en kunde med valg.">
-        One of the dashboard's unresolved frictions mattered to a single client — Optio's largest, with a contract on a slow simmer of frustration. They'd been asking us to address it for months, and they had started talking like a customer with options.
-      </p>
-      <p data-en="I ran direct interviews and a round of testing with their participants, agreed on a direction with engineering, and we were ready to implement. Then the request landed: pause. Other projects had taken priority for the quarter."
-         data-no="Jeg gjorde direkte intervjuer og en testrunde med deres deltakere, ble enige om en retning med utvikling, og vi var klare til å implementere. Så kom beskjeden: pause. Andre prosjekter hadde fått prioritet i kvartalet.">
-        I ran direct interviews and a round of testing with their participants, agreed on a direction with engineering, and we were ready to implement. Then the request landed: pause. Other projects had taken priority for the quarter.
-      </p>
-      <p data-en="That pause was the actual risk. Telling the biggest client 'not this quarter either' would have ended a multi-year relationship over a problem they'd already explained three times. I worked with our Product Owner to break the implementation into smaller, shippable slices and presented it at the quarterly OKR review."
-         data-no="Den pausen var den faktiske risikoen. Å si til den største kunden «ikke dette kvartalet heller» ville ha avsluttet et flerårig forhold over et problem de allerede hadde forklart tre ganger. Jeg jobbet med Product Owner for å bryte implementeringen i mindre, leverbare biter og presenterte det på den kvartalsvise OKR-gjennomgangen.">
-        That pause was the actual risk. Telling the biggest client “not this quarter either” would have ended a multi-year relationship over a problem they'd already explained three times. I worked with our Product Owner to break the implementation into smaller, shippable slices and presented it at the quarterly OKR review.
-      </p>
-      <p data-en="The proposal: ship the parts that solved the client's pain inside releases we'd already committed to, defer the rest, keep the roadmap honest. Leadership agreed. The new dashboard rolled out in chunks across the following quarters. The client stayed."
-         data-no="Forslaget: lever delene som løste kundens smerte inne i releaser vi allerede hadde forpliktet oss til, utsett resten, hold roadmappen ærlig. Ledelsen var enig. Det nye dashbordet ble rullet ut i biter over de neste kvartalene. Kunden ble.">
-        The proposal: ship the parts that solved the client's pain inside releases we'd already committed to, defer the rest, keep the roadmap honest. Leadership agreed. The new dashboard rolled out in chunks across the following quarters. The client stayed.
-      </p>
-    </section>
-
-    <!-- 06 TRADE-OFF -->
+    <!-- 07 -->
     <section id="tradeoff" class="sf-section">
-      <span class="case-eyebrow" data-en="06 · A trade-off I'd make differently today" data-no="06 · En avveining jeg ville tatt annerledes i dag">06 · A trade-off I'd make differently today</span>
-      <h2 data-en="I tested the structure with internal teammates because they were faster to schedule"
-          data-no="Jeg testet strukturen med interne kolleger fordi de var raskere å sette opp">
-        I tested the structure with internal teammates because they were faster to schedule
-      </h2>
-      <p data-en="Internal teammates grouped the words by share type — options together, RSUs together. Real users, when we eventually ran the same exercise with them, grouped by what was happening in their life — what happens when I leave, what happens at tax time. The version we shipped is the users' version. The earlier round cost us about three weeks I wouldn't spend that way again."
-         data-no="Interne kolleger grupperte ordene etter aksjetype — opsjoner sammen, RSU-er sammen. Faktiske brukere, da vi til slutt kjørte samme øvelse med dem, grupperte etter hva som skjedde i livet deres — hva skjer når jeg slutter, hva skjer ved skattetid. Versjonen vi sendte er brukernes versjon. Den tidligere runden kostet oss rundt tre uker jeg ikke ville brukt på den måten igjen.">
-        Internal teammates grouped the words by share type — options together, RSUs together. Real users, when we eventually ran the same exercise with them, grouped by what was happening in their life — what happens when I leave, what happens at tax time. The version we shipped is the users' version. The earlier round cost us about three weeks I wouldn't spend that way again.
-      </p>
-      <figure class="sf-figure">
-        <img src="assets/images/Card sorting and information architecture testing-1.png" alt="" />
-        <figcaption data-en="Card sorting results — the version that won at 62.7% success was the users' grouping, not the internal one."
-                    data-no="Resultater fra kortsortering — versjonen som vant på 62,7 % suksess var brukernes gruppering, ikke den interne.">
-          Card sorting results — the version that won at 62.7% success was the users' grouping, not the internal one.
-        </figcaption>
-      </figure>
-    </section>
-
-    <!-- 07 IMPACT -->
-    <section id="impact" class="sf-section">
-      <span class="case-eyebrow" data-en="07 · Impact" data-no="07 · Effekt">07 · Impact</span>
-      <h2 data-en="A configurable portal, a direct line to users, a client retained"
-          data-no="En konfigurerbar portal, en direkte linje til brukere, en beholdt kunde">
-        A configurable portal, a direct line to users, a client retained
-      </h2>
-
-      <div class="sf-impact">
-        <div>
-          <span class="pillar-label" data-en="Product" data-no="Produkt">Product</span>
-          <div class="impact-num small" data-en="1 view · 5 types" data-no="1 visning · 5 typer">1 view · 5 types</div>
-          <p class="impact-desc" data-en="One configurable dashboard replaced five program-specific layouts. Six high-stakes action flows shipped with previews, validation and clear states."
-                                data-no="Ett konfigurerbart dashbord erstattet fem programspesifikke oppsett. Seks høyrisiko-handlingsflyter med forhåndsvisning, validering og tydelige tilstander.">
-            One configurable dashboard replaced five program-specific layouts. Six high-stakes action flows shipped with previews, validation and clear states.
-          </p>
-        </div>
-        <div>
-          <span class="pillar-label" data-en="Process" data-no="Prosess">Process</span>
-          <div class="impact-num small" data-en="Sept '24" data-no="sept. '24">Sept '24</div>
-          <p class="impact-desc" data-en="The product's strongest month for positive feedback in Mixpanel after the dashboard launched — the in-product feedback widget made the signal possible."
-                                data-no="Produktets sterkeste måned for positive tilbakemeldinger i Mixpanel etter dashbord-lansering — tilbakemeldingswidgeten gjorde signalet mulig.">
-            The product's strongest month for positive feedback in Mixpanel after the dashboard launched — the in-product feedback widget made the signal possible.
-          </p>
-        </div>
-        <div>
-          <span class="pillar-label" data-en="People" data-no="Mennesker">People</span>
-          <div class="impact-num small" data-en="1 client kept" data-no="1 kunde beholdt">1 client kept</div>
-          <p class="impact-desc" data-en="The biggest client stayed through a quarter where the original roadmap would have lost them. Customer Success spends less time chasing terminology."
-                                data-no="Den største kunden ble gjennom et kvartal der den opprinnelige roadmappen ville ha mistet dem. Customer Success bruker mindre tid på å jakte på terminologi.">
-            The biggest client stayed through a quarter where the original roadmap would have lost them. Customer Success spends less time chasing terminology.
-          </p>
-        </div>
+      <span class="case-eyebrow" data-en="07 · What I&rsquo;d change" data-no="07 · Det jeg ville endret">07 · What I&rsquo;d change</span>
+      <h2 data-en="I tested with colleagues first because they were easier to book." data-no="Jeg testet med kolleger først fordi de var lettere å få tak i.">I tested with colleagues first because they were easier to book.</h2>
+      <p data-en="Same card-sorting exercise, two very different answers:" data-no="Samme kortsortering, to helt ulike svar:">Same card-sorting exercise, two very different answers:</p>
+      <div class="ep-sort">
+        <div><span class="k" data-en="Colleagues grouped by share type" data-no="Kolleger grupperte etter aksjetype">Colleagues grouped by share type</span><div class="ep-chips"><span data-en="Options" data-no="Opsjoner">Options</span><span>RSU</span><span>PSU</span><span>Warrants</span></div></div>
+        <div class="users"><span class="k" data-en="Users grouped by life moments" data-no="Brukere grupperte etter livshendelser">Users grouped by life moments</span><div class="ep-chips"><span data-en="When I leave" data-no="Når jeg slutter">When I leave</span><span data-en="At tax time" data-no="Ved skattetid">At tax time</span></div></div>
       </div>
-
-      <figure class="sf-figure">
-        <img src="assets/images/Mixpanel outcome 1-2.png" alt="" />
-        <figcaption data-en="User feedback over time — happy / neutral / sad signals through 2024. September was the strongest month the product had recorded."
-                    data-no="Brukertilbakemelding over tid — glad/nøytral/trist-signaler gjennom 2024. September var den sterkeste måneden produktet hadde målt.">
-          User feedback over time — happy / neutral / sad signals through 2024. September was the strongest month the product had recorded.
-        </figcaption>
+      <p style="margin-top:20px" data-en-html="We shipped the users&rsquo; version. <span class=&quot;ep-hl&quot;>The first round cost us about three weeks</span> I wouldn&rsquo;t spend that way again."
+         data-no-html="Vi leverte brukernes versjon. <span class=&quot;ep-hl&quot;>Den første runden kostet oss rundt tre uker</span> jeg ikke ville brukt slik igjen.">We shipped the users&rsquo; version. <span class="ep-hl">The first round cost us about three weeks</span> I wouldn&rsquo;t spend that way again.</p>
+      <figure class="ep-fig">
+        <img src="assets/images/Card sorting and information architecture testing-1.png" loading="lazy" alt="Card sorting results, with the winning version at 62.7% success." />
+        <figcaption data-en="The version that won, at 62.7% success, was the users&rsquo; grouping." data-no="Versjonen som vant, med 62,7 % suksess, var brukernes gruppering.">The version that won, at 62.7% success, was the users&rsquo; grouping.</figcaption>
       </figure>
     </section>
 
-    <!-- REAL QUOTE -->
-    <section class="sf-section">
-      <span class="case-eyebrow team" data-en="Brought back to the team" data-no="Tatt med tilbake til teamet">Brought back to the team</span>
-      <div class="real-quote">
-        <span class="avatar" aria-hidden="true">KO</span>
-        <div>
-          <p class="body" data-en="“Huge kudos to Anastasiia! Your willingness to engage in explanations, discussions, and being open to suggestions in everyday work is commendable.”"
-                          data-no="“Huge kudos to Anastasiia! Your willingness to engage in explanations, discussions, and being open to suggestions in everyday work is commendable.”">
-            “Huge kudos to Anastasiia! Your willingness to engage in explanations, discussions, and being open to suggestions in everyday work is commendable.”
-          </p>
-          <span class="meta" data-en="Kasia Osinska · Engineer, Participant portal team · 31 May 2024"
-                            data-no="Kasia Osinska · Utvikler, Deltakerportal-team · 31. mai 2024">
-            Kasia Osinska · Engineer, Participant portal team · 31 May 2024
-          </span>
-        </div>
+    <!-- 08 -->
+    <section id="impact" class="sf-section">
+      <span class="case-eyebrow" data-en="08 · Impact" data-no="08 · Effekt">08 · Impact</span>
+      <h2 data-en="One dashboard, a direct line to users, a client kept." data-no="Ett dashbord, en direkte linje til brukerne, en kunde beholdt.">One dashboard, a direct line to users, a client kept.</h2>
+      <div class="ep-tiles">
+        <div class="ep-tile"><span class="k" data-en="Product" data-no="Produkt">Product</span><span class="num" data-en="1 view · 5 types" data-no="1 visning · 5 typer">1 view · 5 types</span><p data-en="One dashboard replaced five program-specific layouts. Six high-stakes actions now have previews, checks and clear states." data-no="Ett dashbord erstattet fem programspesifikke oppsett. Seks viktige handlinger har nå forhåndsvisning, sjekker og tydelige tilstander.">One dashboard replaced five program-specific layouts. Six high-stakes actions now have previews, checks and clear states.</p></div>
+        <div class="ep-tile"><span class="k" data-en="Feedback" data-no="Tilbakemeldinger">Feedback</span><span class="num" data-en="Sept &rsquo;24" data-no="sept. &rsquo;24">Sept &rsquo;24</span><p data-en="The product&rsquo;s best month for positive feedback after the dashboard launched. The widget made that signal possible." data-no="Produktets beste måned for positive tilbakemeldinger etter at dashbordet kom. Widgeten gjorde det signalet mulig.">The product&rsquo;s best month for positive feedback after the dashboard launched. The widget made that signal possible.</p></div>
+        <div class="ep-tile"><span class="k" data-en="People" data-no="Mennesker">People</span><span class="num" data-en="1 client kept" data-no="1 kunde beholdt">1 client kept</span><p data-en="The biggest client stayed through a quarter that could have lost them. Customer Success spends less time explaining terms." data-no="Den største kunden ble gjennom et kvartal som kunne mistet dem. Customer Success bruker mindre tid på å forklare ord.">The biggest client stayed through a quarter that could have lost them. Customer Success spends less time explaining terms.</p></div>
+      </div>
+      <figure class="ep-fig">
+        <img src="assets/images/Mixpanel outcome 1-2.png" width="1244" height="644" loading="lazy" alt="A chart of happy, neutral and sad feedback through 2024, peaking in September." />
+        <figcaption data-en="Happy, neutral and sad answers through 2024. September was the strongest month on record." data-no="Glade, nøytrale og triste svar gjennom 2024. September var den sterkeste måneden som er målt.">Happy, neutral and sad answers through 2024. September was the strongest month on record.</figcaption>
+      </figure>
+
+      <h3 style="margin-top:12px" data-en="What the team said" data-no="Hva teamet sa">What the team said</h3>
+      <div class="ep-two" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr)">
+        <figure><img src="assets/case/fr-feedback.png" width="1868" height="864" loading="lazy" alt="A kudos note: Huge kudos to Anastasiia! Your willingness to engage in explanations, discussions, and being open to suggestions in everyday work is commendable." />
+          <figcaption data-en="Kasia Osinska, engineer on the participant portal team." data-no="Kasia Osinska, utvikler på deltakerportal-teamet.">Kasia Osinska, engineer on the participant portal team.</figcaption></figure>
       </div>
     </section>
 

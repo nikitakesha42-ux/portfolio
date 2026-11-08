@@ -57,7 +57,7 @@
     /* Phone stage */
     .ss-stage { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; padding: 28px 24px 22px; border-radius: 18px; background: linear-gradient(160deg, #1d2338 0%, #2a3256 100%); }
     .ss-stage figure { margin: 0; }
-    .ss-stage img { display: block; width: 100%; height: auto; border-radius: 26px; border: 7px solid #0b0d14; background: #fff; box-shadow: 0 22px 30px -18px rgba(0,0,0,.6); }
+    .ss-stage img, .ss-stage video { display: block; width: 100%; height: auto; border-radius: 26px; border: 7px solid #0b0d14; background: #fff; box-shadow: 0 22px 30px -18px rgba(0,0,0,.6); }
     .ss-stage figcaption { color: #c9cfe4; text-align: center; font-size: 13px; }
     .ss-stage figcaption b { display: block; color: #fff; font-weight: 600; font-size: 14px; }
 
@@ -190,7 +190,7 @@
       .ss-lead { font-size: 17.5px; }
       .ss-line { grid-template-columns: 1fr; gap: 2px; }
       .ss-stage { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 18px 12px; }
-      .ss-stage img { border-width: 4px; border-radius: 16px; }
+      .ss-stage img, .ss-stage video { border-width: 4px; border-radius: 16px; }
       .ss-hacks, .ss-copilot, .ss-a11y, .ss-split, .ss-ba__pair, .ss-grow { grid-template-columns: 1fr; }
       .ss-ba__pair--phones { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
       .ss-split .ss-phone-wrap { max-width: 260px; margin: 0 auto; }
@@ -265,18 +265,15 @@
 
     <div class="ss-stage">
       <figure>
-        <picture><source srcset="assets/case/ss/clip-answer-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-          <img src="assets/case/ss/clip-answer.webp" width="430" height="931" alt="Screen recording on a phone: the home sentence, the price source popover, then picking today's price, a doubled price and ten times, with the take-home answer changing each time." /></picture>
+        <video class="clip" src="assets/case/ss/clip-answer.mp4" poster="assets/case/ss/clip-answer-poster.jpg" width="430" height="931" muted loop playsinline controls preload="metadata" aria-label="Screen recording on a phone: the home sentence, the price source popover, then picking today's price, a doubled price and ten times, with the take-home answer changing each time."></video>
         <figcaption><b data-en="Get the answer" data-no="Få svaret">Get the answer</b><span data-en="then try another price" data-no="og prøv en annen kurs">then try another price</span></figcaption>
       </figure>
       <figure>
-        <picture><source srcset="assets/case/ss/clip-copilot-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-          <img src="assets/case/ss/clip-copilot.webp" width="430" height="931" alt="Screen recording on a phone: the co-pilot opens from Why?, answers What if I leave in 18 months from her own shares, then Compare shows selling now next to waiting six months." /></picture>
+        <video class="clip" src="assets/case/ss/clip-copilot.mp4" poster="assets/case/ss/clip-copilot-poster.jpg" width="430" height="931" muted loop playsinline controls preload="metadata" aria-label="Screen recording on a phone: the co-pilot opens from Why?, answers What if I leave in 18 months from her own shares, then Compare shows selling now next to waiting six months."></video>
         <figcaption><b data-en="Ask why" data-no="Spør hvorfor">Ask why</b><span data-en="then compare two choices" data-no="og sammenlign to valg">then compare two choices</span></figcaption>
       </figure>
       <figure>
-        <picture><source srcset="assets/case/ss/clip-a11y-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-          <img src="assets/case/ss/clip-a11y.webp" width="430" height="931" alt="Screen recording on a phone: the Accessibility sheet turns on large text and high contrast, and the home screen changes to match." /></picture>
+        <video class="clip" src="assets/case/ss/clip-a11y.mp4" poster="assets/case/ss/clip-a11y-poster.jpg" width="430" height="931" muted loop playsinline controls preload="metadata" aria-label="Screen recording on a phone: the Accessibility sheet turns on large text and high contrast, and the home screen changes to match."></video>
         <figcaption><b data-en="Make it yours" data-no="Gjør den til din">Make it yours</b><span data-en="larger text, higher contrast" data-no="større tekst, høyere kontrast">larger text, higher contrast</span></figcaption>
       </figure>
     </div>
@@ -474,8 +471,7 @@
           <div class="q" data-en="How is Norwegian tax different from UK?" data-no="Hvordan er norsk skatt forskjellig fra britisk?">How is Norwegian tax different from UK?</div>
           <div class="a"><span class="k" data-en="co-pilot · compares, never advises" data-no="co-pilot · sammenligner, gir aldri råd">co-pilot · compares, never advises</span><span data-en="Norway taxes each share when it unlocks. The UK taxes when you sell. Same shares, very different timing." data-no="Norge skattlegger hver aksje når den blir opptjent. Storbritannia skattlegger når du selger. Samme aksjer, helt ulik timing.">Norway taxes each share when it unlocks. The UK taxes when you sell. Same shares, very different timing.</span></div>
         </div>
-        <figure class="ss-phone-wrap"><picture><source srcset="assets/case/ss/clip-copilot-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-          <img class="ss-phone" src="assets/case/ss/clip-copilot.webp" width="430" height="931" loading="lazy" alt="Screen recording of the co-pilot sheet on a phone answering What if I leave in 18 months." /></picture></figure>
+        <figure class="ss-phone-wrap"><video class="ss-phone clip" src="assets/case/ss/clip-copilot.mp4" poster="assets/case/ss/clip-copilot-poster.jpg" width="430" height="931" muted loop playsinline controls preload="metadata" aria-label="Screen recording of the co-pilot sheet on a phone answering What if I leave in 18 months."></video></figure>
       </div>
       <figure class="ss-fig">
         <img class="ss-shot" src="assets/case/ss/lap-sim-ai.jpg" width="1600" height="1000" loading="lazy" alt="The simulator on a laptop with the AI co-pilot open on the right, answering What if I leave in 18 months, while the chart and the answer stay visible on the left." />
@@ -528,5 +524,6 @@
   </div>
 
   <script src="i18n.js?v=2"></script>
+  <script src="clips.js" defer></script>
 </body>
 </html>

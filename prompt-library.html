@@ -43,7 +43,7 @@
     .pl-term .k { color: var(--c2); }
     .pl-term .v { color: var(--pl-text); font-family: var(--sans); font-size: 16px; line-height: 1.5; }
     .pl-term .v strong { color: #fff; }
-    .pl-term .cursor { display: inline-block; width: 9px; height: 1.1em; background: var(--c1); vertical-align: -3px; margin-left: 4px; animation: pl-blink 1.1s steps(1) infinite; }
+    .pl-term .cursor { display: inline-block; width: 9px; height: 1.1em; background: var(--c1); vertical-align: -3px; margin-left: 4px; animation: pl-blink 1.1s steps(1) 4; }
     @keyframes pl-blink { 50% { opacity: 0; } }
 
     /* key: value facts */
@@ -257,11 +257,7 @@
       <span class="pl-rec" data-en="Recorded in the live library" data-no="Tatt opp i det ekte biblioteket">Recorded in the live library</span>
       <div class="pl-browser">
         <div class="pl-browser__bar" aria-hidden="true"><span class="pl-browser__dots"><i></i><i></i><i></i></span><span class="pl-browser__url">anastasiianikitina.no/prompt-library-app.html</span></div>
-        <picture>
-          <source srcset="assets/case/pl-new/clip-browse-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-          <img src="assets/case/pl-new/clip-browse.webp" width="1200" height="750"
-               alt="Screen recording of the Prompt Library: switching from UX Research to Writing, filtering by the synthesis tag, searching for interview, opening the BGOALC User Interview Script and pressing Copy Prompt." />
-        </picture>
+        <video class="clip" src="assets/case/pl-new/clip-browse.mp4" poster="assets/case/pl-new/clip-browse-poster.jpg" width="1200" height="750" muted loop playsinline controls preload="metadata" aria-label="Screen recording of the Prompt Library: switching from UX Research to Writing, filtering by the synthesis tag, searching for interview, opening the BGOALC User Interview Script and pressing Copy Prompt."></video>
       </div>
       <figcaption data-en="Pick a room, filter, search, open, copy. That&rsquo;s the whole job." data-no="Velg et rom, filtrer, søk, åpne, kopier. Det er hele jobben.">Pick a room, filter, search, open, copy. That&rsquo;s the whole job.</figcaption>
     </figure>
@@ -414,11 +410,7 @@
           <span class="pl-rec" data-en="Adding a prompt" data-no="Legge til en prompt">Adding a prompt</span>
           <div class="pl-browser">
             <div class="pl-browser__bar" aria-hidden="true"><span class="pl-browser__dots"><i></i><i></i><i></i></span><span class="pl-browser__url">prompt-library-app.html#add</span></div>
-            <picture>
-              <source srcset="assets/case/pl-new/clip-add-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-              <img src="assets/case/pl-new/clip-add.webp" width="1200" height="750" loading="lazy"
-                   alt="Screen recording of the Add prompt form: the title Usability test debrief, a Role and a Task are typed in, each marked Required in words." />
-            </picture>
+            <video class="clip" src="assets/case/pl-new/clip-add.mp4" poster="assets/case/pl-new/clip-add-poster.jpg" width="1200" height="750" muted loop playsinline controls preload="metadata" aria-label="Screen recording of the Add prompt form: the title Usability test debrief, a Role and a Task are typed in, each marked Required in words."></video>
           </div>
           <figcaption data-en="The form asks for the five parts. Role and Task say &ldquo;Required&rdquo; in words." data-no="Skjemaet spør etter de fem delene. Rolle og oppgave sier «Required» med ord.">The form asks for the five parts. Role and Task say &ldquo;Required&rdquo; in words.</figcaption>
         </figure>
@@ -494,5 +486,6 @@
     </a>
   </div>
   <script src="i18n.js?v=2"></script>
+  <script src="clips.js" defer></script>
 </body>
 </html>

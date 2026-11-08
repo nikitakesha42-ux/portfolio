@@ -2539,7 +2539,7 @@ footer.site {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  animation: badgeSpin 20s linear infinite;
+  animation: badgeSpin 4.5s cubic-bezier(.2,.7,.2,1) 1; /* turns once, under 5 s (WCAG 2.2.2) */
 }
 .home-hero-ref .meet-badge .ring text {
   fill: var(--navy);
@@ -4001,3 +4001,18 @@ pre.prompt-inline {
     line-height: 1.55;
   }
 }
+
+/* Home: highlighter on the key phrase of each project snapshot */
+.snap-desc mark.snap-hl {
+  background: linear-gradient(transparent 52%, #fde68a 52%, #fde68a 92%, transparent 92%);
+  color: inherit;
+  padding: 0 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+@media (forced-colors: active) { .snap-desc mark.snap-hl { background: Mark; color: MarkText; } }
+
+/* Silent screen-recording clips (see clips.js): pausable, poster first */
+video.clip { display: block; width: 100%; height: auto; max-width: 100%; background: #fff; }
+video.clip:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+.home-hero-ref .meet-badge:hover .ring { animation: badgeSpin 4.5s cubic-bezier(.2,.7,.2,1) 1; }

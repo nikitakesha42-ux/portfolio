@@ -11,8 +11,134 @@
   <meta name="description" content="Taking monthly share-program reports out of Excel and putting them inside the product, so finance teams could stop rebuilding the same spreadsheet every month." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ============================================================
+       Financial reporting: a "spreadsheet becomes product" look.
+       Grid lines, cell references and a formula bar, in teal.
+       ============================================================ */
+    :root { --fr: #0e6f78; --fr-bg: #e7f6f6; --fr-line: #b9e1e1; --fr-xl: #1d6f42; --fr-xl-bg: #e8f3ec; --fr-red: #9f1d14; --fr-red-bg: #fdecec; --fr-grid: #d9dde3; }
+    .sf-section > p { max-width: 62ch; }
+    .sf-section > h2 { max-width: 22ch; }
+    .fr-lead { font-size: 20px; line-height: 1.5; color: var(--ink); max-width: 56ch; margin: 16px 0 28px; }
+    .fr-hl { background: linear-gradient(transparent 55%, #b6ecec 55%, #b6ecec 92%, transparent 92%); padding: 0 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+    .case figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+    .fr-fig { margin: 24px 0 36px; }
+    .fr-fig img { display: block; width: 100%; height: auto; border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
+    .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+    /* The story as a spreadsheet */
+    .fr-sheet { margin: 0 0 32px; border: 1px solid #c5cbd3; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 20px 36px -30px rgba(10, 31, 74, .6); }
+    .fr-sheet__fx { display: flex; align-items: center; gap: 12px; padding: 9px 14px; background: #f5f6f8; border-bottom: 1px solid #c5cbd3; font-family: var(--mono); font-size: 13px; color: #3b4150; }
+    .fr-sheet__fx .ref { padding: 2px 10px; border: 1px solid #c5cbd3; border-radius: 4px; background: #fff; }
+    .fr-sheet__fx i { font-style: italic; font-weight: 600; color: var(--fr); }
+    .fr-sheet table { width: 100%; border-collapse: collapse; font-size: 15.5px; line-height: 1.45; }
+    .fr-sheet th, .fr-sheet td { border: 1px solid var(--fr-grid); padding: 12px 14px; text-align: left; vertical-align: top; }
+    .fr-sheet thead th { background: #f5f6f8; font-family: var(--mono); font-size: 12px; font-weight: 600; color: #5b616b; text-transform: uppercase; letter-spacing: .06em; }
+    .fr-sheet thead th.xl { color: var(--fr-xl); background: var(--fr-xl-bg); }
+    .fr-sheet thead th.pr { color: var(--fr); background: var(--fr-bg); }
+    .fr-sheet tbody th { width: 13em; font-weight: 600; background: #fbfbfc; }
+    .fr-sheet .n { width: 2.4em; text-align: center; font-family: var(--mono); font-size: 12px; color: #8a909a; background: #f5f6f8; font-weight: 400; }
+    .fr-sheet td.old { color: #5b616b; }
+    .fr-sheet td.new { color: var(--ink); font-weight: 500; background: #f7fcfc; }
+    .fr-sheet tr:first-child td.new { outline: 2px solid var(--fr); outline-offset: -2px; }
+
+    .fr-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 36px; }
+    .fr-facts > div { padding: 12px 0 0; border-top: 2px solid var(--ink); }
+    .fr-facts .k { display: block; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
+    .fr-facts p { margin: 0; font-size: 15px; line-height: 1.45; }
+
+    .fr-banner { margin: 0 0 48px; }
+    .fr-banner img { display: block; width: 100%; height: auto; border-radius: 16px; }
+
+    /* The monthly loop */
+    .fr-loop { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; counter-reset: step; position: relative; }
+    .case .fr-loop li { counter-increment: step; position: relative; margin: 0; padding: 16px 16px 16px; border: 1px solid var(--fr-grid); background: #fff; font-size: 15px; line-height: 1.4; font-weight: 500; }
+    .case .fr-loop li + li { border-left: 0; }
+    .case .fr-loop li:first-child { border-radius: 12px 0 0 12px; }
+    .case .fr-loop li:last-child { border-radius: 0 12px 12px 0; }
+    .case .fr-loop li::before { content: "A" counter(step); position: static; display: block; width: auto; height: auto; background: none; font-family: var(--mono); font-size: 11.5px; color: var(--fr-xl); margin-bottom: 6px; font-weight: 600; }
+    .fr-loop-back { display: flex; align-items: center; gap: 12px; margin: 12px 0 0; padding: 12px 16px; border-radius: 10px; background: var(--fr-red-bg); color: var(--fr-red); font-size: 15px; font-weight: 500; }
+    .fr-loop-back b { font-family: var(--mono); font-size: 20px; line-height: 1; }
+
+    .fr-rule { margin: 36px 0 0; padding: 24px 26px; border-radius: 16px; background: var(--fr); color: #fff; }
+    .fr-rule .k { display: block; font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: #b6ecec; margin-bottom: 10px; }
+    .case .fr-rule p { margin: 0; color: #fff; font-size: clamp(20px, 2.6vw, 26px); line-height: 1.3; font-weight: 600; max-width: 34ch; }
+
+    .fr-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin: 24px 0 36px; align-items: start; }
+    .fr-two figure { margin: 0; }
+    .fr-two img { display: block; width: 100%; height: auto; border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
+    .fr-two img.crop { aspect-ratio: 1 / 1; object-fit: cover; object-position: top left; }
+
+    /* Decisions */
+    .fr-decisions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 24px 0 0; }
+    .fr-dec { display: flex; flex-direction: column; border: 1px solid var(--rule); border-radius: 16px; background: #fff; overflow: hidden; }
+    .fr-dec__body { padding: 20px 20px 16px; }
+    .fr-dec .tag { display: inline-flex; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 6px; background: var(--fr-bg); color: var(--fr); margin-bottom: 10px; font-weight: 600; }
+    .fr-dec h3 { font-size: 19px; line-height: 1.3; margin: 0 0 12px; font-weight: 600; }
+    .fr-swap { display: grid; gap: 6px; margin: 0 0 12px; font-size: 14.5px; line-height: 1.4; }
+    .fr-swap > span { display: grid; grid-template-columns: 4.6em minmax(0, 1fr); gap: 8px; }
+    .fr-swap > span > i { font-style: normal; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; padding-top: 2px; }
+    .fr-swap .o { color: #5b616b; } .fr-swap .o i { color: var(--fr-xl); }
+    .fr-swap .n { color: var(--ink); font-weight: 500; } .fr-swap .n i { color: var(--fr); }
+    .case .fr-dec__body p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+    .fr-dec figure { margin: auto 0 0; padding: 0 16px 16px; }
+    .fr-dec img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--rule); aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+
+    /* AI */
+    .fr-ai { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0 0; }
+    .fr-ai div { padding: 16px 18px; border-radius: 14px; background: #f5f3ff; border: 1px solid #ddd6fe; }
+    .fr-ai .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #5b21b6; margin-bottom: 6px; }
+    .fr-ai h3 { font-size: 17px; margin: 0 0 6px; font-weight: 600; line-height: 1.3; }
+    .case .fr-ai p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+    .fr-ai a { color: #5b21b6; font-weight: 600; }
+    .fr-no { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: start; margin: 14px 0 0; padding: 16px 18px; border-radius: 14px; border: 1px dashed #e7a29c; background: #fff8f7; }
+    .fr-no b { font-family: var(--mono); font-size: 12px; color: var(--fr-red); padding-top: 2px; }
+    .case .fr-no p { margin: 0; font-size: 15px; line-height: 1.5; }
+
+    /* Trade-off */
+    .fr-tags { display: inline-flex; margin: 0 0 8px; padding: 3px 10px; border-radius: 6px; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
+    .fr-tags.a { background: #f3f4f6; color: #3b4150; } .fr-tags.b { background: var(--fr-red-bg); color: var(--fr-red); }
+    .fr-now { margin: 0 0 8px; padding: 18px 20px; border-radius: 14px; background: var(--fr-bg); border: 1px solid var(--fr-line); }
+    .fr-now .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--fr); margin-bottom: 6px; }
+    .case .fr-now p { margin: 0; font-size: 17px; line-height: 1.45; font-weight: 500; }
+
+    /* Impact as cells */
+    .fr-cells { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--fr-grid); border-radius: 14px; overflow: hidden; margin: 24px 0 0; background: #fff; }
+    .fr-cells > div { padding: 18px 20px 20px; border-left: 1px solid var(--fr-grid); }
+    .fr-cells > div:first-child { border-left: 0; }
+    .fr-cells .ref { display: block; font-family: var(--mono); font-size: 11.5px; color: #8a909a; margin-bottom: 10px; }
+    .fr-cells .num { display: block; font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: clamp(30px, 4vw, 42px); font-weight: 600; letter-spacing: -0.03em; color: var(--fr); line-height: 1; margin-bottom: 10px; }
+    .case .fr-cells p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+
+    .fr-team { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin: 20px 0 0; align-items: start; }
+    .fr-team figure { margin: 0; }
+    .fr-team img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--rule); }
+
+    @media (max-width: 820px) {
+      .fr-decisions, .fr-ai, .fr-two, .fr-team { grid-template-columns: 1fr; }
+      .fr-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .fr-loop { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case .fr-loop li, .case .fr-loop li + li { border: 1px solid var(--fr-grid); border-radius: 0 !important; }
+      .fr-cells { grid-template-columns: 1fr; }
+      .fr-cells > div { border-left: 0; border-top: 1px solid var(--fr-grid); }
+      .fr-cells > div:first-child { border-top: 0; }
+    }
+    @media (max-width: 640px) {
+      .fr-lead { font-size: 17.5px; }
+      .fr-sheet table, .fr-sheet thead, .fr-sheet tbody, .fr-sheet tr, .fr-sheet th, .fr-sheet td { display: block; }
+      .fr-sheet thead { display: none; }
+      .fr-sheet tr { border-top: 1px solid var(--fr-grid); padding: 12px 14px; }
+      .fr-sheet th, .fr-sheet td { border: 0; padding: 2px 0; width: auto !important; background: none !important; outline: none !important; }
+      .fr-sheet .n { display: none; }
+      .fr-sheet td.old::before { content: attr(data-label) " · "; font-family: var(--mono); font-size: 11px; color: var(--fr-xl); text-transform: uppercase; }
+      .fr-sheet td.new::before { content: attr(data-label) " · "; font-family: var(--mono); font-size: 11px; color: var(--fr); text-transform: uppercase; }
+      .fr-sheet td.old { text-decoration: line-through; text-decoration-color: #c6cbd2; }
+      html[lang="nb"] .fr-sheet td.old::before { content: "Før · "; }
+      html[lang="nb"] .fr-sheet td.new::before { content: "Etter · "; }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main" data-en="Skip to main content" data-no="Hopp til hovedinnhold">Skip to main content</a>
@@ -31,245 +157,197 @@
     </div>
   </header>
 
-  <figure class="case-banner">
-    <img src="assets/case/fr-hero.png" alt="Financial reporting — the new in-product reports surface at Optio" />
-    <figcaption data-en="The reports surface inside the product — finance teams build their monthly file here instead of in Excel."
-                data-no="Rapportflaten inne i produktet — finansteam bygger den månedlige filen her i stedet for i Excel.">
-      The reports surface inside the product — finance teams build their monthly file here instead of in Excel.
-    </figcaption>
-  </figure>
-
   <main id="main" class="case wide">
 
     <span class="case-eyebrow brand" data-en="Optio Incentives · 2023 — 2025" data-no="Optio Incentives · 2023 — 2025">Optio Incentives · 2023 — 2025</span>
     <h1 class="case-h1"
-        data-en="Taking monthly share-program reports out of Excel and putting them inside the product"
-        data-no="Månedlige aksjeprogramrapporter ut av Excel og inn i produktet">
-      Taking monthly share-program reports out of Excel and putting them inside the product
+        data-en="Every month, finance teams rebuilt the same spreadsheet. I moved the work into the product."
+        data-no="Hver måned bygde finansteamene det samme regnearket på nytt. Jeg flyttet arbeidet inn i produktet.">
+      Every month, finance teams rebuilt the same spreadsheet. I moved the work into the product.
     </h1>
+    <p class="fr-lead"
+       data-en-html="The numbers already lived in Optio. The reporting work didn&rsquo;t. Now finance picks the period and <span class=&quot;fr-hl&quot;>the system fills in the rest.</span>"
+       data-no-html="Tallene lå allerede i Optio. Rapporteringsarbeidet gjorde ikke det. Nå velger finans perioden, og <span class=&quot;fr-hl&quot;>systemet fyller ut resten.</span>">
+      The numbers already lived in Optio. The reporting work didn&rsquo;t. Now finance picks the period and <span class="fr-hl">the system fills in the rest.</span>
+    </p>
 
-    <nav class="case-toc-pills" aria-label="On this page">
-      <a href="#problem"><span class="num">01</span> <span data-en="Problem" data-no="Problem">Problem</span></a>
-      <a href="#decisions"><span class="num">02</span> <span data-en="Decisions" data-no="Valg">Decisions</span></a>
-      <a href="#ai"><span class="num">03</span> <span data-en="How AI fit" data-no="Hvor AI passet inn">How AI fit</span></a>
-      <a href="#tradeoff"><span class="num">04</span> <span data-en="Trade-off" data-no="Avveining">Trade-off</span></a>
-      <a href="#impact"><span class="num">05</span> <span data-en="Impact" data-no="Effekt">Impact</span></a>
-    </nav>
-
-    <!-- SNAPSHOT ROW -->
-    <div class="snap-row">
-      <div class="cell">
-        <span class="label" data-en="Years" data-no="År">Years</span>
-        <span class="value">
-          <strong>2023 — 2025</strong>
-          <span class="aside" data-en="in parallel with the Employee Portal (2022 — 2024)" data-no="parallelt med Deltakerportalen (2022 — 2024)">in parallel with the Employee Portal (2022 — 2024)</span>
-        </span>
-      </div>
-      <div class="cell">
-        <span class="label" data-en="Company" data-no="Selskap">Company</span>
-        <span class="value">Optio Incentives</span>
-      </div>
-      <div class="cell">
-        <span class="label" data-en="My role" data-no="Min rolle">My role</span>
-        <span class="value" data-en="Product Designer · UX end-to-end" data-no="Produktdesigner · UX ende-til-ende">Product Designer · UX end-to-end</span>
-      </div>
-      <div class="cell">
-        <span class="label" data-en="In one line" data-no="På én linje">In one line</span>
-        <span class="value" data-en="The monthly report stopped being an email attachment and became a screen finance teams own."
-                            data-no="Den månedlige rapporten sluttet å være et e-postvedlegg og ble en skjerm finansteam eier selv.">The monthly report stopped being an email attachment and became a screen finance teams own.</span>
-      </div>
+    <div class="fr-sheet">
+      <div class="fr-sheet__fx" aria-hidden="true"><span class="ref">B2:C5</span><i>fx</i><span>=MOVE(&quot;Excel&quot;, &quot;product&quot;)</span></div>
+      <table>
+        <caption class="visually-hidden" data-en="The story in 30 seconds: what moved from Excel into the product" data-no="Historien på 30 sekunder: hva som flyttet fra Excel inn i produktet">The story in 30 seconds: what moved from Excel into the product</caption>
+        <thead><tr><th class="n" aria-hidden="true"></th><th scope="col" data-en="The job" data-no="Jobben">The job</th><th scope="col" class="xl" data-en="Before · in Excel" data-no="Før · i Excel">Before · in Excel</th><th scope="col" class="pr" data-en="After · in the product" data-no="Etter · i produktet">After · in the product</th></tr></thead>
+        <tbody>
+          <tr><td class="n" aria-hidden="true">2</td><th scope="row" data-en="The monthly report" data-no="Månedsrapporten">The monthly report</th><td class="old" data-label="Before" data-en="Export, paste, apply rules by hand, email" data-no="Eksportere, lime inn, bruke regler for hånd, sende">Export, paste, apply rules by hand, email</td><td class="new" data-label="After" data-en="Pick the period. The system fills the rest." data-no="Velg perioden. Systemet fyller ut resten.">Pick the period. The system fills the rest.</td></tr>
+          <tr><td class="n" aria-hidden="true">3</td><th scope="row" data-en="Grouping" data-no="Gruppering">Grouping</th><td class="old" data-label="Before" data-en="Done again in Excel every month" data-no="Gjort på nytt i Excel hver måned">Done again in Excel every month</td><td class="new" data-label="After" data-en="Set up once, every report inherits it" data-no="Satt opp én gang, hver rapport arver det">Set up once, every report inherits it</td></tr>
+          <tr><td class="n" aria-hidden="true">4</td><th scope="row" data-en="Currency rules" data-no="Valutaregler">Currency rules</th><td class="old" data-label="Before" data-en="Fixed by hand" data-no="Rettet for hånd">Fixed by hand</td><td class="new" data-label="After" data-en="Changed in the product, with checks and safe defaults" data-no="Endres i produktet, med kontroller og trygge standardverdier">Changed in the product, with checks and safe defaults</td></tr>
+          <tr><td class="n" aria-hidden="true">5</td><th scope="row" data-en="Fair value" data-no="Virkelig verdi">Fair value</th><td class="old" data-label="Before" data-en="Hire an outside expert" data-no="Leie inn en ekstern ekspert">Hire an outside expert</td><td class="new" data-label="After" data-en="A guided flow admins run themselves" data-no="En veiledet flyt admins kjører selv">A guided flow admins run themselves</td></tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- 01 PROBLEM -->
+    <div class="fr-facts">
+      <div><span class="k" data-en="When" data-no="Når">When</span><p data-en="2023 — 2025, next to the Employee Portal" data-no="2023 — 2025, ved siden av deltakerportalen">2023 — 2025, next to the Employee Portal</p></div>
+      <div><span class="k" data-en="Company" data-no="Selskap">Company</span><p>Optio Incentives</p></div>
+      <div><span class="k" data-en="My role" data-no="Min rolle">My role</span><p data-en="Product Designer, UX end to end" data-no="Produktdesigner, UX fra start til slutt">Product Designer, UX end to end</p></div>
+      <div><span class="k" data-en="With" data-no="Med">With</span><p data-en="Engineers, a PM and Customer Success" data-no="Utviklere, en PM og Customer Success">Engineers, a PM and Customer Success</p></div>
+    </div>
+
+    <figure class="fr-banner">
+      <img src="assets/case/fr-hero.png" width="4120" height="2160" alt="The new reports area inside Optio: a list of monthly reports, a Create report panel with the period and options, and a grouping menu." />
+    </figure>
+
+    <nav class="case-toc-pills" aria-label="On this page" data-en-aria="On this page" data-no-aria="På denne siden">
+      <a href="#problem"><span class="num">01</span> <span data-en="The monthly loop" data-no="Månedsløkka">The monthly loop</span></a>
+      <a href="#mapping"><span class="num">02</span> <span data-en="Mapping the month" data-no="Kartlegge måneden">Mapping the month</span></a>
+      <a href="#decisions"><span class="num">03</span> <span data-en="Four decisions" data-no="Fire valg">Four decisions</span></a>
+      <a href="#ai"><span class="num">04</span> <span data-en="Where AI helped" data-no="Der AI hjalp">Where AI helped</span></a>
+      <a href="#tradeoff"><span class="num">05</span> <span data-en="What I&rsquo;d change" data-no="Det jeg ville endret">What I&rsquo;d change</span></a>
+      <a href="#impact"><span class="num">06</span> <span data-en="Impact" data-no="Effekt">Impact</span></a>
+    </nav>
+
+    <!-- 01 -->
     <section id="problem" class="sf-section">
-      <span class="case-eyebrow" data-en="01 · Problem" data-no="01 · Problem">01 · Problem</span>
-      <h2 data-en="Every month, finance teams rebuilt the same spreadsheet by hand"
-          data-no="Hver måned bygde finansteamene det samme regnearket på nytt for hånd">
-        Every month, finance teams rebuilt the same spreadsheet by hand
-      </h2>
-      <p data-en="Finance teams at our client companies had to file a report on their share programs every month. The numbers lived in the product. The reporting work didn't. People would export the data, paste it into Excel, apply the rules by hand, and send the file out. One missed value held up the whole month. Customer Success was on call to rebuild the spreadsheet every time something changed."
-         data-no="Finansteam hos kundene våre måtte sende en månedlig rapport om aksjeprogrammene sine. Tallene lå i produktet. Rapporteringsarbeidet gjorde ikke. Folk eksporterte dataene, limte dem inn i Excel, anvendte reglene for hånd, og sendte filen ut. Én glemt verdi stoppet hele måneden. Customer Success var på vakt for å bygge regnearket på nytt hver gang noe endret seg.">
-        Every month, finance teams at our client companies had to file a report on their share programs. The numbers lived in the product. The reporting work didn't. People would export the data, paste it into Excel, apply the rules by hand, and send the file out. One missed value held up the whole month. Customer Success was on call to rebuild the spreadsheet every time something changed.
-      </p>
+      <span class="case-eyebrow" data-en="01 · The monthly loop" data-no="01 · Månedsløkka">01 · The monthly loop</span>
+      <h2 data-en="One missed value held up the whole month." data-no="Én glemt verdi stoppet hele måneden.">One missed value held up the whole month.</h2>
+      <p data-en="Finance teams at our client companies had to file a report on their share programs every month. The numbers were in the product, but the report was built somewhere else:"
+         data-no="Finansteam hos kundene våre måtte sende en rapport om aksjeprogrammene sine hver måned. Tallene lå i produktet, men rapporten ble laget et annet sted:">Finance teams at our client companies had to file a report on their share programs every month. The numbers were in the product, but the report was built somewhere else:</p>
+      <ol class="fr-loop">
+        <li data-en="Export the data" data-no="Eksportere dataene">Export the data</li>
+        <li data-en="Paste it into Excel" data-no="Lime det inn i Excel">Paste it into Excel</li>
+        <li data-en="Apply the rules by hand" data-no="Bruke reglene for hånd">Apply the rules by hand</li>
+        <li data-en="Send the file out" data-no="Sende filen ut">Send the file out</li>
+      </ol>
+      <p class="fr-loop-back"><b aria-hidden="true">↺</b><span data-en="Something changed? Customer Success rebuilt the spreadsheet. Again." data-no="Noe endret seg? Customer Success bygde regnearket på nytt. Igjen.">Something changed? Customer Success rebuilt the spreadsheet. Again.</span></p>
+      <div class="fr-rule">
+        <span class="k" data-en="The rule I designed against" data-no="Regelen jeg designet etter">The rule I designed against</span>
+        <p data-en="If a screen asks a finance team to do work the system could do, the design isn&rsquo;t finished." data-no="Hvis en skjerm ber et finansteam gjøre arbeid systemet kunne gjort, er designet ikke ferdig.">If a screen asks a finance team to do work the system could do, the design isn&rsquo;t finished.</p>
+      </div>
     </section>
 
-    <!-- THE SHIFT — verbatim italic rule -->
-    <section class="sf-section" style="margin-bottom: 48px;">
-      <span class="case-eyebrow" data-en="The rule I designed against" data-no="Regelen jeg designet mot">The rule I designed against</span>
-      <p class="shift-quote" data-en="“If a screen is asking a finance team to do mechanical work the system could do, the design isn't finished.”"
-                             data-no="“Hvis en skjerm ber et finansteam gjøre mekanisk arbeid systemet kunne gjort, er designet ikke ferdig.”">
-        “If a screen is asking a finance team to do mechanical work the system could do, the design isn't finished.”
-      </p>
+    <!-- 02 -->
+    <section id="mapping" class="sf-section">
+      <span class="case-eyebrow" data-en="02 · Mapping the month" data-no="02 · Kartlegge måneden">02 · Mapping the month</span>
+      <h2 data-en="Before drawing a screen, I drew the whole month." data-no="Før jeg tegnet en skjerm, tegnet jeg hele måneden.">Before drawing a screen, I drew the whole month.</h2>
+      <p data-en-html="Who gets the data, who checks it, who builds the file, who waits. Laying it out in lanes showed <span class=&quot;fr-hl&quot;>where people were doing the system&rsquo;s job.</span> Then I turned each part into a user story, screen by screen."
+         data-no-html="Hvem får dataene, hvem sjekker dem, hvem lager filen, hvem venter. Da jeg la det ut i baner, så jeg <span class=&quot;fr-hl&quot;>hvor folk gjorde jobben til systemet.</span> Så gjorde jeg hver del om til en brukerhistorie, skjerm for skjerm.">Who gets the data, who checks it, who builds the file, who waits. Laying it out in lanes showed <span class="fr-hl">where people were doing the system&rsquo;s job.</span> Then I turned each part into a user story, screen by screen.</p>
+      <div class="fr-two">
+        <figure>
+          <a href="assets/case/fr-journey-1.png" target="_blank" rel="noopener"><img class="crop" src="assets/case/fr-journey-1.png" width="3864" height="3824" loading="lazy" alt="Journey map in lanes for the finance admin and Customer Success: the reporting home page, create report, report generation and download, then receiving client data, comparing it, creating the import file and the final import." /></a>
+          <figcaption data-en="The journey, in lanes: who does what, from client data to the final report. Tap to open full size." data-no="Reisen, i baner: hvem gjør hva, fra kundedata til ferdig rapport. Trykk for full størrelse.">The journey, in lanes: who does what, from client data to the final report. Tap to open full size.</figcaption>
+        </figure>
+        <figure>
+          <a href="assets/case/fr-journey-2.png" target="_blank" rel="noopener"><img class="crop" src="assets/case/fr-journey-2.png" width="3864" height="3824" loading="lazy" alt="User stories laid out as rows of connected screens, one row per story." /></a>
+          <figcaption data-en="Each part of the journey as a user story, screen by screen." data-no="Hver del av reisen som en brukerhistorie, skjerm for skjerm.">Each part of the journey as a user story, screen by screen.</figcaption>
+        </figure>
+      </div>
+      <p data-en="I didn&rsquo;t do it from my desk. Clients tested and pushed back the whole way through, and their signals were coded across hundreds of sessions."
+         data-no="Jeg gjorde det ikke fra pulten. Kundene testet og sa imot hele veien, og signalene deres ble kodet på tvers av hundrevis av økter.">I didn&rsquo;t do it from my desk. Clients tested and pushed back the whole way through, and their signals were coded across hundreds of sessions.</p>
+      <figure class="fr-fig" style="max-width:620px">
+        <img src="assets/images/350+ hours of client-driven research and testing-2.png" width="3864" height="2837" loading="lazy" alt="A ring chart of coded research signals from client sessions, split into themes." />
+        <figcaption data-en="350+ hours of client-driven research and testing fed every decision below." data-no="350+ timer med kundedrevet research og testing lå bak hvert valg under.">350+ hours of client-driven research and testing fed every decision below.</figcaption>
+      </figure>
     </section>
 
-    <!-- 02 DECISIONS -->
+    <!-- 03 -->
     <section id="decisions" class="sf-section">
-      <span class="case-eyebrow" data-en="02 · What I did" data-no="02 · Det jeg gjorde">02 · What I did</span>
-      <h2 data-en="Four decisions that moved the work out of Excel"
-          data-no="Fire valg som flyttet arbeidet ut av Excel">
-        Four decisions that moved the work out of Excel
-      </h2>
-
-      <div class="sf-decisions four">
-        <article class="sf-decision">
-          <span class="signal-tag problem" data-en="Decision" data-no="Valg">Decision</span>
-          <h3 data-en="A guided report flow built into the product" data-no="En veiledet rapportflyt bygget inn i produktet">A guided report flow built into the product</h3>
-          <p data-en="Finance picks the period and the system fills the rest — values, rules, breakdowns. The same surface handles every report type the team has to file."
-             data-no="Finans velger perioden, og systemet fyller ut resten — verdier, regler, oppdelinger. Den samme flaten håndterer hver rapporttype teamet må sende.">
-            Finance picks the period and the system fills the rest — values, rules, breakdowns. The same surface handles every report type the team has to file.
-          </p>
-          <figure><img src="assets/images/reporting after-1.png" alt="" /></figure>
+      <span class="case-eyebrow" data-en="03 · Four decisions" data-no="03 · Fire valg">03 · Four decisions</span>
+      <h2 data-en="Four decisions that moved the work out of Excel." data-no="Fire valg som flyttet arbeidet ut av Excel.">Four decisions that moved the work out of Excel.</h2>
+      <div class="fr-decisions">
+        <article class="fr-dec">
+          <div class="fr-dec__body">
+            <span class="tag" data-en="The core" data-no="Kjernen">The core</span>
+            <h3 data-en="A guided report flow inside the product" data-no="En veiledet rapportflyt inne i produktet">A guided report flow inside the product</h3>
+            <div class="fr-swap"><span class="o"><i data-en="Was" data-no="Før">Was</i><span data-en="A file built by hand" data-no="En fil laget for hånd">A file built by hand</span></span><span class="n"><i data-en="Now" data-no="Nå">Now</i><span data-en="Pick the period, the rest fills in" data-no="Velg perioden, resten fylles ut">Pick the period, the rest fills in</span></span></div>
+            <p data-en="Values, rules and breakdowns come from the system. The same place handles every report type the team has to file." data-no="Verdier, regler og oppdelinger kommer fra systemet. Det samme stedet håndterer hver rapporttype teamet må sende.">Values, rules and breakdowns come from the system. The same place handles every report type the team has to file.</p>
+          </div>
+          <figure><img src="assets/images/reporting after-1.png" loading="lazy" alt="The new reports list with a Create report action and each report's period and status." /></figure>
         </article>
-        <article class="sf-decision">
-          <span class="signal-tag built" data-en="Built unprompted" data-no="Bygget uten oppdrag">Built unprompted</span>
-          <h3 data-en="Reusable grouping — set it up once, every future report inherits it" data-no="Gjenbrukbar gruppering — sett opp én gang, hver fremtidig rapport arver den">Reusable grouping — set it up once, every future report inherits it</h3>
-          <p data-en="Each client groups their report differently. The old workflow handled this in Excel. I designed a grouping pattern that lives in the product, so the same setup carries across every month. Removed about 1 000 hours/year of manual Excel work."
-             data-no="Hver kunde grupperer rapporten sin ulikt. Den gamle prosessen håndterte dette i Excel. Jeg designet et grupperingsmønster som lever i produktet, slik at samme oppsett gjelder hver måned. Fjernet rundt 1 000 timer/år med manuelt Excel-arbeid.">
-            Each client groups their report differently. The old workflow handled this in Excel. I designed a grouping pattern that lives in the product, so the same setup carries across every month. Removed about 1 000 hours/year of manual Excel work.
-          </p>
-          <figure><img src="assets/images/Configurable Grouping aka Custom Overviews.png" alt="" /></figure>
+        <article class="fr-dec">
+          <div class="fr-dec__body">
+            <span class="tag" data-en="Built unprompted" data-no="Bygget uten oppdrag">Built unprompted</span>
+            <h3 data-en="Grouping you set up once" data-no="Gruppering du setter opp én gang">Grouping you set up once</h3>
+            <div class="fr-swap"><span class="o"><i data-en="Was" data-no="Før">Was</i><span data-en="Regrouped in Excel every month" data-no="Gruppert på nytt i Excel hver måned">Regrouped in Excel every month</span></span><span class="n"><i data-en="Now" data-no="Nå">Now</i><span data-en="Every future report inherits it" data-no="Hver ny rapport arver den">Every future report inherits it</span></span></div>
+            <p data-en-html="Each client groups their report differently. Nobody asked for this, but it <span class=&quot;fr-hl&quot;>removed about 1 000 hours a year</span> of manual Excel work."
+               data-no-html="Hver kunde grupperer rapporten sin ulikt. Ingen ba om dette, men det <span class=&quot;fr-hl&quot;>fjernet rundt 1 000 timer i året</span> med manuelt Excel-arbeid.">Each client groups their report differently. Nobody asked for this, but it <span class="fr-hl">removed about 1 000 hours a year</span> of manual Excel work.</p>
+          </div>
+          <figure><img src="assets/images/Configurable Grouping aka Custom Overviews.png" loading="lazy" alt="A chart of time saved by custom overviews, rising month by month." /></figure>
         </article>
-        <article class="sf-decision">
-          <span class="signal-tag strategic" data-en="Strategic" data-no="Strategisk">Strategic</span>
-          <h3 data-en="Currency rules — configurable inside the product, not patched in Excel" data-no="Valutaregler — konfigurerbare i produktet, ikke lappet i Excel">Currency rules — configurable inside the product, not patched in Excel</h3>
-          <p data-en="Custom currency rates and country-specific overrides used to be fixed by hand. I designed a permission-aware setup with validation and safe defaults, so finance can change a rate without opening a spreadsheet."
-             data-no="Tilpassede valutakurser og landspesifikke overstyringer ble før rettet for hånd. Jeg designet et oppsett med rettighetsstyring, validering og trygge default-verdier, slik at finans kan endre en kurs uten å åpne et regneark.">
-            Custom currency rates and country-specific overrides used to be fixed by hand. I designed a permission-aware setup with validation and safe defaults, so finance can change a rate without opening a spreadsheet.
-          </p>
-          <figure><img src="assets/images/FX and Turnover rates flexibility-2.png" alt="" /></figure>
+        <article class="fr-dec">
+          <div class="fr-dec__body">
+            <span class="tag" data-en="Strategic" data-no="Strategisk">Strategic</span>
+            <h3 data-en="Currency rules in the product" data-no="Valutaregler i produktet">Currency rules in the product</h3>
+            <div class="fr-swap"><span class="o"><i data-en="Was" data-no="Før">Was</i><span data-en="Rates and country overrides fixed by hand" data-no="Kurser og landsunntak rettet for hånd">Rates and country overrides fixed by hand</span></span><span class="n"><i data-en="Now" data-no="Nå">Now</i><span data-en="Change a rate without a spreadsheet" data-no="Endre en kurs uten regneark">Change a rate without a spreadsheet</span></span></div>
+            <p data-en="Only the right people can change it. Every change is checked, and the defaults are safe." data-no="Bare de riktige personene kan endre det. Hver endring sjekkes, og standardverdiene er trygge.">Only the right people can change it. Every change is checked, and the defaults are safe.</p>
+          </div>
+          <figure><img src="assets/images/FX and Turnover rates flexibility-2.png" loading="lazy" alt="The currency rate setup: rates per period with an explanation banner and a side panel." /></figure>
         </article>
-        <article class="sf-decision">
-          <span class="signal-tag problem" data-en="Problem reframed" data-no="Problem omformulert">Problem reframed</span>
-          <h3 data-en="Fair value valuation — guided in the product, not outsourced to an external expert"
-              data-no="Fair value-verdsettelse — veiledet i produktet, ikke satt ut til en ekstern ekspert">Fair value valuation — guided in the product, not outsourced to an external expert</h3>
-          <p data-en="Working out what shares are worth on paper used to mean hiring an outside expert. I designed a guided flow with inline explanations, visible formulas, and history/comparison views — so company admins can run it themselves and trust the result."
-             data-no="Å finne ut hva aksjer er verdt på papir pleide å bety å hyre en ekstern ekspert. Jeg designet en veiledet flyt med inline-forklaringer, synlige formler, og historikk-/sammenligningsvisninger — slik at admins kan kjøre den selv og stole på resultatet.">
-            Working out what shares are worth on paper used to mean hiring an outside expert. I designed a guided flow with inline explanations, visible formulas, and history/comparison views — so company admins can run it themselves and trust the result.
-          </p>
-          <figure><img src="assets/images/Integrated Valuation service.png" alt="" /></figure>
+        <article class="fr-dec">
+          <div class="fr-dec__body">
+            <span class="tag" data-en="Problem reframed" data-no="Problemet snudd">Problem reframed</span>
+            <h3 data-en="Fair value, guided" data-no="Virkelig verdi, med veiledning">Fair value, guided</h3>
+            <div class="fr-swap"><span class="o"><i data-en="Was" data-no="Før">Was</i><span data-en="Hire an outside expert" data-no="Leie inn en ekstern ekspert">Hire an outside expert</span></span><span class="n"><i data-en="Now" data-no="Nå">Now</i><span data-en="Admins run it and trust the result" data-no="Admins kjører den og stoler på resultatet">Admins run it and trust the result</span></span></div>
+            <p data-en="Explanations sit next to each field, the formulas are visible, and you can compare with earlier runs." data-no="Forklaringer står ved hvert felt, formlene er synlige, og du kan sammenligne med tidligere kjøringer.">Explanations sit next to each field, the formulas are visible, and you can compare with earlier runs.</p>
+          </div>
+          <figure><img src="assets/images/Integrated Valuation service.png" loading="lazy" alt="The valuation flow with inputs, a visible formula and a history table." /></figure>
         </article>
       </div>
     </section>
 
-    <!-- 03 HOW AI FIT -->
+    <!-- 04 -->
     <section id="ai" class="sf-section">
-      <span class="case-eyebrow ai" data-en="03 · How AI fit into this project" data-no="03 · Hvor AI passet inn">03 · How AI fit into this project</span>
-      <h2 data-en="AI didn't replace the finance experts. It shortened the distance to them."
-          data-no="AI erstattet ikke finansekspertene. Den kortet ned avstanden til dem.">
-        AI didn't replace the finance experts. It shortened the distance to them.
-      </h2>
-
-      <ul class="sf-ai-list"
-          data-en-html="<li><strong>Prototyping in v0.</strong> I used v0 to sketch a new currency-rate setup directly in code, not static frames — and walked into the engineering review with a working flow. <a href='https://v0.app/nikitakesha42-5513/chat/custom-fx-rate-setup-kTmPuiOsKOZ' target='_blank' rel='noopener'>See the v0 conversation ↗</a></li><li><strong>First-pass tooltip and validation copy.</strong> AI drafted the wording in finance-correct language. A finance expert and I edited every line before it shipped.</li><li><strong>Stress-testing my own thinking.</strong> Before scheduling the real review, I'd ask AI what an auditor would object to in a flow. Two rounds out of three were noise. The third caught a real hole.</li>"
-          data-no-html="<li><strong>Prototyping i v0.</strong> Jeg brukte v0 til å skissere et nytt valutakurs-oppsett direkte i kode, ikke statiske rammer — og kom inn i ingeniørgjennomgangen med en fungerende flyt. <a href='https://v0.app/nikitakesha42-5513/chat/custom-fx-rate-setup-kTmPuiOsKOZ' target='_blank' rel='noopener'>Se v0-samtalen ↗</a></li><li><strong>Førsteutkast av tooltip- og valideringscopy.</strong> AI skrev utkast på finans-korrekt språk. En finansekspert og jeg redigerte hver linje før lansering.</li><li><strong>Stresstest av min egen tankegang.</strong> Før den ekte gjennomgangen spurte jeg AI hva en revisor ville protestert mot. To av tre runder var støy. Den tredje fanget et reelt hull.</li>">
-        <li><strong>Prototyping in v0.</strong> I used v0 to sketch a new currency-rate setup directly in code, not static frames — and walked into the engineering review with a working flow. <a href="https://v0.app/nikitakesha42-5513/chat/custom-fx-rate-setup-kTmPuiOsKOZ" target="_blank" rel="noopener">See the v0 conversation ↗</a></li>
-        <li><strong>First-pass tooltip and validation copy.</strong> AI drafted the wording in finance-correct language. A finance expert and I edited every line before it shipped.</li>
-        <li><strong>Stress-testing my own thinking.</strong> Before scheduling the real review, I'd ask AI what an auditor would object to in a flow. Two rounds out of three were noise. The third caught a real hole.</li>
-      </ul>
-      <p class="rejected" data-en="What I rejected — AI-drawn UI explorations. In a domain where a misnamed field can break a report, the cost of a wrong label was bigger than the time AI saved drawing it."
-                          data-no="Det jeg avviste — AI-tegnede UI-utforskninger. I et domene der et feilnavngitt felt kan ødelegge en rapport, var kostnaden ved feil etikett større enn tiden AI sparte ved å tegne den.">
-        What I rejected — AI-drawn UI explorations. In a domain where a misnamed field can break a report, the cost of a wrong label was bigger than the time AI saved drawing it.
-      </p>
+      <span class="case-eyebrow ai" data-en="04 · Where AI helped" data-no="04 · Der AI hjalp">04 · Where AI helped</span>
+      <h2 data-en="AI didn&rsquo;t replace the finance experts. It got me to them faster." data-no="AI erstattet ikke finansekspertene. Den fikk meg raskere fram til dem.">AI didn&rsquo;t replace the finance experts. It got me to them faster.</h2>
+      <div class="fr-ai">
+        <div><span class="k" data-en="Prototype" data-no="Prototype">Prototype</span><h3 data-en="A working flow, not frames" data-no="En fungerende flyt, ikke skisser">A working flow, not frames</h3>
+          <p data-en-html="I built the new currency-rate setup in v0 and walked into the engineering review with something that ran. <a href=&quot;https://v0.app/nikitakesha42-5513/chat/custom-fx-rate-setup-kTmPuiOsKOZ&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>See the v0 chat ↗</a>"
+             data-no-html="Jeg bygde det nye valutakursoppsettet i v0 og kom til utviklergjennomgangen med noe som virket. <a href=&quot;https://v0.app/nikitakesha42-5513/chat/custom-fx-rate-setup-kTmPuiOsKOZ&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>Se v0-samtalen ↗</a>">I built the new currency-rate setup in v0 and walked into the engineering review with something that ran. <a href="https://v0.app/nikitakesha42-5513/chat/custom-fx-rate-setup-kTmPuiOsKOZ" target="_blank" rel="noopener">See the v0 chat ↗</a></p></div>
+        <div><span class="k" data-en="Words" data-no="Ord">Words</span><h3 data-en="A first draft of the help text" data-no="Et første utkast til hjelpetekst">A first draft of the help text</h3>
+          <p data-en="AI drafted tooltips and error messages in finance language. A finance expert and I edited every line before it shipped." data-no="AI skrev utkast til hjelpetekster og feilmeldinger på finansspråk. En finansekspert og jeg redigerte hver linje før lansering.">AI drafted tooltips and error messages in finance language. A finance expert and I edited every line before it shipped.</p></div>
+        <div><span class="k" data-en="Second opinion" data-no="Second opinion">Second opinion</span><h3 data-en="&ldquo;What would an auditor say?&rdquo;" data-no="«Hva ville en revisor sagt?»">&ldquo;What would an auditor say?&rdquo;</h3>
+          <p data-en="Before a real review, I asked AI to object to a flow. Two rounds out of three were noise. The third caught a real hole." data-no="Før en ekte gjennomgang ba jeg AI om å protestere på en flyt. To av tre runder var støy. Den tredje fant et ekte hull.">Before a real review, I asked AI to object to a flow. Two rounds out of three were noise. The third caught a real hole.</p></div>
+      </div>
+      <div class="fr-no"><b data-en="Said no to" data-no="Sa nei til">Said no to</b>
+        <p data-en="AI-drawn screens. Here, one wrongly named field can break a report. A wrong label costs more than AI saves by drawing it." data-no="AI-tegnede skjermer. Her kan ett feilnavngitt felt ødelegge en rapport. En feil etikett koster mer enn AI sparer ved å tegne den.">AI-drawn screens. Here, one wrongly named field can break a report. A wrong label costs more than AI saves by drawing it.</p></div>
     </section>
 
-    <!-- 04 TRADE-OFF -->
+    <!-- 05 -->
     <section id="tradeoff" class="sf-section">
-      <span class="case-eyebrow strategic" data-en="04 · A trade-off I'd make differently today" data-no="04 · En avveining jeg ville tatt annerledes i dag">04 · A trade-off I'd make differently today</span>
-      <h2 data-en="I shipped cards where the audience needed a table"
-          data-no="Jeg sendte kort der publikum trengte en tabell">
-        I shipped cards where the audience needed a table
-      </h2>
-      <p data-en="The reports list could have used a third-party table — sortable columns, dense rows, the format finance admins live in. I replaced it with cards instead. Cards matched the rest of the product, and consistency felt like the responsible choice."
-         data-no="Rapportlisten kunne brukt en tredjeparts tabell — sorterbare kolonner, tette rader, formatet finansadmins lever i. Jeg erstattet den med kort i stedet. Kort matchet resten av produktet, og konsistens føltes som det ansvarlige valget.">
-        The reports list could have used a third-party table — sortable columns, dense rows, the format finance admins live in. I replaced it with cards instead. Cards matched the rest of the product, and consistency felt like the responsible choice.
-      </p>
-      <p data-en="I was optimising for the wrong thing. The audience here is admin super-users who work in tables all day. They needed capability over consistency — sort columns, scan rows, act. The right call would have been to keep the table, accept the design-system deviation, and document the exception. That's the decision I'd make now."
-         data-no="Jeg optimaliserte for feil ting. Publikum her er admin-superbrukere som lever i tabeller hele dagen. De trengte kapasitet over konsistens — sortere kolonner, skanne rader, handle. Det riktige valget hadde vært å beholde tabellen, akseptere avviket fra designsystemet, og dokumentere unntaket. Det er valget jeg ville tatt i dag.">
-        I was optimising for the wrong thing. The audience here is admin super-users who work in tables all day. They needed capability over consistency — sort columns, scan rows, act. The right call would have been to keep the table, accept the design-system deviation, and document the exception. That's the decision I'd make now.
-      </p>
-      <figure class="figure">
-        <img src="assets/case/fr-after.png" alt="" />
-        <figcaption data-en="The cards layout I shipped — consistent with the system, but the audience would have been better served by a table."
-                    data-no="Kort-layouten jeg leverte — konsistent med systemet, men publikum ville vært bedre tjent med en tabell.">
-          The cards layout I shipped — consistent with the system, but the audience would have been better served by a table.
-        </figcaption>
-      </figure>
+      <span class="case-eyebrow strategic" data-en="05 · What I&rsquo;d change" data-no="05 · Det jeg ville endret">05 · What I&rsquo;d change</span>
+      <h2 data-en="I shipped cards where people needed a table." data-no="Jeg leverte kort der folk trengte en tabell.">I shipped cards where people needed a table.</h2>
+      <p data-en="The reports list could have been a table: sortable columns, dense rows, the format finance admins live in. I chose cards, because cards matched the rest of the product."
+         data-no="Rapportlisten kunne vært en tabell: sorterbare kolonner, tette rader, formatet finansadmins lever i. Jeg valgte kort, fordi kort passet med resten av produktet.">The reports list could have been a table: sortable columns, dense rows, the format finance admins live in. I chose cards, because cards matched the rest of the product.</p>
+      <div class="fr-two">
+        <figure><span class="fr-tags a" data-en="A table: rows and columns" data-no="En tabell: rader og kolonner">A table: rows and columns</span>
+          <img src="assets/case/fr-before.png" width="3520" height="1515" loading="lazy" alt="The reports list as a table: report name, dates, created by and status in columns." /></figure>
+        <figure><span class="fr-tags b" data-en="What I shipped: cards" data-no="Det jeg leverte: kort">What I shipped: cards</span>
+          <img src="assets/case/fr-after.png" width="3608" height="2318" loading="lazy" alt="The reports list I shipped, as cards with a status and actions on each." /></figure>
+      </div>
+      <div class="fr-now">
+        <span class="k" data-en="What I&rsquo;d do now" data-no="Det jeg ville gjort nå">What I&rsquo;d do now</span>
+        <p data-en="Keep the table, accept the break from the design system, and write down why. Power users needed to sort, scan and act more than they needed things to match." data-no="Beholde tabellen, godta bruddet med designsystemet, og skrive ned hvorfor. Superbrukerne trengte å sortere, skanne og handle mer enn de trengte at ting så like ut.">Keep the table, accept the break from the design system, and write down why. Power users needed to sort, scan and act more than they needed things to match.</p>
+      </div>
     </section>
 
-    <!-- 05 IMPACT -->
+    <!-- 06 -->
     <section id="impact" class="sf-section">
-      <span class="case-eyebrow" data-en="05 · Impact" data-no="05 · Effekt">05 · Impact</span>
-      <figure class="sf-figure">
-        <img src="assets/images/350+ hours of client-driven research and testing-2.png" alt="" />
-        <figcaption data-en="350+ hours of client-driven research and testing fed every decision above — coded session signals across hundreds of sessions."
-                    data-no="350+ timer kundedrevet research og testing matet hvert valg over — kodede øktsignaler på tvers av hundrevis av økter.">
-          350+ hours of client-driven research and testing fed every decision above — coded session signals across hundreds of sessions.
-        </figcaption>
-      </figure>
-      <h2 data-en="Research that fed every decision"
-          data-no="Research som matet hvert valg">
-        Research that fed every decision
-      </h2>
-
-      <div class="sf-impact">
-        <div>
-          <span class="pillar-label" data-en="Product" data-no="Produkt">Product</span>
-          <div class="impact-num">4</div>
-          <p class="impact-desc" data-en="New reporting tools live across the platform — built in the product, not in Excel."
-                                data-no="Nye rapporteringsverktøy live på plattformen — bygd i produktet, ikke i Excel.">
-            New reporting tools live across the platform — built in the product, not in Excel.
-          </p>
-        </div>
-        <div>
-          <span class="pillar-label" data-en="Process" data-no="Prosess">Process</span>
-          <div class="impact-num small">~1 000 h/yr</div>
-          <p class="impact-desc" data-en="Manual Excel work removed by reusable grouping — measured by an in-product time-saved chart since Dec 2024."
-                                data-no="Manuelt Excel-arbeid fjernet av gjenbrukbar gruppering — målt av en innebygd «tid spart»-graf siden des. 2024.">
-            Manual Excel work removed by reusable grouping — measured by an in-product time-saved chart since Dec 2024.
-          </p>
-        </div>
-        <div>
-          <span class="pillar-label" data-en="People" data-no="Mennesker">People</span>
-          <div class="impact-num small">48.85%</div>
-          <p class="impact-desc" data-en="Average time per process saved on adjacent Customer Success backoffice work."
-                                data-no="Gjennomsnittlig tid per prosess spart på tilstøtende Customer Success-backoffice-arbeid.">
-            Average time per process saved on adjacent Customer Success backoffice work.
-          </p>
-        </div>
+      <span class="case-eyebrow" data-en="06 · Impact" data-no="06 · Effekt">06 · Impact</span>
+      <h2 data-en="The monthly report became a screen, not an email attachment." data-no="Månedsrapporten ble en skjerm, ikke et e-postvedlegg.">The monthly report became a screen, not an email attachment.</h2>
+      <div class="fr-cells">
+        <div><span class="ref" aria-hidden="true">D2</span><span class="num">4</span><p data-en="New reporting tools live across the platform, built in the product instead of Excel." data-no="Nye rapporteringsverktøy i bruk på plattformen, bygget i produktet i stedet for Excel.">New reporting tools live across the platform, built in the product instead of Excel.</p></div>
+        <div><span class="ref" aria-hidden="true">D3</span><span class="num" data-en="~1 000 h" data-no="~1 000 t">~1 000 h</span><p data-en="Manual Excel work removed each year by reusable grouping, measured in the product since December 2024." data-no="Manuelt Excel-arbeid fjernet hvert år av gjenbrukbar gruppering, målt i produktet siden desember 2024.">Manual Excel work removed each year by reusable grouping, measured in the product since December 2024.</p></div>
+        <div><span class="ref" aria-hidden="true">D4</span><span class="num">48.85%</span><p data-en="Average time saved per process on related Customer Success back-office work." data-no="Gjennomsnittlig tid spart per prosess på tilhørende Customer Success-arbeid.">Average time saved per process on related Customer Success back-office work.</p></div>
       </div>
-    </section>
 
-    <!-- REAL QUOTE -->
-    <section class="sf-section">
-      <span class="case-eyebrow team" data-en="Brought back to the team" data-no="Tatt med tilbake til teamet">Brought back to the team</span>
-      <div class="sf-figure-row">
+      <h3 style="margin-top:40px" data-en="What the team said" data-no="Hva teamet sa">What the team said</h3>
+      <div class="fr-team">
         <figure>
-          <img src="assets/images/feedback 2-1.png" alt="" />
-          <figcaption data-en="The actual Slack message from Sebastian during the OKR R&amp;R review."
-                      data-no="Den faktiske Slack-meldingen fra Sebastian under OKR R&amp;R-gjennomgangen.">
-            The actual Slack message from Sebastian during the OKR R&amp;R review.
-          </figcaption>
+          <img src="assets/images/feedback 2-1.png" loading="lazy" alt="Slack message from Sebastian praising the quality of feedback gathering, sessions with business people and robust, pragmatic UI and UX designs." />
+          <figcaption data-en="Sebastian, engineer on the reporting team, in Slack during the OKR review." data-no="Sebastian, utvikler på rapporteringsteamet, i Slack under OKR-gjennomgangen.">Sebastian, engineer on the reporting team, in Slack during the OKR review.</figcaption>
         </figure>
         <figure>
-          <img src="assets/images/Dream team-2.png" alt="" />
-          <figcaption data-en="Dream team — the engineers, PM and Customer Success partners who shipped this together."
-                      data-no="Dream team — utviklerne, PM-en og Customer Success-partnerne som leverte dette sammen.">
-            Dream team — the engineers, PM and Customer Success partners who shipped this together.
-          </figcaption>
+          <img src="assets/images/Dream team-2.png" loading="lazy" alt="A board of thank-you notes and stickers from the team." />
+          <figcaption data-en="The engineers, PM and Customer Success partners who shipped this together." data-no="Utviklerne, PM-en og Customer Success-partnerne som leverte dette sammen.">The engineers, PM and Customer Success partners who shipped this together.</figcaption>
         </figure>
-      </div>
-      <div class="real-quote">
-        <span class="avatar" aria-hidden="true">SE</span>
-        <div>
-          <p class="body" data-en="“I just wanted to say that you did an incredible progress with the quality of gathering feedback, sessions with business people, understanding the feature, and really robust and pragmatic UI and UX designs. I've heard from them a lot of positives — nice one, Anastasiia.”"
-                          data-no="“Jeg vil bare si at du har gjort en utrolig fremgang med kvaliteten på tilbakemeldingsinnsamling, økter med business-folk, forståelse av funksjonen, og virkelig solide og pragmatiske UI- og UX-design. Jeg har hørt mange positive ting fra dem — nydelig jobbet, Anastasiia.”">
-            “I just wanted to say that you did an incredible progress with the quality of gathering feedback, sessions with business people, understanding the feature, and really robust and pragmatic UI and UX designs. I've heard from them a lot of positives — nice one, Anastasiia.”
-          </p>
-          <span class="meta" data-en="Sebastian · Engineer, Reporting team · OKR R&amp;R review"
-                            data-no="Sebastian · Utvikler, Rapporteringsteam · OKR R&amp;R-gjennomgang">
-            Sebastian · Engineer, Reporting team · OKR R&amp;R review
-          </span>
-        </div>
       </div>
     </section>
 
