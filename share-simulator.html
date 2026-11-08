@@ -11,358 +11,194 @@
   <meta name="description" content="Rebuilding the share-price simulator I worked on at Optio around the question people actually ask: what would I take home? Designed phone first, with an AI co-pilot that explains the maths but never gives advice." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* ============================================================
-       Page-scoped visuals. Everything else inherits the portfolio.
+       Share simulator: a "statement" look. Dark price bar, receipt
+       lines, big tabular numbers. Everything else inherits the site.
        ============================================================ */
-    .ss-lead {
-      font-size: 19px;
-      line-height: 1.5;
-      color: var(--ink-2, #2b2f36);
-      max-width: 62ch;
-      margin: 16px 0 28px;
-    }
-    .sf-section > h3 {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-      margin: 40px 0 12px;
-    }
+    :root { --ss-bar: #161b2b; --ss-blue: #2f3e9e; --ss-blue-bg: #eef0fb; --ss-blue-line: #c9cff0; --ss-green: #1d6b3a; --ss-green-bg: #e9f6ee; --ss-amber: #8a5300; --ss-amber-bg: #fdf3e1; --ss-paper: #fbfaf6; }
+    .ss-lead { font-size: 20px; line-height: 1.5; color: var(--ink); max-width: 56ch; margin: 16px 0 28px; }
+    .sf-section > p { max-width: 62ch; }
+    .sf-section > h2 { max-width: 22ch; }
+    .ss-num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    .ss-hl { color: var(--ss-blue); font-weight: 600; border-bottom: 2px solid var(--ss-blue-line); }
+    .case figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+    .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
-    /* ---------- The result: 16:9 recording ---------- */
-    .ss-video {
-      margin: 24px 0 0;
-      padding: 0;
-    }
-    .ss-video__frame {
-      border: 1px solid var(--rule);
-      border-radius: 16px;
-      overflow: hidden;
-      background: #f2f4fd;
-      line-height: 0;
-    }
-    .ss-video video {
-      display: block;
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-      background: #f2f4fd;
-    }
-    .ss-video__bar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px 20px;
-      margin-top: 14px;
-    }
-    .ss-video__bar a { font-size: 14px; }
-    .ss-playpause {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      min-height: 36px;
-      padding: 0 14px 0 12px;
-      border: 1px solid #0f1f3d;
-      border-radius: 999px;
-      background: #0f1f3d;
-      color: #fff;
-      font: 500 13px/1 var(--sans);
-      cursor: pointer;
-    }
-    .ss-playpause[hidden] { display: none; }
-    .ss-playpause:hover { background: #1a2f5a; }
-    .ss-playpause:focus-visible { outline: 2px solid #0f1f3d; outline-offset: 3px; }
-    .ss-playpause .ss-playpause__play { display: none; }
-    .ss-playpause[data-playing="false"] .ss-playpause__play { display: inline-block; }
-    .ss-playpause[data-playing="false"] .ss-playpause__pause { display: none; }
-    .ss-video .video-transcript { margin-top: 16px; }
+    /* Statement: the story in 30 seconds */
+    .ss-stmt { margin: 0 0 32px; border-radius: 16px; overflow: hidden; border: 1px solid #d9d6cc; background: var(--ss-paper); box-shadow: 0 20px 36px -28px rgba(22,27,43,.55); }
+    .ss-stmt__bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; align-items: center; padding: 14px 20px; background: var(--ss-bar); color: #fff; }
+    .ss-stmt__bar .big { font-family: var(--mono); font-size: 20px; font-weight: 600; }
+    .ss-stmt__bar .pill { font-family: var(--mono); font-size: 11.5px; padding: 3px 9px; border-radius: 999px; background: #1f3b2a; color: #9be3b4; }
+    .ss-stmt__bar .meta { font-family: var(--mono); font-size: 11.5px; color: #b8bed1; }
+    .ss-stmt__rows { padding: 8px 20px 4px; }
+    .ss-line { display: grid; grid-template-columns: 10em minmax(0, 1fr); gap: 16px; padding: 14px 0; border-top: 1px dashed #d4d0c4; }
+    .ss-line:first-child { border-top: 0; }
+    .ss-line .k { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 3px; text-transform: uppercase; letter-spacing: .06em; }
+    .ss-line .v { font-size: 17px; line-height: 1.45; }
+    .ss-line .v b { font-weight: 600; }
+    .ss-line.total { border-top: 2px solid var(--ink); }
+    .ss-line.total .v { font-size: 20px; font-weight: 600; color: var(--ss-blue); }
 
-    /* ---------- Plain tables ---------- */
-    .ss-table {
-      width: 100%;
-      margin: 8px 0 8px;
-      border-collapse: collapse;
-      font-size: 14px;
-      line-height: 1.45;
-    }
-    .ss-table caption {
-      text-align: left;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding-bottom: 10px;
-    }
-    .ss-table th, .ss-table td {
-      text-align: left;
-      vertical-align: top;
-      padding: 11px 16px 11px 0;
-      border-top: 1px solid var(--rule);
-    }
-    .ss-table thead th { border-top: 0; font-weight: 600; color: var(--ink); font-size: 13px; }
-    .ss-table tbody th { font-weight: 500; color: var(--ink); width: 30%; }
-    .ss-table tbody td { color: var(--muted); }
-    .ss-table tbody td:last-child { color: var(--ink); }
+    .ss-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 36px; }
+    .ss-facts > div { padding: 12px 0 0; border-top: 2px solid var(--ink); }
+    .ss-facts .k { display: block; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
+    .ss-facts p { margin: 0; font-size: 15px; line-height: 1.45; }
 
-    /* ---------- Research boards: thumbnails that open full size ---------- */
-    .ss-boards {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-      margin: 28px 0 0;
-    }
-    .ss-boards figure { margin: 0; }
-    .ss-boards a {
-      display: block;
-      border: 1px solid var(--rule-strong);
-      border-radius: 12px;
-      overflow: hidden;
-      background: #fff;
-      line-height: 0;
-    }
-    .ss-boards a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-    .ss-boards img {
-      display: block;
-      width: 100%;
-      aspect-ratio: 16 / 10;
-      object-fit: cover;
-      object-position: top;
-      transition: transform 0.25s ease;
-    }
-    .ss-boards a:hover img { transform: scale(1.02); }
-    .ss-boards figcaption {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 8px;
-      line-height: 1.45;
-    }
-    .ss-boards figcaption b { color: var(--ink); font-weight: 600; }
+    /* The answer, big */
+    .ss-answer { margin: 0 0 20px; padding: 28px 28px 24px; border-radius: 18px; background: var(--ss-blue-bg); border: 1px solid var(--ss-blue-line); }
+    .ss-answer .k { display: block; font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ss-blue); margin-bottom: 10px; }
+    .ss-answer p { margin: 0; font-size: clamp(24px, 3.6vw, 36px); line-height: 1.2; letter-spacing: -0.02em; font-weight: 600; max-width: 22ch; }
+    .ss-answer p .ss-num { color: var(--ss-blue); letter-spacing: -0.03em; }
+    .ss-answer small { display: block; margin-top: 12px; font-size: 14px; color: var(--muted); }
 
-    /* ---------- Personas ---------- */
-    .ss-people {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin: 24px 0 0;
-    }
-    .ss-person {
-      border: 1px solid var(--rule);
-      border-radius: 14px;
-      padding: 18px 20px;
-      background: var(--panel-warm);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .ss-person__head { display: flex; align-items: center; gap: 12px; }
-    .ss-person__av {
-      width: 38px; height: 38px; flex-shrink: 0;
-      border-radius: 50%;
-      display: inline-flex; align-items: center; justify-content: center;
-      background: #e5e9fa; color: #202d75;
-      font: 600 13px/1 var(--sans);
-    }
-    .ss-person h3 { font-size: 15px; font-weight: 600; margin: 0; line-height: 1.3; }
-    .ss-person .role { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.45; }
-    .ss-person blockquote {
-      margin: 4px 0 0;
-      font-size: 14px;
-      line-height: 1.5;
-      color: var(--ink);
-      font-style: italic;
-    }
+    /* Phone stage */
+    .ss-stage { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; padding: 28px 24px 22px; border-radius: 18px; background: linear-gradient(160deg, #1d2338 0%, #2a3256 100%); }
+    .ss-stage figure { margin: 0; }
+    .ss-stage img { display: block; width: 100%; height: auto; border-radius: 26px; border: 7px solid #0b0d14; background: #fff; box-shadow: 0 22px 30px -18px rgba(0,0,0,.6); }
+    .ss-stage figcaption { color: #c9cfe4; text-align: center; font-size: 13px; }
+    .ss-stage figcaption b { display: block; color: #fff; font-weight: 600; font-size: 14px; }
 
-    /* ---------- Journeys ---------- */
-    .ss-journeys {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin: 18px 0 0;
-    }
-    .ss-journey {
-      border: 1px solid var(--rule);
-      border-radius: 14px;
-      padding: 20px 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .ss-journey .kicker {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 500;
-    }
-    .ss-journey h4 { font-size: 16px; font-weight: 600; margin: 0; line-height: 1.35; }
-    .ss-journey p { font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0; }
-    .ss-journey p b { color: var(--ink); font-weight: 600; }
+    /* Prototype callout */
+    .ss-proto { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 28px; align-items: center; margin: 28px 0 48px; padding: 20px 24px; border-radius: 16px; border: 2px solid var(--ink); }
+    .ss-proto .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ss-green); margin-bottom: 6px; }
+    .ss-proto h2 { font-size: 20px; font-weight: 600; line-height: 1.3; margin: 0 0 6px; }
+    .ss-proto p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted); max-width: 58ch; }
+    .ss-proto a { display: inline-flex; gap: 8px; align-items: center; padding: 13px 22px; border-radius: 10px; background: var(--ss-bar); color: #fff; font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .ss-proto a:hover { background: var(--ss-blue); }
+    .ss-proto a:focus-visible { outline: 3px solid var(--ss-blue); outline-offset: 3px; }
 
-    /* ---------- Mobile-first ladder: one screen at three sizes ---------- */
-    .ss-ladder {
-      display: grid;
-      grid-template-columns: minmax(0, 0.74fr) minmax(0, 1.35fr) minmax(0, 2fr);
-      gap: 22px;
-      align-items: end;
-      margin: 28px 0 0;
-      padding: 28px 24px 22px;
-      border: 1px solid var(--rule);
-      border-radius: 18px;
-      background: linear-gradient(180deg, #f4f6fd 0%, #eceffa 100%);
-    }
-    .ss-ladder figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
-    .ss-ladder img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      border: 6px solid #111318;
-      background: #fff;
-      box-shadow: 0 18px 30px -18px rgba(10, 31, 74, 0.45);
-    }
-    .ss-ladder .phone img { border-radius: 22px; }
-    .ss-ladder .land img { border-radius: 18px; }
-    .ss-ladder figcaption { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
-    .ss-ladder figcaption b {
-      display: block;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink);
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
+    .ss-fig { margin: 24px 0 0; }
+    .ss-fig img, .ss-fig video { display: block; width: 100%; height: auto; }
+    .ss-shot { border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
+    .ss-phone { border-radius: 22px; border: 6px solid #0b0d14; background: #fff; }
 
-    /* ---------- Wireframes ---------- */
-    .ss-lofi {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 22px 18px;
-      margin: 24px 0 0;
-    }
-    .ss-lofi figure { margin: 0; }
-    .ss-lofi img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border: 1px solid var(--rule);
-      border-radius: 14px;
-      background: #fff;
-    }
-    .ss-lofi figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
-    .ss-lofi figcaption b { color: var(--ink); font-weight: 600; }
+    /* Workarounds */
+    .ss-hacks { list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .case .ss-hacks li { margin: 0; padding: 16px; border-radius: 12px; background: #fff; border: 1px solid var(--rule); font-size: 14.5px; line-height: 1.45; color: var(--muted); }
+    .case .ss-hacks li::before { display: none; content: none; }
+    .ss-hacks .ic { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: #f4f2ec; font-size: 18px; margin-bottom: 10px; }
+    .ss-hacks b { display: block; color: var(--ink); font-size: 16px; line-height: 1.3; margin-bottom: 4px; }
 
-    /* ---------- Before / after pairs ---------- */
-    .ss-ba {
-      margin: 36px 0 0;
-      padding-top: 28px;
-      border-top: 1px solid var(--rule);
-    }
-    .ss-ba:first-of-type { border-top: 0; padding-top: 0; }
-    .ss-ba h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 8px; }
-    .ss-ba > p { font-size: 15px; line-height: 1.6; color: var(--ink); margin: 0 0 18px; max-width: 62ch; }
-    .ss-ba__pair {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-      align-items: start;
-    }
-    .ss-ba__pair.phones { max-width: 640px; }
+    .case .ss-quote { margin: 28px 0; font-size: clamp(22px, 3vw, 28px); line-height: 1.3; font-weight: 600; letter-spacing: -0.015em; max-width: 26ch; }
+    .ss-quote::before { content: "“"; display: block; font-size: 56px; line-height: .6; color: var(--ss-blue); }
+
+    .ss-hmw { margin: 24px 0; padding: 22px 24px; border-radius: 16px; background: var(--ss-bar); color: #fff; }
+    .ss-hmw .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9be3b4; margin-bottom: 8px; }
+    .case .ss-hmw p { color: #fff; margin: 0; font-size: clamp(20px, 2.6vw, 26px); line-height: 1.3; font-weight: 600; }
+
+    /* Research wall */
+    .ss-wall { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 20px 0 0; }
+    .ss-wall a { display: block; border: 1px solid var(--rule-strong); border-radius: 10px; overflow: hidden; background: #fff; line-height: 0; }
+    .ss-wall a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .ss-wall img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: top left; transition: transform .25s ease; }
+    .ss-wall a:hover img { transform: scale(1.03); }
+    .ss-wall span { display: block; font-size: 12.5px; color: var(--muted); margin-top: 6px; line-height: 1.35; }
+
+    /* People as account cards */
+    .ss-people { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 20px 0 0; }
+    .ss-person { border-radius: 14px; border: 1px solid var(--rule); background: #fff; overflow: hidden; }
+    .ss-person__top { padding: 10px 14px; background: var(--ss-paper); border-bottom: 1px dashed #d4d0c4; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+    .ss-person__top b { color: var(--ink); font-family: var(--sans); font-size: 15px; display: block; }
+    .ss-person blockquote { margin: 0; padding: 12px 14px 16px; font-size: 15px; line-height: 1.4; font-weight: 500; }
+
+    /* Rules */
+    .ss-rules { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 0; counter-reset: rule; }
+    .case .ss-rules li { counter-increment: rule; margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 16px 0; border-top: 1px solid var(--rule); font-size: 15px; line-height: 1.5; color: var(--muted); }
+    .case .ss-rules li::before { content: "0" counter(rule); position: static; width: auto; height: auto; background: none; font-family: var(--mono); font-size: 28px; font-weight: 600; color: var(--ss-blue); line-height: 1; }
+    .ss-rules b { display: block; color: var(--ink); font-size: 18px; line-height: 1.3; margin-bottom: 2px; }
+
+    /* Wrong turns timeline */
+    .ss-tries { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 24px 0 0; align-items: start; }
+    .ss-try figure { margin: 0 0 10px; }
+    .ss-try img { width: 100%; height: auto; display: block; aspect-ratio: 600 / 900; object-fit: cover; object-position: top; border-radius: 12px; border: 1px solid var(--rule-strong); background: #fff; }
+    .ss-try .mark { display: inline-flex; gap: 6px; align-items: center; font-family: var(--mono); font-size: 11.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px; margin-bottom: 8px; }
+    .ss-try .mark.no { background: #fdecec; color: #9f1d14; }
+    .ss-try .mark.yes { background: var(--ss-green-bg); color: var(--ss-green); }
+    .ss-try h3 { font-size: 15.5px; font-weight: 600; line-height: 1.3; margin: 0 0 4px; }
+    .ss-try p { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--muted); }
+
+    /* Lofi strip */
+    .ss-lofi { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 24px 0 0; padding: 18px; border-radius: 16px; background: #f1f0eb; }
+    .ss-lofi img { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid #cfccc2; background: #fff; aspect-ratio: 600 / 980; object-fit: cover; object-position: top; }
+    .ss-grow { display: grid; grid-template-columns: 0.55fr 1.2fr 1.6fr; gap: 16px; align-items: end; margin: 20px 0 0; }
+    .ss-grow figure { margin: 0; }
+    .ss-grow img { width: 100%; height: auto; display: block; }
+    .ss-grow figcaption b { display: block; color: var(--ink); font-size: 14px; }
+
+    /* Balance meter */
+    .ss-meter { margin: 24px 0 0; }
+    .ss-meter__track { position: relative; height: 10px; border-radius: 999px; margin: 0 6% 18px; background: linear-gradient(90deg, #e05a4f 0%, #e9b949 25%, #2f9e5b 50%, #e9b949 75%, #e05a4f 100%); }
+    .ss-meter__track span { position: absolute; top: 50%; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 3px solid var(--ink); transform: translate(-50%, -50%); }
+    .ss-meter__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .ss-meter__cols figure { margin: 0; }
+    .ss-meter__cols img { width: 100%; height: auto; display: block; aspect-ratio: 600 / 1000; object-fit: cover; object-position: top; }
+    .ss-meter__cols figcaption b { display: block; color: var(--ink); font-size: 15px; margin-bottom: 2px; }
+    .ss-meter__cols .ok img { outline: 3px solid #2f9e5b; outline-offset: 3px; }
+
+    .ss-ba { margin: 36px 0 0; padding-top: 28px; border-top: 1px solid var(--rule); }
+    .ss-ba h3 { font-size: 20px; font-weight: 600; line-height: 1.3; margin: 0 0 6px; }
+    .ss-ba > p { font-size: 15.5px; line-height: 1.55; margin: 0 0 16px; max-width: 62ch; }
+    .ss-ba__pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+    .ss-ba__pair--phones { grid-template-columns: repeat(2, minmax(0, 280px)); justify-content: start; gap: 28px; }
     .ss-ba__pair figure { margin: 0; }
-    .ss-ba__pair img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border: 1px solid var(--rule-strong);
-      border-radius: 14px;
-      background: #fff;
-    }
-    .ss-ba__pair figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
-    .ss-ba__label {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-    .ss-ba__label.before { background: #f3f4f6; color: #3b4150; border: 1px solid #c9ccd3; }
-    .ss-ba__label.after  { background: #e5e9fa; color: #202d75; border: 1px solid #9aa6e0; }
+    .ss-ba__pair img { width: 100%; height: auto; display: block; }
+    .ss-tag { display: inline-flex; margin-bottom: 8px; padding: 3px 10px; border-radius: 6px; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
+    .ss-tag.before { background: #f3f4f6; color: #3b4150; }
+    .ss-tag.after { background: var(--ss-blue-bg); color: var(--ss-blue); }
+    .ss-words { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 12px; align-items: center; margin: 0 0 16px; max-width: 640px; }
+    .ss-words span { padding: 10px 14px; border-radius: 10px; font-size: 15px; font-weight: 500; }
+    .ss-words .o { background: #f3f4f6; color: #5b616b; text-decoration: line-through; }
+    .ss-words .n { background: var(--ss-green-bg); color: var(--ss-green); }
 
-    /* ---------- Prototype rounds ---------- */
-    .ss-rounds {
-      list-style: none;
-      counter-reset: none;
-      padding: 0;
-      margin: 18px 0 0;
-      display: grid;
-      gap: 14px;
-      max-width: 66ch;
-    }
-    .case .ss-rounds li {
-      padding: 0 0 14px;
-      border-bottom: 1px solid var(--rule);
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--ink);
-    }
-    .case .ss-rounds li::before { display: none; content: none; }
-    .ss-rounds li strong { font-weight: 600; }
+    /* Co-pilot rules */
+    .ss-copilot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 20px 0 0; }
+    .ss-cp { padding: 16px 18px; border-radius: 14px; border: 1px solid var(--rule); background: #fff; }
+    .ss-cp .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .ss-cp h3 { font-size: 17px; font-weight: 600; margin: 0 0 4px; line-height: 1.3; }
+    .ss-cp p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+    .ss-cp.never { background: #fff5f4; border-color: #f2c9c4; }
+    .ss-cp.never h3 { color: #9f1d14; }
 
-    /* ---------- Accessibility cards ---------- */
-    .ss-access {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin: 24px 0 0;
-    }
-    .ss-access article {
-      border: 1px solid var(--rule-strong);
-      border-radius: 14px;
-      padding: 18px 20px;
-      background: var(--panel-warm);
-    }
-    .ss-access .tag {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 10.5px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #202d75;
-      background: #e5e9fa;
-      border-radius: 999px;
-      padding: 3px 9px;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-    .ss-access h3 { font-size: 15px; font-weight: 600; margin: 0 0 6px; line-height: 1.35; }
-    .ss-access p { font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0; }
+    .ss-chat { margin: 24px 0 0; display: grid; gap: 12px; max-width: 640px; }
+    .ss-chat .q { justify-self: end; max-width: 80%; padding: 10px 14px; border-radius: 14px 14px 4px 14px; background: var(--ss-blue); color: #fff; font-size: 15px; font-weight: 500; }
+    .ss-chat .a { justify-self: start; max-width: 92%; padding: 12px 16px; border-radius: 14px 14px 14px 4px; background: var(--ss-blue-bg); border: 1px solid var(--ss-blue-line); font-size: 14.5px; line-height: 1.55; }
+    .ss-chat .a .k { display: block; font-family: var(--mono); font-size: 11px; color: var(--ss-blue); margin-bottom: 4px; }
 
-    .ss-wide-figure img { max-height: none; height: auto; object-fit: contain; background: #fff; }
+    .ss-split { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.6fr); gap: 22px; align-items: center; margin: 24px 0 0; }
+    .ss-split figure { margin: 0; }
 
-    @media (max-width: 760px) {
-      .ss-lead { font-size: 17px; }
-      .ss-people, .ss-journeys, .ss-access { grid-template-columns: 1fr; }
-      .ss-lofi { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .ss-boards { grid-template-columns: 1fr; }
-      .ss-ladder { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.7fr); padding: 20px 16px; }
-      .ss-ladder .laptop { grid-column: 1 / -1; }
-      .ss-ba__pair.wide { grid-template-columns: 1fr; }
-      .ss-table thead { display: none; }
-      .ss-table tr { display: block; padding: 12px 0; border-top: 1px solid var(--rule); }
-      .ss-table th, .ss-table td { display: block; border: 0; padding: 2px 0; width: auto; }
-      .ss-table tbody th { width: auto; }
+    /* Accessibility */
+    .ss-a11y { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 20px 0 0; }
+    .ss-a11y div { padding: 16px 18px; border-radius: 14px; background: var(--ss-paper); border: 1px solid #e3e0d6; }
+    .ss-a11y .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ss-green); margin-bottom: 6px; }
+    .ss-a11y h3 { font-size: 17px; font-weight: 600; margin: 0 0 4px; }
+    .ss-a11y p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+
+    .case details.ss-transcript { margin-top: 12px; font-size: 13.5px; color: var(--muted); }
+    .case details.ss-transcript summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+
+    @media (max-width: 900px) {
+      .ss-people, .ss-wall, .ss-tries { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ss-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ss-lofi { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .ss-lofi img:nth-child(n+4) { display: none; }
+    }
+    @media (max-width: 720px) {
+      .ss-lead { font-size: 17.5px; }
+      .ss-line { grid-template-columns: 1fr; gap: 2px; }
+      .ss-stage { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 18px 12px; }
+      .ss-stage img { border-width: 4px; border-radius: 16px; }
+      .ss-hacks, .ss-copilot, .ss-a11y, .ss-split, .ss-ba__pair, .ss-grow { grid-template-columns: 1fr; }
+      .ss-ba__pair--phones { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .ss-split .ss-phone-wrap { max-width: 260px; margin: 0 auto; }
+      .ss-grow figure:first-child { max-width: 220px; }
+      .ss-meter__cols { gap: 10px; }
+      .ss-words { grid-template-columns: 1fr; }
+      .ss-proto { grid-template-columns: 1fr; }
+      .ss-proto a { justify-self: start; }
     }
   </style>
 </head>
@@ -387,606 +223,300 @@
 
     <span class="case-eyebrow brand"
           data-en="Self-initiated rebuild · 2026 · working prototype"
-          data-no="Selvinitiert ombygging · 2026 · fungerende prototype">Self-initiated rebuild · 2026 · working prototype</span>
+          data-no="Eget initiativ · 2026 · fungerende prototype">Self-initiated rebuild · 2026 · working prototype</span>
     <h1 class="case-h1"
-        data-en="People asked &ldquo;what would I take home?&rdquo; The simulator answered something else. So I rebuilt it."
+        data-en="People asked “what would I take home?” The simulator answered something else. So I rebuilt it."
         data-no="Folk spurte «hva sitter jeg igjen med?» Simulatoren svarte på noe annet. Så jeg bygde den på nytt.">
-      People asked &ldquo;what would I take home?&rdquo; The simulator answered something else. So I rebuilt it.
+      People asked “what would I take home?” The simulator answered something else. So I rebuilt it.
     </h1>
     <p class="ss-lead"
-       data-en="In 2022 I worked on Optio&rsquo;s share simulator with the team. It was correct, but it answered the wrong question. The new one starts on the phone, with one plain sentence: what you&rsquo;d take home, after tax. An AI co-pilot explains the maths. It never tells you what to do."
-       data-no="I 2022 jobbet jeg med aksjesimulatoren til Optio sammen med teamet. Den regnet riktig, men den svarte på feil spørsmål. Den nye starter på mobilen, med én enkel setning: hva du sitter igjen med etter skatt. En AI-medpilot forklarer regnestykket. Den sier aldri hva du skal gjøre.">
-      In 2022 I worked on Optio&rsquo;s share simulator with the team. It was correct, but it answered the wrong question. The new one starts on the phone, with one plain sentence: what you&rsquo;d take home, after tax. An AI co-pilot explains the maths. It never tells you what to do.
+       data-en-html="In 2022 I worked on Optio&rsquo;s share simulator with the team. It was correct, but it answered the wrong question. The new one starts on the phone with <span class=&quot;ss-hl&quot;>one plain sentence: what you&rsquo;d take home, after tax.</span>"
+       data-no-html="I 2022 jobbet jeg med aksjesimulatoren til Optio sammen med teamet. Den var riktig, men svarte på feil spørsmål. Den nye starter på telefonen med <span class=&quot;ss-hl&quot;>én enkel setning: hva du sitter igjen med, etter skatt.</span>">
+      In 2022 I worked on Optio&rsquo;s share simulator with the team. It was correct, but it answered the wrong question. The new one starts on the phone with <span class="ss-hl">one plain sentence: what you&rsquo;d take home, after tax.</span>
     </p>
 
-    <nav class="case-toc-pills" aria-label="On this page" data-en-aria="On this page" data-no-aria="På denne siden">
-      <a href="#problem"><span class="num">01</span> <span data-en="The problem" data-no="Problemet">The problem</span></a>
-      <a href="#need"><span class="num">02</span> <span data-en="What people needed" data-no="Hva folk trengte">What people needed</span></a>
-      <a href="#wrong-turn"><span class="num">03</span> <span data-en="The wrong turn" data-no="Feil vei">The wrong turn</span></a>
-      <a href="#mobile-first"><span class="num">04</span> <span data-en="Phone first" data-no="Mobil først">Phone first</span></a>
-      <a href="#balance"><span class="num">05</span> <span data-en="Finding the balance" data-no="Å finne balansen">Finding the balance</span></a>
-      <a href="#copilot"><span class="num">06</span> <span data-en="The AI co-pilot" data-no="AI-medpiloten">The AI co-pilot</span></a>
-      <a href="#everyone"><span class="num">07</span> <span data-en="Built for everyone" data-no="Bygget for alle">Built for everyone</span></a>
-      <a href="#ahead"><span class="num">08</span> <span data-en="Looking ahead" data-no="Veien videre">Looking ahead</span></a>
-    </nav>
-
-    <!-- SNAPSHOT ROW -->
-    <div class="snap-row">
-      <div class="cell">
-        <span class="label" data-en="When" data-no="Når">When</span>
-        <span class="value">
-          <strong>2026</strong>
-          <span class="aside" data-en="my own rebuild of a product I worked on at Optio in 2022" data-no="min egen ombygging av et produkt jeg jobbet med hos Optio i 2022">my own rebuild of a product I worked on at Optio in 2022</span>
-        </span>
+    <div class="ss-stmt" role="group" aria-label="The story in 30 seconds" data-en-aria="The story in 30 seconds" data-no-aria="Historien på 30 sekunder">
+      <div class="ss-stmt__bar">
+        <span class="big" data-en="Story statement" data-no="Historieutskrift">Story statement</span>
+        <span class="pill" data-en="● 30 seconds" data-no="● 30 sekunder">● 30 seconds</span>
+        <span class="meta" data-en="Optio 2022 → my rebuild 2026" data-no="Optio 2022 → min ombygging 2026">Optio 2022 → my rebuild 2026</span>
       </div>
-      <div class="cell">
-        <span class="label" data-en="The question" data-no="Spørsmålet">The question</span>
-        <span class="value" data-en="What would I take home, and can I sell?"
-                            data-no="Hva sitter jeg igjen med, og kan jeg selge?">What would I take home, and can I sell?</span>
-      </div>
-      <div class="cell">
-        <span class="label" data-en="Built" data-no="Bygget">Built</span>
-        <span class="value" data-en="Phone first, laptop last"
-                            data-no="Mobil først, laptop sist">Phone first, laptop last</span>
-      </div>
-      <div class="cell">
-        <span class="label" data-en="My role" data-no="Min rolle">My role</span>
-        <span class="value" data-en="Solo · research, UX writing, design and build"
-                            data-no="Alene · innsikt, UX-tekst, design og bygging">Solo · research, UX writing, design and build</span>
+      <div class="ss-stmt__rows">
+        <div class="ss-line"><span class="k" data-en="They asked" data-no="De spurte">They asked</span><span class="v" data-en-html="<b>&ldquo;What would I take home, and can I sell?&rdquo;</b>" data-no-html="<b>«Hva sitter jeg igjen med, og kan jeg selge?»</b>"><b>&ldquo;What would I take home, and can I sell?&rdquo;</b></span></div>
+        <div class="ss-line"><span class="k" data-en="It answered" data-no="Den svarte">It answered</span><span class="v" data-en="&ldquo;What if the price moves?&rdquo; with a slider and two totals." data-no="«Hva om prisen endrer seg?» med en glidebryter og to totaler.">&ldquo;What if the price moves?&rdquo; with a slider and two totals.</span></div>
+        <div class="ss-line"><span class="k" data-en="My wrong turn" data-no="Min feilsving">My wrong turn</span><span class="v" data-en="A chat box as the front door. You had to ask before you could see." data-no="En chatboks som inngangsdør. Du måtte spørre før du fikk se noe.">A chat box as the front door. You had to ask before you could see.</span></div>
+        <div class="ss-line total"><span class="k" data-en="The answer" data-no="Svaret">The answer</span><span class="v" data-en="One sentence first. An AI co-pilot one tap away, which explains but never advises." data-no="Én setning først. En AI-co-pilot ett trykk unna, som forklarer, men aldri gir råd.">One sentence first. An AI co-pilot one tap away, which explains but never advises.</span></div>
       </div>
     </div>
 
-    <!-- THE RESULT ================================================= -->
-    <section id="result" class="sf-section">
-      <span class="case-eyebrow ai" data-en="The result" data-no="Resultatet">The result</span>
-      <h2 data-en="Watch Maren get her answer on a phone, then on a laptop."
-          data-no="Se Maren få svaret sitt på mobilen, og så på en laptop.">
-        Watch Maren get her answer on a phone, then on a laptop.
-      </h2>
-      <p data-en="She checks today&rsquo;s price, tries a doubled price, asks what happens if she leaves, and compares selling now with waiting. Then the phone turns into a laptop. Same page, more room."
-         data-no="Hun sjekker dagens kurs, prøver en doblet kurs, spør hva som skjer hvis hun slutter, og sammenligner å selge nå med å vente. Så blir telefonen til en laptop. Samme side, mer plass.">
-        She checks today&rsquo;s price, tries a doubled price, asks what happens if she leaves, and compares selling now with waiting. Then the phone turns into a laptop. Same page, more room.
-      </p>
+    <div class="ss-facts">
+      <div><span class="k" data-en="When" data-no="Når">When</span><p data-en="2026, my own rebuild" data-no="2026, min egen ombygging">2026, my own rebuild</p></div>
+      <div><span class="k" data-en="The question" data-no="Spørsmålet">The question</span><p data-en="What would I take home, and can I sell?" data-no="Hva sitter jeg igjen med, og kan jeg selge?">What would I take home, and can I sell?</p></div>
+      <div><span class="k" data-en="Built" data-no="Bygget">Built</span><p data-en="Phone first, laptop last" data-no="Telefon først, PC sist">Phone first, laptop last</p></div>
+      <div><span class="k" data-en="My role" data-no="Min rolle">My role</span><p data-en="Solo: research, writing, design and build" data-no="Alene: innsikt, tekst, design og utvikling">Solo: research, writing, design and build</p></div>
+    </div>
 
-      <figure class="ss-video">
-        <div class="ss-video__frame">
-          <video id="ssVideo"
-                 src="assets/case/ss/walkthrough.mp4"
-                 poster="assets/case/ss/walkthrough-poster.jpg"
-                 width="1920" height="1080"
-                 muted loop playsinline preload="none"
-                 aria-describedby="ssVideoDesc"
-                 data-en-aria="Screen recording of the share simulator prototype, first on an iPhone, then on a laptop"
-                 data-no-aria="Skjermopptak av aksjesimulator-prototypen, først på en iPhone, så på en laptop"
-                 aria-label="Screen recording of the share simulator prototype, first on an iPhone, then on a laptop"></video>
-        </div>
-        <div class="ss-video__bar">
-          <button id="ssVideoToggle" type="button" class="ss-playpause"
-                  aria-controls="ssVideo" data-playing="false"
-                  aria-label="Play screen recording" hidden>
-            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true" class="ss-playpause__pause">
-              <rect x="3" y="2" width="3.5" height="12" rx="1"/>
-              <rect x="9.5" y="2" width="3.5" height="12" rx="1"/>
-            </svg>
-            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true" class="ss-playpause__play">
-              <path d="M3.5 2.5v11a.5.5 0 0 0 .77.42l9-5.5a.5.5 0 0 0 0-.84l-9-5.5a.5.5 0 0 0-.77.42Z"/>
-            </svg>
-            <span class="ss-playpause__label">Play</span>
-          </button>
-          <a href="assets/case/ss/walkthrough.mp4" target="_blank" rel="noopener"
-             data-en-aria="Open the recording full size (opens in a new tab)"
-             data-no-aria="Åpne opptaket i full størrelse (åpnes i ny fane)"
-             aria-label="Open the recording full size (opens in a new tab)">
-            <span data-en="Open the video full size" data-no="Åpne videoen i full størrelse">Open the video full size</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-        <details class="video-transcript">
-          <summary data-en="What the recording shows" data-no="Hva opptaket viser">What the recording shows</summary>
-          <div class="video-transcript-body" id="ssVideoDesc">
-            <p data-en="A silent recording with a short caption for each step."
-               data-no="Et lydløst opptak med en kort tekst for hvert steg.">A silent recording with a short caption for each step.</p>
-            <p data-en="Home. The first line reads &ldquo;At today&rsquo;s price you could take home about 35 426 NOK after Norwegian tax.&rdquo; Today&rsquo;s price. A tap on the time stamp shows where the price comes from, when it updates and when the next sale pause is. What if. &ldquo;If price doubles&rdquo; changes the answer to about 40 703 NOK."
-               data-no="Hjem. Første linje sier «Med dagens kurs kan du sitte igjen med rundt 35 426 NOK etter norsk skatt.» Dagens kurs. Et trykk på tidsstempelet viser hvor kursen kommer fra, når den oppdateres og når neste salgspause er. Hva om. «Hvis kursen dobles» endrer svaret til rundt 40 703 NOK.">
-              Home. The first line reads &ldquo;At today&rsquo;s price you could take home about 35 426 NOK after Norwegian tax.&rdquo; Today&rsquo;s price. A tap on the time stamp shows where the price comes from, when it updates and when the next sale pause is. What if. &ldquo;If price doubles&rdquo; changes the answer to about 40 703 NOK.
-            </p>
-            <p data-en="Co-pilot. &ldquo;What if I leave in 18 months?&rdquo; is answered from her own shares. Every year. The table shows only the years she can sell, and a row explains itself in a sentence. Compare. Selling now sits next to waiting six months, the difference is one sentence, and the comparison can be downloaded as a file. Laptop. The same Compare screen, side by side, with the co-pilot on the right explaining how Norwegian and UK tax differ."
-               data-no="Medpilot. «Hva om jeg slutter om 18 måneder?» besvares ut fra hennes egne aksjer. Hvert år. Tabellen viser bare årene hun kan selge, og en rad forklarer seg selv i én setning. Sammenlign. Å selge nå står ved siden av å vente seks måneder, forskjellen står i én setning, og sammenligningen kan lastes ned som fil. Laptop. Den samme Sammenlign-skjermen, side om side, med medpiloten til høyre som forklarer hvordan norsk og britisk skatt skiller seg.">
-              Co-pilot. &ldquo;What if I leave in 18 months?&rdquo; is answered from her own shares. Every year. The table shows only the years she can sell, and a row explains itself in a sentence. Compare. Selling now sits next to waiting six months, the difference is one sentence, and the comparison can be downloaded as a file. Laptop. The same Compare screen, side by side, with the co-pilot on the right explaining how Norwegian and UK tax differ.
-            </p>
-          </div>
-        </details>
+    <div class="ss-answer">
+      <span class="k" data-en="The first thing Maren sees" data-no="Det første Maren ser">The first thing Maren sees</span>
+      <p data-en-html="At today&rsquo;s price you could take home about <span class=&quot;ss-num&quot;>35&#8239;426&nbsp;NOK</span> after Norwegian tax."
+         data-no-html="Med dagens kurs kan du sitte igjen med rundt <span class=&quot;ss-num&quot;>35&#8239;426&nbsp;NOK</span> etter norsk skatt.">At today&rsquo;s price you could take home about <span class="ss-num">35&#8239;426&nbsp;NOK</span> after Norwegian tax.</p>
+      <small data-en="A sentence she can repeat to the bank. Example numbers from the prototype." data-no="En setning hun kan gjenta for banken. Eksempeltall fra prototypen.">A sentence she can repeat to the bank. Example numbers from the prototype.</small>
+    </div>
+
+    <div class="ss-stage">
+      <figure>
+        <picture><source srcset="assets/case/ss/clip-answer-poster.jpg" media="(prefers-reduced-motion: reduce)" />
+          <img src="assets/case/ss/clip-answer.webp" width="430" height="931" alt="Screen recording on a phone: the home sentence, the price source popover, then picking today's price, a doubled price and ten times, with the take-home answer changing each time." /></picture>
+        <figcaption><b data-en="Get the answer" data-no="Få svaret">Get the answer</b><span data-en="then try another price" data-no="og prøv en annen kurs">then try another price</span></figcaption>
       </figure>
-    </section>
+      <figure>
+        <picture><source srcset="assets/case/ss/clip-copilot-poster.jpg" media="(prefers-reduced-motion: reduce)" />
+          <img src="assets/case/ss/clip-copilot.webp" width="430" height="931" alt="Screen recording on a phone: the co-pilot opens from Why?, answers What if I leave in 18 months from her own shares, then Compare shows selling now next to waiting six months." /></picture>
+        <figcaption><b data-en="Ask why" data-no="Spør hvorfor">Ask why</b><span data-en="then compare two choices" data-no="og sammenlign to valg">then compare two choices</span></figcaption>
+      </figure>
+      <figure>
+        <picture><source srcset="assets/case/ss/clip-a11y-poster.jpg" media="(prefers-reduced-motion: reduce)" />
+          <img src="assets/case/ss/clip-a11y.webp" width="430" height="931" alt="Screen recording on a phone: the Accessibility sheet turns on large text and high contrast, and the home screen changes to match." /></picture>
+        <figcaption><b data-en="Make it yours" data-no="Gjør den til din">Make it yours</b><span data-en="larger text, higher contrast" data-no="større tekst, høyere kontrast">larger text, higher contrast</span></figcaption>
+      </figure>
+    </div>
 
-    <!-- TRY THE PROTOTYPE ========================================== -->
-    <section class="sf-section" style="margin-bottom: 56px;">
-      <div style="background: var(--panel-warm); border: 1px solid var(--rule); border-radius: 18px; padding: 28px 32px; display: flex; gap: 24px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 260px;">
-          <span class="case-eyebrow ai" data-en="Working prototype" data-no="Fungerende prototype">Working prototype</span>
-          <h2 style="font-size: 20px; font-weight: 700; line-height: 1.3; margin: 8px 0 6px;"
-              data-en="Try it: pick a price, ask the co-pilot, compare two choices"
-              data-no="Prøv selv: velg en kurs, spør medpiloten, sammenlign to valg">
-            Try it: pick a price, ask the co-pilot, compare two choices
-          </h2>
-          <p style="font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0;"
-             data-en="Works on a phone and on a laptop. The Accessibility button makes text bigger, raises contrast, calms motion and shows what a screen reader hears."
-             data-no="Fungerer på mobil og laptop. Tilgjengelighet-knappen gir større tekst, høyere kontrast, roligere bevegelser og viser hva en skjermleser hører.">
-            Works on a phone and on a laptop. The Accessibility button makes text bigger, raises contrast, calms motion and shows what a screen reader hears.
-          </p>
-        </div>
-        <a class="btn-pill-light" href="share-simulator-v4.html" target="_blank" rel="noopener"
-           data-en-aria="Open the prototype (opens in a new tab)"
-           data-no-aria="Åpne prototypen (åpnes i ny fane)"
-           aria-label="Open the prototype (opens in a new tab)"
-           style="background: var(--ink); color: #fff; border-color: var(--ink); white-space: nowrap;">
-          <span data-en="Open the prototype" data-no="Åpne prototypen">Open the prototype</span>
-          <span aria-hidden="true">↗</span>
-        </a>
+    <aside class="ss-proto" aria-labelledby="ss-proto-h">
+      <div>
+        <span class="k" data-en="● Working prototype" data-no="● Fungerende prototype">● Working prototype</span>
+        <h2 id="ss-proto-h" data-en="Pick a price, ask the co-pilot, compare two choices" data-no="Velg en kurs, spør co-piloten, sammenlign to valg">Pick a price, ask the co-pilot, compare two choices</h2>
+        <p data-en="Works on a phone and a laptop. The Accessibility button makes text bigger, raises contrast, calms motion and shows what a screen reader hears."
+           data-no="Virker på telefon og PC. Tilgjengelighetsknappen gjør teksten større, øker kontrasten, roer ned bevegelse og viser hva en skjermleser hører.">Works on a phone and a laptop. The Accessibility button makes text bigger, raises contrast, calms motion and shows what a screen reader hears.</p>
       </div>
-    </section>
+      <a href="share-simulator-v4.html" target="_blank" rel="noopener"
+         data-en-html="Open the prototype <span aria-hidden=&quot;true&quot;>↗</span><span class=&quot;visually-hidden&quot;> (opens in a new tab)</span>"
+         data-no-html="Åpne prototypen <span aria-hidden=&quot;true&quot;>↗</span><span class=&quot;visually-hidden&quot;> (åpnes i ny fane)</span>">Open the prototype <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a>
+    </aside>
 
-    <!-- 01 · THE PROBLEM =========================================== -->
+    <nav class="case-toc-pills" aria-label="On this page" data-en-aria="On this page" data-no-aria="På denne siden">
+      <a href="#problem"><span class="num">01</span> <span data-en="The problem" data-no="Problemet">The problem</span></a>
+      <a href="#needs"><span class="num">02</span> <span data-en="What people needed" data-no="Hva folk trengte">What people needed</span></a>
+      <a href="#wrong-turn"><span class="num">03</span> <span data-en="The wrong turns" data-no="Feilsvingene">The wrong turns</span></a>
+      <a href="#phone-first"><span class="num">04</span> <span data-en="Phone first" data-no="Telefon først">Phone first</span></a>
+      <a href="#balance"><span class="num">05</span> <span data-en="Finding the balance" data-no="Å finne balansen">Finding the balance</span></a>
+      <a href="#copilot"><span class="num">06</span> <span data-en="The AI co-pilot" data-no="AI-co-piloten">The AI co-pilot</span></a>
+      <a href="#everyone"><span class="num">07</span> <span data-en="Built for everyone" data-no="Laget for alle">Built for everyone</span></a>
+      <a href="#ahead"><span class="num">08</span> <span data-en="Looking ahead" data-no="Veien videre">Looking ahead</span></a>
+    </nav>
+
+    <!-- 01 ===================================================== -->
     <section id="problem" class="sf-section">
       <span class="case-eyebrow" data-en="01 · The problem" data-no="01 · Problemet">01 · The problem</span>
-      <h2 data-en="The old simulator answered a question people weren&rsquo;t asking."
-          data-no="Den gamle simulatoren svarte på et spørsmål folk ikke stilte.">
-        The old simulator answered a question people weren&rsquo;t asking.
-      </h2>
-      <p data-en="At Optio, I was one of the designers on the page people used to see what their company shares might be worth. You moved a slider to pick a price, like &ldquo;five times today&rsquo;s&rdquo;, and read two totals. It was correct, and honest about being a guess."
-         data-no="Hos Optio var jeg en av designerne på siden folk brukte for å se hva aksjene i selskapet kunne være verdt. Du dro en glider for å velge en kurs, som «fem ganger dagens», og leste to summer. Den regnet riktig, og var ærlig om at det var et anslag.">
-        At Optio, I was one of the designers on the page people used to see what their company shares might be worth. You moved a slider to pick a price, like &ldquo;five times today&rsquo;s&rdquo;, and read two totals. It was correct, and honest about being a guess.
-      </p>
-      <p data-en="But people didn&rsquo;t come to ask &ldquo;what if the price moves?&rdquo; They came to ask &ldquo;what would I take home, and can I sell?&rdquo;"
-         data-no="Men folk kom ikke for å spørre «hva om kursen endrer seg?» De kom for å spørre «hva sitter jeg igjen med, og kan jeg selge?»">
-        But people didn&rsquo;t come to ask &ldquo;what if the price moves?&rdquo; They came to ask &ldquo;what would I take home, and can I sell?&rdquo;
-      </p>
-      <p data-en="So they found their own ways. They took screenshots to compare next time. They redid the maths in Excel. They emailed HR and waited for an answer."
-         data-no="Så de fant sine egne løsninger. De tok skjermbilder for å sammenligne neste gang. De regnet på nytt i Excel. De sendte e-post til HR og ventet på svar.">
-        So they found their own ways. They took screenshots to compare next time. They redid the maths in Excel. They emailed HR and waited for an answer.
-      </p>
-      <figure class="sf-figure ss-wide-figure">
-        <img src="assets/case/ep-simulator.png" width="3616" height="2290" loading="lazy"
-             alt="The 2022 simulator on desktop: a share-price slider set to five times today's price, two cards with current and simulated total gain, and a table split into vested and unvested columns per year." />
-        <figcaption data-en="The simulator at Optio, as it looked in 2022. Made for someone fluent in finance: a slider, two totals and a table of vested and unvested shares."
-                    data-no="Simulatoren hos Optio, slik den så ut i 2022. Laget for en som kan finans: en glider, to summer og en tabell med opptjente og ikke opptjente aksjer.">
-          The simulator at Optio, as it looked in 2022. Made for someone fluent in finance: a slider, two totals and a table of vested and unvested shares.
-        </figcaption>
+      <h2 data-en="The old simulator answered a question people weren&rsquo;t asking." data-no="Den gamle simulatoren svarte på et spørsmål folk ikke stilte.">The old simulator answered a question people weren&rsquo;t asking.</h2>
+      <p data-en="At Optio, I was one of the designers on this page. You moved a slider to pick a price, like &ldquo;five times today&rsquo;s&rdquo;, and read two totals. It was correct, and honest about being a guess. It was made for someone fluent in finance."
+         data-no="Hos Optio var jeg en av designerne på denne siden. Du flyttet en glidebryter for å velge en kurs, som «fem ganger dagens», og leste to totaler. Den var riktig, og ærlig om at det var et anslag. Den var laget for noen som kan finans.">At Optio, I was one of the designers on this page. You moved a slider to pick a price, like &ldquo;five times today&rsquo;s&rdquo;, and read two totals. It was correct, and honest about being a guess. It was made for someone fluent in finance.</p>
+      <figure class="ss-fig">
+        <img class="ss-shot" src="assets/case/ep-simulator.png" width="3616" height="2290" loading="lazy" alt="The 2022 simulator on desktop: a share-price slider set to five times today's price, two cards with current and simulated total gain, and a table split into vested and unvested columns per year." />
+        <figcaption data-en="The simulator at Optio, as it looked in 2022." data-no="Simulatoren hos Optio, slik den så ut i 2022.">The simulator at Optio, as it looked in 2022.</figcaption>
       </figure>
-      <p class="shift-quote" style="margin-top: 32px;"
-         data-en="&ldquo;A simulator that only returns a number isn&rsquo;t simulating much.&rdquo;"
-         data-no="«En simulator som bare returnerer et tall, simulerer ikke mye.»">
-        &ldquo;A simulator that only returns a number isn&rsquo;t simulating much.&rdquo;
-      </p>
-    </section>
-
-    <!-- 02 · WHAT PEOPLE NEEDED ==================================== -->
-    <section id="need" class="sf-section">
-      <span class="case-eyebrow" data-en="02 · What people needed" data-no="02 · Hva folk trengte">02 · What people needed</span>
-      <h2 data-en="People wanted their own reality, not the programme&rsquo;s."
-          data-no="Folk ville se sin egen virkelighet, ikke programmets.">
-        People wanted their own reality, not the programme&rsquo;s.
-      </h2>
-      <p data-en="I started with what people did when the simulator let them down, and asked what they were really missing. Some of it was about status, deadlines and a price they could trust. But one need sat under all the others."
-         data-no="Jeg startet med hva folk gjorde når simulatoren sviktet, og spurte hva de egentlig manglet. Noe handlet om status, frister og en kurs de kunne stole på. Men ett behov lå under alle de andre.">
-        I started with what people did when the simulator let them down, and asked what they were really missing. Some of it was about status, deadlines and a price they could trust. But one need sat under all the others.
-      </p>
-      <p data-en="Your currency. Your tax. What actually lands in your bank account. The old page showed the company&rsquo;s data, so people had to translate every number themselves. Nothing else helps until the numbers are in your own money."
-         data-no="Din valuta. Din skatt. Det som faktisk havner på kontoen din. Den gamle siden viste selskapets data, så folk måtte oversette hvert tall selv. Ingenting annet hjelper før tallene står i dine egne penger.">
-        Your currency. Your tax. What actually lands in your bank account. The old page showed the company&rsquo;s data, so people had to translate every number themselves. Nothing else helps until the numbers are in your own money.
-      </p>
-      <p class="shift-quote"
-         data-en="How do I show people their own reality, so they feel informed instead of guessing?"
-         data-no="Hvordan viser jeg folk deres egen virkelighet, så de føler seg informert i stedet for å gjette?">
-        How do I show people their own reality, so they feel informed instead of guessing?
-      </p>
-
-      <h3 data-en="The people I kept in mind" data-no="Menneskene jeg hadde i tankene">The people I kept in mind</h3>
-      <div class="ss-people">
-        <article class="ss-person">
-          <div class="ss-person__head"><span class="ss-person__av" aria-hidden="true">MK</span>
-            <div><h3>Maren</h3><p class="role" data-en="New hire, getting ready for a mortgage meeting" data-no="Nyansatt, gjør seg klar til et boliglånsmøte">New hire, getting ready for a mortgage meeting</p></div></div>
-          <blockquote data-en="&ldquo;I don&rsquo;t want a chart, I want a sentence I can repeat to the bank.&rdquo;" data-no="«Jeg vil ikke ha en graf, jeg vil ha en setning jeg kan gjenta for banken.»">&ldquo;I don&rsquo;t want a chart, I want a sentence I can repeat to the bank.&rdquo;</blockquote>
-        </article>
-        <article class="ss-person">
-          <div class="ss-person__head"><span class="ss-person__av" aria-hidden="true">DH</span>
-            <div><h3>Daniel</h3><p class="role" data-en="Has worked there for years, owns several kinds of shares" data-no="Har jobbet der i mange år, eier flere typer aksjer">Has worked there for years, owns several kinds of shares</p></div></div>
-          <blockquote data-en="&ldquo;Don&rsquo;t simplify, just show me the maths clearly.&rdquo;" data-no="«Ikke forenkle, bare vis meg regnestykket tydelig.»">&ldquo;Don&rsquo;t simplify, just show me the maths clearly.&rdquo;</blockquote>
-        </article>
-        <article class="ss-person">
-          <div class="ss-person__head"><span class="ss-person__av" aria-hidden="true">PK</span>
-            <div><h3>Priya</h3><p class="role" data-en="UK contract, planning maternity leave, mostly on her phone" data-no="Britisk kontrakt, planlegger foreldrepermisjon, mest på mobilen">UK contract, planning maternity leave, mostly on her phone</p></div></div>
-          <blockquote data-en="&ldquo;I&rsquo;m doing all this at 11 PM on my phone. Be kind to that.&rdquo;" data-no="«Jeg gjør alt dette klokka elleve om kvelden på mobilen. Vær snill med det.»">&ldquo;I&rsquo;m doing all this at 11 PM on my phone. Be kind to that.&rdquo;</blockquote>
-        </article>
-        <article class="ss-person">
-          <div class="ss-person__head"><span class="ss-person__av" aria-hidden="true">OH</span>
-            <div><h3>Ola</h3><p class="role" data-en="Head of sales, uses VoiceOver" data-no="Salgsdirektør, bruker VoiceOver">Head of sales, uses VoiceOver</p></div></div>
-          <blockquote data-en="&ldquo;If I have to ask someone what the page shows, you&rsquo;ve lost me.&rdquo;" data-no="«Må jeg spørre noen hva siden viser, har du mistet meg.»">&ldquo;If I have to ask someone what the page shows, you&rsquo;ve lost me.&rdquo;</blockquote>
-        </article>
-      </div>
-
-      <h3 data-en="Three rules for every screen" data-no="Tre regler for hver skjerm">Three rules for every screen</h3>
-      <ul class="sf-ai-list">
-        <li data-en-html="<strong>Lead with what you&rsquo;d receive.</strong> Money after tax, in your currency, comes first. The fine print comes last."
-            data-no-html="<strong>Start med det du sitter igjen med.</strong> Penger etter skatt, i din valuta, kommer først. Det med liten skrift kommer sist.">
-          <strong>Lead with what you&rsquo;d receive.</strong> Money after tax, in your currency, comes first. The fine print comes last.
-        </li>
-        <li data-en-html="<strong>Say what you can do.</strong> &ldquo;Can sell&rdquo;, &ldquo;Soon&rdquo; and &ldquo;Later&rdquo; instead of &ldquo;vested&rdquo; and &ldquo;unvested&rdquo;. You should be able to point at what you can act on today."
-            data-no-html="<strong>Si hva du kan gjøre.</strong> «Kan selges», «Snart» og «Senere» i stedet for «opptjent» og «ikke opptjent». Du skal kunne peke på det du kan gjøre noe med i dag.">
-          <strong>Say what you can do.</strong> &ldquo;Can sell&rdquo;, &ldquo;Soon&rdquo; and &ldquo;Later&rdquo; instead of &ldquo;vested&rdquo; and &ldquo;unvested&rdquo;. You should be able to point at what you can act on today.
-        </li>
-        <li data-en-html="<strong>Show what changed.</strong> A small marker on the numbers that moved since your last visit, so nobody needs a screenshot to remember."
-            data-no-html="<strong>Vis hva som har endret seg.</strong> En liten markør på tallene som har flyttet seg siden sist, så ingen trenger et skjermbilde for å huske.">
-          <strong>Show what changed.</strong> A small marker on the numbers that moved since your last visit, so nobody needs a screenshot to remember.
-        </li>
+      <p style="margin-top:28px" data-en="So people found their own ways:" data-no="Så fant folk sine egne løsninger:">So people found their own ways:</p>
+      <ul class="ss-hacks">
+        <li><span class="ic" aria-hidden="true">📸</span><b data-en="Screenshots" data-no="Skjermbilder">Screenshots</b><span data-en="to compare with next time" data-no="for å sammenligne neste gang">to compare with next time</span></li>
+        <li><span class="ic" aria-hidden="true">🧮</span><b data-en="Excel" data-no="Excel">Excel</b><span data-en="to redo the maths in their own money" data-no="for å regne om til egne penger">to redo the maths in their own money</span></li>
+        <li><span class="ic" aria-hidden="true">✉️</span><b data-en="Emails to HR" data-no="E-post til HR">Emails to HR</b><span data-en="and then waiting for an answer" data-no="og så vente på svar">and then waiting for an answer</span></li>
       </ul>
+      <p class="ss-quote" data-en="A simulator that only returns a number isn&rsquo;t simulating much." data-no="En simulator som bare gir deg et tall, simulerer ikke så mye.">A simulator that only returns a number isn&rsquo;t simulating much.</p>
     </section>
 
-    <!-- 03 · THE WRONG TURN ======================================== -->
+    <!-- 02 ===================================================== -->
+    <section id="needs" class="sf-section">
+      <span class="case-eyebrow" data-en="02 · What people needed" data-no="02 · Hva folk trengte">02 · What people needed</span>
+      <h2 data-en="People wanted their own reality, not the programme&rsquo;s." data-no="Folk ville se sin egen virkelighet, ikke programmets.">People wanted their own reality, not the programme&rsquo;s.</h2>
+      <p data-en-html="I started with what people did when the simulator let them down. One need sat under all the others: <span class=&quot;ss-hl&quot;>your currency, your tax, what actually lands in your bank account.</span>"
+         data-no-html="Jeg startet med hva folk gjorde når simulatoren sviktet dem. Ett behov lå under alle de andre: <span class=&quot;ss-hl&quot;>din valuta, din skatt, det som faktisk havner på kontoen din.</span>">I started with what people did when the simulator let them down. One need sat under all the others: <span class="ss-hl">your currency, your tax, what actually lands in your bank account.</span></p>
+
+      <div class="ss-wall">
+        <a href="assets/case/ss/research-behaviours.jpg" target="_blank" rel="noopener"><img src="assets/case/ss/research-behaviours.jpg" width="1726" height="2618" loading="lazy" alt="Research board: how people actually use and leave the simulator, as a list of behaviours." /></a>
+        <a href="assets/case/ss/research-clusters.jpg" target="_blank" rel="noopener"><img src="assets/case/ss/research-clusters.jpg" width="1726" height="2248" loading="lazy" alt="Research board: four clusters mapped from the behaviours." /></a>
+        <a href="assets/case/ss/research-journeys.jpg" target="_blank" rel="noopener"><img src="assets/case/ss/research-journeys.jpg" width="1726" height="2019" loading="lazy" alt="Research board: three journeys across the participant lifecycle." /></a>
+        <a href="assets/case/ss/research-hmw.jpg" target="_blank" rel="noopener"><img src="assets/case/ss/research-hmw.jpg" width="1726" height="1490" loading="lazy" alt="Research board: How Might We statements per cluster." /></a>
+      </div>
+      <p class="ss-wall" style="display:block;margin-top:6px"><span data-en="My research wall: behaviours, clusters, journeys and How Might We. Tap to open full size." data-no="Researchveggen min: atferd, klynger, reiser og «hvordan kan vi». Trykk for full størrelse.">My research wall: behaviours, clusters, journeys and How Might We. Tap to open full size.</span></p>
+
+      <div class="ss-hmw">
+        <span class="k" data-en="The question I kept asking" data-no="Spørsmålet jeg stilte hele tiden">The question I kept asking</span>
+        <p data-en="How do I show people their own reality, so they feel informed instead of guessing?" data-no="Hvordan viser jeg folk deres egen virkelighet, så de føler seg informert i stedet for å gjette?">How do I show people their own reality, so they feel informed instead of guessing?</p>
+      </div>
+
+      <div class="ss-people">
+        <div class="ss-person"><div class="ss-person__top"><b>Maren</b><span data-en="new hire · mortgage meeting" data-no="nyansatt · bankmøte om boliglån">new hire · mortgage meeting</span></div>
+          <blockquote data-en="&ldquo;I don&rsquo;t want a chart. I want a sentence I can repeat to the bank.&rdquo;" data-no="«Jeg vil ikke ha en graf. Jeg vil ha en setning jeg kan si til banken.»">&ldquo;I don&rsquo;t want a chart. I want a sentence I can repeat to the bank.&rdquo;</blockquote></div>
+        <div class="ss-person"><div class="ss-person__top"><b>Daniel</b><span data-en="years in · many share types" data-no="mange år · mange aksjetyper">years in · many share types</span></div>
+          <blockquote data-en="&ldquo;Don&rsquo;t simplify. Just show me the maths clearly.&rdquo;" data-no="«Ikke forenkle. Bare vis meg regnestykket tydelig.»">&ldquo;Don&rsquo;t simplify. Just show me the maths clearly.&rdquo;</blockquote></div>
+        <div class="ss-person"><div class="ss-person__top"><b>Priya</b><span data-en="UK contract · on her phone" data-no="britisk kontrakt · på mobilen">UK contract · on her phone</span></div>
+          <blockquote data-en="&ldquo;I&rsquo;m doing this at 11 PM on my phone. Be kind to that.&rdquo;" data-no="«Jeg gjør dette klokka elleve om kvelden på mobilen. Vær snill med det.»">&ldquo;I&rsquo;m doing this at 11 PM on my phone. Be kind to that.&rdquo;</blockquote></div>
+        <div class="ss-person"><div class="ss-person__top"><b>Ola</b><span data-en="head of sales · VoiceOver" data-no="salgssjef · VoiceOver">head of sales · VoiceOver</span></div>
+          <blockquote data-en="&ldquo;If I have to ask someone what the page shows, you&rsquo;ve lost me.&rdquo;" data-no="«Må jeg spørre noen hva siden viser, har du mistet meg.»">&ldquo;If I have to ask someone what the page shows, you&rsquo;ve lost me.&rdquo;</blockquote></div>
+      </div>
+
+      <h3 style="margin-top:36px" data-en="Three rules for every screen" data-no="Tre regler for hver skjerm">Three rules for every screen</h3>
+      <ol class="ss-rules">
+        <li><span><b data-en="Lead with what you&rsquo;d receive." data-no="Start med hva du får.">Lead with what you&rsquo;d receive.</b><span data-en="Money after tax, in your currency, first. Fine print last." data-no="Penger etter skatt, i din valuta, først. Det med liten skrift sist.">Money after tax, in your currency, first. Fine print last.</span></span></li>
+        <li><span><b data-en="Say what you can do." data-no="Si hva du kan gjøre.">Say what you can do.</b><span data-en="&ldquo;Can sell&rdquo;, &ldquo;Soon&rdquo; and &ldquo;Later&rdquo; instead of &ldquo;vested&rdquo; and &ldquo;unvested&rdquo;." data-no="«Kan selges», «Snart» og «Senere» i stedet for «opptjent» og «ikke opptjent».">&ldquo;Can sell&rdquo;, &ldquo;Soon&rdquo; and &ldquo;Later&rdquo; instead of &ldquo;vested&rdquo; and &ldquo;unvested&rdquo;.</span></span></li>
+        <li><span><b data-en="Show what changed." data-no="Vis hva som er endret.">Show what changed.</b><span data-en="A small marker on what moved since your last visit, so nobody needs a screenshot." data-no="Et lite merke på det som har endret seg siden sist, så ingen trenger skjermbilder.">A small marker on what moved since your last visit, so nobody needs a screenshot.</span></span></li>
+      </ol>
+    </section>
+
+    <!-- 03 ===================================================== -->
     <section id="wrong-turn" class="sf-section">
-      <span class="case-eyebrow" data-en="03 · The wrong turn" data-no="03 · Feil vei">03 · The wrong turn</span>
-      <h2 data-en="My first idea was a chat box. It was the wrong front door."
-          data-no="Min første idé var en chatboks. Det var feil inngangsdør.">
-        My first idea was a chat box. It was the wrong front door.
-      </h2>
-      <p data-en="In June I put a chat box in the middle of the page: ask anything about your shares. The answers were good. But there was a catch."
-         data-no="I juni satte jeg en chatboks midt på siden: spør om hva som helst om aksjene dine. Svarene var gode. Men det var en hake.">
-        In June I put a chat box in the middle of the page: ask anything about your shares. The answers were good. But there was a catch.
-      </p>
-      <p data-en="You had to know what to ask before you saw a single number. And Maren had already told me what she wanted: a sentence for the bank, not a conversation."
-         data-no="Du måtte vite hva du skulle spørre om før du så et eneste tall. Og Maren hadde allerede sagt hva hun ville ha: en setning til banken, ikke en samtale.">
-        You had to know what to ask before you saw a single number. And Maren had already told me what she wanted: a sentence for the bank, not a conversation.
-      </p>
-      <p data-en="So the chat didn&rsquo;t disappear. It moved, from the front door to a helper standing next to the number it explains."
-         data-no="Så chatten forsvant ikke. Den flyttet seg, fra inngangsdøra til en hjelper som står ved siden av tallet den forklarer.">
-        So the chat didn&rsquo;t disappear. It moved, from the front door to a helper standing next to the number it explains.
-      </p>
-      <figure class="sf-figure ss-wide-figure">
-        <img src="assets/case/share-simulator-cover.png" width="2000" height="1137" loading="lazy"
-             alt="The June 2026 version: a chat-first co-pilot. Asked “Should I sell now?”, it declines to recommend and offers three comparisons. Asked about the next earnings window, it gives an estimate." />
-        <figcaption data-en="June 2026: chat in the middle. Good answers, but you had to ask before you could see."
-                    data-no="Juni 2026: chat i midten. Gode svar, men du måtte spørre før du fikk se.">
-          June 2026: chat in the middle. Good answers, but you had to ask before you could see.
-        </figcaption>
-      </figure>
-
-      <h3 data-en="Two more tries, the same mistake" data-no="To forsøk til, den samme feilen">Two more tries, the same mistake</h3>
-      <p data-en="Next I built two clickable ideas. One kept the old slider. The other started with filters. Both made people set things up before they saw their own number. That told me what the page had to do: show the answer first."
-         data-no="Så bygde jeg to klikkbare ideer. Den ene beholdt den gamle glideren. Den andre startet med filtre. Begge fikk folk til å stille inn ting før de så sitt eget tall. Det fortalte meg hva siden måtte gjøre: vise svaret først.">
-        Next I built two clickable ideas. One kept the old slider. The other started with filters. Both made people set things up before they saw their own number. That told me what the page had to do: show the answer first.
-      </p>
-      <div class="ss-ba__pair phones">
-        <figure>
-          <img src="assets/case/ss/concept-a.jpg" width="600" height="1305" loading="lazy"
-               alt="Concept A on a phone: a price slider, current and simulated gain cards, chart and table toggles, and a co-pilot input at the bottom." />
-          <figcaption data-en="Idea A · the slider first" data-no="Idé A · glideren først">Idea A · the slider first</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/case/ss/concept-b.jpg" width="600" height="1305" loading="lazy"
-               alt="Concept B on a phone: rows of filter chips for share type, plan and price above the current and simulated cards and a chart." />
-          <figcaption data-en="Idea B · the filters first" data-no="Idé B · filtrene først">Idea B · the filters first</figcaption>
-        </figure>
+      <span class="case-eyebrow" data-en="03 · The wrong turns" data-no="03 · Feilsvingene">03 · The wrong turns</span>
+      <h2 data-en="Three tries, one lesson: show the answer first." data-no="Tre forsøk, én lærdom: vis svaret først.">Three tries, one lesson: show the answer first.</h2>
+      <p data-en="Every early idea made people do something before they saw their own number." data-no="Alle de tidlige ideene fikk folk til å gjøre noe før de så sitt eget tall.">Every early idea made people do something before they saw their own number.</p>
+      <div class="ss-tries">
+        <div class="ss-try">
+          <span class="mark no" data-en="✕ June · chat first" data-no="✕ Juni · chat først">✕ June · chat first</span>
+          <figure><img src="assets/case/share-simulator-cover.png" width="2000" height="1137" style="aspect-ratio:auto" loading="lazy" alt="The June 2026 version: a chat-first co-pilot in the middle of the page." /></figure>
+          <h3 data-en="Ask anything" data-no="Spør om hva som helst">Ask anything</h3>
+          <p data-en="Good answers, but you had to know what to ask before seeing a single number." data-no="Gode svar, men du måtte vite hva du skulle spørre om før du så ett eneste tall.">Good answers, but you had to know what to ask before seeing a single number.</p>
+        </div>
+        <div class="ss-try">
+          <span class="mark no" data-en="✕ Idea A · slider" data-no="✕ Idé A · glidebryter">✕ Idea A · slider</span>
+          <figure><img src="assets/case/ss/concept-a.jpg" width="600" height="1304" loading="lazy" alt="Concept A on a phone: a price slider, current and simulated gain cards, and a co-pilot input at the bottom." /></figure>
+          <h3 data-en="Slider first" data-no="Glidebryter først">Slider first</h3>
+          <p data-en="The old habit, on a smaller screen. Still multiples, not money." data-no="Den gamle vanen, på en mindre skjerm. Fortsatt ganger, ikke penger.">The old habit, on a smaller screen. Still multiples, not money.</p>
+        </div>
+        <div class="ss-try">
+          <span class="mark no" data-en="✕ Idea B · filters" data-no="✕ Idé B · filtre">✕ Idea B · filters</span>
+          <figure><img src="assets/case/ss/concept-b.jpg" width="600" height="1304" loading="lazy" alt="Concept B on a phone: rows of filter chips for share type, plan and price above the cards and a chart." /></figure>
+          <h3 data-en="Filters first" data-no="Filtre først">Filters first</h3>
+          <p data-en="Set up three rows of chips, then see something. Too much homework." data-no="Sett opp tre rader med valg, så får du se noe. For mye lekser.">Set up three rows of chips, then see something. Too much homework.</p>
+        </div>
+        <div class="ss-try">
+          <span class="mark yes" data-en="✓ The answer first" data-no="✓ Svaret først">✓ The answer first</span>
+          <figure><img src="assets/case/ss/now-home.jpg" width="600" height="1304" loading="lazy" alt="Today's home screen: a dark price bar, then the take-home sentence, the main button, your shares and the next unlock." /></figure>
+          <h3 data-en="One sentence" data-no="Én setning">One sentence</h3>
+          <p data-en="The chat didn&rsquo;t disappear. It moved next to the number it explains." data-no="Chatten forsvant ikke. Den flyttet seg ved siden av tallet den forklarer.">The chat didn&rsquo;t disappear. It moved next to the number it explains.</p>
+        </div>
       </div>
     </section>
 
-    <!-- 04 · PHONE FIRST =========================================== -->
-    <section id="mobile-first" class="sf-section">
-      <span class="case-eyebrow" data-en="04 · Phone first" data-no="04 · Mobil først">04 · Phone first</span>
-      <h2 data-en="I started on the smallest screen, because that&rsquo;s where people ask."
-          data-no="Jeg startet på den minste skjermen, for det er der folk spør.">
-        I started on the smallest screen, because that&rsquo;s where people ask.
-      </h2>
-      <p data-en="Priya checks her shares late at night on her phone. Others give it two minutes between meetings. So the phone came first."
-         data-no="Priya sjekker aksjene sine sent på kvelden på mobilen. Andre gir det to minutter mellom møter. Så mobilen kom først.">
-        Priya checks her shares late at night on her phone. Others give it two minutes between meetings. So the phone came first.
-      </p>
-      <p data-en="A small screen won&rsquo;t let you put off hard choices. One question per screen. One main button. Every number explained in words. Then I turned the phone on its side, and only then opened a laptop. The laptop gets more room, not more stuff, so you find the same page on every device."
-         data-no="En liten skjerm lar deg ikke utsette de vanskelige valgene. Ett spørsmål per skjerm. Én hovedknapp. Hvert tall forklart med ord. Så snudde jeg telefonen på siden, og først da åpnet jeg en laptop. Laptopen får mer plass, ikke mer innhold, så du finner den samme siden på hver enhet.">
-        A small screen won&rsquo;t let you put off hard choices. One question per screen. One main button. Every number explained in words. Then I turned the phone on its side, and only then opened a laptop. The laptop gets more room, not more stuff, so you find the same page on every device.
-      </p>
-
-      <div class="ss-ladder">
-        <figure class="phone">
-          <img src="assets/case/ss/now-sim.jpg" width="600" height="1305" loading="lazy"
-               alt="The phone: the simulator in one column, with price choices above the take-home answer." />
-          <figcaption data-en-html="<b>Phone</b>One column. The question, then the answer."
-                      data-no-html="<b>Mobil</b>Én kolonne. Spørsmålet, så svaret.">
-            <b>Phone</b>One column. The question, then the answer.
-          </figcaption>
-        </figure>
-        <figure class="land">
-          <img src="assets/case/ss/now-landscape.jpg" width="1200" height="552" loading="lazy"
-               alt="The phone on its side: the chart on the left, price choices and the answer on the right." />
-          <figcaption data-en-html="<b>On its side</b>Chart on the left, choices on the right, so every tap moves the chart."
-                      data-no-html="<b>Liggende</b>Grafen til venstre, valgene til høyre, så hvert trykk flytter grafen.">
-            <b>On its side</b>Chart on the left, choices on the right, so every tap moves the chart.
-          </figcaption>
-        </figure>
-        <figure class="laptop">
-          <img src="assets/case/ss/lap-sim.jpg" width="1600" height="1000" loading="lazy"
-               alt="The laptop: the same layout with more room, the price bar on one line and every price choice in a row." />
-          <figcaption data-en-html="<b>Laptop</b>The same layout with more room. The co-pilot sits on the right."
-                      data-no-html="<b>Laptop</b>Samme oppsett med mer plass. Medpiloten sitter til høyre.">
-            <b>Laptop</b>The same layout with more room. The co-pilot sits on the right.
-          </figcaption>
-        </figure>
+    <!-- 04 ===================================================== -->
+    <section id="phone-first" class="sf-section">
+      <span class="case-eyebrow" data-en="04 · Phone first" data-no="04 · Telefon først">04 · Phone first</span>
+      <h2 data-en="I started on the smallest screen, because that&rsquo;s where people ask." data-no="Jeg startet på den minste skjermen, for det er der folk spør.">I started on the smallest screen, because that&rsquo;s where people ask.</h2>
+      <p data-en-html="Priya checks her shares at night on her phone. A small screen won&rsquo;t let you put off hard choices: <span class=&quot;ss-hl&quot;>one question per screen, one main button, every number in words.</span>"
+         data-no-html="Priya sjekker aksjene sine om kvelden på mobilen. En liten skjerm lar deg ikke utsette vanskelige valg: <span class=&quot;ss-hl&quot;>ett spørsmål per skjerm, én hovedknapp, hvert tall med ord.</span>">Priya checks her shares at night on her phone. A small screen won&rsquo;t let you put off hard choices: <span class="ss-hl">one question per screen, one main button, every number in words.</span></p>
+      <div class="ss-lofi" role="group" aria-label="Phone wireframes" data-en-aria="Phone wireframes" data-no-aria="Wireframes for telefon">
+        <img src="assets/case/ss/lofi-01.jpg" width="600" height="976" loading="lazy" alt="Wireframe: home with what needs you, what you'd receive today and what you can do now." />
+        <img src="assets/case/ss/lofi-02.jpg" width="600" height="1023" loading="lazy" alt="Wireframe: simulator with price scenario chips, current and simulated cards and a chart." />
+        <img src="assets/case/ss/lofi-03.jpg" width="600" height="910" loading="lazy" alt="Wireframe: simulator with the co-pilot answering why 2026 is higher." />
+        <img src="assets/case/ss/lofi-04.jpg" width="600" height="1006" loading="lazy" alt="Wireframe: your shares per year, net after tax, with a status for each year." />
+        <img src="assets/case/ss/lofi-05.jpg" width="600" height="1050" loading="lazy" alt="Wireframe: compare two scenarios side by side." />
+      </div>
+      <p class="ss-wall" style="display:block;margin-top:8px"><span data-en="The phone wireframes. Every screen had to earn its place here first." data-no="Wireframes for telefonen. Hver skjerm måtte gjøre seg fortjent til plassen her først.">The phone wireframes. Every screen had to earn its place here first.</span></p>
+      <div class="ss-grow">
+        <figure><img class="ss-phone" src="assets/case/ss/now-sim.jpg" width="600" height="1304" loading="lazy" alt="The phone: the simulator in one column, with price choices above the take-home answer." />
+          <figcaption><b data-en="Phone" data-no="Telefon">Phone</b><span data-en="the question, then the answer" data-no="spørsmålet, så svaret">the question, then the answer</span></figcaption></figure>
+        <figure><img class="ss-shot" src="assets/case/ss/now-landscape.jpg" width="1200" height="552" loading="lazy" alt="The phone on its side: the chart on the left, price choices and the answer on the right." />
+          <figcaption><b data-en="On its side" data-no="På siden">On its side</b><span data-en="every tap moves the chart" data-no="hvert trykk flytter grafen">every tap moves the chart</span></figcaption></figure>
+        <figure><img class="ss-shot" src="assets/case/ss/lap-sim.jpg" width="1600" height="1000" loading="lazy" alt="The laptop: the same layout with more room, the price bar on one line and every price choice in a row." />
+          <figcaption><b data-en="Laptop" data-no="PC">Laptop</b><span data-en="more room, not more stuff" data-no="mer plass, ikke mer innhold">more room, not more stuff</span></figcaption></figure>
       </div>
     </section>
 
-    <!-- 05 · FINDING THE BALANCE =================================== -->
+    <!-- 05 ===================================================== -->
     <section id="balance" class="sf-section">
       <span class="case-eyebrow" data-en="05 · Finding the balance" data-no="05 · Å finne balansen">05 · Finding the balance</span>
-      <h2 data-en="First I showed too much. Then too little. Then I found the middle."
-          data-no="Først viste jeg for mye. Så for lite. Så fant jeg midten.">
-        First I showed too much. Then too little. Then I found the middle.
-      </h2>
-      <p data-en="My first working version put everything on the first screen. It matched my sketches, and it was too much at once."
-         data-no="Den første fungerende versjonen la alt på første skjerm. Den lignet skissene mine, og den var for mye på en gang.">
-        My first working version put everything on the first screen. It matched my sketches, and it was too much at once.
-      </p>
-      <p data-en="So I cut hard. It looked clean. It worked worse. Today&rsquo;s price was gone, and so was where it came from. Without them, the amount on screen was a number nobody could check. And a number you can&rsquo;t check is a number you don&rsquo;t trust."
-         data-no="Så kuttet jeg hardt. Det så ryddig ut. Det fungerte dårligere. Dagens kurs var borte, og det samme var hvor den kom fra. Uten dem var beløpet på skjermen et tall ingen kunne sjekke. Og et tall du ikke kan sjekke, stoler du ikke på.">
-        So I cut hard. It looked clean. It worked worse. Today&rsquo;s price was gone, and so was where it came from. Without them, the amount on screen was a number nobody could check. And a number you can&rsquo;t check is a number you don&rsquo;t trust.
-      </p>
-      <p data-en="So the anchors came back: a price bar on every screen, with today&rsquo;s price, what changed since your last visit, where the price comes from and what you can sell."
-         data-no="Så kom ankrene tilbake: en kurslinje på hver skjerm, med dagens kurs, hva som har endret seg siden sist, hvor kursen kommer fra og hva du kan selge.">
-        So the anchors came back: a price bar on every screen, with today&rsquo;s price, what changed since your last visit, where the price comes from and what you can sell.
-      </p>
-
-      <article class="ss-ba">
-        <h3 data-en="Simple, but not empty" data-no="Enkelt, men ikke tomt">Simple, but not empty</h3>
-        <p data-en="The too-simple version said &ldquo;4 250 NOK&rdquo; with nothing to check it against. Now the price and its source sit on top, and the sentence says which shares the money comes from."
-           data-no="Den for enkle versjonen sa «4 250 NOK» uten noe å sjekke det mot. Nå ligger kursen og kilden øverst, og setningen sier hvilke aksjer pengene kommer fra.">
-          The too-simple version said &ldquo;4 250 NOK&rdquo; with nothing to check it against. Now the price and its source sit on top, and the sentence says which shares the money comes from.
-        </p>
-        <div class="ss-ba__pair phones">
-          <figure>
-            <span class="ss-ba__label before" data-en="Before · too simple" data-no="Før · for enkelt">Before · too simple</span>
-            <img src="assets/case/ss/before-simplified-home.jpg" width="600" height="1305" loading="lazy"
-                 alt="The too-simple home screen: a large sentence about 4 250 NOK and two buttons. No share price, no source, no holdings." />
-          </figure>
-          <figure>
-            <span class="ss-ba__label after" data-en="After" data-no="Etter">After</span>
-            <img src="assets/case/ss/now-home.jpg" width="600" height="1305" loading="lazy"
-                 alt="Today's home screen: a dark price bar with today's price, the change and the update time, then the take-home sentence, the main button, your shares and the next unlock." />
-          </figure>
+      <h2 data-en="First too much. Then too little. Then the middle." data-no="Først for mye. Så for lite. Så midten.">First too much. Then too little. Then the middle.</h2>
+      <p data-en-html="When I cut too hard, today&rsquo;s price and its source disappeared. The amount became a number nobody could check. <span class=&quot;ss-hl&quot;>And a number you can&rsquo;t check is a number you don&rsquo;t trust.</span>"
+         data-no-html="Da jeg kuttet for hardt, forsvant dagens kurs og hvor den kom fra. Beløpet ble et tall ingen kunne sjekke. <span class=&quot;ss-hl&quot;>Og et tall du ikke kan sjekke, stoler du ikke på.</span>">When I cut too hard, today&rsquo;s price and its source disappeared. The amount became a number nobody could check. <span class="ss-hl">And a number you can&rsquo;t check is a number you don&rsquo;t trust.</span></p>
+      <div class="ss-meter">
+        <div class="ss-meter__track" aria-hidden="true"><span style="left:50%"></span></div>
+        <div class="ss-meter__cols">
+          <figure><img class="ss-phone" src="assets/case/ss/first-build-home.jpg" width="600" height="1304" loading="lazy" alt="The first working home screen: what needs you, what you'd receive today, three status rows and two buttons, all on one screen." />
+            <figcaption><b data-en="Too much" data-no="For mye">Too much</b><span data-en="everything on the first screen" data-no="alt på første skjerm">everything on the first screen</span></figcaption></figure>
+          <figure><img class="ss-phone" src="assets/case/ss/before-simplified-home.jpg" width="600" height="1304" loading="lazy" alt="The too-simple home screen: a large sentence about 4 250 NOK and two buttons. No share price, no source, no holdings." />
+            <figcaption><b data-en="Too little" data-no="For lite">Too little</b><span data-en="clean, but nothing to check it against" data-no="ryddig, men ingenting å sjekke mot">clean, but nothing to check it against</span></figcaption></figure>
+          <figure class="ok"><img class="ss-phone" src="assets/case/ss/now-home.jpg" width="600" height="1304" loading="lazy" alt="Today's home screen: a dark price bar with today's price, the change and the update time, then the take-home sentence, the main button, your shares and the next unlock." />
+            <figcaption><b data-en="Just right" data-no="Akkurat passe">Just right</b><span data-en="the price bar came back on every screen" data-no="kursen kom tilbake på hver skjerm">the price bar came back on every screen</span></figcaption></figure>
         </div>
-      </article>
+      </div>
 
-      <article class="ss-ba">
-        <h3 data-en="From a slider to a sentence" data-no="Fra en glider til en setning">From a slider to a sentence</h3>
-        <p data-en="The old page made you think in multiples of the price and read two totals. The new one names the choice in words and answers with what you&rsquo;d take home, for which shares, in which year."
-           data-no="Den gamle siden fikk deg til å tenke i ganger kursen og lese to summer. Den nye sier valget med ord og svarer med hva du sitter igjen med, for hvilke aksjer, i hvilket år.">
-          The old page made you think in multiples of the price and read two totals. The new one names the choice in words and answers with what you&rsquo;d take home, for which shares, in which year.
-        </p>
-        <div class="ss-ba__pair wide">
-          <figure>
-            <span class="ss-ba__label before" data-en="Before · 2022" data-no="Før · 2022">Before · 2022</span>
-            <img src="assets/case/ep-simulator.png" width="3616" height="2290" loading="lazy"
-                 alt="The 2022 desktop simulator: a price slider, current and simulated totals, and a vested and unvested table." />
-          </figure>
-          <figure>
-            <span class="ss-ba__label after" data-en="After · 2026" data-no="Etter · 2026">After · 2026</span>
-            <img src="assets/case/ss/lap-sim.jpg" width="1600" height="1000" loading="lazy"
-                 alt="The rebuilt simulator on a laptop: price choices named in words, a sentence saying what you'd take home, and a chart that follows the chosen year." />
-          </figure>
+      <div class="ss-ba">
+        <h3 data-en="From a slider to a sentence" data-no="Fra glidebryter til setning">From a slider to a sentence</h3>
+        <p data-en="The old page made you think in multiples of the price. The new one names the choice in words and answers with money." data-no="Den gamle siden fikk deg til å tenke i ganger kursen. Den nye sier valget med ord og svarer med penger.">The old page made you think in multiples of the price. The new one names the choice in words and answers with money.</p>
+        <div class="ss-ba__pair">
+          <figure><span class="ss-tag before" data-en="2022" data-no="2022">2022</span><img class="ss-shot" src="assets/case/ep-simulator.png" width="3616" height="2290" loading="lazy" alt="The 2022 desktop simulator: a price slider, current and simulated totals, and a vested and unvested table." /></figure>
+          <figure><span class="ss-tag after" data-en="2026" data-no="2026">2026</span><img class="ss-shot" src="assets/case/ss/lap-sim.jpg" width="1600" height="1000" loading="lazy" alt="The rebuilt simulator on a laptop: price choices named in words, a sentence saying what you'd take home, and a chart that follows the chosen year." /></figure>
         </div>
-      </article>
+      </div>
 
-      <article class="ss-ba">
+      <div class="ss-ba">
         <h3 data-en="Words people already use" data-no="Ord folk allerede bruker">Words people already use</h3>
-        <p data-en="&ldquo;No blackout risk&rdquo; and &ldquo;already vested&rdquo; only make sense if you know the programme&rsquo;s words. Now it says &ldquo;No waiting, no company sale pause&rdquo; and &ldquo;already yours to sell&rdquo;."
-           data-no="«Ingen blackout-risiko» og «allerede opptjent» gir bare mening hvis du kan programmets ord. Nå står det «Ingen venting, ingen salgspause fra selskapet» og «allerede dine å selge».">
-          &ldquo;No blackout risk&rdquo; and &ldquo;already vested&rdquo; only make sense if you know the programme&rsquo;s words. Now it says &ldquo;No waiting, no company sale pause&rdquo; and &ldquo;already yours to sell&rdquo;.
-        </p>
-        <div class="ss-ba__pair phones">
-          <figure>
-            <span class="ss-ba__label before" data-en="Before" data-no="Før">Before</span>
-            <img src="assets/case/ss/before-jargon-compare.jpg" width="600" height="1305" loading="lazy"
-                 alt="Compare before the plain-language pass: the price bar says Window open, and the first choice says the shares are already vested and you can execute today, with a No blackout risk chip." />
-          </figure>
-          <figure>
-            <span class="ss-ba__label after" data-en="After" data-no="Etter">After</span>
-            <img src="assets/case/ss/now-compare.jpg" width="600" height="1305" loading="lazy"
-                 alt="Compare today: the first choice says the shares are already yours to sell and selling is open today, with a No waiting, no company sale pause chip. The second choice flags a sale pause." />
-          </figure>
+        <div class="ss-words"><span class="o">No blackout risk</span><span aria-hidden="true">→</span><span class="n" data-en="No waiting, no company sale pause" data-no="Ingen venting, ingen salgspause">No waiting, no company sale pause</span></div>
+        <div class="ss-words"><span class="o">already vested</span><span aria-hidden="true">→</span><span class="n" data-en="already yours to sell" data-no="allerede dine å selge">already yours to sell</span></div>
+        <div class="ss-ba__pair ss-ba__pair--phones">
+          <figure><span class="ss-tag before" data-en="Before" data-no="Før">Before</span><img class="ss-phone" src="assets/case/ss/before-jargon-compare.jpg" width="600" height="1304" loading="lazy" alt="Compare before the plain-language pass: Window open, already vested, execute today, No blackout risk." /></figure>
+          <figure><span class="ss-tag after" data-en="After" data-no="Etter">After</span><img class="ss-phone" src="assets/case/ss/now-compare.jpg" width="600" height="1304" loading="lazy" alt="Compare today: already yours to sell, selling is open today, No waiting, no company sale pause." /></figure>
         </div>
-      </article>
+      </div>
     </section>
 
-    <!-- 06 · THE AI CO-PILOT ======================================= -->
+    <!-- 06 ===================================================== -->
     <section id="copilot" class="sf-section">
-      <span class="case-eyebrow ai" data-en="06 · The AI co-pilot" data-no="06 · AI-medpiloten">06 · The AI co-pilot</span>
-      <h2 data-en="The co-pilot explains the maths. The decision stays with you."
-          data-no="Medpiloten forklarer regnestykket. Beslutningen blir hos deg.">
-        The co-pilot explains the maths. The decision stays with you.
-      </h2>
-
-      <div class="sf-decisions four">
-        <article class="sf-decision">
-          <span class="signal-tag ai" data-en="What it does" data-no="Hva den gjør">What it does</span>
-          <h3 data-en="The maths runs itself" data-no="Regnestykket går av seg selv">The maths runs itself</h3>
-          <p data-en="Tax, unlock dates and sale pauses are worked out from your own shares. Every screen and every answer reads from the same list, so no two numbers disagree."
-             data-no="Skatt, opplåsingsdatoer og salgspauser regnes ut fra dine egne aksjer. Hver skjerm og hvert svar leser fra den samme listen, så ingen to tall er uenige.">
-            Tax, unlock dates and sale pauses are worked out from your own shares. Every screen and every answer reads from the same list, so no two numbers disagree.
-          </p>
-        </article>
-        <article class="sf-decision">
-          <span class="signal-tag problem" data-en="Where it sits" data-no="Hvor den sitter">Where it sits</span>
-          <h3 data-en="Next to the number, not in front of it" data-no="Ved siden av tallet, ikke foran det">Next to the number, not in front of it</h3>
-          <p data-en="The answer opens the page. The co-pilot waits one tap away, next to the number it explains: &ldquo;Why?&rdquo;"
-             data-no="Svaret åpner siden. Medpiloten venter ett trykk unna, ved siden av tallet den forklarer: «Hvorfor?»">
-            The answer opens the page. The co-pilot waits one tap away, next to the number it explains: &ldquo;Why?&rdquo;
-          </p>
-        </article>
-        <article class="sf-decision">
-          <span class="signal-tag strategic" data-en="What it never does" data-no="Hva den aldri gjør">What it never does</span>
-          <h3 data-en="Never &ldquo;sell now&rdquo;" data-no="Aldri «selg nå»">Never &ldquo;sell now&rdquo;</h3>
-          <p data-en="It explains, compares and points to a tax advisor. It never says sell, hold or wait. Wrong advice about someone&rsquo;s own money is a risk not worth taking."
-             data-no="Den forklarer, sammenligner og viser til en skatterådgiver. Den sier aldri selg, behold eller vent. Feil råd om noens egne penger er en risiko som ikke er verdt å ta.">
-            It explains, compares and points to a tax advisor. It never says sell, hold or wait. Wrong advice about someone&rsquo;s own money is a risk not worth taking.
-          </p>
-        </article>
-        <article class="sf-decision">
-          <span class="signal-tag built" data-en="What it can answer" data-no="Hva den kan svare på">What it can answer</span>
-          <h3 data-en="Questions about your own shares" data-no="Spørsmål om dine egne aksjer">Questions about your own shares</h3>
-          <p data-en="&ldquo;What if I leave?&rdquo; gets an answer with your numbers: what unlocks, what goes back, and how long you have to use your options."
-             data-no="«Hva om jeg slutter?» får et svar med dine tall: hva som låses opp, hva som går tilbake, og hvor lang tid du har på å bruke opsjonene.">
-            &ldquo;What if I leave?&rdquo; gets an answer with your numbers: what unlocks, what goes back, and how long you have to use your options.
-          </p>
-        </article>
+      <span class="case-eyebrow" data-en="06 · The AI co-pilot" data-no="06 · AI-co-piloten">06 · The AI co-pilot</span>
+      <h2 data-en="The co-pilot explains the maths. The decision stays with you." data-no="Co-piloten forklarer regnestykket. Beslutningen er din.">The co-pilot explains the maths. The decision stays with you.</h2>
+      <div class="ss-copilot">
+        <div class="ss-cp"><span class="k" data-en="What it does" data-no="Hva den gjør">What it does</span><h3 data-en="The maths runs itself" data-no="Regnestykket går av seg selv">The maths runs itself</h3><p data-en="Tax, unlock dates and sale pauses come from your own shares, so no two numbers disagree." data-no="Skatt, opptjeningsdatoer og salgspauser kommer fra dine egne aksjer, så ingen tall er uenige.">Tax, unlock dates and sale pauses come from your own shares, so no two numbers disagree.</p></div>
+        <div class="ss-cp"><span class="k" data-en="Where it sits" data-no="Hvor den sitter">Where it sits</span><h3 data-en="Next to the number" data-no="Ved siden av tallet">Next to the number</h3><p data-en="The answer opens the page. The co-pilot waits one tap away: &ldquo;Why?&rdquo;" data-no="Svaret åpner siden. Co-piloten venter ett trykk unna: «Hvorfor?»">The answer opens the page. The co-pilot waits one tap away: &ldquo;Why?&rdquo;</p></div>
+        <div class="ss-cp never"><span class="k" data-en="What it never does" data-no="Hva den aldri gjør">What it never does</span><h3 data-en="Never &ldquo;sell now&rdquo;" data-no="Aldri «selg nå»">Never &ldquo;sell now&rdquo;</h3><p data-en="It explains, compares and points to a tax advisor. Wrong advice about someone&rsquo;s money isn&rsquo;t worth the risk." data-no="Den forklarer, sammenligner og viser til en skatterådgiver. Feil råd om noens penger er ikke verdt risikoen.">It explains, compares and points to a tax advisor. Wrong advice about someone&rsquo;s money isn&rsquo;t worth the risk.</p></div>
+        <div class="ss-cp"><span class="k" data-en="What it answers" data-no="Hva den svarer på">What it answers</span><h3 data-en="Your own shares" data-no="Dine egne aksjer">Your own shares</h3><p data-en="&ldquo;What if I leave?&rdquo; gets an answer with your numbers." data-no="«Hva om jeg slutter?» får et svar med dine tall.">&ldquo;What if I leave?&rdquo; gets an answer with your numbers.</p></div>
       </div>
-
-      <figure class="sf-figure ss-wide-figure">
-        <img src="assets/case/ss/lap-sim-ai.jpg" width="1600" height="1000" loading="lazy"
-             alt="The simulator on a laptop with the AI co-pilot open on the right, answering What if I leave in 18 months, while the chart and the answer stay visible on the left." />
-        <figcaption data-en="On a laptop the co-pilot sits on the right, so the chart it explains stays in view."
-                    data-no="På laptop sitter medpiloten til høyre, så grafen den forklarer forblir synlig.">
-          On a laptop the co-pilot sits on the right, so the chart it explains stays in view.
-        </figcaption>
+      <div class="ss-split">
+        <div class="ss-chat">
+          <div class="q" data-en="What if I leave in 18 months?" data-no="Hva om jeg slutter om 18 måneder?">What if I leave in 18 months?</div>
+          <div class="a"><span class="k" data-en="co-pilot · from Priya&rsquo;s own shares" data-no="co-pilot · fra Priyas egne aksjer">co-pilot · from Priya&rsquo;s own shares</span><span data-en="3 200 of your 3 850 shares would have unlocked. The 650 still locked go back to the company. Options usually have to be used within 90 days of leaving." data-no="3 200 av dine 3 850 aksjer ville vært opptjent. De 650 som fortsatt er låst, går tilbake til selskapet. Opsjoner må vanligvis brukes innen 90 dager etter at du slutter.">3 200 of your 3 850 shares would have unlocked. The 650 still locked go back to the company. Options usually have to be used within 90 days of leaving.</span></div>
+          <div class="q" data-en="How is Norwegian tax different from UK?" data-no="Hvordan er norsk skatt forskjellig fra britisk?">How is Norwegian tax different from UK?</div>
+          <div class="a"><span class="k" data-en="co-pilot · compares, never advises" data-no="co-pilot · sammenligner, gir aldri råd">co-pilot · compares, never advises</span><span data-en="Norway taxes each share when it unlocks. The UK taxes when you sell. Same shares, very different timing." data-no="Norge skattlegger hver aksje når den blir opptjent. Storbritannia skattlegger når du selger. Samme aksjer, helt ulik timing.">Norway taxes each share when it unlocks. The UK taxes when you sell. Same shares, very different timing.</span></div>
+        </div>
+        <figure class="ss-phone-wrap"><picture><source srcset="assets/case/ss/clip-copilot-poster.jpg" media="(prefers-reduced-motion: reduce)" />
+          <img class="ss-phone" src="assets/case/ss/clip-copilot.webp" width="430" height="931" loading="lazy" alt="Screen recording of the co-pilot sheet on a phone answering What if I leave in 18 months." /></picture></figure>
+      </div>
+      <figure class="ss-fig">
+        <img class="ss-shot" src="assets/case/ss/lap-sim-ai.jpg" width="1600" height="1000" loading="lazy" alt="The simulator on a laptop with the AI co-pilot open on the right, answering What if I leave in 18 months, while the chart and the answer stay visible on the left." />
+        <figcaption data-en="On a laptop the co-pilot sits on the right, so the chart it explains stays in view." data-no="På PC sitter co-piloten til høyre, så grafen den forklarer, er synlig.">On a laptop the co-pilot sits on the right, so the chart it explains stays in view.</figcaption>
       </figure>
-
-      <div class="sf-figure-row">
-        <figure>
-          <div class="ai-example">
-            <p class="question" data-en="&ldquo;What if I leave in 18 months?&rdquo;" data-no="«Hva om jeg slutter om 18 måneder?»">&ldquo;What if I leave in 18 months?&rdquo;</p>
-            <div>
-              <span class="ai-label" data-en="Co-pilot answer" data-no="Svar fra medpiloten">Co-pilot answer</span>
-              <p class="answer" data-en="If you left in about 18 months (around May 2028), 3 200 of your 3 850 shares would have unlocked. The 650 still locked would go back to the company. Unlocked RSUs stay yours. Options and warrants usually have to be used within 90 days of leaving."
-                 data-no="Hvis du sluttet om rundt 18 måneder (rundt mai 2028), ville 3 200 av dine 3 850 aksjer vært låst opp. De 650 som fortsatt er låst, ville gått tilbake til selskapet. RSU-er som er låst opp, er dine. Opsjoner og warranter må vanligvis brukes innen 90 dager etter at du slutter.">
-                If you left in about 18 months (around May 2028), 3 200 of your 3 850 shares would have unlocked. The 650 still locked would go back to the company. Unlocked RSUs stay yours. Options and warrants usually have to be used within 90 days of leaving.
-              </p>
-            </div>
-          </div>
-          <figcaption data-en="Priya&rsquo;s question, answered from her own shares." data-no="Priyas spørsmål, besvart ut fra hennes egne aksjer.">Priya&rsquo;s question, answered from her own shares.</figcaption>
-        </figure>
-        <figure>
-          <div class="ai-example">
-            <p class="question" data-en="&ldquo;How is Norwegian tax different from UK?&rdquo;" data-no="«Hvordan skiller norsk skatt seg fra britisk?»">&ldquo;How is Norwegian tax different from UK?&rdquo;</p>
-            <div>
-              <span class="ai-label" data-en="Co-pilot answer" data-no="Svar fra medpiloten">Co-pilot answer</span>
-              <p class="answer" data-en="Norwegian tax hits when each share unlocks, at your income tax rate (about 33 % in this simulation). UK would only tax you when you actually sell. Same shares, very different timing."
-                 data-no="Norsk skatt slår inn når hver aksje låses opp, med din inntektsskattesats (rundt 33 % i denne simuleringen). I Storbritannia blir du bare beskattet når du faktisk selger. Samme aksjer, svært ulik timing.">
-                Norwegian tax hits when each share unlocks, at your income tax rate (about 33 % in this simulation). UK would only tax you when you actually sell. Same shares, very different timing.
-              </p>
-            </div>
-          </div>
-          <figcaption data-en="The &ldquo;why are my colleague&rsquo;s numbers different?&rdquo; question, compared without advice."
-                      data-no="«Hvorfor har kollegaen min andre tall?»-spørsmålet, sammenlignet uten råd.">
-            The &ldquo;why are my colleague&rsquo;s numbers different?&rdquo; question, compared without advice.
-          </figcaption>
-        </figure>
-      </div>
     </section>
 
-    <!-- 07 · BUILT FOR EVERYONE ==================================== -->
+    <!-- 07 ===================================================== -->
     <section id="everyone" class="sf-section">
-      <span class="case-eyebrow" data-en="07 · Built for everyone" data-no="07 · Bygget for alle">07 · Built for everyone</span>
-      <h2 data-en="The accessible way is the only way."
-          data-no="Den tilgjengelige veien er den eneste veien.">
-        The accessible way is the only way.
-      </h2>
-      <p data-en="Ola uses VoiceOver. Priya holds the phone in one hand. Neither of them should need a special mode, so there is only one version, and it works for both."
-         data-no="Ola bruker VoiceOver. Priya holder telefonen med én hånd. Ingen av dem skal trenge en egen modus, så det finnes bare én versjon, og den fungerer for begge.">
-        Ola uses VoiceOver. Priya holds the phone in one hand. Neither of them should need a special mode, so there is only one version, and it works for both.
-      </p>
-      <div class="ss-access">
-        <article>
-          <span class="tag" data-en="Screen readers" data-no="Skjermleser">Screen readers</span>
-          <h3 data-en="A chart you can hear" data-no="En graf du kan høre">A chart you can hear</h3>
-          <p data-en="Arrow keys move through the years, and each year is read out. Pick a price and the new amount is read out too. &ldquo;Describe this chart&rdquo; tells the whole story in one sentence."
-             data-no="Piltastene flytter deg gjennom årene, og hvert år leses opp. Velger du en kurs, leses det nye beløpet opp også. «Beskriv grafen» forteller hele historien i én setning.">
-            Arrow keys move through the years, and each year is read out. Pick a price and the new amount is read out too. &ldquo;Describe this chart&rdquo; tells the whole story in one sentence.
-          </p>
-        </article>
-        <article>
-          <span class="tag" data-en="Colour" data-no="Farge">Colour</span>
-          <h3 data-en="Never colour alone" data-no="Aldri bare farge">Never colour alone</h3>
-          <p data-en="Every status is a dot plus a word: &ldquo;Can sell&rdquo;, &ldquo;Soon&rdquo;, &ldquo;Later&rdquo;. Colour helps. The word carries the meaning."
-             data-no="Hver status er en prikk pluss et ord: «Kan selges», «Snart», «Senere». Fargen hjelper. Ordet bærer meningen.">
-            Every status is a dot plus a word: &ldquo;Can sell&rdquo;, &ldquo;Soon&rdquo;, &ldquo;Later&rdquo;. Colour helps. The word carries the meaning.
-          </p>
-        </article>
-        <article>
-          <span class="tag" data-en="Touch" data-no="Berøring">Touch</span>
-          <h3 data-en="Made for one thumb" data-no="Laget for én tommel">Made for one thumb</h3>
-          <p data-en="Big buttons, no surprise zoom when you tap a field, and a page that still works with the phone on its side."
-             data-no="Store knapper, ingen overraskende zoom når du trykker på et felt, og en side som fortsatt fungerer med telefonen liggende.">
-            Big buttons, no surprise zoom when you tap a field, and a page that still works with the phone on its side.
-          </p>
-        </article>
-        <article>
-          <span class="tag" data-en="Plain language" data-no="Klarspråk">Plain language</span>
-          <h3 data-en="One tap to the meaning" data-no="Ett trykk til forklaringen">One tap to the meaning</h3>
-          <p data-en="Jargon was replaced, not footnoted. Where a word has to stay, like &ldquo;sale pause&rdquo;, its meaning is one tap away, next to the price."
-             data-no="Fagord ble byttet ut, ikke fotnotert. Der et ord må bli, som «salgspause», ligger forklaringen ett trykk unna, ved siden av kursen.">
-            Jargon was replaced, not footnoted. Where a word has to stay, like &ldquo;sale pause&rdquo;, its meaning is one tap away, next to the price.
-          </p>
-        </article>
+      <span class="case-eyebrow" data-en="07 · Built for everyone" data-no="07 · Laget for alle">07 · Built for everyone</span>
+      <h2 data-en="The accessible way is the only way." data-no="Den tilgjengelige måten er den eneste måten.">The accessible way is the only way.</h2>
+      <p data-en-html="Ola uses VoiceOver. Priya holds the phone in one hand. <span class=&quot;ss-hl&quot;>There&rsquo;s no special mode, just one version that works for both.</span>"
+         data-no-html="Ola bruker VoiceOver. Priya holder telefonen med én hånd. <span class=&quot;ss-hl&quot;>Det finnes ingen spesialmodus, bare én versjon som virker for begge.</span>">Ola uses VoiceOver. Priya holds the phone in one hand. <span class="ss-hl">There&rsquo;s no special mode, just one version that works for both.</span></p>
+      <div class="ss-split">
+        <div class="ss-a11y" style="margin:0">
+          <div><span class="k" data-en="Screen readers" data-no="Skjermlesere">Screen readers</span><h3 data-en="A chart you can hear" data-no="En graf du kan høre">A chart you can hear</h3><p data-en="Arrow keys read out each year. &ldquo;Describe this chart&rdquo; tells the story in one sentence." data-no="Piltaster leser opp hvert år. «Beskriv grafen» forteller historien i én setning.">Arrow keys read out each year. &ldquo;Describe this chart&rdquo; tells the story in one sentence.</p></div>
+          <div><span class="k" data-en="Colour" data-no="Farge">Colour</span><h3 data-en="Never colour alone" data-no="Aldri bare farge">Never colour alone</h3><p data-en="Every status is a dot plus a word: &ldquo;Can sell&rdquo;, &ldquo;Soon&rdquo;, &ldquo;Later&rdquo;." data-no="Hver status er en prikk pluss et ord: «Kan selges», «Snart», «Senere».">Every status is a dot plus a word: &ldquo;Can sell&rdquo;, &ldquo;Soon&rdquo;, &ldquo;Later&rdquo;.</p></div>
+          <div><span class="k" data-en="Touch" data-no="Berøring">Touch</span><h3 data-en="Made for one thumb" data-no="Laget for én tommel">Made for one thumb</h3><p data-en="Big buttons, no surprise zoom, and it still works with the phone on its side." data-no="Store knapper, ingen overraskende zoom, og den virker også med telefonen på siden.">Big buttons, no surprise zoom, and it still works with the phone on its side.</p></div>
+          <div><span class="k" data-en="Plain language" data-no="Klarspråk">Plain language</span><h3 data-en="One tap to the meaning" data-no="Ett trykk til betydningen">One tap to the meaning</h3><p data-en="Where a word has to stay, like &ldquo;sale pause&rdquo;, its meaning is one tap away." data-no="Der et ord må bli, som «salgspause», er betydningen ett trykk unna.">Where a word has to stay, like &ldquo;sale pause&rdquo;, its meaning is one tap away.</p></div>
+        </div>
+        <figure class="ss-phone-wrap"><img class="ss-phone" src="assets/case/ss/now-popover.jpg" width="600" height="1304" loading="lazy" alt="The price source popover on a phone: today's price, when it was updated, where it comes from, when it updates next, the next sale pause, and a plain explanation of what a sale pause is." />
+          <figcaption data-en="Tap the time stamp: the price, its source, and what a sale pause means." data-no="Trykk på tidspunktet: kursen, kilden og hva en salgspause betyr.">Tap the time stamp: the price, its source, and what a sale pause means.</figcaption></figure>
       </div>
-      <figure class="sf-figure" style="max-width: 320px;">
-        <img src="assets/case/ss/now-popover.jpg" width="600" height="1305" loading="lazy" style="max-height: none; background: #fff;"
-             alt="The price source popover on a phone: today's price, when it was updated, where it comes from, when it updates next, when the next sale pause is, and a plain explanation of what a sale pause is." />
-        <figcaption data-en="Tap the time stamp: the price, where it comes from, when it updates, and what a sale pause is."
-                    data-no="Trykk på tidsstempelet: kursen, hvor den kommer fra, når den oppdateres, og hva en salgspause er.">
-          Tap the time stamp: the price, where it comes from, when it updates, and what a sale pause is.
-        </figcaption>
-      </figure>
     </section>
 
-    <!-- 08 · LOOKING AHEAD ========================================= -->
+    <!-- 08 ===================================================== -->
     <section id="ahead" class="sf-section">
       <span class="case-eyebrow" data-en="08 · Looking ahead" data-no="08 · Veien videre">08 · Looking ahead</span>
-      <h2 data-en="It works, but no real user has tried it yet. Here&rsquo;s how I&rsquo;d know it&rsquo;s right."
-          data-no="Den fungerer, men ingen ekte brukere har prøvd den ennå. Slik ville jeg visst at den er riktig.">
-        It works, but no real user has tried it yet. Here&rsquo;s how I&rsquo;d know it&rsquo;s right.
-      </h2>
-      <p data-en="Next, I&rsquo;d sit with people like Maren, Daniel, Priya and Ola, including someone who uses VoiceOver, and watch them find their answer."
-         data-no="Neste steg er å sitte sammen med folk som Maren, Daniel, Priya og Ola, også en som bruker VoiceOver, og se dem finne svaret sitt.">
-        Next, I&rsquo;d sit with people like Maren, Daniel, Priya and Ola, including someone who uses VoiceOver, and watch them find their answer.
-      </p>
-
+      <h2 data-en="It works, but no real user has tried it yet." data-no="Den virker, men ingen ekte brukere har prøvd den ennå.">It works, but no real user has tried it yet.</h2>
+      <p data-en="Next, I&rsquo;d sit with people like Maren, Daniel, Priya and Ola, including someone who uses VoiceOver, and watch them find their answer. Here&rsquo;s how I&rsquo;d know it&rsquo;s right:"
+         data-no="Neste steg er å sitte med folk som Maren, Daniel, Priya og Ola, også noen som bruker VoiceOver, og se dem finne svaret sitt. Slik vet jeg at det er riktig:">Next, I&rsquo;d sit with people like Maren, Daniel, Priya and Ola, including someone who uses VoiceOver, and watch them find their answer. Here&rsquo;s how I&rsquo;d know it&rsquo;s right:</p>
       <div class="retrospective-grid">
-        <div class="impact-pillar">
-          <span class="pillar-label" data-en="Sign it works" data-no="Tegn på at det virker">Sign it works</span>
-          <h3 data-en="Fewer &ldquo;can I sell?&rdquo; emails to HR" data-no="Færre «kan jeg selge?»-e-poster til HR">Fewer &ldquo;can I sell?&rdquo; emails to HR</h3>
-          <p data-en="People find the answer on the page instead of waiting for a reply."
-             data-no="Folk finner svaret på siden i stedet for å vente på svar.">People find the answer on the page instead of waiting for a reply.</p>
-        </div>
-        <div class="impact-pillar">
-          <span class="pillar-label" data-en="Sign it works" data-no="Tegn på at det virker">Sign it works</span>
-          <h3 data-en="A quick first step" data-no="Et raskt første steg">A quick first step</h3>
-          <p data-en="People pick a price or open a row soon after they arrive, without hunting."
-             data-no="Folk velger en kurs eller åpner en rad kort tid etter at de kommer inn, uten å lete.">People pick a price or open a row soon after they arrive, without hunting.</p>
-        </div>
-        <div class="impact-pillar">
-          <span class="pillar-label" data-en="Sign it works" data-no="Tegn på at det virker">Sign it works</span>
-          <h3 data-en="One visit is enough" data-no="Ett besøk er nok">One visit is enough</h3>
-          <p data-en="People stop coming back to check the same thing, and stop asking &ldquo;did this change since last time?&rdquo;"
-             data-no="Folk slutter å komme tilbake for å sjekke det samme, og slutter å spørre «har dette endret seg siden sist?»">People stop coming back to check the same thing, and stop asking &ldquo;did this change since last time?&rdquo;</p>
-        </div>
+        <div class="impact-pillar"><span class="pillar-label" data-en="Sign it works" data-no="Tegn på at det virker">Sign it works</span><h3 data-en="Fewer &ldquo;can I sell?&rdquo; emails" data-no="Færre «kan jeg selge?»-e-poster">Fewer &ldquo;can I sell?&rdquo; emails</h3><p data-en="People find the answer on the page instead of waiting for HR." data-no="Folk finner svaret på siden i stedet for å vente på HR.">People find the answer on the page instead of waiting for HR.</p></div>
+        <div class="impact-pillar"><span class="pillar-label" data-en="Sign it works" data-no="Tegn på at det virker">Sign it works</span><h3 data-en="A quick first step" data-no="Et raskt første steg">A quick first step</h3><p data-en="People pick a price or open a row soon after they arrive." data-no="Folk velger en kurs eller åpner en rad kort tid etter at de kommer.">People pick a price or open a row soon after they arrive.</p></div>
+        <div class="impact-pillar"><span class="pillar-label" data-en="Sign it works" data-no="Tegn på at det virker">Sign it works</span><h3 data-en="One visit is enough" data-no="Ett besøk er nok">One visit is enough</h3><p data-en="Nobody asks &ldquo;did this change since last time?&rdquo;" data-no="Ingen spør «har dette endret seg siden sist?»">Nobody asks &ldquo;did this change since last time?&rdquo;</p></div>
       </div>
-
       <h3 data-en="What I&rsquo;d tell myself at the start" data-no="Det jeg ville sagt til meg selv i starten">What I&rsquo;d tell myself at the start</h3>
-      <div class="retrospective-grid" style="margin-top: 16px;">
-        <div class="impact-pillar">
-          <span class="pillar-label" data-en="Lesson" data-no="Lærdom">Lesson</span>
-          <h3 data-en="Simplify toward the question, not away from the facts" data-no="Forenkle mot spørsmålet, ikke bort fra fakta">Simplify toward the question, not away from the facts</h3>
-          <p data-en="The too-simple version looked clean and worked worse. When the price and its source went, the trust went with them."
-             data-no="Den for enkle versjonen så ryddig ut og fungerte dårligere. Da kursen og kilden forsvant, forsvant tilliten også.">The too-simple version looked clean and worked worse. When the price and its source went, the trust went with them.</p>
-        </div>
-        <div class="impact-pillar">
-          <span class="pillar-label" data-en="Lesson" data-no="Lærdom">Lesson</span>
-          <h3 data-en="Words are part of the design" data-no="Ord er en del av designet">Words are part of the design</h3>
-          <p data-en="Swapping &ldquo;blackout&rdquo; for &ldquo;sale pause&rdquo; was one word. It made the rule clear to everyone, not just people who already knew it."
-             data-no="Å bytte «blackout» med «salgspause» var ett ord. Det gjorde regelen klar for alle, ikke bare for dem som kjente den fra før.">Swapping &ldquo;blackout&rdquo; for &ldquo;sale pause&rdquo; was one word. It made the rule clear to everyone, not just people who already knew it.</p>
-        </div>
-        <div class="impact-pillar">
-          <span class="pillar-label" data-en="Lesson" data-no="Lærdom">Lesson</span>
-          <h3 data-en="Start small and the big screen gets easy" data-no="Start smått, så blir den store skjermen enkel">Start small and the big screen gets easy</h3>
-          <p data-en="Every hard choice happened on the phone. The laptop only had to rearrange pieces that had already earned their place."
-             data-no="Alle de vanskelige valgene ble tatt på mobilen. Laptopen måtte bare flytte på biter som allerede hadde fortjent plassen sin.">Every hard choice happened on the phone. The laptop only had to rearrange pieces that had already earned their place.</p>
-        </div>
+      <div class="retrospective-grid">
+        <div class="impact-pillar"><span class="pillar-label" data-en="Lesson" data-no="Lærdom">Lesson</span><h3 data-en="Simplify toward the question, not away from the facts" data-no="Forenkle mot spørsmålet, ikke bort fra fakta">Simplify toward the question, not away from the facts</h3><p data-en="When the price and its source went, the trust went with them." data-no="Da kursen og kilden forsvant, forsvant tilliten også.">When the price and its source went, the trust went with them.</p></div>
+        <div class="impact-pillar"><span class="pillar-label" data-en="Lesson" data-no="Lærdom">Lesson</span><h3 data-en="Words are part of the design" data-no="Ord er en del av designet">Words are part of the design</h3><p data-en="Swapping &ldquo;blackout&rdquo; for &ldquo;sale pause&rdquo; was one word. It made the rule clear to everyone." data-no="Å bytte «blackout» med «salgspause» var ett ord. Det gjorde regelen tydelig for alle.">Swapping &ldquo;blackout&rdquo; for &ldquo;sale pause&rdquo; was one word. It made the rule clear to everyone.</p></div>
+        <div class="impact-pillar"><span class="pillar-label" data-en="Lesson" data-no="Lærdom">Lesson</span><h3 data-en="Start small and the big screen gets easy" data-no="Start smått, så blir den store skjermen lett">Start small and the big screen gets easy</h3><p data-en="Every hard choice happened on the phone. The laptop only rearranged pieces that had earned their place." data-no="Alle vanskelige valg ble tatt på telefonen. PC-en flyttet bare på deler som hadde gjort seg fortjent.">Every hard choice happened on the phone. The laptop only rearranged pieces that had earned their place.</p></div>
       </div>
     </section>
 
@@ -998,54 +528,5 @@
   </div>
 
   <script src="i18n.js?v=2"></script>
-  <script>
-    // Recording: plays only while on screen, and never on its own for
-    // prefers-reduced-motion users (WCAG 2.2.2 Pause, Stop, Hide + 2.3.3).
-    // Without JS the button stays hidden and the poster is a still image.
-    (function () {
-      const video = document.getElementById('ssVideo');
-      const btn = document.getElementById('ssVideoToggle');
-      if (!video || !btn) return;
-      const label = btn.querySelector('.ss-playpause__label');
-      const TEXT = {
-        en: { play: 'Play', pause: 'Pause', playAria: 'Play screen recording', pauseAria: 'Pause screen recording' },
-        no: { play: 'Spill av', pause: 'Pause', playAria: 'Spill av skjermopptaket', pauseAria: 'Pause skjermopptaket' }
-      };
-      let userPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let inView = !('IntersectionObserver' in window);
-
-      function render() {
-        const playing = !video.paused;
-        const t = TEXT[document.documentElement.lang === 'nb' ? 'no' : 'en'];
-        btn.dataset.playing = String(playing);
-        btn.setAttribute('aria-label', playing ? t.pauseAria : t.playAria);
-        label.textContent = playing ? t.pause : t.play;
-      }
-      function sync() {
-        if (inView && !userPaused) video.play().catch(() => {});
-        else video.pause();
-      }
-
-      btn.hidden = false;
-      // An explicit press always wins over the scroll-based autoplay.
-      btn.addEventListener('click', () => {
-        userPaused = !video.paused;
-        if (userPaused) video.pause();
-        else video.play().catch(() => {});
-      });
-      video.addEventListener('play', render);
-      video.addEventListener('pause', render);
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; sync(); },
-          { threshold: 0.25 }).observe(video);
-      } else {
-        sync();
-      }
-      document.addEventListener('DOMContentLoaded', render);
-      document.querySelectorAll('.lang-switch button').forEach(b =>
-        b.addEventListener('click', () => setTimeout(render, 0)));
-      render();
-    })();
-  </script>
 </body>
 </html>
