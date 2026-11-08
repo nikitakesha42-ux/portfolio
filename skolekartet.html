@@ -11,139 +11,145 @@
   <meta name="description" content="Helping a friend turn Skolekartet, a map of Norway&rsquo;s school test results, into a school finder every family can read: each family says what matters, every number comes with words, and the shortlist opens on the parent&rsquo;s own phone." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* ============================================================
        Page-scoped visuals. Everything else inherits the portfolio.
        ============================================================ */
-    .sk-lead { font-size: 19px; line-height: 1.5; color: var(--ink-2, #2b2f36); max-width: 62ch; margin: 16px 0 28px; }
-    .sf-section > h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; margin: 40px 0 12px; }
+    :root { --sk-green: #0b5c48; --sk-green-bg: #edf5f3; --sk-line: #c7e1d5; --sk-marker: #ffe27a; --sk-red: #b42318; }
 
-    .sk-hero { margin: 0 0 56px; }
+    .case mark { background: linear-gradient(transparent 52%, var(--sk-marker) 52%, var(--sk-marker) 92%, transparent 92%); color: inherit; padding: 0 2px; }
+    .sk-lead { font-size: 20px; line-height: 1.5; color: var(--ink); max-width: 58ch; margin: 16px 0 28px; }
+    .sf-section > p { max-width: 62ch; }
+    .sf-section > h2 { max-width: 22ch; }
+
+    /* Challenge / Solution / Role / Status */
+    .sk-brief { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin: 0 0 32px; border: 1px solid var(--rule); border-radius: 18px; overflow: hidden; }
+    .sk-brief > div { padding: 18px 22px; border-top: 1px solid var(--rule); }
+    .sk-brief > div:nth-child(-n+2) { border-top: 0; }
+    .sk-brief > div:nth-child(odd) { border-right: 1px solid var(--rule); }
+    .sk-brief .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+    .sk-brief p { margin: 0; font-size: 15.5px; line-height: 1.5; }
+
+    /* The story in 30 seconds */
+    .sk-tldr { margin: 0 0 40px; }
+    .sk-tldr > .k { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sk-green); font-weight: 600; margin-bottom: 12px; }
+    .sk-tldr ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .case .sk-tldr li { margin: 0; padding: 18px 18px 20px; border-radius: 14px; background: var(--panel-warm); border: 1px solid var(--rule); font-size: 15px; line-height: 1.5; }
+    .case .sk-tldr li::before { display: none; content: none; }
+    .sk-tldr li b { display: block; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; margin: 2px 0 8px; }
+    .sk-tldr .tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+    .sk-tldr li:nth-child(1) .tag { color: var(--sk-red); }
+    .sk-tldr li:nth-child(2) .tag { color: #8a5a00; }
+    .sk-tldr li:nth-child(3) .tag { color: var(--sk-green); }
+
+    .sk-hero { margin: 0 0 40px; }
     .sk-hero img { display: block; width: 100%; height: auto; border-radius: 18px; border: 1px solid var(--rule); }
-    .sk-hero figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
-
+    .case figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
 
     /* Working prototype callout */
-    .sk-proto { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px 32px; align-items: center; margin: -24px 0 56px; padding: 24px 28px; border: 1px solid var(--rule-strong); border-radius: 18px; background: #edf5f3; }
-    .sk-proto .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0b5c48; font-weight: 600; display: block; margin-bottom: 6px; }
-    .sk-proto h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; margin: 0 0 8px; }
-    .sk-proto p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--ink); max-width: 60ch; }
-    .sk-proto p + p { margin-top: 8px; color: var(--muted); font-size: 13px; }
+    .sk-proto { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 32px; align-items: center; margin: 0 0 48px; padding: 22px 26px; border: 1px solid var(--sk-line); border-radius: 18px; background: var(--sk-green-bg); }
+    .sk-proto .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sk-green); font-weight: 600; display: block; margin-bottom: 6px; }
+    .sk-proto h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; margin: 0 0 6px; }
+    .sk-proto p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted); max-width: 60ch; }
     .sk-proto-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 22px; border-radius: 6px; background: #0d7a5f; color: #fff; font-weight: 600; font-size: 16px; text-decoration: none; white-space: nowrap; }
-    .sk-proto-btn:hover { background: #0b5c48; }
+    .sk-proto-btn:hover { background: var(--sk-green); }
     .sk-proto-btn:focus-visible { outline: 3px solid #0062ba; outline-offset: 3px; }
     .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-    @media (max-width: 720px) { .sk-proto { grid-template-columns: 1fr; padding: 20px; } .sk-proto-btn { justify-self: start; white-space: normal; } }
 
-    .sk-wide img { max-height: none; height: auto; object-fit: contain; background: #fff; }
+    /* Visual frames */
+    .sk-fig { margin: 24px 0 0; }
+    .sk-fig img { display: block; width: 100%; height: auto; }
+    .sk-paper img { border-radius: 6px; box-shadow: 0 1px 0 rgba(0,0,0,.05), 0 18px 34px -20px rgba(60, 40, 10, .45); }
+    .sk-paper.tilt-l img { transform: rotate(-0.6deg); }
+    .sk-paper.tilt-r img { transform: rotate(0.6deg); }
+    .sk-browser { border: 1px solid var(--rule-strong); border-radius: 12px; overflow: hidden; background: #fff; }
+    .sk-browser::before { content: ""; display: block; height: 26px; border-bottom: 1px solid var(--rule); background:
+      radial-gradient(circle at 16px 13px, #ff5f57 5px, transparent 5.5px),
+      radial-gradient(circle at 34px 13px, #febc2e 5px, transparent 5.5px),
+      radial-gradient(circle at 52px 13px, #28c840 5px, transparent 5.5px), #f3f4f6; }
+    .sk-phone img { border-radius: 26px; border: 7px solid #111318; background: #fff; box-shadow: 0 18px 30px -18px rgba(10, 31, 74, 0.45); }
+    .sk-live { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sk-green); font-weight: 600; }
+    .sk-live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #d1242f; box-shadow: 0 0 0 3px rgba(209,36,47,.18); }
+    .sk-img { border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
 
-    /* Numbered issue list */
-    .sk-issues { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-    .case .sk-issues li {
-      margin: 0; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--panel-warm);
-      font-size: 14px; line-height: 1.5; color: var(--ink);
-    }
-    .case .sk-issues li::before { display: none; content: none; }
-    .sk-issues .n { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: #b42318; font-weight: 600; margin-bottom: 4px; }
+    /* Dead ends */
+    .sk-ends { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .case .sk-ends li { margin: 0; padding: 16px 18px; border-radius: 14px; border: 1px solid #f0c8c3; background: #fff6f4; font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+    .case .sk-ends li::before { display: none; content: none; }
+    .sk-ends b { display: block; color: var(--ink); font-size: 17px; line-height: 1.3; margin-bottom: 4px; }
 
-    /* Tables */
-    .sk-table { width: 100%; margin: 8px 0; border-collapse: collapse; font-size: 14px; line-height: 1.45; }
-    .sk-table--3 tbody th { width: 26%; }
-    .sk-table--3 tbody td { width: 37%; }
-    .sk-table caption { text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-bottom: 10px; }
-    .sk-table th, .sk-table td { text-align: left; vertical-align: top; padding: 11px 16px 11px 0; border-top: 1px solid var(--rule); }
-    .sk-table thead th { border-top: 0; font-weight: 600; color: var(--ink); font-size: 13px; }
-    .sk-table tbody th { font-weight: 500; color: var(--ink); width: 45%; }
-    .sk-table tbody td { color: var(--muted); }
-    .sk-table .code { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-right: 6px; }
-
-    /* Research boards: thumbnails that open full size */
-    .sk-boards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 28px 0 0; }
-    .sk-boards figure { margin: 0; }
-    .sk-boards a { display: block; border: 1px solid var(--rule-strong); border-radius: 12px; overflow: hidden; background: #fff; line-height: 0; }
-    .sk-boards a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-    .sk-boards img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top left; transition: transform 0.25s ease; }
-    .sk-boards a:hover img { transform: scale(1.02); }
-    .sk-boards figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
-    .sk-boards figcaption b { color: var(--ink); font-weight: 600; }
+    /* Pull quote + question swap */
+    .sk-pull { margin: 32px 0; padding: 0 0 0 22px; border-left: 4px solid var(--sk-marker); font-size: clamp(24px, 3.4vw, 32px); line-height: 1.25; letter-spacing: -0.015em; font-weight: 600; max-width: 26ch; }
+    .sk-pull small { display: block; margin-top: 10px; font-size: 15px; font-weight: 400; letter-spacing: 0; line-height: 1.5; color: var(--muted); }
+    .sk-swap { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 16px; align-items: center; margin: 20px 0 28px; }
+    .sk-swap > div { padding: 20px 22px; border-radius: 14px; font-size: 20px; font-weight: 600; line-height: 1.3; }
+    .sk-swap .old { background: #f3f4f6; color: #5b616b; text-decoration: line-through; text-decoration-thickness: 2px; }
+    .sk-swap .new { background: var(--sk-green-bg); color: var(--sk-green); border: 1px solid var(--sk-line); }
+    .sk-swap .arrow { font-size: 28px; color: var(--muted); }
 
     /* Personas */
-    .sk-people { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 24px 0 0; }
-    .sk-person { border: 1px solid var(--rule); border-radius: 14px; padding: 16px 18px; background: var(--panel-warm); display: flex; flex-direction: column; gap: 8px; }
-    .sk-person__head { display: flex; align-items: center; gap: 10px; }
-    .sk-person__av { width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #dcefe6; color: #0b5a43; font: 600 12px/1 var(--sans); }
-    .sk-person h3 { font-size: 14.5px; font-weight: 600; margin: 0; line-height: 1.3; }
-    .sk-person .role { font-size: 12.5px; color: var(--muted); margin: 0; line-height: 1.4; }
-    .sk-person blockquote { margin: 2px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--ink); font-style: italic; }
+    .sk-people { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 20px 0 0; }
+    .sk-person { border: 1px solid var(--rule); border-radius: 14px; padding: 16px; background: var(--panel-warm); }
+    .sk-person blockquote { margin: 0 0 12px; font-size: 16px; line-height: 1.4; font-weight: 500; color: var(--ink); }
+    .sk-person p { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+    .sk-person p b { color: var(--ink); font-weight: 600; }
+    .sk-note { font-size: 13px; color: var(--muted); margin: 12px 0 0; }
 
-    /* Principles */
-    .sk-principles { list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .case .sk-principles li { margin: 0; padding: 16px 18px; border-radius: 14px; background: #eef6f2; border: 1px solid #c7e1d5; font-size: 14px; line-height: 1.55; color: var(--muted); }
-    .case .sk-principles li:last-child { grid-column: 1 / -1; }
-    .case .sk-principles li::before { display: none; content: none; }
-    .sk-principles .n { display: block; font-family: var(--mono); font-size: 11px; color: #0b5a43; font-weight: 600; margin-bottom: 6px; letter-spacing: 0.06em; }
-    .sk-principles b { display: block; color: var(--ink); font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+    /* Decisions */
+    .sk-decision { margin: 44px 0 0; padding-top: 32px; border-top: 1px solid var(--rule); }
+    .sk-decision .kicker { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sk-green); font-weight: 600; background: var(--sk-green-bg); border: 1px solid var(--sk-line); padding: 4px 10px; border-radius: 999px; }
+    .sk-decision h3 { font-size: clamp(22px, 2.8vw, 26px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.25; margin: 12px 0 8px; max-width: 28ch; }
+    .sk-decision > p { font-size: 16px; line-height: 1.6; margin: 0 0 4px; max-width: 62ch; }
+    .sk-why { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; margin: 20px 0 0; padding: 14px 18px; border-radius: 12px; background: #fff8dc; border: 1px solid #f1dc8f; max-width: 64ch; }
+    .sk-why .k { font-family: 'Caveat', cursive; font-size: 24px; line-height: 1; color: #7a4f00; font-weight: 700; padding-top: 2px; }
+    .sk-why p { margin: 0; font-size: 15px; line-height: 1.5; }
+    .sk-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; margin: 24px 0 0; }
+    .sk-two--phone { grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.62fr); align-items: end; }
+    .sk-two .sk-fig { margin: 0; }
+    .sk-label { display: inline-flex; margin-bottom: 8px; padding: 3px 10px; border-radius: 999px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+    .sk-label.before { background: #f3f4f6; color: #3b4150; border: 1px solid #c9ccd3; }
+    .sk-label.after { background: #dcefe6; color: var(--sk-green); border: 1px solid #8cc4ab; }
+    .sk-label.paper { background: #fbf3df; color: #6d4600; border: 1px solid #e6cf97; }
+    .sk-review { aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+    .sk-crop { aspect-ratio: 1200 / 1042; object-fit: cover; object-position: top; }
 
-    /* Redesign steps: text beside the screen */
-    .sk-step { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr); gap: 36px; align-items: start; margin: 44px 0 0; padding-top: 32px; border-top: 1px solid var(--rule); }
-    .sk-step .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0b5a43; font-weight: 600; }
-    .sk-step h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; margin: 8px 0 10px; }
-    .sk-step p { font-size: 15px; line-height: 1.6; color: var(--ink); margin: 0 0 10px; }
-    .sk-step figure { margin: 0; }
-    .sk-step img { display: block; width: 100%; height: auto; border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
-    .sk-step .tall { max-height: 720px; object-fit: cover; object-position: top; }
-    .sk-step figcaption { font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
-    .sk-step--phone { grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr); }
-    .sk-step__pair { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(0, 0.7fr); gap: 14px; align-items: start; }
-    .sk-step__pair img.phone { border-radius: 22px; border: 6px solid #111318; }
+    /* Designsystemet reasons */
+    .sk-reasons { list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .case .sk-reasons li { margin: 0; padding: 16px; border-radius: 14px; background: var(--sk-green-bg); border: 1px solid var(--sk-line); font-size: 14px; line-height: 1.5; color: var(--muted); }
+    .case .sk-reasons li::before { display: none; content: none; }
+    .sk-reasons b { display: block; color: var(--ink); font-size: 16px; line-height: 1.3; margin-bottom: 6px; }
 
-    /* Before / after pairs */
-    .sk-ba { margin: 36px 0 0; padding-top: 28px; border-top: 1px solid var(--rule); }
-    .sk-ba:first-of-type { border-top: 0; padding-top: 0; }
-    .sk-ba h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 8px; }
-    .sk-ba > p { font-size: 15px; line-height: 1.6; color: var(--ink); margin: 0 0 18px; max-width: 64ch; }
-    .sk-ba__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
-    .sk-ba__pair figure { margin: 0; }
-    .sk-ba__pair img.crop { aspect-ratio: 1200 / 1042; object-fit: cover; object-position: top; }
-    .sk-ba__pair img { display: block; width: 100%; height: auto; border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
-    .sk-ba__label { display: inline-flex; align-items: center; margin-bottom: 8px; padding: 3px 10px; border-radius: 999px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
-    .sk-ba__label.before { background: #f3f4f6; color: #3b4150; border: 1px solid #c9ccd3; }
-    .sk-ba__label.after { background: #dcefe6; color: #0b5a43; border: 1px solid #8cc4ab; }
-
-    /* Phone row (stress test) */
-    .sk-phones { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 24px 0 0; padding: 24px 20px 20px; border: 1px solid var(--rule); border-radius: 18px; background: linear-gradient(180deg, #f2f8f5 0%, #e8f2ed 100%); }
+    /* Breaking it */
+    .sk-qs { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 20px; padding: 0; list-style: none; }
+    .case .sk-qs li { margin: 0; padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px dashed var(--rule-strong); font-size: 14.5px; }
+    .case .sk-qs li::before { display: none; content: none; }
+    .sk-phones { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 20px 0 0; padding: 24px 20px 20px; border-radius: 18px; background: linear-gradient(180deg, #f2f8f5 0%, #e8f2ed 100%); }
     .sk-phones figure { margin: 0; }
-    .sk-phones img { display: block; width: 100%; height: auto; border-radius: 22px; border: 6px solid #111318; background: #fff; box-shadow: 0 18px 30px -18px rgba(10, 31, 74, 0.45); }
-    .sk-phones figcaption { font-size: 12.5px; color: var(--muted); margin-top: 10px; line-height: 1.4; text-align: center; }
-    .sk-trio { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); gap: 18px; margin: 18px 0 0; align-items: start; }
-    .sk-trio figure { margin: 0; }
-    .sk-trio img { display: block; width: 100%; height: auto; border: 1px solid var(--rule-strong); border-radius: 12px; background: #fff; }
-    .sk-trio figcaption { font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
+    .sk-phones img { display: block; width: 100%; height: auto; border-radius: 22px; border: 6px solid #111318; background: #fff; }
+    .sk-phones figcaption { text-align: center; font-size: 12.5px; }
 
-    /* Test plan */
-    .sk-tasks { margin: 10px 0 0; padding-left: 22px; max-width: 66ch; }
-    .case .sk-tasks li { padding-left: 4px; margin-bottom: 8px; font-size: 15px; line-height: 1.55; }
-    .case .sk-tasks li::before { display: none; content: none; }
-    .sk-scenario { margin: 18px 0 8px; padding: 16px 20px; border-left: 3px solid #0f6a4f; background: #eef6f2; border-radius: 0 12px 12px 0; font-size: 16px; line-height: 1.5; font-style: italic; max-width: 62ch; }
+    .sk-scenario { margin: 18px 0 8px; padding: 18px 22px; border-left: 4px solid #0f6a4f; background: var(--sk-green-bg); border-radius: 0 12px 12px 0; font-size: 18px; line-height: 1.45; font-style: italic; max-width: 60ch; }
+    .sk-honest { margin: 28px 0 0; padding: 14px 18px; border-radius: 12px; border: 1px dashed var(--rule-strong); font-size: 14px; line-height: 1.55; color: var(--muted); max-width: 66ch; }
+    .sk-honest b { color: var(--ink); }
 
+    @media (prefers-reduced-motion: reduce) { .sk-paper img { transform: none !important; } }
     @media (max-width: 960px) {
-      .sk-people { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .sk-principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .sk-issues { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sk-people, .sk-reasons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
-    @media (max-width: 760px) {
-      .sk-lead { font-size: 17px; }
-      .sk-people, .sk-principles, .sk-issues, .sk-boards { grid-template-columns: 1fr; }
-      .sk-step, .sk-step--phone, .sk-trio { grid-template-columns: 1fr; gap: 18px; }
-      .sk-step--phone .sk-step__text { order: -1; }
-      .sk-ba__pair { grid-template-columns: 1fr; }
+    @media (max-width: 720px) {
+      .sk-lead { font-size: 17.5px; }
+      .sk-brief { grid-template-columns: 1fr; }
+      .sk-brief > div { border-right: 0 !important; border-top: 1px solid var(--rule) !important; }
+      .sk-brief > div:first-child { border-top: 0 !important; }
+      .sk-tldr ol, .sk-ends, .sk-two, .sk-two--phone, .sk-people, .sk-reasons { grid-template-columns: 1fr; }
+      .sk-two--phone .sk-phone { max-width: 260px; margin: 0 auto; }
+      .sk-swap { grid-template-columns: 1fr; gap: 8px; }
+      .sk-swap .arrow { transform: rotate(90deg); justify-self: center; }
       .sk-phones { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 18px 14px; }
-      .sk-table thead { display: none; }
-      .sk-table tr { display: block; padding: 12px 0; border-top: 1px solid var(--rule); }
-      .sk-table th, .sk-table td { display: block; border: 0; padding: 2px 0; width: auto; }
-      .sk-table tbody th, .sk-table--3 tbody th, .sk-table--3 tbody td { width: auto; }
+      .sk-proto { grid-template-columns: 1fr; padding: 20px; }
+      .sk-proto-btn { justify-self: start; white-space: normal; }
     }
   </style>
 </head>
@@ -170,70 +176,72 @@
           data-en="Helping a friend · 2026 · in progress"
           data-no="Hjelper en venn · 2026 · pågår">Helping a friend · 2026 · in progress</span>
     <h1 class="case-h1"
-        data-en="Turning a map of test scores into a school finder every family can read."
-        data-no="Fra et kart over prøveresultater til en skolevelger alle familier kan lese.">
-      Turning a map of test scores into a school finder every family can read.
+        data-en="The school map showed test scores. I made it show which school fits your child."
+        data-no="Skolekartet viste prøveresultater. Jeg fikk det til å vise hvilken skole som passer barnet ditt.">
+      The school map showed test scores. I made it show which school fits your child.
     </h1>
     <p class="sk-lead"
-       data-en="My friend built Skolekartet, a map of every school in Norway and its test results. She asked me to help with a real case: a parent with MS choosing a school for their kids. I tried it the way that family would, and it couldn&rsquo;t do the job. So I redesigned it. Now every family says what matters to them, and every number comes with words. Next, parents get to test it."
-       data-no="Venninnen min har laget Skolekartet, et kart over alle skoler i Norge og prøveresultatene deres. Hun ba meg hjelpe med en ekte situasjon: en forelder med MS som skal velge skole til barna sine. Jeg prøvde det slik den familien ville gjort, og det klarte ikke jobben. Så jeg redesignet det. Nå sier hver familie hva som betyr noe for dem, og hvert tall kommer med ord. Neste steg er at foreldre tester det.">
-      My friend built Skolekartet, a map of every school in Norway and its test results. She asked me to help with a real case: a parent with MS choosing a school for their kids. I tried it the way that family would, and it couldn&rsquo;t do the job. So I redesigned it. Now every family says what matters to them, and every number comes with words. Next, parents get to test it.
+       data-en-html="My friend built Skolekartet, a map of every school in Norway. I sat down with a parent who has MS to find a school for their child. <mark>We got stuck four times.</mark> This is how I fixed it."
+       data-no-html="Venninnen min har laget Skolekartet, et kart over alle skoler i Norge. Jeg satte meg ned med en forelder som har MS for å finne en skole til barnet deres. <mark>Vi stod fast fire ganger.</mark> Slik løste jeg det.">
+      My friend built Skolekartet, a map of every school in Norway. I sat down with a parent who has MS to find a school for their child. <mark>We got stuck four times.</mark> This is how I fixed it.
     </p>
 
-    <nav class="case-toc-pills" aria-label="On this page" data-en-aria="On this page" data-no-aria="På denne siden">
-      <a href="#problem"><span class="num">01</span> <span data-en="The problem" data-no="Problemet">The problem</span></a>
-      <a href="#surprise"><span class="num">02</span> <span data-en="A surprise" data-no="En overraskelse">A surprise</span></a>
-      <a href="#change"><span class="num">03</span> <span data-en="The big change" data-no="Den store endringen">The big change</span></a>
-      <a href="#designsystemet"><span class="num">04</span> <span data-en="Why Designsystemet" data-no="Hvorfor Designsystemet">Why Designsystemet</span></a>
-      <a href="#stress-test"><span class="num">05</span> <span data-en="Breaking it" data-no="Prøve å knekke det">Breaking it</span></a>
-      <a href="#next"><span class="num">06</span> <span data-en="What&rsquo;s next" data-no="Veien videre">What&rsquo;s next</span></a>
-    </nav>
-
-    <div class="snap-row">
-      <div class="cell">
-        <span class="label" data-en="When" data-no="Når">When</span>
-        <span class="value">
-          <strong>2026</strong>
-          <span class="aside" data-en="in progress" data-no="pågår">in progress</span>
-        </span>
+    <div class="sk-brief">
+      <div>
+        <span class="k" data-en="Challenge" data-no="Utfordring">Challenge</span>
+        <p data-en="Parents saw numbers, not answers. And nothing told a family if their child could even get through the door."
+           data-no="Foreldre så tall, ikke svar. Og ingenting fortalte en familie om barnet i det hele tatt kom seg inn døra.">Parents saw numbers, not answers. And nothing told a family if their child could even get through the door.</p>
       </div>
-      <div class="cell">
-        <span class="label" data-en="Who it&rsquo;s for" data-no="Hvem det er for">Who it&rsquo;s for</span>
-        <span class="value" data-en="Parents choosing a school, including parents with disabilities"
-                            data-no="Foreldre som velger skole, også foreldre med funksjonsnedsettelse">Parents choosing a school, including parents with disabilities</span>
+      <div>
+        <span class="k" data-en="Solution" data-no="Løsning">Solution</span>
+        <p data-en="Each family says what matters. Every number comes with words. The shortlist opens on any phone, no account needed."
+           data-no="Hver familie sier hva som betyr noe. Hvert tall kommer med ord. Listen åpnes på hvilken som helst telefon, uten konto.">Each family says what matters. Every number comes with words. The shortlist opens on any phone, no account needed.</p>
       </div>
-      <div class="cell">
-        <span class="label" data-en="Built on" data-no="Bygget på">Built on</span>
-        <span class="value" data-en="Designsystemet, made to be accessible" data-no="Designsystemet, laget for å være tilgjengelig">Designsystemet, made to be accessible</span>
+      <div>
+        <span class="k" data-en="My role" data-no="Min rolle">My role</span>
+        <p data-en="Helping a friend: review, sketches, writing, design in Figma and a working prototype."
+           data-no="Hjelper en venn: gjennomgang, skisser, tekst, design i Figma og en fungerende prototype.">Helping a friend: review, sketches, writing, design in Figma and a working prototype.</p>
       </div>
-      <div class="cell">
-        <span class="label" data-en="My role" data-no="Min rolle">My role</span>
-        <span class="value" data-en="Helping a friend · research, writing and design"
-                            data-no="Hjelper en venn · innsikt, tekst og design">Helping a friend · research, writing and design</span>
+      <div>
+        <span class="k" data-en="Status" data-no="Status">Status</span>
+        <p data-en="Prototype ready. Testing with real parents is next."
+           data-no="Prototypen er klar. Neste steg er testing med ekte foreldre.">Prototype ready. Testing with real parents is next.</p>
       </div>
     </div>
 
     <figure class="sk-hero">
       <img src="assets/case/sk/cover-v2.jpg?v=4" width="2000" height="1500"
-           alt="The redesigned Skolekartet on a laptop and a phone. On the laptop, schools near Kirkeveien 64A are sorted by how well they fit the family&apos;s priorities: good results, little bullying, step-free access for the parent and a short school route, with test results, wellbeing and bullying in words on every card. On the phone, the shared list in large text with the same numbers in words." />
-      <figcaption data-en="Results, wellbeing and access count the same, every number comes with words, and the list opens on the parent&rsquo;s own phone."
-                  data-no="Resultater, trivsel og tilgjengelighet teller like mye, hvert tall kommer med ord, og listen åpnes på forelderens egen telefon.">
-        Results, wellbeing and access count the same, every number comes with words, and the list opens on the parent&rsquo;s own phone.
-      </figcaption>
+           alt="The redesigned Skolekartet on a laptop and a phone. On the laptop, schools near Kirkeveien 64A are sorted by how well they fit the family&apos;s priorities, with test results, wellbeing and bullying in words on every card. On the phone, the shared list in large text." />
     </figure>
+
+    <div class="sk-tldr">
+      <span class="k" data-en="The story in 30 seconds" data-no="Historien på 30 sekunder">The story in 30 seconds</span>
+      <ol>
+        <li>
+          <span class="tag" data-en="The problem" data-no="Problemet">The problem</span>
+          <b data-en="&ldquo;Bullying 26,1 %.&rdquo; Is that bad?" data-no="«Mobbing 26,1 %.» Er det ille?">&ldquo;Bullying 26,1 %.&rdquo; Is that bad?</b>
+          <span data-en="The site showed numbers with no meaning, and nothing about access." data-no="Nettstedet viste tall uten mening, og ingenting om tilgjengelighet.">The site showed numbers with no meaning, and nothing about access.</span>
+        </li>
+        <li>
+          <span class="tag" data-en="The twist" data-no="Vendingen">The twist</span>
+          <b data-en="My first fix was biased too." data-no="Min første løsning var også skjev.">My first fix was biased too.</b>
+          <span data-en="I put access first and hid test results. Most parents start with results." data-no="Jeg satte tilgjengelighet først og gjemte prøveresultatene. De fleste foreldre starter med resultater.">I put access first and hid test results. Most parents start with results.</span>
+        </li>
+        <li>
+          <span class="tag" data-en="The result" data-no="Resultatet">The result</span>
+          <b data-en="&ldquo;Which school fits us?&rdquo;" data-no="«Hvilken skole passer oss?»">&ldquo;Which school fits us?&rdquo;</b>
+          <span data-en="Not &ldquo;which is best&rdquo;. Every family answers it for themselves." data-no="Ikke «hvilken er best». Hver familie svarer selv.">Not &ldquo;which is best&rdquo;. Every family answers it for themselves.</span>
+        </li>
+      </ol>
+    </div>
 
     <aside class="sk-proto" aria-labelledby="sk-proto-h">
       <div>
         <span class="k" data-en="Working prototype" data-no="Fungerende prototype">Working prototype</span>
-        <h2 id="sk-proto-h" data-en="Try the prototype we&rsquo;ll test with parents"
-            data-no="Prøv prototypen vi skal teste med foreldre">Try the prototype we&rsquo;ll test with parents</h2>
-        <p data-en="This is the working website we&rsquo;ll put in front of parents in the next stages of design and implementation. It&rsquo;s built on Designsystemet and works in Norwegian, English and Ukrainian."
-           data-no="Dette er det fungerende nettstedet vi skal teste med foreldre i de neste stegene av design og utvikling. Det er bygget på Designsystemet og fungerer på norsk, engelsk og ukrainsk.">
-          This is the working website we&rsquo;ll put in front of parents in the next stages of design and implementation. It&rsquo;s built on Designsystemet and works in Norwegian, English and Ukrainian.
-        </p>
-        <p data-en="Schools, addresses, wellbeing and bullying are real open data. National test results and access facts are example data until schools confirm them."
-           data-no="Skoler, adresser, trivsel og mobbing er ekte åpne data. Resultater på nasjonale prøver og tilgjengelighet er eksempeldata til skolene bekrefter dem.">
-          Schools, addresses, wellbeing and bullying are real open data. National test results and access facts are example data until schools confirm them.
+        <h2 id="sk-proto-h" data-en="Click through it yourself" data-no="Klikk deg gjennom selv">Click through it yourself</h2>
+        <p data-en="Built on Designsystemet, in Norwegian, English and Ukrainian. Schools, wellbeing and bullying are real open data. Test results and access facts are examples until schools confirm them."
+           data-no="Bygget på Designsystemet, på norsk, engelsk og ukrainsk. Skoler, trivsel og mobbing er ekte åpne data. Prøveresultater og tilgjengelighet er eksempler til skolene bekrefter dem.">
+          Built on Designsystemet, in Norwegian, English and Ukrainian. Schools, wellbeing and bullying are real open data. Test results and access facts are examples until schools confirm them.
         </p>
       </div>
       <a class="sk-proto-btn" href="skolekartet-prototype/index.html" target="_blank" rel="noopener"
@@ -241,243 +249,260 @@
          data-no-html="Åpne prototypen <span aria-hidden=&quot;true&quot;>&#8599;</span><span class=&quot;visually-hidden&quot;> (åpnes i ny fane)</span>">Open the prototype <span aria-hidden="true">&#8599;</span><span class="visually-hidden"> (opens in a new tab)</span></a>
     </aside>
 
-    <!-- 01 · THE PROBLEM =========================================== -->
+    <nav class="case-toc-pills" aria-label="On this page" data-en-aria="On this page" data-no-aria="På denne siden">
+      <a href="#problem"><span class="num">01</span> <span data-en="Stuck" data-no="Fast">Stuck</span></a>
+      <a href="#surprise"><span class="num">02</span> <span data-en="My own bias" data-no="Min egen skjevhet">My own bias</span></a>
+      <a href="#change"><span class="num">03</span> <span data-en="Five decisions" data-no="Fem beslutninger">Five decisions</span></a>
+      <a href="#designsystemet"><span class="num">04</span> <span data-en="Why Designsystemet" data-no="Hvorfor Designsystemet">Why Designsystemet</span></a>
+      <a href="#stress-test"><span class="num">05</span> <span data-en="Breaking it" data-no="Prøve å knekke det">Breaking it</span></a>
+      <a href="#next"><span class="num">06</span> <span data-en="What&rsquo;s next" data-no="Veien videre">What&rsquo;s next</span></a>
+    </nav>
+
+    <!-- 01 · STUCK ================================================= -->
     <section id="problem" class="sf-section">
-      <span class="case-eyebrow" data-en="01 · The problem" data-no="01 · Problemet">01 · The problem</span>
-      <h2 data-en="I used the site the way one family would. It couldn&rsquo;t do the job."
-          data-no="Jeg brukte nettstedet slik én familie ville gjort. Det klarte ikke jobben.">
-        I used the site the way one family would. It couldn&rsquo;t do the job.
-      </h2>
-      <p data-en="Picture it. I&rsquo;m sitting next to a friend who has MS. We&rsquo;re looking for a school for their child. When we find one, the parent needs to see why that school is right."
-         data-no="Se det for deg. Jeg sitter ved siden av en venn som har MS. Vi leter etter en skole til barnet deres. Når vi finner en, må forelderen kunne se hvorfor akkurat den skolen er riktig.">
-        Picture it. I&rsquo;m sitting next to a friend who has MS. We&rsquo;re looking for a school for their child. When we find one, the parent needs to see why that school is right.
+      <span class="case-eyebrow" data-en="01 · Stuck" data-no="01 · Fast">01 · Stuck</span>
+      <h2 data-en="One parent, one evening, four dead ends."
+          data-no="Én forelder, én kveld, fire blindveier.">One parent, one evening, four dead ends.</h2>
+      <p data-en-html="We weren&rsquo;t looking for the &ldquo;best&rdquo; school. We needed a school where the child could get in, feel safe and learn. <mark>And the parent needed to see why.</mark>"
+         data-no-html="Vi lette ikke etter den «beste» skolen. Vi trengte en skole der barnet kom seg inn, var trygt og lærte. <mark>Og forelderen måtte kunne se hvorfor.</mark>">
+        We weren&rsquo;t looking for the &ldquo;best&rdquo; school. We needed a school where the child could get in, feel safe and learn. <mark>And the parent needed to see why.</mark>
       </p>
-      <p data-en="Skolekartet had a strong start. It was clean and honest about its data. But for us, it got stuck in four places."
-         data-no="Skolekartet hadde et sterkt utgangspunkt. Det var ryddig og ærlig om dataene sine. Men for oss stoppet det opp fire steder.">
-        Skolekartet had a strong start. It was clean and honest about its data. But for us, it got stuck in four places.
-      </p>
-      <ul class="sf-ai-list">
-        <li data-en-html="<strong>&ldquo;Best&rdquo; meant test scores.</strong> The colours, the filters and the sorting all pointed there. Wellbeing was a bare number, and access wasn&rsquo;t there at all."
-            data-no-html="<strong>«Best» betydde prøveresultater.</strong> Fargene, filtrene og sorteringen pekte dit. Trivsel var et nakent tall, og tilgjengelighet fantes ikke.">
-          <strong>&ldquo;Best&rdquo; meant test scores.</strong> The colours, the filters and the sorting all pointed there. Wellbeing was a bare number, and access wasn&rsquo;t there at all.
-        </li>
-        <li data-en-html="<strong>No answer to &ldquo;can my child get in?&rdquo;</strong> Nothing about a step-free entrance, a lift or extra support. Not even a note saying the facts were missing."
-            data-no-html="<strong>Ikke noe svar på «kommer barnet mitt seg inn?».</strong> Ingenting om trinnfri inngang, heis eller ekstra støtte. Ikke engang en beskjed om at opplysningene manglet.">
-          <strong>No answer to &ldquo;can my child get in?&rdquo;</strong> Nothing about a step-free entrance, a lift or extra support. Not even a note saying the facts were missing.
-        </li>
-        <li data-en-html="<strong>Numbers without meaning.</strong> A card said &ldquo;Bullying 26,1 %&rdquo;. Is that bad? You had to work out by hand that it was more than double Oslo&rsquo;s figure."
-            data-no-html="<strong>Tall uten mening.</strong> Et kort sa «Mobbing 26,1 %». Er det ille? Du måtte regne ut for hånd at det var over dobbelt så høyt som i Oslo.">
-          <strong>Numbers without meaning.</strong> A card said &ldquo;Bullying 26,1 %&rdquo;. Is that bad? You had to work out by hand that it was more than double Oslo&rsquo;s figure.
-        </li>
-        <li data-en-html="<strong>The list stayed on one computer.</strong> No way to compare, share or print. The parent couldn&rsquo;t look at it on their own phone, with their own settings."
-            data-no-html="<strong>Listen ble værende på én datamaskin.</strong> Ingen måte å sammenligne, dele eller skrive ut på. Forelderen kunne ikke se den på sin egen telefon, med sine egne innstillinger.">
-          <strong>The list stayed on one computer.</strong> No way to compare, share or print. The parent couldn&rsquo;t look at it on their own phone, with their own settings.
-        </li>
+
+      <figure class="sk-fig sk-paper">
+        <img src="assets/case/sk/sketch-flow.jpg" width="2400" height="960" loading="lazy"
+             alt="Hand-drawn journey on paper. Before: start page with random schools in Rana, Best means test scores only, Bullying 26,1 percent with the note is that bad, Can my child get in with no answer, and the list stuck on one computer. The last three are highlighted as stuck. After: Where do you live, What matters, Schools that fit with every number in words, Save with no account, Share one link on any phone in any language." />
+        <figcaption data-en="I mapped our evening on paper. Yellow is where we got stuck." data-no="Jeg tegnet kvelden vår på papir. Gult er der vi stod fast.">I mapped our evening on paper. Yellow is where we got stuck.</figcaption>
+      </figure>
+
+      <ul class="sk-ends">
+        <li><b data-en="&ldquo;Best&rdquo; meant test scores" data-no="«Best» betydde prøveresultater">&ldquo;Best&rdquo; meant test scores</b>
+          <span data-en="Colours, filters and sorting all pointed there." data-no="Farger, filtre og sortering pekte dit.">Colours, filters and sorting all pointed there.</span></li>
+        <li><b data-en="Numbers without meaning" data-no="Tall uten mening">Numbers without meaning</b>
+          <span data-en="26,1 % bullying is more than double Oslo&rsquo;s figure. You had to work that out yourself." data-no="26,1 % mobbing er over dobbelt så mye som i Oslo. Det måtte du regne ut selv.">26,1 % bullying is more than double Oslo&rsquo;s figure. You had to work that out yourself.</span></li>
+        <li><b data-en="No answer to &ldquo;can my child get in?&rdquo;" data-no="Ikke noe svar på «kommer barnet mitt inn?»">No answer to &ldquo;can my child get in?&rdquo;</b>
+          <span data-en="No step-free entrance, no lift, no support. Not even a note that it was missing." data-no="Ikke trinnfri inngang, ikke heis, ikke støtte. Ikke engang en beskjed om at det manglet.">No step-free entrance, no lift, no support. Not even a note that it was missing.</span></li>
+        <li><b data-en="The list stayed on one computer" data-no="Listen ble på én datamaskin">The list stayed on one computer</b>
+          <span data-en="No way to share it with the parent&rsquo;s own phone." data-no="Ingen måte å dele den til forelderens egen telefon.">No way to share it with the parent&rsquo;s own phone.</span></li>
       </ul>
-      <figure class="sf-figure sk-wide">
-        <img src="assets/case/sk/review-composite.jpg" width="1800" height="1700" loading="lazy"
+
+      <figure class="sk-fig">
+        <img class="sk-img sk-review" src="assets/case/sk/review-composite.jpg" width="1800" height="1700" loading="lazy"
              alt="Today's skolekartet.no start page with numbered review pins, next to a yellow notes panel. Without an address, the list shows schools in Rana sorted as nearest, beside a map of Norway with coloured clusters." />
-        <figcaption data-en="The start page before you&rsquo;ve said where you live: random schools in Rana, sorted &ldquo;nearest&rdquo;, next to my notes."
-                    data-no="Forsiden før du har sagt hvor du bor: tilfeldige skoler i Rana, sortert «nærmest», ved siden av notatene mine.">
-          The start page before you&rsquo;ve said where you live: random schools in Rana, sorted &ldquo;nearest&rdquo;, next to my notes.
-        </figcaption>
+        <figcaption data-en="My review notes on the old start page: random schools in Rana, sorted &ldquo;nearest&rdquo;, before you&rsquo;ve said where you live."
+                    data-no="Notatene mine på den gamle forsiden: tilfeldige skoler i Rana, sortert «nærmest», før du har sagt hvor du bor.">My review notes on the old start page: random schools in Rana, sorted &ldquo;nearest&rdquo;, before you&rsquo;ve said where you live.</figcaption>
       </figure>
     </section>
 
-    <!-- 02 · A SURPRISE ============================================ -->
+    <!-- 02 · MY OWN BIAS ========================================== -->
     <section id="surprise" class="sf-section">
-      <span class="case-eyebrow" data-en="02 · A surprise" data-no="02 · En overraskelse">02 · A surprise</span>
-      <h2 data-en="Then I noticed who I had left out."
-          data-no="Så la jeg merke til hvem jeg hadde glemt.">
-        Then I noticed who I had left out.
-      </h2>
-      <p data-en="My first ideas were all about access. Test results sat at the very bottom, as an extra."
-         data-no="De første ideene mine handlet bare om tilgjengelighet. Prøveresultater lå helt nederst, som et tillegg.">
-        My first ideas were all about access. Test results sat at the very bottom, as an extra.
-      </p>
-      <p data-en="That was my bias, not the parents&rsquo;. Most families choose a school by its results and by how happy the pupils are. The family with MS cares about that too, right next to a step-free entrance."
-         data-no="Det var min skjevhet, ikke foreldrenes. De fleste familier velger skole etter resultatene og etter hvordan elevene har det. Familien med MS bryr seg om det også, rett ved siden av trinnfri inngang.">
-        That was my bias, not the parents&rsquo;. Most families choose a school by its results and by how happy the pupils are. The family with MS cares about that too, right next to a step-free entrance.
-      </p>
-      <p data-en="So the question changed. Not &ldquo;which school is best?&rdquo; but &ldquo;which school fits our child?&rdquo; And every family gets to answer it for themselves."
-         data-no="Så endret spørsmålet seg. Ikke «hvilken skole er best?», men «hvilken skole passer barnet vårt?». Og hver familie får svare på det selv.">
-        So the question changed. Not &ldquo;which school is best?&rdquo; but &ldquo;which school fits our child?&rdquo; And every family gets to answer it for themselves.
-      </p>
-      <p data-en="To keep myself honest, I wrote down the parents the site has to work for. They&rsquo;re made-up people, built from the review and from how school choice works in Norway, so they still need real interviews. But each one pulled the design in a new direction."
-         data-no="For å holde meg ærlig skrev jeg ned foreldrene nettstedet må fungere for. De er oppdiktede personer, bygget på gjennomgangen og på hvordan skolevalg fungerer i Norge, så de trenger fortsatt ekte intervjuer. Men hver av dem dro designet i en ny retning.">
-        To keep myself honest, I wrote down the parents the site has to work for. They&rsquo;re made-up people, built from the review and from how school choice works in Norway, so they still need real interviews. But each one pulled the design in a new direction.
-      </p>
+      <span class="case-eyebrow" data-en="02 · My own bias" data-no="02 · Min egen skjevhet">02 · My own bias</span>
+      <h2 data-en="My first sketch had the same problem, just upside down."
+          data-no="Den første skissen min hadde samme problem, bare snudd på hodet.">My first sketch had the same problem, just upside down.</h2>
+      <p data-en="I was so focused on access that I pushed test results to the very bottom, as an extra."
+         data-no="Jeg var så opptatt av tilgjengelighet at jeg dyttet prøveresultatene helt ned, som et tillegg.">I was so focused on access that I pushed test results to the very bottom, as an extra.</p>
 
+      <figure class="sk-fig sk-paper tilt-l">
+        <img src="assets/case/sk/sketch-first.jpg" width="1800" height="1200" loading="lazy"
+             alt="Hand-drawn first sketch: an address field, a big question Can my child get in with five access checkboxes, two schools with wheelchair ticks, and test results and wellbeing hidden in a small extra row at the very bottom. Red notes say everything about access and results buried at the very bottom." />
+      </figure>
+
+      <blockquote class="sk-pull">
+        <span data-en="That was my bias, not the parents&rsquo;." data-no="Det var min skjevhet, ikke foreldrenes.">That was my bias, not the parents&rsquo;.</span>
+        <small data-en="Most families choose by results and by how happy the pupils are. The family with MS cares about that too." data-no="De fleste familier velger etter resultater og hvor godt elevene trives. Familien med MS bryr seg om det også.">Most families choose by results and by how happy the pupils are. The family with MS cares about that too.</small>
+      </blockquote>
+
+      <p data-en="So I changed the question the whole site answers:" data-no="Så endret jeg spørsmålet hele nettstedet svarer på:">So I changed the question the whole site answers:</p>
+      <div class="sk-swap">
+        <div class="old" data-en="Which school is best?" data-no="Hvilken skole er best?">Which school is best?</div>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+        <div class="new" data-en="Which school fits our child?" data-no="Hvilken skole passer barnet vårt?">Which school fits our child?</div>
+      </div>
+
+      <p data-en="To keep myself honest, I wrote down four parents the site has to work for. Each one pulled the design a different way."
+         data-no="For å holde meg ærlig skrev jeg ned fire foreldre nettstedet må fungere for. Hver av dem dro designet i en ny retning.">To keep myself honest, I wrote down four parents the site has to work for. Each one pulled the design a different way.</p>
       <div class="sk-people">
-        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">HS</span><div><h3>Henrik · Trondheim</h3><p class="role" data-en="Chooses by test results" data-no="Velger etter prøveresultater">Chooses by test results</p></div></div>
-          <blockquote data-en="&ldquo;She loves maths and gets bored. Show me the results, but tell me if the difference is real.&rdquo;" data-no="«Hun elsker matte og kjeder seg. Vis meg resultatene, men si fra om forskjellen er reell.»">&ldquo;She loves maths and gets bored. Show me the results, but tell me if the difference is real.&rdquo;</blockquote></article>
-        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">AH</span><div><h3>Amina · Oslo</h3><p class="role" data-en="Her daughter uses a wheelchair" data-no="Datteren bruker rullestol">Her daughter uses a wheelchair</p></div></div>
-          <blockquote data-en="&ldquo;I don&rsquo;t need the &lsquo;best&rsquo; school. I need a school where Lina gets through the door and is seen.&rdquo;" data-no="«Jeg trenger ikke den ‘beste’ skolen. Jeg trenger en skole der Lina kommer seg inn døra og blir sett.»">&ldquo;I don&rsquo;t need the &lsquo;best&rsquo; school. I need a school where Lina gets through the door and is seen.&rdquo;</blockquote></article>
-        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">SN</span><div><h3>Sara · Fredrikstad</h3><p class="role" data-en="Her son is being bullied" data-no="Sønnen blir mobbet">Her son is being bullied</p></div></div>
-          <blockquote data-en="&ldquo;Theo dreads every morning. I need to know the next school actually does something about bullying.&rdquo;" data-no="«Theo gruer seg hver morgen. Jeg må vite at neste skole faktisk gjør noe med mobbing.»">&ldquo;Theo dreads every morning. I need to know the next school actually does something about bullying.&rdquo;</blockquote></article>
-        <article class="sk-person"><div class="sk-person__head"><span class="sk-person__av" aria-hidden="true">LB</span><div><h3>Lars · Bergen</h3><p class="role" data-en="Blind, uses a screen reader" data-no="Blind, bruker skjermleser">Blind, uses a screen reader</p></div></div>
-          <blockquote data-en="&ldquo;If the map is the only thing that works, the service isn&rsquo;t made for me.&rdquo;" data-no="«Hvis kartet er det eneste som fungerer, er tjenesten ikke laget for meg.»">&ldquo;If the map is the only thing that works, the service isn&rsquo;t made for me.&rdquo;</blockquote></article>
+        <div class="sk-person">
+          <blockquote data-en="&ldquo;Show me the results. But tell me if the difference is real.&rdquo;" data-no="«Vis meg resultatene. Men si om forskjellen er ekte.»">&ldquo;Show me the results. But tell me if the difference is real.&rdquo;</blockquote>
+          <p data-en-html="<b>Henrik</b> · chooses by test results" data-no-html="<b>Henrik</b> · velger etter prøveresultater"><b>Henrik</b> · chooses by test results</p>
+        </div>
+        <div class="sk-person">
+          <blockquote data-en="&ldquo;I need a school where Lina gets through the door.&rdquo;" data-no="«Jeg trenger en skole der Lina kommer seg inn døra.»">&ldquo;I need a school where Lina gets through the door.&rdquo;</blockquote>
+          <p data-en-html="<b>Amina</b> · her daughter uses a wheelchair" data-no-html="<b>Amina</b> · datteren bruker rullestol"><b>Amina</b> · her daughter uses a wheelchair</p>
+        </div>
+        <div class="sk-person">
+          <blockquote data-en="&ldquo;Does the next school actually do something about bullying?&rdquo;" data-no="«Gjør den neste skolen faktisk noe med mobbing?»">&ldquo;Does the next school actually do something about bullying?&rdquo;</blockquote>
+          <p data-en-html="<b>Sara</b> · her son is being bullied" data-no-html="<b>Sara</b> · sønnen blir mobbet"><b>Sara</b> · her son is being bullied</p>
+        </div>
+        <div class="sk-person">
+          <blockquote data-en="&ldquo;If the map is the only thing that works, it isn&rsquo;t made for me.&rdquo;" data-no="«Hvis kartet er det eneste som virker, er det ikke laget for meg.»">&ldquo;If the map is the only thing that works, it isn&rsquo;t made for me.&rdquo;</blockquote>
+          <p data-en-html="<b>Lars</b> · blind, uses a screen reader" data-no-html="<b>Lars</b> · blind, bruker skjermleser"><b>Lars</b> · blind, uses a screen reader</p>
+        </div>
       </div>
+      <p class="sk-note" data-en="These are made-up parents, built from the review and how school choice works in Norway. Real interviews come next."
+         data-no="Dette er oppdiktede foreldre, bygget på gjennomgangen og på hvordan skolevalg fungerer i Norge. Ekte intervjuer kommer neste.">These are made-up parents, built from the review and how school choice works in Norway. Real interviews come next.</p>
     </section>
 
-    <!-- 03 · THE BIG CHANGE ======================================== -->
+    <!-- 03 · FIVE DECISIONS ======================================= -->
     <section id="change" class="sf-section">
-      <span class="case-eyebrow" data-en="03 · The big change" data-no="03 · Den store endringen">03 · The big change</span>
-      <h2 data-en="Every family says what matters. Every number comes with words."
-          data-no="Hver familie sier hva som betyr noe. Hvert tall kommer med ord.">
-        Every family says what matters. Every number comes with words.
-      </h2>
+      <span class="case-eyebrow" data-en="03 · Five decisions" data-no="03 · Fem beslutninger">03 · Five decisions</span>
+      <h2 data-en="From paper to a working site, one decision at a time."
+          data-no="Fra papir til et fungerende nettsted, én beslutning om gangen.">From paper to a working site, one decision at a time.</h2>
 
-      <div class="sk-step">
-        <div class="sk-step__text">
-          <span class="kicker" data-en="First, one question" data-no="Først ett spørsmål">First, one question</span>
-          <h3 data-en="Results count as much as access" data-no="Resultater teller like mye som tilgjengelighet">Results count as much as access</h3>
-          <p data-en="After the address, the site asks one thing: what matters to your family? Learning and wellbeing come first. Then getting around, support and everyday life."
-             data-no="Etter adressen spør nettstedet om én ting: hva er viktig for familien deres? Læring og trivsel kommer først. Så å komme seg rundt, støtte og hverdagen.">
-            After the address, the site asks one thing: what matters to your family? Learning and wellbeing come first. Then getting around, support and everyday life.
-          </p>
-          <p data-en="Nothing is ticked from the start, so the site never decides for you. I ask about needs, not diagnoses, and choices about the child are never stored on a server."
-             data-no="Ingenting er krysset av fra start, så nettstedet bestemmer aldri for dere. Jeg spør om behov, ikke diagnoser, og valg om barnet lagres aldri på en server.">
-            Nothing is ticked from the start, so the site never decides for you. I ask about needs, not diagnoses, and choices about the child are never stored on a server.
-          </p>
-        </div>
-        <figure>
-          <img class="tall" src="assets/case/sk/cmb-priorities.jpg" width="2400" height="3133" loading="lazy"
-               alt="What is important for you: Learning and wellbeing first, with good national test results, pupils thrive and little bullying, then getting around, senses, support and everyday life. Good results, little bullying, step-free access for the parent and a short school route are selected." />
+      <!-- Decision 1 -->
+      <article class="sk-decision">
+        <span class="kicker" data-en="Decision 1" data-no="Beslutning 1">Decision 1</span>
+        <h3 data-en="Ask what matters before showing a single school." data-no="Spør hva som betyr noe før du viser én eneste skole.">Ask what matters before showing a single school.</h3>
+        <p data-en="Two short questions: where do you live, and what matters to you? Learning and wellbeing come first, then getting around, support and everyday life."
+           data-no="To korte spørsmål: hvor bor dere, og hva betyr noe for dere? Læring og trivsel kommer først, så skolevei, støtte og hverdag.">Two short questions: where do you live, and what matters to you? Learning and wellbeing come first, then getting around, support and everyday life.</p>
+        <figure class="sk-fig">
+          <span class="sk-live" data-en="Live prototype" data-no="Ekte prototype">Live prototype</span>
+          <div class="sk-browser">
+            <picture>
+              <source srcset="assets/case/sk/clip-flow-poster.jpg" media="(prefers-reduced-motion: reduce)" />
+              <img src="assets/case/sk/clip-flow.webp" width="1200" height="750" loading="lazy"
+                   alt="Screen recording: typing Kirkeveien 64 Oslo, picking the address, choosing three priorities on the next page, then the results list with cards that say how many priorities each school fits." />
+            </picture>
+          </div>
         </figure>
-      </div>
-
-      <article class="sk-ba">
-        <h3 data-en="Each card says how well the school fits, in words" data-no="Hvert kort sier med ord hvor godt skolen passer">Each card says how well the school fits, in words</h3>
-        <p data-en="Before, a card showed bare numbers and a guessed school district that looked certain. Now it tells you how many of your priorities a school meets. Results, wellbeing and bullying sit next to the national average, in words: above, the same or below."
-           data-no="Før viste kortet nakne tall og en gjettet skolekrets som så sikker ut. Nå sier det hvor mange av prioriteringene deres skolen oppfyller. Resultater, trivsel og mobbing står ved siden av landssnittet, med ord: over, likt eller under.">
-          Before, a card showed bare numbers and a guessed school district that looked certain. Now it tells you how many of your priorities a school meets. Results, wellbeing and bullying sit next to the national average, in words: above, the same or below.
-        </p>
-        <p data-en="Why not one big score? Because a parent can&rsquo;t check a single score, or explain it to someone else. A list of what fits, they can."
-           data-no="Hvorfor ikke én samlet poengsum? Fordi en forelder ikke kan sjekke én poengsum, eller forklare den for noen andre. En liste over det som passer, kan de.">
-          Why not one big score? Because a parent can&rsquo;t check a single score, or explain it to someone else. A list of what fits, they can.
-        </p>
-        <div class="sk-ba__pair">
-          <figure><span class="sk-ba__label before" data-en="Before" data-no="Før">Before</span>
-            <img src="assets/case/sk/ba-results-before.jpg" width="1200" height="1042" loading="lazy" alt="Today's results for Kirkeveien 64A: grey cards labelled Probably the school district, a list of schools with average, wellbeing and bullying numbers, and a large map." /></figure>
-          <figure><span class="sk-ba__label after" data-en="After" data-no="Etter">After</span>
-            <img class="crop" src="assets/case/sk/cmb-results.jpg" width="2400" height="3400" loading="lazy" alt="Redesigned results: priority chips, quick filters, and school cards that say how many priorities each school fits, with national tests, wellbeing and bullying in words and confirmed access facts." /></figure>
+        <div class="sk-why">
+          <span class="k" data-en="why?" data-no="hvorfor?">why?</span>
+          <p data-en-html="Nothing is ticked from the start, so <mark>the site never decides for you.</mark> I ask about needs, not diagnoses, and choices about the child never leave the browser."
+             data-no-html="Ingenting er krysset av fra start, så <mark>nettstedet bestemmer aldri for deg.</mark> Jeg spør om behov, ikke diagnoser, og valg om barnet forlater aldri nettleseren.">Nothing is ticked from the start, so <mark>the site never decides for you.</mark> I ask about needs, not diagnoses, and choices about the child never leave the browser.</p>
         </div>
       </article>
 
-      <div class="sk-step">
-        <div class="sk-step__text">
-          <span class="kicker" data-en="On the map" data-no="På kartet">On the map</span>
-          <h3 data-en="The legend is a filter, and every pin explains itself" data-no="Forklaringen er et filter, og hver markør forklarer seg selv">The legend is a filter, and every pin explains itself</h3>
-          <p data-en="Parents choose what the map shows: fit, results, wellbeing or bullying. Tap a colour in the legend to hide or show those schools. Tap a pin, and it tells you in words what its colour means."
-             data-no="Foreldre velger hva kartet viser: hvor godt skolene passer, resultater, trivsel eller mobbing. Trykk på en farge i forklaringen for å skjule eller vise de skolene. Trykk på en markør, så forteller den med ord hva fargen betyr.">
-            Parents choose what the map shows: fit, results, wellbeing or bullying. Tap a colour in the legend to hide or show those schools. Tap a pin, and it tells you in words what its colour means.
-          </p>
-          <p data-en="Everything on the map is also in the list next to it. Nobody has to see the map to use the site."
-             data-no="Alt på kartet står også i listen ved siden av. Ingen trenger å se kartet for å bruke nettstedet.">
-            Everything on the map is also in the list next to it. Nobody has to see the map to use the site.
-          </p>
-        </div>
-        <figure>
-          <img src="assets/case/sk/cmb-map.jpg" width="2400" height="1808" loading="lazy"
-               alt="Map view: a panel to show fit, results, wellbeing or bullying, legend buttons for each colour, pins coloured by test results, and an explanation box for Marienlyst school that says in words that results are well above average, wellbeing is above average and the lift and step-free entrance are confirmed." />
+      <!-- Decision 2 -->
+      <article class="sk-decision">
+        <span class="kicker" data-en="Decision 2" data-no="Beslutning 2">Decision 2</span>
+        <h3 data-en="Every number comes with words." data-no="Hvert tall kommer med ord.">Every number comes with words.</h3>
+        <p data-en="Each card says how many of your priorities a school fits. Results, wellbeing and bullying say above, the same or below average. What we don&rsquo;t know says &ldquo;ask the school&rdquo;."
+           data-no="Hvert kort sier hvor mange av prioriteringene deres skolen passer. Resultater, trivsel og mobbing sier over, likt eller under snittet. Det vi ikke vet, sier «spør skolen».">Each card says how many of your priorities a school fits. Results, wellbeing and bullying say above, the same or below average. What we don&rsquo;t know says &ldquo;ask the school&rdquo;.</p>
+        <figure class="sk-fig sk-paper tilt-r">
+          <span class="sk-label paper" data-en="Sketch" data-no="Skisse">Sketch</span>
+          <img src="assets/case/sk/sketch-card.jpg" width="1800" height="1200" loading="lazy"
+               alt="Hand-drawn school card for Majorstuen skole: a green edge, Passer 2 av 3, three tiles with Godt over snittet and Som snittet in words, a confirmed lift, an unknown fact marked spør skolen, and a step-free route. Red notes say colour edge equals how well it fits you, words first number second, and say what we don't know." />
         </figure>
-      </div>
-
-      <article class="sk-ba">
-        <h3 data-en="The school page answers the hard question first" data-no="Skolesiden svarer på det vanskelige spørsmålet først">The school page answers the hard question first</h3>
-        <p data-en="Before, the school page was a long run of tables and charts, with nothing about access. Now it opens with &ldquo;How the school fits you&rdquo;: the numbers in words, what&rsquo;s confirmed, what&rsquo;s still unknown, and questions to ask the school, right next to a call button."
-           data-no="Før var skolesiden en lang rekke tabeller og diagrammer, uten noe om tilgjengelighet. Nå starter den med «Slik passer skolen for dere»: tallene med ord, hva som er bekreftet, hva som fortsatt er ukjent, og spørsmål å stille skolen, rett ved siden av en ringeknapp.">
-          Before, the school page was a long run of tables and charts, with nothing about access. Now it opens with &ldquo;How the school fits you&rdquo;: the numbers in words, what&rsquo;s confirmed, what&rsquo;s still unknown, and questions to ask the school, right next to a call button.
-        </p>
-        <div class="sk-ba__pair">
-          <figure><span class="sk-ba__label before" data-en="Before" data-no="Før">Before</span>
-            <img src="assets/case/sk/ba-school-before.jpg" width="1200" height="1125" loading="lazy" alt="Today's Majorstuen school page: a photo carousel, key figures and a section navigation for about the school, results, map and facilities." /></figure>
-          <figure><span class="sk-ba__label after" data-en="After" data-no="Etter">After</span>
-            <img class="crop" src="assets/case/sk/cmb-school.jpg" width="2400" height="3833" loading="lazy" alt="Redesigned Majorstuen school page: How the school fits you, with the three numbers in words, facts by status and questions to ask the school, next to a call button." /></figure>
+        <div class="sk-two">
+          <figure class="sk-fig"><span class="sk-label before" data-en="Before" data-no="Før">Before</span>
+            <img class="sk-img" src="assets/case/sk/ba-results-before.jpg" width="1200" height="1042" loading="lazy" alt="Old results for Kirkeveien 64A: grey cards labelled Probably the school district, schools with bare average, wellbeing and bullying numbers, and a large map." /></figure>
+          <figure class="sk-fig"><span class="sk-label after" data-en="After" data-no="Etter">After</span>
+            <img class="sk-img sk-crop" src="assets/case/sk/cmb-results.jpg" width="2400" height="3400" loading="lazy" alt="Redesigned results: priority chips, quick filters, and school cards that say how many priorities each school fits, with national tests, wellbeing and bullying in words and confirmed access facts." /></figure>
+        </div>
+        <div class="sk-why">
+          <span class="k" data-en="why?" data-no="hvorfor?">why?</span>
+          <p data-en-html="Why not one big score? <mark>A parent can&rsquo;t check a score, or explain it to their partner.</mark> A list of what fits, they can."
+             data-no-html="Hvorfor ikke én samlet poengsum? <mark>En forelder kan ikke sjekke en poengsum, eller forklare den for partneren sin.</mark> En liste over det som passer, kan de.">Why not one big score? <mark>A parent can&rsquo;t check a score, or explain it to their partner.</mark> A list of what fits, they can.</p>
         </div>
       </article>
 
-      <div class="sk-step">
-        <div class="sk-step__text">
-          <span class="kicker" data-en="Decide together" data-no="Bestem sammen">Decide together</span>
-          <h3 data-en="A shortlist that travels to the parent&rsquo;s own phone" data-no="En liste som reiser til forelderens egen telefon">A shortlist that travels to the parent&rsquo;s own phone</h3>
-          <p data-en="Saved schools turn into a real comparison. It starts with plain answers, like &ldquo;Majorstuen stands out on bullying&rdquo; or &ldquo;Step-free access confirmed at all three&rdquo;. &ldquo;Best of these&rdquo; only shows up where a difference is real."
-             data-no="Lagrede skoler blir en ekte sammenligning. Den starter med enkle svar, som «Majorstuen skiller seg ut på mobbing» eller «Trinnfri adkomst bekreftet på alle tre». «Best av disse» vises bare der forskjellen er reell.">
-            Saved schools turn into a real comparison. It starts with plain answers, like &ldquo;Majorstuen stands out on bullying&rdquo; or &ldquo;Step-free access confirmed at all three&rdquo;. &ldquo;Best of these&rdquo; only shows up where a difference is real.
-          </p>
-          <p data-en="Someone asked me: without an account, won&rsquo;t the list disappear? But families use the site a few times, years apart. An account means one more password to remember, and personal details about a child stored somewhere. So &ldquo;Send the list to myself&rdquo; texts or e-mails a private link instead. It opens on any phone, in large text, with read-aloud."
-             data-no="Noen spurte meg: uten konto, forsvinner ikke listen da? Men familier bruker nettstedet noen få ganger, med år imellom. En konto betyr enda et passord å huske, og personopplysninger om et barn lagret et sted. Så «Send listen til meg selv» sender heller en privat lenke på SMS eller e-post. Den åpnes på hvilken som helst telefon, med stor tekst og opplesning.">
-            Someone asked me: without an account, won&rsquo;t the list disappear? But families use the site a few times, years apart. An account means one more password to remember, and personal details about a child stored somewhere. So &ldquo;Send the list to myself&rdquo; texts or e-mails a private link instead. It opens on any phone, in large text, with read-aloud.
-          </p>
+      <!-- Decision 3 -->
+      <article class="sk-decision">
+        <span class="kicker" data-en="Decision 3" data-no="Beslutning 3">Decision 3</span>
+        <h3 data-en="The legend is the filter." data-no="Tegnforklaringen er filteret.">The legend is the filter.</h3>
+        <p data-en="Parents pick what the map shows: fit, results, wellbeing or bullying. Tap a colour to hide those schools. Everything on the map is also in the list next to it."
+           data-no="Foreldre velger hva kartet viser: hvor godt skolen passer, resultater, trivsel eller mobbing. Trykk på en farge for å skjule de skolene. Alt på kartet står også i listen ved siden av.">Parents pick what the map shows: fit, results, wellbeing or bullying. Tap a colour to hide those schools. Everything on the map is also in the list next to it.</p>
+        <div class="sk-two">
+          <figure class="sk-fig sk-paper tilt-l"><span class="sk-label paper" data-en="Sketch" data-no="Skisse">Sketch</span>
+            <img src="assets/case/sk/sketch-legend.jpg" width="1800" height="1200" loading="lazy" alt="Hand-drawn map with numbered coloured pins and a legend panel where Under snittet is crossed out. Note: tap a colour to hide those schools, no separate filter panel to learn." /></figure>
+          <figure class="sk-fig"><span class="sk-live" data-en="Live prototype" data-no="Ekte prototype">Live prototype</span>
+            <div class="sk-browser">
+              <picture>
+                <source srcset="assets/case/sk/clip-lens-poster.jpg" media="(prefers-reduced-motion: reduce)" />
+                <img src="assets/case/sk/clip-lens.webp" width="1200" height="750" loading="lazy" alt="Screen recording of the map: switching what the map shows between fit, results, wellbeing and bullying, while the numbered list on the left stays in the same order." />
+              </picture>
+            </div></figure>
         </div>
-        <div class="sk-step__pair">
-          <figure>
-            <img class="tall" src="assets/case/sk/cmb-compare.jpg" width="2400" height="3000" loading="lazy"
-                 alt="Saved schools: share and print, keep the list for later without an account by e-mail, SMS or calendar, What sets them apart with short answers for national tests, wellbeing, bullying, step-free access and school route, then the schools side by side with the same tiles." />
-          </figure>
-          <figure>
-            <img class="phone" src="assets/case/sk/cmb-shared-phone.jpg" width="780" height="1688" loading="lazy"
-                 alt="The shared list on the parent&apos;s phone: Schools you have been sent, with the family&apos;s priorities, text size buttons, a language choice, Listen to the list, and Marienlyst school with a reason, the numbers in words and a confirmed fact." />
-          </figure>
+        <div class="sk-why">
+          <span class="k" data-en="why?" data-no="hvorfor?">why?</span>
+          <p data-en-html="One less thing to learn. And <mark>nobody has to see the map to use the site</mark>, which matters for Lars."
+             data-no-html="Én ting mindre å lære. Og <mark>ingen må se kartet for å bruke nettstedet</mark>, noe som betyr mye for Lars.">One less thing to learn. And <mark>nobody has to see the map to use the site</mark>, which matters for Lars.</p>
         </div>
-      </div>
+      </article>
+
+      <!-- Decision 4 -->
+      <article class="sk-decision">
+        <span class="kicker" data-en="Decision 4" data-no="Beslutning 4">Decision 4</span>
+        <h3 data-en="The school page answers the hard question first." data-no="Skolesiden svarer på det vanskelige spørsmålet først.">The school page answers the hard question first.</h3>
+        <p data-en="Before: tables and charts, nothing about access. After: &ldquo;How the school fits you&rdquo; at the top, with what&rsquo;s confirmed, what&rsquo;s unknown, and questions to ask, right next to a call button."
+           data-no="Før: tabeller og diagrammer, ingenting om tilgjengelighet. Etter: «Slik passer skolen for dere» øverst, med hva som er bekreftet, hva som er ukjent, og spørsmål å stille, rett ved en ringeknapp.">Before: tables and charts, nothing about access. After: &ldquo;How the school fits you&rdquo; at the top, with what&rsquo;s confirmed, what&rsquo;s unknown, and questions to ask, right next to a call button.</p>
+        <div class="sk-two">
+          <figure class="sk-fig"><span class="sk-label before" data-en="Before" data-no="Før">Before</span>
+            <img class="sk-img" src="assets/case/sk/ba-school-before.jpg" width="1200" height="1125" loading="lazy" alt="Old Majorstuen school page: a photo carousel, key figures and a section navigation for about the school, results, map and facilities." /></figure>
+          <figure class="sk-fig"><span class="sk-label after" data-en="After" data-no="Etter">After</span>
+            <img class="sk-img sk-crop" src="assets/case/sk/cmb-school.jpg" width="2400" height="3833" loading="lazy" alt="Redesigned Majorstuen school page: How the school fits you, with the three numbers in words, facts by status and questions to ask the school, next to a call button." /></figure>
+        </div>
+      </article>
+
+      <!-- Decision 5 -->
+      <article class="sk-decision">
+        <span class="kicker" data-en="Decision 5" data-no="Beslutning 5">Decision 5</span>
+        <h3 data-en="The list travels. There&rsquo;s no account." data-no="Listen reiser. Det finnes ingen konto.">The list travels. There&rsquo;s no account.</h3>
+        <p data-en="Save a few schools, compare them, then send one link. It opens on the parent&rsquo;s own phone, in large text, in their language, or read aloud."
+           data-no="Lagre noen skoler, sammenlign dem, og send én lenke. Den åpnes på forelderens egen telefon, med stor tekst, på deres språk, eller lest høyt.">Save a few schools, compare them, then send one link. It opens on the parent&rsquo;s own phone, in large text, in their language, or read aloud.</p>
+        <div class="sk-two sk-two--phone">
+          <figure class="sk-fig"><span class="sk-live" data-en="Live prototype" data-no="Ekte prototype">Live prototype</span>
+            <div class="sk-browser">
+              <picture>
+                <source srcset="assets/case/sk/clip-save-poster.jpg" media="(prefers-reduced-motion: reduce)" />
+                <img src="assets/case/sk/clip-save.webp" width="1200" height="750" loading="lazy" alt="Screen recording: pressing Lagre on two school cards, the saved counter in the header going up, then the saved schools page with share and print buttons and Send the list to myself." />
+              </picture>
+            </div></figure>
+          <figure class="sk-fig sk-phone">
+            <picture>
+              <source srcset="assets/case/sk/clip-shared-poster.jpg" media="(prefers-reduced-motion: reduce)" />
+              <img src="assets/case/sk/clip-shared.webp" width="430" height="931" loading="lazy" alt="Screen recording on a phone: the shared list switching to larger text, then to English and Ukrainian, with a Listen to the list button and school cards in words." />
+            </picture></figure>
+        </div>
+        <figure class="sk-fig sk-paper tilt-r">
+          <span class="sk-label paper" data-en="Sketch" data-no="Skisse">Sketch</span>
+          <img src="assets/case/sk/sketch-phone.jpg" width="1800" height="1200" loading="lazy" alt="Hand-drawn laptop with a Del listen button and an arrow to a phone showing the shared list with text size A, A+, A++, languages NO, EN, UA, a Listen button and Ring skolen buttons. Notes: one link, no login, no address inside; bigger text for bestemor; her language; or just listen." />
+        </figure>
+        <div class="sk-why">
+          <span class="k" data-en="why?" data-no="hvorfor?">why?</span>
+          <p data-en-html="Families use the site a few times, years apart. <mark>An account means one more password to remember, and personal details about a child stored somewhere.</mark> A private link does the same job."
+             data-no-html="Familier bruker nettstedet noen få ganger, med år imellom. <mark>En konto betyr enda et passord å huske, og personopplysninger om et barn lagret et sted.</mark> En privat lenke gjør samme jobben.">Families use the site a few times, years apart. <mark>An account means one more password to remember, and personal details about a child stored somewhere.</mark> A private link does the same job.</p>
+        </div>
+      </article>
     </section>
 
-    <!-- 04 · WHY DESIGNSYSTEMET ===================================== -->
+    <!-- 04 · WHY DESIGNSYSTEMET ==================================== -->
     <section id="designsystemet" class="sf-section">
       <span class="case-eyebrow" data-en="04 · Why Designsystemet" data-no="04 · Hvorfor Designsystemet">04 · Why Designsystemet</span>
-      <h2 data-en="I built it on the design system Norway&rsquo;s public services already share."
-          data-no="Jeg bygde det på designsystemet offentlige tjenester i Norge allerede deler.">
-        I built it on the design system Norway&rsquo;s public services already share.
-      </h2>
-      <p data-en="Designsystemet is the open design system behind Norwegian public services. A school finder for parents is that kind of service, so the choice was easy."
-         data-no="Designsystemet er det åpne designsystemet bak offentlige tjenester i Norge. En skolevelger for foreldre er en slik tjeneste, så valget var enkelt.">
-        Designsystemet is the open design system behind Norwegian public services. A school finder for parents is that kind of service, so the choice was easy.
-      </p>
-      <ul class="sf-ai-list">
-        <li data-en-html="<strong>It feels familiar.</strong> Parents already use NAV, Skatteetaten and their kommune. The school finder looks and behaves the same way."
-            data-no-html="<strong>Det føles kjent.</strong> Foreldre bruker allerede NAV, Skatteetaten og kommunen. Skolevelgeren ser ut og oppfører seg på samme måte.">
-          <strong>It feels familiar.</strong> Parents already use NAV, Skatteetaten and their kommune. The school finder looks and behaves the same way.
-        </li>
-        <li data-en-html="<strong>Accessibility comes built in.</strong> The parts already handle keyboard use, contrast and screen readers. That matters most for parents who use a screen reader or very large text."
-            data-no-html="<strong>Tilgjengelighet er bygget inn.</strong> Delene håndterer allerede tastatur, kontrast og skjermleser. Det betyr mest for foreldre som bruker skjermleser eller svært stor tekst.">
-          <strong>Accessibility comes built in.</strong> The parts already handle keyboard use, contrast and screen readers. That matters most for parents who use a screen reader or very large text.
-        </li>
-        <li data-en-html="<strong>My friend can build it straight away.</strong> Her site already runs on Designsystemet, so every part of my design is a part she already has. Dark mode and high contrast come with it."
-            data-no-html="<strong>Venninnen min kan bygge det med en gang.</strong> Nettstedet hennes kjører allerede på Designsystemet, så hver del av designet mitt er en del hun allerede har. Mørk modus og høy kontrast følger med.">
-          <strong>My friend can build it straight away.</strong> Her site already runs on Designsystemet, so every part of my design is a part she already has. Dark mode and high contrast come with it.
-        </li>
-        <li data-en-html="<strong>Less to look after.</strong> Skolekartet is a side project. Fixes and updates come from the system, not from one busy person."
-            data-no-html="<strong>Mindre å passe på.</strong> Skolekartet er et sideprosjekt. Rettelser og oppdateringer kommer fra systemet, ikke fra én travel person.">
-          <strong>Less to look after.</strong> Skolekartet is a side project. Fixes and updates come from the system, not from one busy person.
-        </li>
+      <h2 data-en="Built on the design system Norway&rsquo;s public services already share."
+          data-no="Bygget på designsystemet Norges offentlige tjenester allerede deler.">Built on the design system Norway&rsquo;s public services already share.</h2>
+      <ul class="sk-reasons">
+        <li><b data-en="It feels familiar" data-no="Det føles kjent">It feels familiar</b>
+          <span data-en="Parents already use NAV, Skatteetaten and their kommune." data-no="Foreldre bruker allerede NAV, Skatteetaten og kommunen sin.">Parents already use NAV, Skatteetaten and their kommune.</span></li>
+        <li><b data-en="Accessible from the start" data-no="Tilgjengelig fra start">Accessible from the start</b>
+          <span data-en="Keyboard, contrast and screen readers are handled." data-no="Tastatur, kontrast og skjermlesere er ivaretatt.">Keyboard, contrast and screen readers are handled.</span></li>
+        <li><b data-en="My friend can build it" data-no="Venninnen min kan bygge det">My friend can build it</b>
+          <span data-en="Her site already runs on it, so every part already exists." data-no="Nettstedet hennes kjører allerede på det, så hver del finnes fra før.">Her site already runs on it, so every part already exists.</span></li>
+        <li><b data-en="Less to look after" data-no="Mindre å vedlikeholde">Less to look after</b>
+          <span data-en="It&rsquo;s a side project. Fixes come from the system." data-no="Det er et sideprosjekt. Rettelser kommer fra systemet.">It&rsquo;s a side project. Fixes come from the system.</span></li>
       </ul>
     </section>
 
     <!-- 05 · BREAKING IT =========================================== -->
     <section id="stress-test" class="sf-section">
       <span class="case-eyebrow" data-en="05 · Breaking it" data-no="05 · Prøve å knekke det">05 · Breaking it</span>
-      <h2 data-en="Then I tried to break it."
-          data-no="Så prøvde jeg å knekke det.">
-        Then I tried to break it.
-      </h2>
-      <p data-en="I walked each parent through the design again and poked at the weak spots. What if the internet is slow? What if no school fits? What if the text is huge, the screen is dark, or the parent can&rsquo;t see the map at all?"
-         data-no="Jeg gikk gjennom designet igjen med hver forelder og presset på de svake punktene. Hva om nettet er tregt? Hva om ingen skole passer? Hva om teksten er kjempestor, skjermen er mørk, eller forelderen ikke ser kartet i det hele tatt?">
-        I walked each parent through the design again and poked at the weak spots. What if the internet is slow? What if no school fits? What if the text is huge, the screen is dark, or the parent can&rsquo;t see the map at all?
-      </p>
-      <p data-en="Every answer became a new screen: results and the map on a phone, high contrast, a calmer dark theme, a page to print for the grandparent who likes paper, and a start page in Ukrainian for a family new to Norway."
-         data-no="Hvert svar ble en ny skjerm: resultater og kart på mobil, høy kontrast, et roligere mørkt tema, en side å skrive ut for besteforelderen som liker papir, og en forside på ukrainsk for en familie som er ny i Norge.">
-        Every answer became a new screen: results and the map on a phone, high contrast, a calmer dark theme, a page to print for the grandparent who likes paper, and a start page in Ukrainian for a family new to Norway.
-      </p>
-
+      <h2 data-en="Then I tried to break it." data-no="Så prøvde jeg å knekke det.">Then I tried to break it.</h2>
+      <p data-en="I walked each parent through the design again and asked mean questions:" data-no="Jeg gikk gjennom designet med hver forelder igjen og stilte slemme spørsmål:">I walked each parent through the design again and asked mean questions:</p>
+      <ul class="sk-qs">
+        <li data-en="What if the internet is slow?" data-no="Hva om nettet er tregt?">What if the internet is slow?</li>
+        <li data-en="What if no school fits?" data-no="Hva om ingen skole passer?">What if no school fits?</li>
+        <li data-en="What if the text is huge?" data-no="Hva om teksten er enorm?">What if the text is huge?</li>
+        <li data-en="What if the screen is dark?" data-no="Hva om skjermen er mørk?">What if the screen is dark?</li>
+        <li data-en="What if you can&rsquo;t see the map?" data-no="Hva om du ikke ser kartet?">What if you can&rsquo;t see the map?</li>
+        <li data-en="What if grandma wants paper?" data-no="Hva om bestemor vil ha papir?">What if grandma wants paper?</li>
+      </ul>
+      <p data-en-html="<mark>Every answer became a screen.</mark>" data-no-html="<mark>Hvert svar ble en skjerm.</mark>"><mark>Every answer became a screen.</mark></p>
       <div class="sk-phones">
         <figure><img src="assets/case/sk/cmb-m-results.jpg" width="780" height="1688" loading="lazy" alt="Results on a phone: priority chips, list and map toggle, sort and filter, and Marienlyst school with its fit, three tiles in words and a confirmed fact." />
           <figcaption data-en="Results on a phone" data-no="Resultater på mobil">Results on a phone</figcaption></figure>
         <figure><img src="assets/case/sk/cmb-m-map.jpg" width="780" height="1688" loading="lazy" alt="Map on a phone with numbered markers, a closed legend button, and a bottom sheet for Majorstuen school with the numbers in words and a confirmed fact." />
           <figcaption data-en="The map on a phone" data-no="Kartet på mobil">The map on a phone</figcaption></figure>
         <figure><img src="assets/case/sk/cmb-m-contrast.jpg" width="780" height="1688" loading="lazy" alt="High contrast and extra large text on a phone: black and white, larger buttons, chips that wrap, and the numbers in words on every card." />
-          <figcaption data-en="High contrast, extra large text" data-no="Høy kontrast, ekstra stor tekst">High contrast, extra large text</figcaption></figure>
+          <figcaption data-en="High contrast, huge text" data-no="Høy kontrast, stor tekst">High contrast, huge text</figcaption></figure>
         <figure><img src="assets/case/sk/cmb-m-dark.jpg" width="780" height="1688" loading="lazy" alt="Dark theme on a phone in calm charcoal and muted teal, with bordered tiles for the numbers and bordered status chips." />
           <figcaption data-en="A calmer dark theme" data-no="Et roligere mørkt tema">A calmer dark theme</figcaption></figure>
       </div>
@@ -486,44 +511,33 @@
     <!-- 06 · WHAT'S NEXT =========================================== -->
     <section id="next" class="sf-section">
       <span class="case-eyebrow" data-en="06 · What&rsquo;s next" data-no="06 · Veien videre">06 · What&rsquo;s next</span>
-      <h2 data-en="Next, real parents get to try it."
-          data-no="Nå skal ekte foreldre prøve det.">
-        Next, real parents get to try it.
-      </h2>
-      <p data-en-html="The <a href=&quot;skolekartet-prototype/index.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>working prototype</a> is ready. I&rsquo;ll sit with parents on a laptop and on a phone, with their own screen readers and settings, and give them one situation:"
-         data-no-html="Den <a href=&quot;skolekartet-prototype/index.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>fungerende prototypen</a> er klar. Jeg skal sitte med foreldre på laptop og mobil, med egne skjermlesere og innstillinger, og gi dem én situasjon:">
-        The <a href="skolekartet-prototype/index.html" target="_blank" rel="noopener">working prototype</a> is ready. I&rsquo;ll sit with parents on a laptop and on a phone, with their own screen readers and settings, and give them one situation:
-      </p>
+      <h2 data-en="Next, real parents get to try it." data-no="Neste steg: ekte foreldre prøver det.">Next, real parents get to try it.</h2>
+      <p data-en="I&rsquo;ll sit with parents on their own laptop and phone, with their own settings, and give them one task:"
+         data-no="Jeg setter meg med foreldre på deres egen PC og telefon, med deres egne innstillinger, og gir dem én oppgave:">I&rsquo;ll sit with parents on their own laptop and phone, with their own settings, and give them one task:</p>
       <p class="sk-scenario"
-         data-en="&ldquo;You&rsquo;ve just moved to Majorstuen in Oslo. Your child uses a wheelchair and needs extra support at school. Find a school that fits, and tell me why.&rdquo;"
-         data-no="«Dere har nettopp flyttet til Majorstuen i Oslo. Barnet deres bruker rullestol og trenger ekstra støtte på skolen. Finn en skole som passer, og fortell meg hvorfor.»">
-        &ldquo;You&rsquo;ve just moved to Majorstuen in Oslo. Your child uses a wheelchair and needs extra support at school. Find a school that fits, and tell me why.&rdquo;
+         data-en="&ldquo;You&rsquo;ve just moved to Majorstuen. Your child uses a wheelchair and needs extra support. Find a school that fits, and tell me why.&rdquo;"
+         data-no="«Dere har nettopp flyttet til Majorstuen. Barnet ditt bruker rullestol og trenger ekstra støtte. Finn en skole som passer, og fortell meg hvorfor.»">
+        &ldquo;You&rsquo;ve just moved to Majorstuen. Your child uses a wheelchair and needs extra support. Find a school that fits, and tell me why.&rdquo;
       </p>
-      <p data-en="Then I&rsquo;ll watch. Where do they stop? Do they read &ldquo;less bullying&rdquo; the right way round? Can they find their list again a week later, on another phone? I&rsquo;ll invite parents who care most about results, parents with disabilities, parents new to Norway and a grandparent or two."
-         data-no="Så skal jeg se. Hvor stopper de opp? Leser de «mindre mobbing» riktig vei? Finner de listen igjen en uke senere, på en annen telefon? Jeg inviterer foreldre som bryr seg mest om resultater, foreldre med funksjonsnedsettelse, foreldre som er nye i Norge og en besteforelder eller to.">
-        Then I&rsquo;ll watch. Where do they stop? Do they read &ldquo;less bullying&rdquo; the right way round? Can they find their list again a week later, on another phone? I&rsquo;ll invite parents who care most about results, parents with disabilities, parents new to Norway and a grandparent or two.
-      </p>
-      <p data-en="Some things are honest placeholders for now. Test results and access facts are example data until schools confirm them, and the design has a page where schools can do just that. The translations and the texts about parents&rsquo; rights still need an expert to check them."
-         data-no="Noe er ærlige plassholdere foreløpig. Prøveresultater og tilgjengelighet er eksempeldata til skolene bekrefter dem, og designet har en side der skolene kan gjøre akkurat det. Oversettelsene og tekstene om foreldrenes rettigheter må fortsatt sjekkes av en fagperson.">
-        Some things are honest placeholders for now. Test results and access facts are example data until schools confirm them, and the design has a page where schools can do just that. The translations and the texts about parents&rsquo; rights still need an expert to check them.
-      </p>
+      <p data-en="Then I&rsquo;ll watch. Where do they stop? Do they read &ldquo;less bullying&rdquo; the right way round? Can they find their list a week later, on another phone?"
+         data-no="Så ser jeg. Hvor stopper de opp? Leser de «mindre mobbing» riktig vei? Finner de listen en uke senere, på en annen telefon?">Then I&rsquo;ll watch. Where do they stop? Do they read &ldquo;less bullying&rdquo; the right way round? Can they find their list a week later, on another phone?</p>
 
       <h3 data-en="How I&rsquo;ll know it works" data-no="Slik vet jeg at det fungerer">How I&rsquo;ll know it works</h3>
       <div class="retrospective-grid">
         <div class="impact-pillar">
           <span class="pillar-label" data-en="Sign 01" data-no="Tegn 01">Sign 01</span>
           <h3 data-en="A shortlist, sooner" data-no="En liste, raskere">A shortlist, sooner</h3>
-          <p data-en="Parents get to a short list of schools faster, and open fewer school pages on the way." data-no="Foreldre kommer raskere fram til en kort liste med skoler, og åpner færre skolesider på veien.">Parents get to a short list of schools faster, and open fewer school pages on the way.</p>
+          <p data-en="Parents reach a short list faster, opening fewer school pages on the way." data-no="Foreldre kommer raskere fram til en kort liste, og åpner færre skolesider på veien.">Parents reach a short list faster, opening fewer school pages on the way.</p>
         </div>
         <div class="impact-pillar">
           <span class="pillar-label" data-en="Sign 02" data-no="Tegn 02">Sign 02</span>
           <h3 data-en="Facts read the right way" data-no="Fakta lest riktig">Facts read the right way</h3>
-          <p data-en="Parents can tell what&rsquo;s confirmed and what&rsquo;s still unknown, without a legend to help them." data-no="Foreldre ser forskjell på hva som er bekreftet og hva som fortsatt er ukjent, uten en tegnforklaring.">Parents can tell what&rsquo;s confirmed and what&rsquo;s still unknown, without a legend to help them.</p>
+          <p data-en="Parents can tell confirmed from unknown, without a legend." data-no="Foreldre ser forskjell på bekreftet og ukjent, uten en tegnforklaring.">Parents can tell confirmed from unknown, without a legend.</p>
         </div>
         <div class="impact-pillar">
           <span class="pillar-label" data-en="Sign 03" data-no="Tegn 03">Sign 03</span>
-          <h3 data-en="It works on the parent&rsquo;s own phone" data-no="Det fungerer på forelderens egen telefon">It works on the parent&rsquo;s own phone</h3>
-          <p data-en="Shared lists get opened on another device, and screen-reader users finish on their own." data-no="Delte lister blir åpnet på en annen enhet, og skjermleserbrukere klarer seg på egen hånd.">Shared lists get opened on another device, and screen-reader users finish on their own.</p>
+          <h3 data-en="It works on their own phone" data-no="Det fungerer på deres egen telefon">It works on their own phone</h3>
+          <p data-en="Shared lists open on another device, and screen-reader users finish on their own." data-no="Delte lister åpnes på en annen enhet, og skjermleserbrukere klarer seg på egen hånd.">Shared lists open on another device, and screen-reader users finish on their own.</p>
         </div>
       </div>
 
@@ -532,19 +546,23 @@
         <div class="impact-pillar">
           <span class="pillar-label" data-en="Lesson 01" data-no="Lærdom 01">Lesson 01</span>
           <h3 data-en="Look for who&rsquo;s missing" data-no="Se etter hvem som mangler">Look for who&rsquo;s missing</h3>
-          <p data-en="My first idea served the family I started with and forgot the biggest group. Going back to look for who I&rsquo;d left out changed the whole design." data-no="Den første ideen min hjalp familien jeg startet med, og glemte den største gruppen. Å gå tilbake og lete etter hvem jeg hadde glemt, endret hele designet.">My first idea served the family I started with and forgot the biggest group. Going back to look for who I&rsquo;d left out changed the whole design.</p>
+          <p data-en="My first idea helped the family I started with and forgot the biggest group." data-no="Den første ideen min hjalp familien jeg startet med, og glemte den største gruppen.">My first idea helped the family I started with and forgot the biggest group.</p>
         </div>
         <div class="impact-pillar">
           <span class="pillar-label" data-en="Lesson 02" data-no="Lærdom 02">Lesson 02</span>
           <h3 data-en="A number needs words" data-no="Et tall trenger ord">A number needs words</h3>
-          <p data-en="A percentage on its own is a puzzle. &ldquo;Less bullying than the national average&rdquo; is an answer a tired parent can use." data-no="En prosent alene er en gåte. «Mindre mobbing enn landssnittet» er et svar en sliten forelder kan bruke.">A percentage on its own is a puzzle. &ldquo;Less bullying than the national average&rdquo; is an answer a tired parent can use.</p>
+          <p data-en="&ldquo;Less bullying than average&rdquo; is an answer a tired parent can use. A percentage is a puzzle." data-no="«Mindre mobbing enn snittet» er et svar en sliten forelder kan bruke. En prosent er en gåte.">&ldquo;Less bullying than average&rdquo; is an answer a tired parent can use. A percentage is a puzzle.</p>
         </div>
         <div class="impact-pillar">
           <span class="pillar-label" data-en="Lesson 03" data-no="Lærdom 03">Lesson 03</span>
           <h3 data-en="Say what you don&rsquo;t know" data-no="Si hva du ikke vet">Say what you don&rsquo;t know</h3>
-          <p data-en="An empty space looks like &ldquo;no problem&rdquo;. &ldquo;Unknown, ask the school&rdquo; is more honest, and more useful." data-no="Et tomt felt ser ut som «ikke noe problem». «Ukjent, spør skolen» er ærligere, og mer nyttig.">An empty space looks like &ldquo;no problem&rdquo;. &ldquo;Unknown, ask the school&rdquo; is more honest, and more useful.</p>
+          <p data-en="An empty space looks like &ldquo;no problem&rdquo;. &ldquo;Unknown, ask the school&rdquo; is honest and useful." data-no="Et tomt felt ser ut som «ikke noe problem». «Ukjent, spør skolen» er ærlig og nyttig.">An empty space looks like &ldquo;no problem&rdquo;. &ldquo;Unknown, ask the school&rdquo; is honest and useful.</p>
         </div>
       </div>
+
+      <p class="sk-honest"
+         data-en-html="<b>Honest placeholders.</b> Test results and access facts are example data until schools confirm them, and there&rsquo;s a page where schools can do just that. The translations and the texts about parents&rsquo; rights still need an expert check."
+         data-no-html="<b>Ærlige plassholdere.</b> Prøveresultater og tilgjengelighet er eksempeldata til skolene bekrefter dem, og det finnes en side der skolene kan gjøre akkurat det. Oversettelsene og tekstene om foreldrenes rettigheter må fortsatt sjekkes av en fagperson."><b>Honest placeholders.</b> Test results and access facts are example data until schools confirm them, and there&rsquo;s a page where schools can do just that. The translations and the texts about parents&rsquo; rights still need an expert check.</p>
     </section>
 
   </main>
