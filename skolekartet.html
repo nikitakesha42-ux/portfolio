@@ -115,6 +115,21 @@
     .sk-review { aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
     .sk-crop { aspect-ratio: 1200 / 1042; object-fit: cover; object-position: top; }
 
+    /* Hand sketches: a portrait sheet next to its note */
+    .sk-split { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 40px; align-items: center; margin: 28px 0 0; }
+    .sk-split .sk-fig { margin: 0; }
+    .sk-split .sk-pull { margin: 0 0 24px; }
+    .sk-split .sk-swap { margin-bottom: 0; }
+    .sk-split .sk-swap > div { font-size: 18px; padding: 16px 18px; }
+    .sk-key-h { display: block; margin-bottom: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #6d4600; font-weight: 600; }
+    .sk-key { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+    .case .sk-key li { margin: 0; padding: 2px 0 2px 16px; border-left: 3px solid #e6cf97; font-size: 15px; line-height: 1.5; color: var(--muted); }
+    .case .sk-key li::before { display: none; content: none; }
+    .sk-key b { color: var(--ink); font-weight: 600; }
+    .sk-pair { display: grid; grid-template-columns: minmax(0, 260px) auto minmax(0, 260px); justify-content: center; gap: 24px; align-items: center; margin: 28px 0 0; }
+    .sk-pair .sk-fig { margin: 0; }
+    .sk-pair .arrow { font-size: 28px; color: var(--muted); padding-top: 28px; }
+
     /* Designsystemet reasons */
     .sk-reasons { list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
     .case .sk-reasons li { margin: 0; padding: 16px; border-radius: 14px; background: var(--sk-green-bg); border: 1px solid var(--sk-line); font-size: 14px; line-height: 1.5; color: var(--muted); }
@@ -148,6 +163,10 @@
       .sk-swap { grid-template-columns: 1fr; gap: 8px; }
       .sk-swap .arrow { transform: rotate(90deg); justify-self: center; }
       .sk-phones { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 18px 14px; }
+      .sk-split { grid-template-columns: 1fr; gap: 28px; }
+      .sk-split .sk-fig { width: 100%; max-width: 340px; margin: 0 auto; }
+      .sk-pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+      .sk-pair .arrow { display: none; }
       .sk-proto { grid-template-columns: 1fr; padding: 20px; }
       .sk-proto-btn { justify-self: start; white-space: normal; }
     }
@@ -269,9 +288,9 @@
       </p>
 
       <figure class="sk-fig sk-paper">
-        <img src="assets/case/sk/sketch-flow.jpg" width="2400" height="960" loading="lazy"
-             alt="Hand-drawn journey on paper. Before: start page with random schools in Rana, Best means test scores only, Bullying 26,1 percent with the note is that bad, Can my child get in with no answer, and the list stuck on one computer. The last three are highlighted as stuck. After: Where do you live, What matters, Schools that fit with every number in words, Save with no account, Share one link on any phone in any language." />
-        <figcaption data-en="I mapped our evening on paper. Yellow is where we got stuck." data-no="Jeg tegnet kvelden vår på papir. Gult er der vi stod fast.">I mapped our evening on paper. Yellow is where we got stuck.</figcaption>
+        <img src="assets/case/sk/sketch-flow.jpg?v=2" width="1400" height="1111" loading="lazy"
+             alt="My hand-drawn journey on paper. Before: Start page with a random view, Best meaning test scores only, Bullying 26.1 % with the question is that bad, Can my child get in with no answer, and The list stuck on the computer. The last three are shaded and marked stuck in red. After, in green: Where do you live with one field, What matters with the family deciding, Schools that fit with the number in words, Save with no account, and Share the link on any phone." />
+        <figcaption data-en="I mapped our evening on paper. The shaded boxes are where we got stuck." data-no="Jeg tegnet kvelden vår på papir. De skraverte boksene er der vi stod fast.">I mapped our evening on paper. The shaded boxes are where we got stuck.</figcaption>
       </figure>
 
       <ul class="sk-ends">
@@ -301,21 +320,25 @@
       <p data-en="I was so focused on access that I pushed test results to the very bottom, as an extra."
          data-no="Jeg var så opptatt av tilgjengelighet at jeg dyttet prøveresultatene helt ned, som et tillegg.">I was so focused on access that I pushed test results to the very bottom, as an extra.</p>
 
-      <figure class="sk-fig sk-paper tilt-l">
-        <img src="assets/case/sk/sketch-first.jpg" width="1800" height="1200" loading="lazy"
-             alt="Hand-drawn first sketch: an address field, a big question Can my child get in with five access checkboxes, two schools with wheelchair ticks, and test results and wellbeing hidden in a small extra row at the very bottom. Red notes say everything about access and results buried at the very bottom." />
-      </figure>
+      <div class="sk-split">
+        <figure class="sk-fig sk-paper tilt-l">
+          <span class="sk-label paper" data-en="Sketch 1" data-no="Skisse 1">Sketch 1</span>
+          <img src="assets/case/sk/sketch-first.jpg?v=2" width="826" height="1386" loading="lazy"
+               alt="My first hand-drawn sketch: an address field, a heading, four access checkboxes with two ticked, and two school rows with green ticks. Test results and wellbeing are one small line at the very bottom, marked extra. Notes: everything about the access; most parents start with this, got buried at the very bottom." />
+        </figure>
+        <div>
+          <blockquote class="sk-pull">
+            <span data-en="That was my bias, not the parents&rsquo;." data-no="Det var min skjevhet, ikke foreldrenes.">That was my bias, not the parents&rsquo;.</span>
+            <small data-en="Most families choose by results and by how happy the pupils are. The family with MS cares about that too." data-no="De fleste familier velger etter resultater og hvor godt elevene trives. Familien med MS bryr seg om det også.">Most families choose by results and by how happy the pupils are. The family with MS cares about that too.</small>
+          </blockquote>
 
-      <blockquote class="sk-pull">
-        <span data-en="That was my bias, not the parents&rsquo;." data-no="Det var min skjevhet, ikke foreldrenes.">That was my bias, not the parents&rsquo;.</span>
-        <small data-en="Most families choose by results and by how happy the pupils are. The family with MS cares about that too." data-no="De fleste familier velger etter resultater og hvor godt elevene trives. Familien med MS bryr seg om det også.">Most families choose by results and by how happy the pupils are. The family with MS cares about that too.</small>
-      </blockquote>
-
-      <p data-en="So I changed the question the whole site answers:" data-no="Så endret jeg spørsmålet hele nettstedet svarer på:">So I changed the question the whole site answers:</p>
-      <div class="sk-swap">
-        <div class="old" data-en="Which school is best?" data-no="Hvilken skole er best?">Which school is best?</div>
-        <span class="arrow" aria-hidden="true">&rarr;</span>
-        <div class="new" data-en="Which school fits our child?" data-no="Hvilken skole passer barnet vårt?">Which school fits our child?</div>
+          <p data-en="So I changed the question the whole site answers:" data-no="Så endret jeg spørsmålet hele nettstedet svarer på:">So I changed the question the whole site answers:</p>
+          <div class="sk-swap">
+            <div class="old" data-en="Which school is best?" data-no="Hvilken skole er best?">Which school is best?</div>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+            <div class="new" data-en="Which school fits our child?" data-no="Hvilken skole passer barnet vårt?">Which school fits our child?</div>
+          </div>
+        </div>
       </div>
 
       <p data-en="To keep myself honest, I wrote down four parents the site has to work for. Each one pulled the design a different way."
@@ -377,11 +400,26 @@
         <h3 data-en="Every number comes with words." data-no="Hvert tall kommer med ord.">Every number comes with words.</h3>
         <p data-en="Each card says how many of your priorities a school fits. Results, wellbeing and bullying say above, the same or below average. What we don&rsquo;t know says &ldquo;ask the school&rdquo;."
            data-no="Hvert kort sier hvor mange av prioriteringene deres skolen passer. Resultater, trivsel og mobbing sier over, likt eller under snittet. Det vi ikke vet, sier «spør skolen».">Each card says how many of your priorities a school fits. Results, wellbeing and bullying say above, the same or below average. What we don&rsquo;t know says &ldquo;ask the school&rdquo;.</p>
-        <figure class="sk-fig sk-paper tilt-r">
-          <span class="sk-label paper" data-en="Sketch" data-no="Skisse">Sketch</span>
-          <img src="assets/case/sk/sketch-card.jpg" width="1800" height="1200" loading="lazy"
-               alt="Hand-drawn school card for Majorstuen skole: a green edge, Passer 2 av 3, three tiles with Godt over snittet and Som snittet in words, a confirmed lift, an unknown fact marked spør skolen, and a step-free route. Red notes say colour edge equals how well it fits you, words first number second, and say what we don't know." />
-        </figure>
+        <div class="sk-split">
+          <figure class="sk-fig sk-paper tilt-r">
+            <span class="sk-label paper" data-en="Sketch 2" data-no="Skisse 2">Sketch 2</span>
+            <img src="assets/case/sk/sketch-card.jpg?v=2" width="918" height="1258" loading="lazy"
+                 alt="My hand-drawn results list with three school cards. Each card has a coloured edge in green, orange or red, fit boxes reading 2 av 3, 2 av 3 and 0 av 3, three small tiles, a Lagre button and a row of facts. A dashed box is labelled say what we don't know, and brown shaded boxes mark problems. Note: parents should understand it without the legend." />
+          </figure>
+          <div>
+            <span class="sk-key-h" data-en="How to read the sketch" data-no="Slik leser du skissen">How to read the sketch</span>
+            <ul class="sk-key">
+              <li data-en-html="<b>Colour edge.</b> Green, orange or red shows how well a school fits you, before you read a word."
+                  data-no-html="<b>Fargekant.</b> Grønn, oransje eller rød viser hvor godt skolen passer dere, før du har lest et ord."><b>Colour edge.</b> Green, orange or red shows how well a school fits you, before you read a word.</li>
+              <li data-en-html="<b>&ldquo;2 av 3&rdquo;.</b> Fit is counted in your own priorities, not turned into a score."
+                  data-no-html="<b>«2 av 3».</b> Passformen telles i deres egne prioriteringer, ikke gjort om til en poengsum."><b>&ldquo;2 av 3&rdquo;.</b> Fit is counted in your own priorities, not turned into a score.</li>
+              <li data-en-html="<b>Dashed box.</b> Say what we don&rsquo;t know, instead of leaving it out."
+                  data-no-html="<b>Stiplet boks.</b> Si hva vi ikke vet, i stedet for å utelate det."><b>Dashed box.</b> Say what we don&rsquo;t know, instead of leaving it out.</li>
+              <li data-en-html="<b>My note.</b> Parents should understand the card without the legend."
+                  data-no-html="<b>Notatet mitt.</b> Foreldre skal forstå kortet uten tegnforklaringen."><b>My note.</b> Parents should understand the card without the legend.</li>
+            </ul>
+          </div>
+        </div>
         <div class="sk-two">
           <figure class="sk-fig"><span class="sk-label before" data-en="Before" data-no="Før">Before</span>
             <img class="sk-img" src="assets/case/sk/ba-results-before.jpg" width="1200" height="1042" loading="lazy" alt="Old results for Kirkeveien 64A: grey cards labelled Probably the school district, schools with bare average, wellbeing and bullying numbers, and a large map." /></figure>
@@ -403,7 +441,7 @@
            data-no="Foreldre velger hva kartet viser: hvor godt skolen passer, resultater, trivsel eller mobbing. Trykk på en farge for å skjule de skolene. Alt på kartet står også i listen ved siden av.">Parents pick what the map shows: fit, results, wellbeing or bullying. Tap a colour to hide those schools. Everything on the map is also in the list next to it.</p>
         <div class="sk-two">
           <figure class="sk-fig sk-paper tilt-l"><span class="sk-label paper" data-en="Sketch" data-no="Skisse">Sketch</span>
-            <img src="assets/case/sk/sketch-legend.jpg" width="1800" height="1200" loading="lazy" alt="Hand-drawn map with numbered coloured pins and a legend panel where Under snittet is crossed out. Note: tap a colour to hide those schools, no separate filter panel to learn." /></figure>
+            <img src="assets/case/sk/sketch-legend.jpg?v=2" width="1600" height="931" loading="lazy" alt="My hand-drawn map with roads and numbered pins in green, orange and grey, and a panel titled Vis på kartet with view buttons and colour chips, where the Under chip is crossed out to hide those schools. Note in red: same order as the list." /></figure>
           <figure class="sk-fig"><span class="sk-live" data-en="Live prototype" data-no="Ekte prototype">Live prototype</span>
             <div class="sk-browser">
               <picture>
@@ -439,24 +477,25 @@
         <h3 data-en="The list travels. There&rsquo;s no account." data-no="Listen reiser. Det finnes ingen konto.">The list travels. There&rsquo;s no account.</h3>
         <p data-en="Save a few schools, compare them, then send one link. It opens on the parent&rsquo;s own phone, in large text, in their language, or read aloud."
            data-no="Lagre noen skoler, sammenlign dem, og send én lenke. Den åpnes på forelderens egen telefon, med stor tekst, på deres språk, eller lest høyt.">Save a few schools, compare them, then send one link. It opens on the parent&rsquo;s own phone, in large text, in their language, or read aloud.</p>
-        <div class="sk-two sk-two--phone">
-          <figure class="sk-fig"><span class="sk-live" data-en="Live prototype" data-no="Ekte prototype">Live prototype</span>
-            <div class="sk-browser">
-              <picture>
-                <source srcset="assets/case/sk/clip-save-poster.jpg" media="(prefers-reduced-motion: reduce)" />
-                <img src="assets/case/sk/clip-save.webp" width="1200" height="750" loading="lazy" alt="Screen recording: pressing Lagre on two school cards, the saved counter in the header going up, then the saved schools page with share and print buttons and Send the list to myself." />
-              </picture>
-            </div></figure>
-          <figure class="sk-fig sk-phone">
+        <figure class="sk-fig"><span class="sk-live" data-en="Live prototype" data-no="Ekte prototype">Live prototype</span>
+          <div class="sk-browser">
+            <picture>
+              <source srcset="assets/case/sk/clip-save-poster.jpg" media="(prefers-reduced-motion: reduce)" />
+              <img src="assets/case/sk/clip-save.webp" width="1200" height="750" loading="lazy" alt="Screen recording: pressing Lagre on two school cards, the saved counter in the header going up, then the saved schools page with share and print buttons and Send the list to myself." />
+            </picture>
+          </div></figure>
+        <div class="sk-pair">
+          <figure class="sk-fig sk-paper tilt-l">
+            <span class="sk-label paper" data-en="Sketch" data-no="Skisse">Sketch</span>
+            <img src="assets/case/sk/sketch-phone.jpg?v=2" width="932" height="1898" loading="lazy" alt="My hand-drawn phone showing the shared list: text size buttons A, A+ and A++, language buttons NO, EN and UA, a Lytt til button to hear it read aloud, and two school cards with Ring buttons. Below it, a saved box, Lagrede (2), with a Del listen button. Notes in red: bigger text for bestemor, her language, or just listen, one link, no login." />
+          </figure>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+          <figure class="sk-fig sk-phone"><span class="sk-live" data-en="On the phone" data-no="På telefonen">On the phone</span>
             <picture>
               <source srcset="assets/case/sk/clip-shared-poster.jpg" media="(prefers-reduced-motion: reduce)" />
               <img src="assets/case/sk/clip-shared.webp" width="430" height="931" loading="lazy" alt="Screen recording on a phone: the shared list switching to larger text, then to English and Ukrainian, with a Listen to the list button and school cards in words." />
             </picture></figure>
         </div>
-        <figure class="sk-fig sk-paper tilt-r">
-          <span class="sk-label paper" data-en="Sketch" data-no="Skisse">Sketch</span>
-          <img src="assets/case/sk/sketch-phone.jpg" width="1800" height="1200" loading="lazy" alt="Hand-drawn laptop with a Del listen button and an arrow to a phone showing the shared list with text size A, A+, A++, languages NO, EN, UA, a Listen button and Ring skolen buttons. Notes: one link, no login, no address inside; bigger text for bestemor; her language; or just listen." />
-        </figure>
         <div class="sk-why">
           <span class="k" data-en="why?" data-no="hvorfor?">why?</span>
           <p data-en-html="Families use the site a few times, years apart. <mark>An account means one more password to remember, and personal details about a child stored somewhere.</mark> A private link does the same job."
