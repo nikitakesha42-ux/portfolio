@@ -4097,3 +4097,94 @@ video.clip:focus-visible { outline: 3px solid currentColor; outline-offset: 3px;
 }
 @media (prefers-reduced-motion: reduce) { .tnote { transition: none; } }
 @media (forced-colors: active) { .home-hero-ref .hero-why mark { background: Mark; color: MarkText; } }
+
+/* ============================================================
+   Personality, part 2: how I work note + "say hi" contact
+   ============================================================ */
+.how-section { position: relative; margin: 0 0 96px; }
+.how-section .tpl-section-label { display: block; margin-bottom: 10px; }
+.how-section .id-h2 span { color: #be185d; }
+.how-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 36px; align-items: start; }
+.how-note { position: relative; margin: 8px 0 0; padding: 38px 34px 28px; background: #fffdf4; border-radius: 6px 6px 20px 6px; transform: rotate(-1.2deg); box-shadow: 0 26px 40px -28px rgba(60, 40, 10, .55), 0 1px 0 rgba(0,0,0,.04);
+  background-image: repeating-linear-gradient(transparent 0 31px, rgba(47, 82, 217, .10) 31px 32px); background-position: 0 22px; }
+.how-note::before { content: ""; position: absolute; top: -14px; left: 50%; width: 120px; height: 30px; margin-left: -60px; background: rgba(250, 204, 21, .55); transform: rotate(3deg); border-radius: 3px; }
+.how-note p { margin: 0 0 14px; font-size: 18px; line-height: 32px; color: #1f2937; }
+.how-note mark { background: linear-gradient(transparent 55%, #fde68a 55%, #fde68a 92%, transparent 92%); color: inherit; padding: 0 2px; }
+.how-sign { font-weight: 700; color: var(--id-s) !important; text-align: right; margin: 6px 0 0 !important; }
+.how-rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.how-rules li { margin: 0; display: grid; grid-template-columns: 48px 1fr; gap: 14px; align-items: start; padding: 16px 18px; border-radius: 18px; border: 2px solid; background: #fff; transition: transform .2s ease; }
+.how-rules li::before { display: none; content: none; }
+.how-rules li:nth-child(1) { border-color: #f9a8d4; background: #fff1f7; transform: rotate(.8deg); }
+.how-rules li:nth-child(2) { border-color: var(--id-v); background: var(--id-v-bg); transform: rotate(-.6deg); }
+.how-rules li:nth-child(3) { border-color: var(--id-s); background: var(--id-s-bg); transform: rotate(.5deg); }
+.how-rules li:nth-child(4) { border-color: var(--id-m); background: var(--id-m-bg); transform: rotate(-.8deg); }
+.how-rules li:hover { transform: rotate(0) translateY(-2px); }
+.how-ico { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: #fff; font-size: 22px; font-weight: 800; box-shadow: 0 6px 12px -8px rgba(10,31,74,.5); }
+.how-rules li:nth-child(1) .how-ico { color: #be185d; } .how-rules li:nth-child(2) .how-ico { color: var(--id-v); }
+.how-rules li:nth-child(3) .how-ico { color: var(--id-s); } .how-rules li:nth-child(4) .how-ico { color: var(--id-m); }
+.how-rules b { display: block; font-size: 17px; color: #111827; letter-spacing: -0.01em; }
+.how-rules span:not(.how-ico) { display: block; font-size: 14.5px; line-height: 1.45; color: #4b5563; margin-top: 2px; }
+
+.hi-card { position: relative; overflow: hidden; margin: 0 0 72px; padding: 56px 48px 48px; border-radius: 32px; color: #fff;
+  background: radial-gradient(120% 140% at 100% 0%, #5b7cfa 0%, #2f52d9 45%, #1e3aa8 100%); box-shadow: 0 40px 60px -40px rgba(30, 58, 168, .8); }
+.hi-card::after { content: ""; position: absolute; right: -80px; bottom: -110px; width: 320px; height: 320px; border-radius: 50%; background: rgba(255,255,255,.07); pointer-events: none; }
+.hi-face { position: absolute; right: 52px; top: 44px; width: 96px; height: 96px; transform: rotate(8deg); filter: drop-shadow(0 14px 18px rgba(0,0,0,.25)); animation: hiWave 2.4s ease-in-out 1s 2; }
+@keyframes hiWave { 0%,100% { transform: rotate(8deg); } 20% { transform: rotate(-6deg) translateY(-4px); } 40% { transform: rotate(12deg); } 60% { transform: rotate(-2deg); } }
+.hi-spark { position: absolute; right: 168px; top: 40px; font-size: 30px; color: #fde68a; line-height: 1; }
+.hi-heart { position: absolute; right: 40px; top: 156px; font-size: 26px; color: #f9a8d4; line-height: 1; transform: rotate(-12deg); }
+.hi-status { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3); font-size: 13.5px; font-weight: 600; }
+.hi-status i { width: 9px; height: 9px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 4px rgba(74, 222, 128, .25); }
+.hi-card h2 { margin: 20px 0 14px; max-width: 17ch; font-size: clamp(34px, 5vw, 60px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 800; color: #fff; }
+.hi-card h2 span { color: #fde68a; }
+.hi-card p { margin: 0 0 28px; max-width: 54ch; font-size: 17px; line-height: 1.55; color: rgba(255,255,255,.88); }
+.hi-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.hi-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 20px; border-radius: 999px; font: inherit; font-size: 15.5px; font-weight: 600; text-decoration: none; cursor: pointer;
+  color: #fff; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.45); transition: background .15s ease, transform .15s ease; }
+.hi-btn:hover { background: rgba(255,255,255,.18); transform: translateY(-1px); }
+.hi-btn:focus-visible { outline: 3px solid #fde68a; outline-offset: 3px; }
+.hi-btn.hi-primary { background: #fff; color: #1e3aa8; border-color: #fff; }
+.hi-btn.hi-primary:hover { background: #fde68a; border-color: #fde68a; }
+.hi-copy.is-done { background: #4ade80; border-color: #4ade80; color: #052e16; }
+.hi-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.hi-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; max-width: 1120px; margin: 0 auto 64px; padding: 20px 24px; border-radius: 22px; background: var(--id-s-bg); border: 2px solid var(--id-s); }
+.hi-strip img { width: 44px; height: 44px; flex: none; transform: rotate(-6deg); }
+.hi-strip p { flex: 1 1 260px; margin: 0; font-size: 16px; line-height: 1.45; color: #1f2937; }
+.hi-strip p b { color: var(--id-s); }
+.hi-strip .hi-btn { min-height: 44px; font-size: 14.5px; color: var(--id-s); border-color: var(--id-s); background: #fff; }
+.hi-strip .hi-btn.hi-primary { background: var(--id-s); color: #fff; }
+.hi-strip .hi-btn.hi-primary:hover { background: #1e3aa8; border-color: #1e3aa8; }
+.hi-strip .hi-btn:focus-visible { outline-color: var(--id-s); }
+
+.about-stickers { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
+.about-stickers span { padding: 6px 13px; border-radius: 999px; font-size: 13.5px; font-weight: 700; box-shadow: 0 8px 14px -10px rgba(10,31,74,.45); }
+.about-stickers span:nth-child(1) { background: #fff; color: #be185d; border: 2px solid #f9a8d4; transform: rotate(-3deg); }
+.about-stickers span:nth-child(2) { background: var(--id-s); color: #fff; transform: rotate(2deg); }
+.about-stickers span:nth-child(3) { background: #eaff7c; color: var(--navy); transform: rotate(-1deg); }
+.about-stickers span:nth-child(4) { background: var(--id-m-bg); color: var(--id-m); border: 2px solid var(--id-m); transform: rotate(2.5deg); }
+.about-hero .hero-bio mark, .now-block mark { background: linear-gradient(transparent 55%, #fde68a 55%, #fde68a 92%, transparent 92%); color: inherit; padding: 0 2px; }
+.about-identity { margin-top: 24px; }
+.id-more { display: inline-flex; margin-top: 22px; font-weight: 600; color: var(--navy); }
+.now-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+@media (max-width: 900px) {
+  .how-grid { grid-template-columns: 1fr; }
+  .now-grid.three { grid-template-columns: 1fr; }
+}
+@media (max-width: 680px) {
+  .how-note { padding: 32px 22px 22px; transform: none; }
+  .how-note p { font-size: 16.5px; }
+  .how-rules li { transform: none !important; }
+  .hi-card { padding: 120px 22px 30px; border-radius: 24px; }
+  .hi-face { right: auto; left: 22px; top: 26px; width: 72px; height: 72px; }
+  .hi-spark { right: 30px; top: 30px; }
+  .hi-heart { right: 70px; top: 70px; }
+  .hi-btn { flex: 1 1 100%; justify-content: center; }
+  .hi-strip { margin: 0 16px 48px; }
+}
+@media (prefers-reduced-motion: reduce) { .hi-face { animation: none; } .how-rules li, .hi-btn { transition: none; } }
+@media (forced-colors: active) { .how-note mark, .about-hero .hero-bio mark, .now-block mark { background: Mark; color: MarkText; } .hi-card { border: 2px solid CanvasText; } }
+.hi-face { background: #fff; border-radius: 30px; padding: 10px; }
+.about-hero .hero-bio p + p { margin-top: 12px; }
+@media (max-width: 680px) { .hi-face { padding: 7px; border-radius: 22px; } }
+#contact.hi-card h2 { font-size: clamp(30px, 4vw, 46px); max-width: 20ch; }
