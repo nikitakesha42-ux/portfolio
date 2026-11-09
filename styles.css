@@ -4188,3 +4188,4 @@ video.clip:focus-visible { outline: 3px solid currentColor; outline-offset: 3px;
 .about-hero .hero-bio p + p { margin-top: 12px; }
 @media (max-width: 680px) { .hi-face { padding: 7px; border-radius: 22px; } }
 #contact.hi-card h2 { font-size: clamp(30px, 4vw, 46px); max-width: 20ch; }
+.hi-ico { flex: none; display: block; }
