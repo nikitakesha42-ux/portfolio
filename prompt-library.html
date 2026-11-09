@@ -88,6 +88,7 @@
     .pl-slot .letter { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; font-family: var(--mono); font-weight: 600; font-size: 18px; }
     .pl-slot .name { display: block; font-family: var(--mono); font-size: 12px; font-weight: 600; margin-bottom: 2px; }
     .pl-slot .text { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink); }
+    .pl-fill { background: #e6efff; color: #1e3a8a; padding: 0 4px; border-radius: 4px; font-weight: 500; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
     .pl-slot .note { font-size: 13px; line-height: 1.45; color: var(--muted); padding-top: 2px; }
     .pl-slot .note b { color: var(--ink); }
     .pl-slot.r .letter { background: var(--r-bg); color: var(--r-ink); } .pl-slot.r .name { color: var(--r-ink); }
@@ -257,7 +258,7 @@
       <span class="pl-rec" data-en="Recorded in the live library" data-no="Tatt opp i det ekte biblioteket">Recorded in the live library</span>
       <div class="pl-browser">
         <div class="pl-browser__bar" aria-hidden="true"><span class="pl-browser__dots"><i></i><i></i><i></i></span><span class="pl-browser__url">anastasiianikitina.no/prompt-library-app.html</span></div>
-        <video class="clip" src="assets/case/pl-new/clip-browse.mp4" poster="assets/case/pl-new/clip-browse-poster.jpg" width="1200" height="750" muted loop playsinline controls preload="metadata" aria-label="Screen recording of the Prompt Library: switching from UX Research to Writing, filtering by the synthesis tag, searching for interview, opening the BGOALC User Interview Script and pressing Copy Prompt."></video>
+        <video class="clip" src="assets/case/pl-new/clip-browse.mp4" poster="assets/case/pl-new/clip-browse-poster.jpg" width="1200" height="750" muted loop playsinline controls preload="metadata" aria-label="Screen recording of the Prompt Library: switching from UX Research to Writing, filtering by the synthesis tag, searching for interview, opening the BGOALC User Interview Script with its highlighted fill-in slots, and pressing Copy Prompt."></video>
       </div>
       <figcaption data-en="Pick a room, filter, search, open, copy. That&rsquo;s the whole job." data-no="Velg et rom, filtrer, søk, åpne, kopier. Det er hele jobben.">Pick a room, filter, search, open, copy. That&rsquo;s the whole job.</figcaption>
     </figure>
@@ -312,13 +313,13 @@
         <div class="pl-slot t req">
           <span class="letter" aria-hidden="true">T</span>
           <div><span class="name" data-en-html="Task <span class=&quot;pl-tag must&quot;>must</span>" data-no-html="Oppgave <span class=&quot;pl-tag must&quot;>må</span>">Task <span class="pl-tag must">must</span></span>
-            <p class="text">Break the problem into observable user behaviours. For each one: what triggers it, what the user is trying to understand, and what workaround they use instead.</p></div>
+            <p class="text">Break the problem into observable user behaviours. For each one: what triggers it, what the user is trying to understand, what they rely on in <mark class="pl-fill">[surface: the transaction list]</mark>, and what workaround they use instead.</p></div>
           <span class="note" data-en-html="<b>The script.</b> What it does today." data-no-html="<b>Manuset.</b> Hva den gjør i dag."><b>The script.</b> What it does today.</span>
         </div>
         <div class="pl-slot c1">
           <span class="letter" aria-hidden="true">C</span>
           <div><span class="name" data-en-html="Context <span class=&quot;pl-tag opt&quot;>prop</span>" data-no-html="Kontekst <span class=&quot;pl-tag opt&quot;>rekvisitt</span>">Context <span class="pl-tag opt">prop</span></span>
-            <p class="text">Focus on behaviours such as checking status right after sending, coming back to check progress, and confirming arrival with the recipient.</p></div>
+            <p class="text">Focus on behaviours such as checking status right after <mark class="pl-fill">[key action: sending]</mark>, coming back to check progress, and confirming arrival with the recipient. Then: <mark class="pl-fill">[paste your problem statement or research notes]</mark></p></div>
           <span class="note" data-en="The scenery." data-no="Kulissene.">The scenery.</span>
         </div>
         <div class="pl-slot c2">
@@ -330,11 +331,13 @@
         <div class="pl-slot f">
           <span class="letter" aria-hidden="true">F</span>
           <div><span class="name" data-en-html="Format <span class=&quot;pl-tag opt&quot;>prop</span>" data-no-html="Format <span class=&quot;pl-tag opt&quot;>rekvisitt</span>">Format <span class="pl-tag opt">prop</span></span>
-            <p class="text">For each behaviour: its trigger, what the user wants to understand, where the list falls short, and the workaround.</p></div>
+            <p class="text">For each behaviour: its trigger, what the user wants to understand, where <mark class="pl-fill">[surface: the list]</mark> falls short, and the workaround.</p></div>
           <span class="note" data-en="How the answer should look." data-no="Hvordan svaret skal se ut.">How the answer should look.</span>
         </div>
       </div>
       <p style="margin-top:16px" data-en="The shape stops me writing wishes and gets me writing scenes." data-no="Formen får meg til å slutte å skrive ønsker og begynne å skrive scener.">The shape stops me writing wishes and gets me writing scenes.</p>
+      <p data-en-html="Many prompts started life inside one finance project, so I turned them into templates. The words stay the same, but the project-specific parts sit in <mark class=&quot;pl-fill&quot;>[square brackets]</mark> with my original as the example. The app highlights them, so you can see at a glance what to swap before you copy."
+         data-no-html="Mange prompter ble skrevet i ett finansprosjekt, så jeg gjorde dem om til maler. Ordene er de samme, men de prosjektspesifikke delene står i <mark class=&quot;pl-fill&quot;>[hakeparenteser]</mark> med originalen som eksempel. Appen fremhever dem, så du ser med en gang hva du skal bytte ut før du kopierer.">Many prompts started life inside one finance project, so I turned them into templates. The words stay the same, but the project-specific parts sit in <mark class="pl-fill">[square brackets]</mark> with my original as the example. The app highlights them, so you can see at a glance what to swap before you copy.</p>
     </section>
 
     <!-- 03 ===================================================== -->
