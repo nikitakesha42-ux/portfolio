@@ -506,6 +506,13 @@
     text-transform: uppercase;
     margin-bottom: 8px;
   }
+  .modal-section .sec-body mark.slot {
+    background: #e6efff;
+    color: #1e3a8a;
+    border-radius: 4px;
+    padding: 0 3px;
+    font-weight: 500;
+  }
   .modal-section .sec-body {
     font-size: 13.5px;
     line-height: 1.6;
@@ -1367,7 +1374,7 @@ function openDetail(id) {
     if (!text || !text.trim()) continue;
     const sec = document.createElement('div');
     sec.className = 'modal-section';
-    sec.innerHTML = `<div class="sec-label">${label}</div><div class="sec-body">${esc(text)}</div>`;
+    sec.innerHTML = `<div class="sec-label">${label}</div><div class="sec-body">${markSlots(esc(text))}</div>`;
     body.appendChild(sec);
   }
   openOverlay('detailOverlay');
@@ -1566,6 +1573,8 @@ function toast(msg) {
 }
 
 /* ─── Utilities ───────────────────────────────────── */
+/* Highlight [fill-in] slots so a template's editable parts stand out. */
+function markSlots(html) { return html.replace(/\[[^\[\]\n]{1,160}\]/g, m => `<mark class="slot">${m}</mark>`); }
 function esc(s) { return String(s || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
 function formatDate(iso) {
   try {

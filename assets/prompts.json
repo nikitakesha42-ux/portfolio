@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "exportedAt": "2026-11-03",
-  "count": 33,
+  "exportedAt": "2026-11-09",
+  "count": 45,
   "prompts": [
     {
       "id": "a25e977e-50e3-4aed-bb40-35fe1049544e",
@@ -14,9 +14,9 @@
         "triggers"
       ],
       "role": "You are a UX researcher mapping a problem into concrete, observable user behaviours.",
-      "task": "Break the problem into observable user behaviours.\nFor each behaviour:\n\nwhat triggers the behaviour\nwhat the user is trying to understand\nwhat information they rely on in the transaction list\nwhere the list falls short\nwhat workaround (if any) they use instead",
-      "context": "Focus on behaviours such as:\n\nchecking status immediately after sending\nreturning multiple times to check progress\nconfirming arrival with the recipient\ntracking expected amounts or timing\nidentifying delays, holds, or issues",
-      "constraints": "Be specific about user actions (e.g. \"opens transfer\", \"messages recipient\", not \"checks status\").\nAvoid abstraction — describe concrete actions.",
+      "task": "Break the problem into observable user behaviours.\nFor each behaviour:\n- what triggers the behaviour\n- what the user is trying to understand\n- what information they rely on in [surface: the transaction list]\n- where [surface: the list] falls short\n- what workaround (if any) they use instead",
+      "context": "Focus on behaviours such as [swap these examples for your own]:\n- checking status immediately after [key action: sending]\n- returning multiple times to check progress\n- confirming arrival with the recipient\n- tracking expected amounts or timing\n- identifying delays, holds, or issues\n\nProblem to break down:\n[paste your problem statement or research notes]",
+      "constraints": "- Be specific about user actions (e.g. \"opens transfer\", \"messages recipient\", not \"checks status\").\n- Avoid abstraction — describe concrete actions.",
       "format": "For each behaviour, present its trigger, what the user is trying to understand, the information they rely on, where the list falls short, and the workaround they use instead."
     },
     {
@@ -32,11 +32,11 @@
         "qualitative-research",
         "behavioural-research"
       ],
-      "role": "You are a UX researcher conducting user interviews for a product focused on the transaction list on the home dashboard.",
-      "task": "Create a structured user interview script using the BGOALC framework (Behaviours, Goals, Obstacles, Actions, Logic, Context).  The script should help uncover how users understand, track, and evaluate their international transfers within a transaction list.",
-      "context": "Users rely on the transaction list to understand what is happening with their money. However, the current experience only shows a static record (amount, recipient, status) and lacks clarity around:\n Whether transfers are complete or still in progress\n If any action is required\n Whether outcomes met expectations\n The exchange rate context behind decisions\nThis creates uncertainty, forces users to open individual transactions, and reduces trust and sense of control.",
-      "constraints": "Questions must be open-ended and non-leading\n Avoid asking about solutions or features\n Focus on real past behaviour, not hypothetical scenarios\n Keep questions simple, conversational, and easy to understand\n Ensure full coverage of all BGOALC categories\n Limit to 3–5 high-quality questions per category",
-      "format": "Structure the interview script as follows:\n1. Ice Breaker (2–3 questions)  Light, easy questions to build comfort and context.\n2. Behaviours (3–5 questions) 3. Goals (3–5 questions) 4. Obstacles (3–5 questions) 5. Actions (3–5 questions) 6. Logic (3–5 questions) 7. Context (3–5 questions)\n8. Closing Question (1–2 questions)  Wrap up with a reflective, open-ended question. \nEach question should:\n Be written as a natural interview prompt\n Encourage storytelling and specific examples\n Avoid yes/no answers"
+      "role": "You are a UX researcher conducting user interviews for a product focused on [product area: the transaction list on the home dashboard].",
+      "task": "Create a structured user interview script using the BGOALC framework (Behaviours, Goals, Obstacles, Actions, Logic, Context).\nThe script should help uncover how users understand, track, and evaluate [what users manage: their international transfers] within [surface: a transaction list].",
+      "context": "Users rely on [surface: the transaction list] to understand what is happening with [what is at stake: their money]. However, the current experience only shows a static record ([data shown: amount, recipient, status]) and lacks clarity around:\n- Whether transfers are complete or still in progress\n- If any action is required\n- Whether outcomes met expectations\n- The exchange rate context behind decisions\n\nThis creates uncertainty, forces users to open individual transactions, and reduces trust and sense of control.",
+      "constraints": "- Questions must be open-ended and non-leading\n- Avoid asking about solutions or features\n- Focus on real past behaviour, not hypothetical scenarios\n- Keep questions simple, conversational, and easy to understand\n- Ensure full coverage of all BGOALC categories\n- Limit to 3–5 high-quality questions per category",
+      "format": "Structure the interview script as follows:\n1. Ice Breaker (2–3 questions)\n   Light, easy questions to build comfort and context.\n2. Behaviours (3–5 questions)\n3. Goals (3–5 questions)\n4. Obstacles (3–5 questions)\n5. Actions (3–5 questions)\n6. Logic (3–5 questions)\n7. Context (3–5 questions)\n8. Closing Question (1–2 questions)\n   Wrap up with a reflective, open-ended question.\n\nEach question should:\n- Be written as a natural interview prompt\n- Encourage storytelling and specific examples\n- Avoid yes/no answers"
     },
     {
       "id": "81cba4f4-36df-45cc-9598-1cbb9be30e75",
@@ -50,10 +50,10 @@
         "behavioural-grouping"
       ],
       "role": "You are a UX researcher synthesizing behaviours into structured, prioritized user needs.",
-      "task": "Cluster the behaviours and gaps into core user needs.\nUse these need clusters:\n\nTransfer status clarity\nAttention items\nRate context\nRecipient status",
-      "context": "For each cluster:\n\ndefine the underlying user need\ndescribe the current system gap\nexplain the user consequence (behavioural + emotional)\ninclude a representative behaviour (not a solution)",
-      "constraints": "Ensure each need reflects:\n\na real user problem\na clear gap\na meaningful consequence\n\nDo not include features, ideas, or UI suggestions.",
-      "format": "For each of the four need clusters, present the underlying user need, the current system gap, the user consequence (behavioural + emotional), and a representative behaviour."
+      "task": "Cluster the behaviours and gaps into core user needs.\nUse these need clusters [replace with the clusters from your research]:\n- Transfer status clarity\n- Attention items\n- Rate context\n- Recipient status\n\nBehaviours and gaps:\n[paste the behavioural breakdown]",
+      "context": "For each cluster:\n- define the underlying user need\n- describe the current system gap\n- explain the user consequence (behavioural + emotional)\n- include a representative behaviour (not a solution)",
+      "constraints": "Ensure each need reflects:\n- a real user problem\n- a clear gap\n- a meaningful consequence\n\nDo not include features, ideas, or UI suggestions.",
+      "format": "For each of the [number: four] need clusters, present the underlying user need, the current system gap, the user consequence (behavioural + emotional), and a representative behaviour."
     },
     {
       "id": "f6aa5495-e431-4f77-b5b2-e0c28a828292",
@@ -66,10 +66,10 @@
         "user-needs"
       ],
       "role": "You are a UX researcher translating user needs into sharp, solution-agnostic How Might We statements.",
-      "task": "Generate How Might We (HMW) statements based on the identified needs.\nGuidelines:\n\neach HMW addresses one specific need\ndo not embed solutions or UI elements\navoid vague phrasing (e.g. \"improve clarity\")\nensure each HMW reflects:\n\na real user behaviour\na clear point of uncertainty or friction",
-      "context": "For each need cluster, list 3–5 HMW statements.",
-      "constraints": "Avoid embedding solutions (e.g. notifications, labels, dashboards).\nEnsure variation in angle (not repetitions).",
-      "format": "For each need cluster:\n\nlist 3–5 HMW statements\nensure variation in angle (not repetitions)"
+      "task": "Generate How Might We (HMW) statements based on the identified needs.\nGuidelines:\n- each HMW addresses one specific need\n- do not embed solutions or UI elements\n- avoid vague phrasing (e.g. \"improve clarity\")\n- ensure each HMW reflects:\n  - a real user behaviour\n  - a clear point of uncertainty or friction",
+      "context": "For each need cluster, list 3–5 HMW statements.\n\nNeed clusters:\n[paste your need clusters]",
+      "constraints": "- Avoid embedding solutions (e.g. notifications, labels, dashboards).\n- Ensure variation in angle (not repetitions).",
+      "format": "For each need cluster:\n- list 3–5 HMW statements\n- ensure variation in angle (not repetitions)"
     },
     {
       "id": "e5f3547c-6dce-4292-bffc-5994f4126318",
@@ -83,10 +83,10 @@
         "cross-source-patterns"
       ],
       "role": "You are a UX researcher synthesising findings from multiple research sources, including stakeholder interviews, user interviews, surveys, and usability testing. Your goal is to turn mixed data into a clear, decision-ready research report.",
-      "task": "Create a concise research report using the PRIME framework (Problem, Research, Insight, Material, Execution).\nThe report should:\n Combine findings across all research inputs\n Identify patterns and overlaps (not isolated observations)\n Highlight what matters most for the product and business\n Translate insights into clear, actionable decisions",
-      "context": "You are working with a mix of qualitative and quantitative data, including:\n Stakeholder interviews (business goals, assumptions, constraints)\n User interviews (needs, behaviours, expectations)\n Surveys (trends, validation, scale)\n Usability testing (observed behaviour, friction, success/failure)\nStakeholders need a single, clear narrative that answers:\n What’s happening across all research\n Where misalignment exists (user vs business)\n What is breaking or working\n What should be prioritised next",
-      "constraints": "Keep the report short and scannable (max 1–2 pages)\n Synthesis > summary (combine, don’t list)\n Focus on patterns, not individual data points\n Limit to 3–5 key insights\n Use simple, natural language\n Avoid research jargon\n Every insight must lead to a clear action\n Do not separate findings by method — unify them",
-      "format": "1. Problem\nWhat are we trying to understand or improve?  Include both:\n User perspective\n Business perspective\n2. Research\nHow was the research conducted?\n Methods used (interviews, surveys, testing, stakeholders)\n Number of participants\n Scope\n(Keep this tight — just enough to build trust)\n3. Insights\n3–5 key insights only\nEach insight should:\n Combine multiple data sources\n Highlight a clear pattern or tension\n Be framed as a meaningful shift in understanding\n4. Material (Evidence)\nSupport each insight with a mix of:\n User quotes\n Behavioural observations\n Survey trends or percentages\n Stakeholder perspectives (where relevant)\nInclude simple charts where helpful, such as:\n % of users confused at a step\n Task success vs failure\n Survey response distribution\n5. Execution (Actions)\nFor each insight, define:\n What should change\n Why it matters\n The expected outcome\nActions should be:\n Clear and practical\n Directly tied to the insight\n Prioritised if possible\n6. Summary (Optional)\nA short, sharp recap:\n The biggest problem\n The most important action\nOutput Requirements\n Structured using PRIME\n Feels like one clear story (not multiple reports stitched together)\n Actionable for product, design, and business teams\n Readable in under 5 minutes\n Focused on decisions, not documentation"
+      "task": "Create a concise research report using the PRIME framework (Problem, Research, Insight, Material, Execution).\nThe report should:\n- Combine findings across all research inputs\n- Identify patterns and overlaps (not isolated observations)\n- Highlight what matters most for the product and business\n- Translate insights into clear, actionable decisions",
+      "context": "You are working with a mix of qualitative and quantitative data, including:\n- Stakeholder interviews (business goals, assumptions, constraints)\n- User interviews (needs, behaviours, expectations)\n- Surveys (trends, validation, scale)\n- Usability testing (observed behaviour, friction, success/failure)\n\nStakeholders need a single, clear narrative that answers:\n- What’s happening across all research\n- Where misalignment exists (user vs business)\n- What is breaking or working\n- What should be prioritised next\n\nResearch inputs:\n[attach or paste your research data]",
+      "constraints": "- Keep the report short and scannable (max 1–2 pages)\n- Synthesis > summary (combine, don’t list)\n- Focus on patterns, not individual data points\n- Limit to 3–5 key insights\n- Use simple, natural language\n- Avoid research jargon\n- Every insight must lead to a clear action\n- Do not separate findings by method — unify them",
+      "format": "1. Problem\nWhat are we trying to understand or improve? Include both:\n- User perspective\n- Business perspective\n\n2. Research\nHow was the research conducted?\n- Methods used (interviews, surveys, testing, stakeholders)\n- Number of participants\n- Scope\n(Keep this tight — just enough to build trust)\n\n3. Insights\n3–5 key insights only. Each insight should:\n- Combine multiple data sources\n- Highlight a clear pattern or tension\n- Be framed as a meaningful shift in understanding\n\n4. Material (Evidence)\nSupport each insight with a mix of:\n- User quotes\n- Behavioural observations\n- Survey trends or percentages\n- Stakeholder perspectives (where relevant)\nInclude simple charts where helpful, such as:\n- % of users confused at a step\n- Task success vs failure\n- Survey response distribution\n\n5. Execution (Actions)\nFor each insight, define:\n- What should change\n- Why it matters\n- The expected outcome\nActions should be:\n- Clear and practical\n- Directly tied to the insight\n- Prioritised if possible\n\n6. Summary (Optional)\nA short, sharp recap:\n- The biggest problem\n- The most important action\n\nOutput Requirements\n- Structured using PRIME\n- Feels like one clear story (not multiple reports stitched together)\n- Actionable for product, design, and business teams\n- Readable in under 5 minutes\n- Focused on decisions, not documentation"
     },
     {
       "id": "769ff240-5352-4f98-9eac-853dba5d2d86",
@@ -101,8 +101,8 @@
         "insight-framing"
       ],
       "role": "You are a senior UX researcher synthesizing discovery research into a sharp, evidence-based problem statement.",
-      "task": "Write a clear, evidence-based problem statement for a discovery sprint focused on the transaction list on the home dashboard.",
-      "context": "The transaction list is a high-frequency surface used by people who send money internationally.\n\nUsers return to this list after sending to:\n- check whether money has arrived\n- understand the status of transfers\n- decide whether they need to take action\n\nResearch indicates that:\n- users revisit the list multiple times after sending\n- they rely on workarounds (e.g. screenshots, messaging recipients, manual tracking)\n- the list shows what happened, but does not consistently communicate:\n  - what it means\n  - what is still in progress\n  - whether any action is required",
+      "task": "Write a clear, evidence-based problem statement for a discovery sprint focused on [product area: the transaction list on the home dashboard].",
+      "context": "[Surface: The transaction list] is a high-frequency surface used by [user group: people who send money internationally].\n\nUsers return to this list after [key action: sending] to:\n- check whether money has arrived\n- understand the status of transfers\n- decide whether they need to take action\n\nResearch indicates that [replace with your own findings]:\n- users revisit the list multiple times after sending\n- they rely on workarounds (e.g. screenshots, messaging recipients, manual tracking)\n- the list shows what happened, but does not consistently communicate:\n  - what it means\n  - what is still in progress\n  - whether any action is required",
       "constraints": "- Do not propose solutions, features, or UI changes\n- Do not restate the context — focus on synthesis and insight\n- Do not introduce assumptions not grounded in observed behaviour\n- Avoid vague or generic phrases (e.g. “improve clarity”, “enhance experience”)\n\nThe problem statement must:\n- be grounded in observable user behaviour, not inferred intent\n- make the gap explicit (what users need vs what the system shows)\n- articulate consequences:\n  - behavioural (e.g. repeated checking, opening transfers, contacting support)\n  - emotional (e.g. uncertainty, anxiety, reduced sense of control)\n- reflect that this is an active decision-making surface, not a passive history",
       "format": "Write 2–3 concise paragraphs that:\n1. Define the user group and the moment of use\n2. Describe the gap between current system behaviour and user needs\n3. Explain the consequences of this gap on behaviour, confidence, and decision-making\n\nWhere possible, anchor statements in concrete behaviours rather than abstractions."
     },
@@ -118,9 +118,9 @@
         "assumptions-audit",
         "synthesis"
       ],
-      "role": "You are a critical design research reviewer who interrogates problem framing for hidden assumptions and evidence gaps",
-      "task": "Critically evaluate the problem statement.\nIdentify:\n\nany hidden assumptions about user understanding, intent, or behaviour\nwhere the statement is overgeneralised or too broad\nwhere evidence is implied but not explicit\nany missing distinctions (e.g. different user types, contexts, or moments in time)\nwhere the statement is describing the product, not the user",
-      "context": "Then:\nRewrite the problem statement to make it more:\n\nprecise\nbehaviourally grounded\nexplicit about uncertainty and evidence limits",
+      "role": "You are a critical design research reviewer who interrogates problem framing for hidden assumptions and evidence gaps.",
+      "task": "Critically evaluate the problem statement.\nIdentify:\n- any hidden assumptions about user understanding, intent, or behaviour\n- where the statement is overgeneralised or too broad\n- where evidence is implied but not explicit\n- any missing distinctions (e.g. different user types, contexts, or moments in time)\n- where the statement is describing the product, not the user\n\nProblem statement:\n[paste your problem statement]",
+      "context": "Then:\nRewrite the problem statement to make it more:\n- precise\n- behaviourally grounded\n- explicit about uncertainty and evidence limits",
       "constraints": "Do not introduce new ideas — only refine based on the existing context.",
       "format": "A critique covering the identified points above, followed by a rewritten problem statement."
     },
@@ -136,10 +136,10 @@
         "evidence-based"
       ],
       "role": "You are a Design Engineer",
-      "task": "Generate ideas to address the highest-priority HMW: How might we reflect the recipient’s reality in the transaction list, rather than internal state, so users feel informed instead of guessing?",
-      "context": "You’ve completed user research and are now in the ideation phase before rapid prototyping.  Focus exclusively on improving the transaction list experience. A visual reference of the current UI is provided.",
-      "constraints": "Generate 3 distinct ideas\n Ground each idea in research evidence or observed user behavior\n Prioritise ideas based on:\n User satisfaction\n User needs\n Business impact\n Keep solutions practical and testable (not abstract)",
-      "format": "Present as a clear, scannable list. For each idea include:\nIdea – A concise description of the concept\nEvidence – The specific user insight, pain point, or behavior that supports it\nSuccess Metrics – How we would measure impact (e.g. reduced support queries, increased clarity, faster comprehension)"
+      "task": "Generate ideas to address the highest-priority HMW:\n[HMW statement: How might we reflect the recipient’s reality in the transaction list, rather than internal state, so users feel informed instead of guessing?]",
+      "context": "You’ve completed user research and are now in the ideation phase before rapid prototyping.\nFocus exclusively on improving [surface: the transaction list experience]. A visual reference of the current UI is provided [attach a screenshot].",
+      "constraints": "- Generate [number: 3] distinct ideas\n- Ground each idea in research evidence or observed user behavior\n- Prioritise ideas based on:\n  - User satisfaction\n  - User needs\n  - Business impact\n- Keep solutions practical and testable (not abstract)",
+      "format": "Present as a clear, scannable list. For each idea include:\n- Idea – A concise description of the concept\n- Evidence – The specific user insight, pain point, or behavior that supports it\n- Success Metrics – How we would measure impact (e.g. reduced support queries, increased clarity, faster comprehension)"
     },
     {
       "id": "413813df-e370-41ad-a987-1f73cfe43fb5",
@@ -151,10 +151,10 @@
         "user-segmentation"
       ],
       "role": "You are a UX researcher segmenting a problem across distinct user patterns and behaviours.",
-      "task": "Reframe the problem across different user patterns:\n\nScheduled senders (e.g. recurring, time-sensitive transfers)\nOpportunistic senders (e.g. rate-driven, flexible timing)\nMulti-currency / control-oriented users (e.g. actively managing balances and rates)",
-      "context": "For each group:\n\ndescribe the specific moment when they use the transaction list\nexplain what they are trying to understand or confirm\nhighlight what feels uncertain or risky\nidentify how the problem manifests differently",
-      "constraints": "Focus on differences in:\n\nexpectations\ntolerance for uncertainty\ndecision-making behaviour",
-      "format": "For each of the three user groups, present the moment of use, what they are trying to confirm, what feels uncertain or risky, and how the problem manifests differently."
+      "task": "Reframe the problem across different user patterns [replace with your own segments]:\n- Scheduled senders (e.g. recurring, time-sensitive transfers)\n- Opportunistic senders (e.g. rate-driven, flexible timing)\n- Multi-currency / control-oriented users (e.g. actively managing balances and rates)",
+      "context": "For each group:\n- describe the specific moment when they use [surface: the transaction list]\n- explain what they are trying to understand or confirm\n- highlight what feels uncertain or risky\n- identify how the problem manifests differently",
+      "constraints": "Focus on differences in:\n- expectations\n- tolerance for uncertainty\n- decision-making behaviour",
+      "format": "For each of the [number: three] user groups, present the moment of use, what they are trying to confirm, what feels uncertain or risky, and how the problem manifests differently."
     },
     {
       "id": "e00cdf8b-2a39-4bab-8165-e6c6c31354fc",
@@ -168,10 +168,10 @@
         "planning",
         "qualitative-research"
       ],
-      "role": "You are a senior UX researcher running a discovery sprint focused on the transaction list on the home dashboard.",
-      "task": "Write a structured stakeholder interview guide for a 20-minute conversation with the product lead.",
-      "context": "Do not ask leading questions or suggest solutions. Do not make assumptions about what the stakeholder believes, surface it through questions. Every question should be specific to this product area. Avoid generic openers like \"tell me about your role.\" Do not use em dashes anywhere in the content.",
-      "constraints": "The problem statement is in your knowledge files. Use it to shape the interview goals and questions. The stakeholder has context on why the transaction list is designed the way it is today, what has been explored before, and what constraints exist around changing it.",
+      "role": "You are a senior UX researcher running a discovery sprint focused on [product area: the transaction list on the home dashboard].",
+      "task": "Write a structured stakeholder interview guide for a [length: 20-minute] conversation with [stakeholder: the product lead].",
+      "context": "- Do not ask leading questions or suggest solutions.\n- Do not make assumptions about what the stakeholder believes, surface it through questions.\n- Every question should be specific to this product area.\n- Avoid generic openers like \"tell me about your role.\"\n- Do not use em dashes anywhere in the content.",
+      "constraints": "The problem statement is in your knowledge files [or paste it below]. Use it to shape the interview goals and questions. The stakeholder has context on why [surface: the transaction list] is designed the way it is today, what has been explored before, and what constraints exist around changing it.",
       "format": "Write a structured interview guide with a short intro the interviewer reads aloud, two sections each with a clear goal and 2 to 3 questions including an \"if needed\" follow-up for each, and a closing question for anything unprompted. Include a suggested time for each section."
     },
     {
@@ -185,11 +185,11 @@
         "tasks-framework",
         "moderated-testing"
       ],
-      "role": "You are a UX researcher conducting usability testing for a  product, focused on the transaction list on the home dashboard.",
-      "task": "Create a structured usability test script using the TASKS framework (Task, Attempt, Struggle, Knowledge Gap, Success).\nThe script should help evaluate whether users can:\n Understand what is happening in their transactions at a glance\n Identify which transfers are complete or still in progress\n Recognise if any action is required\n Feel confident that everything is sorted without opening individual transactions",
-      "context": "Users rely on the transaction list to understand what is happening with their money. However, the current experience only shows a static record (amount, recipient, status) and lacks clarity around:\n Whether transfers are complete or still in progress\n If any action is required\n Whether outcomes met expectations\n The exchange rate context behind decisions\nThis creates uncertainty, forces users to open individual transactions, and reduces trust and sense of control.",
-      "constraints": "Tasks must be scenario-based and realistic (not UI instructions)\n Avoid mentioning specific UI elements (e.g. “transaction list”)\n Do not guide or lead the user during tasks\n Include prompts for think-aloud behaviour\n Include light probing questions only after tasks\n Keep language simple, natural, and conversational\n Focus on observing behaviour, not opinions\n Limit to 3–4 high-quality tasks",
-      "format": "Structure the usability test script as follows:\n1. Setup (1–2 prompts)\n Brief context\n Ask user to think out loud\n2. Tasks (3–4 total)  For each task include:\nScenario (real-life situation)\nModerator note (what to observe: confusion, hesitation, clarity)\n3. Reflection (3–4 questions)\n What’s happening here?\n Is everything clear?\n Would you do anything next?\n How confident do you feel?\n4. Close (1 question)\n If you left this now, how would you feel about your transactions?\nOutput requirements\n Keep it short (15–20 min session)\n Use natural language\n Make it easy to run live"
+      "role": "You are a UX researcher conducting usability testing for a [product name] product, focused on [product area: the transaction list on the home dashboard].",
+      "task": "Create a structured usability test script using the TASKS framework (Task, Attempt, Struggle, Knowledge Gap, Success).\nThe script should help evaluate whether users can [replace with your own goals]:\n- Understand what is happening in their transactions at a glance\n- Identify which transfers are complete or still in progress\n- Recognise if any action is required\n- Feel confident that everything is sorted without opening individual transactions",
+      "context": "Users rely on [surface: the transaction list] to understand what is happening with [what is at stake: their money]. However, the current experience only shows a static record ([data shown: amount, recipient, status]) and lacks clarity around:\n- Whether transfers are complete or still in progress\n- If any action is required\n- Whether outcomes met expectations\n- The exchange rate context behind decisions\n\nThis creates uncertainty, forces users to open individual transactions, and reduces trust and sense of control.",
+      "constraints": "- Tasks must be scenario-based and realistic (not UI instructions)\n- Avoid mentioning specific UI elements (e.g. “transaction list”)\n- Do not guide or lead the user during tasks\n- Include prompts for think-aloud behaviour\n- Include light probing questions only after tasks\n- Keep language simple, natural, and conversational\n- Focus on observing behaviour, not opinions\n- Limit to 3–4 high-quality tasks",
+      "format": "Structure the usability test script as follows:\n1. Setup (1–2 prompts)\n   - Brief context\n   - Ask user to think out loud\n2. Tasks (3–4 total)\n   For each task include:\n   - Scenario (real-life situation)\n   - Moderator note (what to observe: confusion, hesitation, clarity)\n3. Reflection (3–4 questions)\n   - What’s happening here?\n   - Is everything clear?\n   - Would you do anything next?\n   - How confident do you feel?\n4. Close (1 question)\n   - If you left this now, how would you feel about your transactions?\n\nOutput requirements\n- Keep it short ([length: 15–20 min] session)\n- Use natural language\n- Make it easy to run live"
     },
     {
       "id": "a95deb44-3e66-4dcb-ae42-9cbb47e5dfce",
@@ -203,10 +203,10 @@
         "behavioural-patterns",
         "planning"
       ],
-      "role": "You are a senior UX researcher running a discovery sprint focused on the transaction list on the home dashboard.",
-      "task": "Write a user survey to validate the behavioural patterns identified in the problem statement. The survey should help quantify how frequently users experience uncertainty about transfer status, what they do as a result, and what information they wish the list showed.",
-      "context": "Keep the survey under 10 questions. Use plain, jargon-free language. Mix question types: multiple choice, rating scales, and one open text question at the end. Do not ask leading questions. Every question should connect directly to one of the four need clusters in the problem statement.",
-      "constraints": "The problem statement and need clusters are in your knowledge files. Use them to shape every question. Participants are existing users who send money internationally at least once a month.",
+      "role": "You are a senior UX researcher running a discovery sprint focused on [product area: the transaction list on the home dashboard].",
+      "task": "Write a user survey to validate the behavioural patterns identified in the problem statement. The survey should help quantify how frequently users experience uncertainty about [topic: transfer status], what they do as a result, and what information they wish [surface: the list] showed.",
+      "context": "- Keep the survey under 10 questions.\n- Use plain, jargon-free language.\n- Mix question types: multiple choice, rating scales, and one open text question at the end.\n- Do not ask leading questions.\n- Every question should connect directly to one of the [number: four] need clusters in the problem statement.",
+      "constraints": "The problem statement and need clusters are in your knowledge files [or paste them below]. Use them to shape every question. Participants are [participants: existing users who send money internationally at least once a month].",
       "format": "Write the full survey with a short intro paragraph the participant reads before starting, all questions numbered, answer options for each closed question, and a clear closing message."
     },
     {
@@ -271,8 +271,8 @@
       ],
       "role": "You are a senior UX writer auditing product copy for clarity, consistency, and tone.",
       "task": "Audit the copy in the attached screens and return every string that should be rewritten. For each, give the current text, the problem, and a rewritten version that fits a clear, trustworthy, jargon-free voice.",
-      "context": "Cover button labels, error messages, empty states, confirmations, and helper text. The product is a financial tool where ambiguity erodes trust, so copy must say what happens and what the user should expect, never hedge.",
-      "constraints": "Do not invent strings not visible in the screens\nFlag tone inconsistencies between strings\nPrefer plain language over feature jargon\nError messages must state cause and recovery, not blame the user\nDo not use em dashes",
+      "context": "Cover button labels, error messages, empty states, confirmations, and helper text. The product is [product type: a financial tool] where ambiguity erodes trust, so copy must say what happens and what the user should expect, never hedge.",
+      "constraints": "- Do not invent strings not visible in the screens\n- Flag tone inconsistencies between strings\n- Prefer plain language over feature jargon\n- Error messages must state cause and recovery, not blame the user\n- Do not use em dashes",
       "format": "A table — Location, Current text, Problem, Rewritten text. Group rows by screen."
     },
     {
@@ -321,8 +321,8 @@
       ],
       "role": "You are a senior design systems engineer",
       "task": "Audit these screens and return every element that should become a reusable Figma component. Name each one, describe what makes it distinct, estimate how many variants it needs, and flag if it's a sub-component of something larger.",
-      "context": "Use PascalCase naming. Don't componentise one-off decorative elements. Flag sub-components separately — don't fold them into the parent.",
-      "constraints": "Attached are the screens from the transaction list UI built in Claude Code. Use these as your source of truth — don't infer anything that isn't visible in the designs.",
+      "context": "- Use PascalCase naming.\n- Don't componentise one-off decorative elements.\n- Flag sub-components separately — don't fold them into the parent.",
+      "constraints": "Attached are the screens from [the UI: the transaction list UI built in Claude Code]. Use these as your source of truth — don't infer anything that isn't visible in the designs.",
       "format": "A table — Component name, Description, Estimated variant count, Sub-component of."
     },
     {
@@ -338,9 +338,9 @@
       ],
       "role": "You are a senior React + TypeScript design systems engineer.",
       "task": "Build a production-ready Avatar component set from the attached Figma:\n- 5 sizes: xs, sm, md, lg, xl\n- 3 variants: neutral, brand, image\n- optional bottom-right overlapping badge\n- initials support\n- image fallback support\n- token-driven styling",
-      "context": "The design shows a circular avatar primitive with:\n- neutral: light bg + dark initials\n- brand: light bg + dark green initials\n- image: cropped circular photo\n- optional EU-style badge: blue circle, yellow stars, ring separator\n\nSuggested token mapping:\n- bg neutral = gray.100 `#F6F7F4`\n- text neutral = gray.900 `#0B0C0A`\n- text brand = forestGreen.600 `#163300`\n- outline = gray.300 `#D7D8D2`\n- badge stars = yellow.500 `#FFD400` :contentReference[oaicite:14]{index=14}",
+      "context": "The design shows a circular avatar primitive with:\n- neutral: light bg + dark initials\n- brand: light bg + dark green initials\n- image: cropped circular photo\n- optional EU-style badge: blue circle, yellow stars, ring separator\n\nSuggested token mapping:\n- bg neutral = gray.100 `#F6F7F4`\n- text neutral = gray.900 `#0B0C0A`\n- text brand = forestGreen.600 `#163300`\n- outline = gray.300 `#D7D8D2`\n- badge stars = yellow.500 `#FFD400`",
       "constraints": "- React + TypeScript\n- Use `variant`, not `style`, in code API\n- Ref-forwarding\n- Centralized size config\n- Circular only\n- `object-fit: cover` for images\n- Badge scales by size and overlaps bottom-right\n- Good a11y defaults\n- No magic numbers scattered through component\n- Non-interactive by default\n\nUse:\n```ts\ntype AvatarProps = {\n  size?: \"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\";\n  variant?: \"neutral\" | \"brand\" | \"image\";\n  initials?: string;\n  src?: string;\n  alt?: string;\n  showBadge?: boolean;\n  badgeAriaLabel?: string;\n  className?: string;\n};",
-      "format": "- Avatar.tsx - avatar.styles.ts (or token config) - Badge implementation (inline or separate) - Brief explanation of key decisions - Production-ready - Token-driven - Clean API - Visually accurate to design - Accessible"
+      "format": "- Avatar.tsx\n- avatar.styles.ts (or token config)\n- Badge implementation (inline or separate)\n- Brief explanation of key decisions\n- Production-ready\n- Token-driven\n- Clean API\n- Visually accurate to design\n- Accessible"
     },
     {
       "id": "5de22dbf-2abb-4b62-b80d-41e25bea2848",
@@ -419,10 +419,10 @@
         "accessibility"
       ],
       "role": "You are a senior UI designer, specialising in prototyping and design systems",
-      "task": "Recreate the provided UI matching exactly what we have in Figma as a layout, following a structured, component-based approach. Ensure this component is in the centre of a #FFFFFF screen",
-      "context": "This is a multi-currency wallet interface showing a total balance, primary actions (Send, Add money, Request), and individual currency cards with account details, and balances. The design should match our attached frames",
-      "constraints": "Ensure spacing matches auto layout\nBuild reusable components for buttons and currency cards\nFollow a consistent spacing system (e.g. 4px rule)\nEnsure accessibility in contrast and text sizing\nKeep typography clean and hierarchy clear\nAvoid hard-coded values where components can be reused",
-      "format": "Frame structure defined using auto layout\nCreate components from frames\nLayer naming clean and scalable\nReady for design system integration"
+      "task": "Recreate the provided UI matching exactly what we have in Figma as a layout, following a structured, component-based approach. Ensure this component is in the centre of a [background: #FFFFFF] screen.",
+      "context": "This is [interface: a multi-currency wallet interface showing a total balance, primary actions (Send, Add money, Request), and individual currency cards with account details, and balances]. The design should match our attached frames [attach Figma frames].",
+      "constraints": "- Ensure spacing matches auto layout\n- Build reusable components for buttons and currency cards\n- Follow a consistent spacing system (e.g. 4px rule)\n- Ensure accessibility in contrast and text sizing\n- Keep typography clean and hierarchy clear\n- Avoid hard-coded values where components can be reused",
+      "format": "- Frame structure defined using auto layout\n- Create components from frames\n- Layer naming clean and scalable\n- Ready for design system integration"
     },
     {
       "id": "050cee24-eaa2-42c7-85f9-d896b4e0eaa7",
@@ -437,10 +437,10 @@
         "ux-copy"
       ],
       "role": "You are a Design Engineer building a React prototype. You specialise in translating product concepts into clean, production-ready UI using React, Tailwind, and token-based design systems.",
-      "task": "Build a prototype of the transaction list that replaces internal status labels with recipient-facing outcome states, so users understand what has actually happened from the recipient's perspective rather than guessing at internal pipeline state.",
-      "context": "The current transaction list shows statuses like \"Sent\" and \"Added\" alongside an initiation date. Research shows users interpret \"Sent\" as \"received\", creating confusion and avoidable support contacts. This prototype should replace those internal labels with outcome-oriented language that reflects the recipient's reality:  \"Recipient notified\" — transfer is on its way but not yet landed \"Funds available in account\" — recipient can access the money \"Awaiting bank processing\" — transfer is queued at the receiving bank  The visual reference is the existing transaction list: a white surface, circular transaction type icons, recipient name + status + date on the left, amount on the right. Positive amounts (received/added) appear in green. The design should feel native to our design system — clean, minimal, trustworthy.",
-      "constraints": "Use React functional components with hooks Use Tailwind utility classes for all styling — no custom CSS Use semantic token-aligned class names where possible (e.g. text-primary, bg-surface) Match the existing Wise transaction list layout: icon · name/status/date · amount Support three transaction states: notified, available, processing Each state should have a distinct but subtle visual treatment (label colour, icon or indicator) Amounts should be formatted with currency code (e.g. 49 EUR, + 50 EUR) Positive/incoming amounts should render in green Use realistic mock data — minimum 4 transactions covering all three states Keep the component small and focused — TransactionList composed of TransactionRow No external dependencies beyond React and Tailwind",
-      "format": "Deliver a single self-contained React component file that can be dropped into a Vite or Next.js project. Include:  TransactionRow — renders a single transaction with icon, recipient name, recipient-facing status label, date, and amount TransactionList — renders the full list with a \"Transactions\" heading and a \"See all\" link Mock data array at the top of the file covering all three states Inline comments only where the status logic needs explanation"
+      "task": "Build a prototype of [surface: the transaction list] that replaces internal status labels with recipient-facing outcome states, so users understand what has actually happened from the recipient's perspective rather than guessing at internal pipeline state.",
+      "context": "The current transaction list shows statuses like [current labels: \"Sent\" and \"Added\"] alongside an initiation date. Research shows users interpret \"Sent\" as \"received\", creating confusion and avoidable support contacts. This prototype should replace those internal labels with outcome-oriented language that reflects the recipient's reality [replace with your own states]:\n- \"Recipient notified\" — transfer is on its way but not yet landed\n- \"Funds available in account\" — recipient can access the money\n- \"Awaiting bank processing\" — transfer is queued at the receiving bank\n\nThe visual reference is the existing transaction list: a white surface, circular transaction type icons, recipient name + status + date on the left, amount on the right. Positive amounts (received/added) appear in green. The design should feel native to our design system — clean, minimal, trustworthy.",
+      "constraints": "- Use React functional components with hooks\n- Use Tailwind utility classes for all styling — no custom CSS\n- Use semantic token-aligned class names where possible (e.g. text-primary, bg-surface)\n- Match the existing [product name: Wise] transaction list layout: icon · name/status/date · amount\n- Support three transaction states: notified, available, processing\n- Each state should have a distinct but subtle visual treatment (label colour, icon or indicator)\n- Amounts should be formatted with currency code (e.g. 49 EUR, + 50 EUR)\n- Positive/incoming amounts should render in green\n- Use realistic mock data — minimum 4 transactions covering all three states\n- Keep the component small and focused — TransactionList composed of TransactionRow\n- No external dependencies beyond React and Tailwind",
+      "format": "Deliver a single self-contained React component file that can be dropped into a Vite or Next.js project. Include:\n- TransactionRow — renders a single transaction with icon, recipient name, recipient-facing status label, date, and amount\n- TransactionList — renders the full list with a \"Transactions\" heading and a \"See all\" link\n- Mock data array at the top of the file covering all three states\n- Inline comments only where the status logic needs explanation"
     },
     {
       "id": "11df2cfd-c963-42dd-b2b0-3afeec764b90",
@@ -565,6 +565,219 @@
       "context": "The document should work as a live interview guide with the following features. A fixed sidebar with session metadata, a running timer with start and reset, and a section list that highlights the active section based on scroll position, including when the user reaches the last section. Each question card should have an expandable notes field for typing during the session, an \"if needed\" prompt styled more subtly than the main question, and a mark as done button that applies a visual completion state without hiding the content. An export notes button in the bottom right that opens a new tab with all notes collected cleanly.",
       "constraints": "All scripts wrapped in DOMContentLoaded.",
       "format": "Use the following design: background #F1F0ED, primary text #0D0D0D, secondary text #666666, accent #A6A295, white #FFFFFF for cards. Font: Inter. Clean, minimal layout with generous spacing. The layout should be fully responsive with a two column structure on desktop, sidebar fixed on the left and content scrolling on the right."
+    },
+    {
+      "id": "c123aa41-1d44-4ce9-8e49-088f082d9d35",
+      "discipline": "ux-research",
+      "title": "Interview Notes → Themes",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "synthesis",
+        "affinity-mapping",
+        "qualitative-research",
+        "discovery-sprint"
+      ],
+      "role": "You are a UX researcher turning raw interview notes into clear, evidence-backed themes.",
+      "task": "Read the interview notes and group what participants said and did into themes, the way you would on an affinity map.\n\nInterview notes:\n[paste notes or transcripts, one participant per block]",
+      "context": "The interviews were about [product area: e.g. how people track their money after sending it]. There were [number] participants. The themes will feed the problem statement and the need clusters, so they must stay close to what people actually said.",
+      "constraints": "- Use only what is in the notes. Do not invent quotes or behaviours.\n- A theme needs at least two participants behind it.\n- Separate what people did from what they said they feel.\n- Call out contradictions between participants instead of smoothing them over.\n- Keep participant IDs (P1, P2…) and never use real names.",
+      "format": "For each theme:\n- Theme name (a short sentence, not a single word)\n- What we heard (2–3 short quotes with participant IDs)\n- How many participants\n- Why it matters for [product area]\n\nEnd with a short list of loose observations that did not fit any theme."
+    },
+    {
+      "id": "7db8e3e3-294a-42bb-a08e-7e919ca7e710",
+      "discipline": "ux-research",
+      "title": "Journey Map of the Money Moment",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "journey-map",
+        "user-behaviour",
+        "emotions",
+        "discovery-sprint"
+      ],
+      "role": "You are a UX researcher mapping the end-to-end journey around one financial task.",
+      "task": "Create a journey map for [user group: people who send money abroad] doing [task: sending a transfer and making sure it arrived], from the moment the need appears to the moment they feel it is done.",
+      "context": "Research inputs:\n[paste behaviours, quotes, survey results]\n\nThe map should show where the product helps, where people leave the product to get answers (bank app, messaging, support), and where worry peaks.",
+      "constraints": "- Base every step on the research inputs. Mark any step that is an assumption with (assumption).\n- Include steps that happen outside the product.\n- Describe emotions in plain words, not a 1–10 score.\n- Do not propose solutions inside the map.",
+      "format": "A table with one column per stage ([stages: Need, Prepare, Send, Wait, Confirm, Follow up]) and these rows: What they do, What they think, How they feel, Touchpoints, Pain points, Moments that matter.\n\nUnder the table, list the top 3 opportunity areas, each linked to a pain point."
+    },
+    {
+      "id": "250052fd-ea88-44d3-aac3-47d179d200b8",
+      "discipline": "ux-research",
+      "title": "Survey Results Analysis",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "user-survey",
+        "quantitative",
+        "synthesis",
+        "data-analysis"
+      ],
+      "role": "You are a UX researcher analysing survey results to validate or challenge behavioural patterns.",
+      "task": "Analyse the survey results and tell me which of our hypotheses hold up, which do not, and what surprised us.\n\nHypotheses:\n[list the patterns or need clusters you wanted to validate]\n\nSurvey data:\n[attach CSV or paste results]",
+      "context": "The survey went to [participants: e.g. existing users who send money abroad at least once a month]. [Number] people answered. The results will be shown to [audience: product and business stakeholders] next to the interview findings.",
+      "constraints": "- Report numbers as both percentages and counts (e.g. 62%, 81 of 130).\n- Flag any question with too few answers to trust.\n- Do not claim cause when the data only shows a link.\n- Summarise open-text answers into themes with 1–2 example quotes each.\n- Note any sign of bias in the sample.",
+      "format": "1. One-paragraph headline summary\n2. Hypothesis check: a table with Hypothesis, Verdict (Confirmed / Partly / Not supported), Evidence\n3. Surprises worth exploring\n4. Open-text themes\n5. Suggested charts (chart type and what each one shows)"
+    },
+    {
+      "id": "25c9a88a-8ea2-4124-a6a3-3b845a8dfd3a",
+      "discipline": "ux-research",
+      "title": "Usability Findings & Severity",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "usability-testing",
+        "synthesis",
+        "prioritisation"
+      ],
+      "role": "You are a UX researcher turning usability session notes into prioritised findings a team can act on.",
+      "task": "Review the usability test notes and list every issue participants ran into, rated by severity.\n\nSession notes:\n[paste notes per participant]\n\nTasks tested:\n[list the tasks or scenarios]",
+      "context": "We tested [prototype or product: e.g. the new transaction list prototype] with [number] participants. In a [domain: financial] product, an issue that makes someone unsure where their money is counts as more severe than a cosmetic one, even if fewer people hit it.",
+      "constraints": "- Only report what was observed or said in the notes.\n- Use this severity scale: Critical (blocks the task or causes a wrong money decision), Major (slows down or causes doubt), Minor (small friction), Cosmetic.\n- Count how many participants hit each issue.\n- Keep the recommendation to one practical line per issue.\n- Include what worked well, not only problems.",
+      "format": "A table with Issue, Where it happened, Participants affected (e.g. 4 of 6), Severity, Evidence (short quote or observation), Recommendation. Sort by severity, then by participants affected. Add a task success summary (completed, with help, failed) above the table."
+    },
+    {
+      "id": "61d142da-294a-4abb-89b4-65271856136e",
+      "discipline": "ux-research",
+      "title": "Assumption Mapping",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "assumptions-audit",
+        "prioritisation",
+        "planning",
+        "discovery-sprint"
+      ],
+      "role": "You are a product designer helping a team surface and rank the assumptions behind a direction before building it.",
+      "task": "List the assumptions behind the idea below and plot them by how important they are and how much evidence we already have.\n\nIdea or direction:\n[describe the idea or paste the concept]",
+      "context": "We are about to prototype this for [product area]. The team includes design, product, engineering, and [other roles: e.g. compliance, operations]. Some assumptions are about users, some about the business, some about what is technically or legally possible.",
+      "constraints": "- Split assumptions into Desirability (users want it), Viability (it works for the business), Feasibility (we can build it), and Compliance (we are allowed to do it).\n- Write each assumption as a statement that could be proven wrong.\n- Do not mark something as known unless there is evidence in the context.",
+      "format": "1. A table with Assumption, Type, Importance (High/Medium/Low), Evidence (Strong/Some/None)\n2. The 3 riskiest assumptions (high importance, little evidence), each with a quick, cheap test to check it and what result would change our mind."
+    },
+    {
+      "id": "67fb6d1f-baf3-478e-83b5-1b44194c2672",
+      "discipline": "ux-research",
+      "title": "Competitor Pattern Teardown",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "competitive-analysis",
+        "patterns",
+        "benchmarking"
+      ],
+      "role": "You are a product designer reviewing how other products solve the same user problem.",
+      "task": "Compare how [competitors: e.g. 3–5 banks or money apps] handle [problem: showing whether a payment has arrived and if anything is needed from the user].\n\nScreenshots or notes:\n[attach screenshots or describe each flow]",
+      "context": "This is to inform ideation for [product area], not to copy. We care about patterns that reduce uncertainty and support contacts, and about where competitors fall short too.",
+      "constraints": "- Describe only what is visible in the material provided. If something is unknown, say so.\n- Focus on patterns (what they do and why it works), not visual style.\n- Note one weakness for every strength.\n- No recommendation to copy a competitor wholesale.",
+      "format": "1. A table with Product, How they show it, What works, What does not, Pattern name\n2. 3–5 reusable patterns worth testing, each tied to one of our user needs\n3. Gaps nobody solves well yet"
+    },
+    {
+      "id": "feb0bc08-920a-4ecf-aefa-fcf9964fa579",
+      "discipline": "writing",
+      "title": "Status & Error Copy for Money Flows",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "ux-copy",
+        "microcopy",
+        "error-states",
+        "fintech"
+      ],
+      "role": "You are a senior UX writer specialising in calm, clear copy for moments when money is involved.",
+      "task": "Write the copy for every status and error state in [flow: e.g. sending money abroad]. For each state, give a short label, a one-line explanation, and the next step if there is one.\n\nStates to cover:\n[list states, e.g. processing, on hold, needs more info, failed, refunded, arrived]",
+      "context": "Users read these states when they are already a little worried about their money. Research shows they want to know three things: what happened, what happens next, and whether they need to do anything. Tone of voice: [tone: e.g. plain, warm, confident, never jokey].",
+      "constraints": "- Say what happened from the user’s point of view, not the system’s.\n- Give a time expectation when we have one (e.g. \"usually within 1 working day\").\n- Never blame the user. Error copy must give cause and recovery.\n- No internal terms (e.g. \"pending settlement\", \"batch\").\n- Labels max 4 words, explanations max 20 words.\n- Do not use em dashes.",
+      "format": "A table with State, Label, Explanation, Next step / button text, Notes (when it shows, edge cases). Then 2 alternative labels for the 3 most worrying states."
+    },
+    {
+      "id": "3d75f27c-e84d-421f-afd0-4eae57de8956",
+      "discipline": "writing",
+      "title": "Fees & Rates Clarity Check",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "content-audit",
+        "trust",
+        "fintech",
+        "transparency"
+      ],
+      "role": "You are a UX writer reviewing how a financial product explains costs, rates, and timing.",
+      "task": "Review the screens or copy below and check whether a user can understand, before they confirm, exactly what they pay, what the other person gets, and when.\n\nCopy or screens:\n[paste copy or attach screenshots]",
+      "context": "The product is [product type: e.g. an international money transfer app] in [market: e.g. Norway / EU]. Hidden or unclear costs damage trust more than high costs. Legal may have their own requirements; this review is about clarity, not legal sign-off.",
+      "constraints": "- Check for: total cost, exchange rate and any markup, amount received, arrival time, and what happens if something goes wrong.\n- Flag anything a first-time user would need to calculate themselves.\n- Mark anything that may need a legal or compliance review instead of rewriting it.\n- Keep numbers exactly as given. Do not invent fees or rates.",
+      "format": "1. Clarity score per item (Clear / Needs work / Missing) in a table with Item, Where, Current copy, Issue, Suggested rewrite\n2. A short list of items to check with legal or compliance"
+    },
+    {
+      "id": "8eb7f3df-17b6-4c57-92b4-a1a6be0389e8",
+      "discipline": "writing",
+      "title": "Stakeholder Readout",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "stakeholder-communication",
+        "presentation",
+        "discovery-sprint"
+      ],
+      "role": "You are a product designer preparing a short readout of discovery results for decision makers.",
+      "task": "Turn the research outputs into a [length: 10-minute] readout for [audience: e.g. the product lead, head of design, and engineering lead] that ends with a clear decision we need from them.\n\nResearch outputs:\n[paste the problem statement, key insights, HMWs, and any metrics]",
+      "context": "The audience is busy and will decide what the team works on next quarter. They care about user impact, business impact (e.g. support contacts, retention, conversion), and effort.",
+      "constraints": "- Lead with the decision we need, then the evidence.\n- Max 3 insights, each with one number and one quote.\n- No research jargon (no \"affinity map\", \"BGOALC\", etc.).\n- Be honest about what we do not know yet.",
+      "format": "A slide-by-slide outline (max 7 slides). For each slide: title as a full sentence, 2–3 bullet points, suggested visual, and speaker notes of 2–3 sentences."
+    },
+    {
+      "id": "5550809c-8587-458b-9bb7-4a740d0c1371",
+      "discipline": "prototyping",
+      "title": "Money Flow Edge-Case Inventory",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "edge-cases",
+        "unhappy paths",
+        "fintech",
+        "planning"
+      ],
+      "role": "You are a design engineer listing every state a money flow can be in before it is prototyped.",
+      "task": "List all the edge cases and unhappy paths for [flow: e.g. sending money to another country], so we can design and prototype each one, not just the happy path.",
+      "context": "Current happy path:\n[describe the steps]\n\nThink about the user, the money, the recipient, the bank, the network, and the rules (limits, verification, sanctions checks). Use realistic scenarios such as a changed exchange rate, a held payment, a wrong account number, a partial refund, or the app closing mid-flow.",
+      "constraints": "- Group cases by where they happen in the flow.\n- For each case say what the user sees today if known, or \"unknown\".\n- Rate how often it might happen and how bad it is for the user.\n- Do not design solutions yet, only name the cases and what the user needs to know.",
+      "format": "A table with Step, Edge case, Trigger, What the user needs to know, Likelihood (High/Medium/Low), Impact (High/Medium/Low). Then the top 5 cases to prototype first, with a one-line reason each."
+    },
+    {
+      "id": "72135628-be82-4097-a308-52a3f9061f97",
+      "discipline": "prototyping",
+      "title": "Prototype Test Plan & Success Metrics",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "testing-plan",
+        "metrics",
+        "hypothesis",
+        "ab-testing"
+      ],
+      "role": "You are a product designer planning how to test a prototype and how to know if it worked.",
+      "task": "Write a test plan for the prototype below, with clear hypotheses and the metrics that would prove or disprove them.\n\nPrototype:\n[describe or link the prototype]\n\nHMW or problem it answers:\n[paste the HMW]",
+      "context": "We can test with [method: e.g. 5–6 moderated sessions, an unmoderated test, or an A/B test after launch]. Success should connect to user outcomes (less uncertainty, fewer repeat checks) and business outcomes (e.g. fewer support contacts about [topic]).",
+      "constraints": "- Write hypotheses as: We believe [change] will result in [outcome] for [user group]. We will know when [measurable signal].\n- Mix behavioural, qualitative, and business metrics.\n- Give a realistic target for each metric and say where the baseline comes from.\n- Include one guardrail metric so we notice if something gets worse.",
+      "format": "1. Hypotheses (2–3)\n2. Method, participants, and length\n3. A table with Metric, Type, Baseline, Target, How we measure it\n4. What we will do if the result is positive, mixed, or negative"
+    },
+    {
+      "id": "ace048bc-3e8c-4b98-a080-82dadc92d93c",
+      "discipline": "design-engineering",
+      "title": "Design Handoff Spec",
+      "author": "AN",
+      "date": "2026-11-09",
+      "tags": [
+        "handoff",
+        "documentation",
+        "accessibility",
+        "states"
+      ],
+      "role": "You are a design engineer writing a handoff spec so developers can build a feature without guessing.",
+      "task": "Write a handoff spec for [feature: e.g. the new transaction list with recipient-facing statuses] based on the attached designs and notes.\n\nDesigns and notes:\n[attach Figma links, screenshots, or prototype code]",
+      "context": "Developers will build this in [stack: e.g. React + TypeScript with our design system]. The spec should cover what the designs do not show on their own: states, data, rules, accessibility, and analytics.",
+      "constraints": "- Reference design system components and tokens by name; flag anything new.\n- List every state, including loading, empty, and error.\n- Write the data each element needs (field, type, example).\n- Include keyboard, screen reader, and contrast notes (WCAG 2.2 AA).\n- List analytics events to track, with names and properties.\n- Mark open questions clearly instead of guessing.",
+      "format": "Sections: Overview, User stories with acceptance criteria (Given/When/Then), Components and tokens, States, Data, Behaviour and rules, Accessibility, Analytics events, Open questions."
     }
   ]
 }
