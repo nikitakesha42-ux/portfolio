@@ -24,6 +24,10 @@
       const aria = el.dataset[lang + "Aria"] || el.dataset[fallback + "Aria"];
       if (aria != null) el.setAttribute("aria-label", aria);
     });
+    document.querySelectorAll("[data-en-alt]").forEach((el) => {
+      const alt = el.dataset[lang + "Alt"] || el.dataset[fallback + "Alt"];
+      if (alt != null) el.setAttribute("alt", alt);
+    });
     document.querySelectorAll(".lang-switch button").forEach((btn) => {
       btn.classList.toggle("is-active", btn.dataset.lang === lang);
       btn.setAttribute("aria-pressed", btn.dataset.lang === lang ? "true" : "false");
