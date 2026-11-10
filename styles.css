@@ -424,14 +424,13 @@ footer.site {
   gap: 12px;
 }
 
-/* "Off screen": Bant and the plants, as polaroids, above the site line */
-.wrap:has(+ footer .offscreen) { padding-bottom: 0; }
+/* "Off screen": Bant and the plants, as polaroids, just above the Say hi card */
 .offscreen {
   display: grid;
   grid-template-columns: minmax(0, 290px) minmax(0, 1fr);
   gap: 40px;
   align-items: center;
-  margin: 0 0 48px;
+  margin: 0 0 40px;
   padding: 44px 40px 52px 48px;
   border-radius: 28px;
   background: #f7f3ea;
@@ -458,7 +457,7 @@ footer.site {
   .offscreen-prints { max-width: 720px; margin: 0 auto; }
 }
 @media (max-width: 760px) {
-  .offscreen { padding: 32px 20px 36px; border-radius: 24px; margin-bottom: 36px; }
+  .offscreen { padding: 32px 20px 36px; border-radius: 24px; margin-bottom: 28px; }
   .offscreen h2 { font-size: 46px; }
   .offscreen-prints { flex-wrap: wrap; row-gap: 22px; padding: 4px 4px 8px; }
   .offscreen-print { flex: 0 0 46%; margin: 0 -2px; }
