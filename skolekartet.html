@@ -152,6 +152,34 @@
     .sk-honest { margin: 28px 0 0; padding: 14px 18px; border-radius: 12px; border: 1px dashed var(--rule-strong); font-size: 14px; line-height: 1.55; color: var(--muted); max-width: 66ch; }
     .sk-honest b { color: var(--ink); }
 
+    .sk-sources { margin: 20px 0 0; border: 1px solid var(--sk-line); border-radius: 14px; background: #fff; max-width: 920px; }
+    .sk-sources summary { cursor: pointer; list-style: none; display: grid; grid-template-columns: minmax(0,1fr) auto; column-gap: 16px; align-items: center; padding: 16px 20px; border-radius: 14px; }
+    .sk-sources summary::-webkit-details-marker { display: none; }
+    .sk-sources summary::after { content: "+"; grid-column: 2; grid-row: 1 / span 2; font-size: 22px; line-height: 1; color: var(--sk-green); }
+    .sk-sources[open] summary::after { content: "\2212"; }
+    .sk-sources summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+    .sk-sources-k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sk-green); font-weight: 600; }
+    .sk-sources-h { grid-column: 1; font-size: 17px; font-weight: 600; color: var(--ink); line-height: 1.35; margin-top: 4px; }
+    .sk-sources > p { margin: 0 20px 14px; font-size: 14px; line-height: 1.55; color: var(--muted); max-width: 66ch; }
+    .sk-src-table { width: calc(100% - 40px); margin: 0 20px 20px; border-collapse: collapse; font-size: 14px; line-height: 1.5; }
+    .sk-src-table th, .sk-src-table td { text-align: left; vertical-align: top; padding: 10px 12px 10px 0; border-top: 1px solid var(--rule); }
+    .sk-src-table thead th { border-top: 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .sk-src-table tbody th { font-weight: 600; color: var(--ink); width: 30%; }
+    .sk-src-table td { color: var(--muted); }
+    .sk-src-table td a { color: var(--ink); }
+    .sk-src-tag { display: inline-block; white-space: nowrap; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; border: 1px solid; }
+    .sk-src-tag--open { color: #0b5a41; background: #e7f4ee; border-color: #9cc9b5; }
+    .sk-src-tag--live { color: #1d4f86; background: #eaf2fb; border-color: #a8c4e4; }
+    .sk-src-tag--link { color: #4a4f57; background: #f3f4f6; border-color: #c7cbd1; }
+    .sk-src-tag--ex { color: #7a4a00; background: #fdf3df; border-color: #e6c27a; }
+    @media (max-width: 720px) {
+      .sk-src-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+      .sk-src-table, .sk-src-table tbody, .sk-src-table tr, .sk-src-table th, .sk-src-table td { display: block; width: auto; }
+      .sk-src-table tr { border-top: 1px solid var(--rule); padding: 12px 0; }
+      .sk-src-table th, .sk-src-table td { border-top: 0; padding: 2px 0; }
+      .sk-src-table tbody th { width: auto; }
+    }
+
     @media (prefers-reduced-motion: reduce) { .sk-paper img { transform: none !important; } }
     @media (max-width: 960px) {
       .sk-people, .sk-reasons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -261,9 +289,9 @@
       <div>
         <span class="k" data-en="Working prototype" data-no="Fungerende prototype">Working prototype</span>
         <h2 id="sk-proto-h" data-en="Click through it yourself" data-no="Klikk deg gjennom selv">Click through it yourself</h2>
-        <p data-en="Built on Designsystemet, in Norwegian, English and Ukrainian. Schools, wellbeing and bullying are real open data. Test results and access facts are examples until schools confirm them."
-           data-no="Bygget på Designsystemet, på norsk, engelsk og ukrainsk. Skoler, trivsel og mobbing er ekte åpne data. Prøveresultater og tilgjengelighet er eksempler til skolene bekrefter dem.">
-          Built on Designsystemet, in Norwegian, English and Ukrainian. Schools, wellbeing and bullying are real open data. Test results and access facts are examples until schools confirm them.
+        <p data-en-html="Built on Designsystemet, in Norwegian, English and Ukrainian. Schools, test results, wellbeing and bullying are real public data from Udir. Access facts are examples until schools confirm them. <a href=&quot;#data-sources&quot; class=&quot;sk-src-link&quot;>See all data sources</a>"
+           data-no-html="Bygget på Designsystemet, på norsk, engelsk og ukrainsk. Skoler, prøveresultater, trivsel og mobbing er ekte offentlige tall fra Udir. Tilgjengelighet er eksempler til skolene bekrefter dem. <a href=&quot;#data-sources&quot; class=&quot;sk-src-link&quot;>Se alle datakilder</a>">
+          Built on Designsystemet, in Norwegian, English and Ukrainian. Schools, test results, wellbeing and bullying are real public data from Udir. Access facts are examples until schools confirm them. <a href="#data-sources" class="sk-src-link">See all data sources</a>
         </p>
       </div>
       <a class="sk-proto-btn" href="skolekartet-prototype/index.html" target="_blank" rel="noopener"
@@ -590,8 +618,79 @@
       </div>
 
       <p class="sk-honest"
-         data-en-html="<b>Honest placeholders.</b> Test results and access facts are example data until schools confirm them, and there&rsquo;s a page where schools can do just that. The translations and the texts about parents&rsquo; rights still need an expert check."
-         data-no-html="<b>Ærlige plassholdere.</b> Prøveresultater og tilgjengelighet er eksempeldata til skolene bekrefter dem, og det finnes en side der skolene kan gjøre akkurat det. Oversettelsene og tekstene om foreldrenes rettigheter må fortsatt sjekkes av en fagperson."><b>Honest placeholders.</b> Test results and access facts are example data until schools confirm them, and there&rsquo;s a page where schools can do just that. The translations and the texts about parents&rsquo; rights still need an expert check.</p>
+         data-en-html="<b>Honest placeholders.</b> Access facts are example data until schools confirm them, and there&rsquo;s a page where schools can do just that. The translations and the texts about parents&rsquo; rights still need an expert check."
+         data-no-html="<b>Ærlige plassholdere.</b> Tilgjengelighet er eksempeldata til skolene bekrefter dem, og det finnes en side der skolene kan gjøre akkurat det. Oversettelsene og tekstene om foreldrenes rettigheter må fortsatt sjekkes av en fagperson."><b>Honest placeholders.</b> Access facts are example data until schools confirm them, and there&rsquo;s a page where schools can do just that. The translations and the texts about parents&rsquo; rights still need an expert check.</p>
+
+      <details class="sk-sources" id="data-sources">
+        <summary>
+          <span class="sk-sources-k" data-en="Data sources" data-no="Datakilder">Data sources</span>
+          <span class="sk-sources-h" data-en="Where every piece of information in the prototype comes from" data-no="Hvor all informasjonen i prototypen kommer fra">Where every piece of information in the prototype comes from</span>
+        </summary>
+        <p data-en="Data covers Oslo. Schools and Elevundersøkelsen were fetched on 4 November 2026, national tests on 10 November 2026. Anything marked &ldquo;Example&rdquo; is placeholder data, and the prototype says so wherever it appears."
+           data-no="Dataene gjelder Oslo. Skoler og Elevundersøkelsen ble hentet 4. november 2026, nasjonale prøver 10. november 2026. Alt som er merket «Eksempel» er plassholderdata, og prototypen sier det overalt der det vises.">Data covers Oslo. Schools and Elevundersøkelsen were fetched on 4 November 2026, national tests on 10 November 2026. Anything marked &ldquo;Example&rdquo; is placeholder data, and the prototype says so wherever it appears.</p>
+        <table class="sk-src-table">
+          <caption class="visually-hidden" data-en="Data sources for the Skolekartet prototype" data-no="Datakilder for Skolekartet-prototypen">Data sources for the Skolekartet prototype</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-en="Information" data-no="Informasjon">Information</th>
+              <th scope="col" data-en="Source" data-no="Kilde">Source</th>
+              <th scope="col" data-en="Type" data-no="Type">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th scope="row" data-en="Schools: name, address, year groups, pupil numbers, owner and location" data-no="Skoler: navn, adresse, trinn, elevtall, eier og plassering">Schools: name, address, year groups, pupil numbers, owner and location</th>
+            <td data-en-html="&lt;a href=&quot;https://data-nsr.udir.no/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Nasjonalt skoleregister (NSR)&lt;/a&gt;, Udir. 152 active schools in Oslo. Licence: NLOD." data-no-html="&lt;a href=&quot;https://data-nsr.udir.no/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Nasjonalt skoleregister (NSR)&lt;/a&gt;, Udir. 152 aktive skoler i Oslo. Lisens: NLOD."><a href="https://data-nsr.udir.no/" target="_blank" rel="noopener">Nasjonalt skoleregister (NSR)</a>, Udir. 152 active schools in Oslo. Licence: NLOD.</td>
+            <td><span class="sk-src-tag sk-src-tag--open" data-en="Open data" data-no="Åpne data">Open data</span></td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Phone and email for each school" data-no="Telefon og e-post til hver skole">Phone and email for each school</th>
+            <td data-en-html="&lt;a href=&quot;https://data.brreg.no/enhetsregisteret/oppslag/enheter&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Enhetsregisteret&lt;/a&gt;, Brønnøysundregistrene. NSR doesn&amp;rsquo;t have them. Licence: NLOD." data-no-html="&lt;a href=&quot;https://data.brreg.no/enhetsregisteret/oppslag/enheter&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Enhetsregisteret&lt;/a&gt;, Brønnøysundregistrene. NSR har dem ikke. Lisens: NLOD."><a href="https://data.brreg.no/enhetsregisteret/oppslag/enheter" target="_blank" rel="noopener">Enhetsregisteret</a>, Brønnøysundregistrene. NSR doesn&rsquo;t have them. Licence: NLOD.</td>
+            <td><span class="sk-src-tag sk-src-tag--open" data-en="Open data" data-no="Åpne data">Open data</span></td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Bullying and wellbeing, per school and year group" data-no="Mobbing og trivsel, per skole og trinn">Bullying and wellbeing, per school and year group</th>
+            <td data-en-html="&lt;a href=&quot;https://www.udir.no/tall-og-forskning/statistikk/statistikk-grunnskole/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Elevundersøkelsen&lt;/a&gt;, from Udir&amp;rsquo;s open statistics bank (tables 150 and 148)." data-no-html="&lt;a href=&quot;https://www.udir.no/tall-og-forskning/statistikk/statistikk-grunnskole/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Elevundersøkelsen&lt;/a&gt;, fra Udirs åpne statistikkbank (tabell 150 og 148)."><a href="https://www.udir.no/tall-og-forskning/statistikk/statistikk-grunnskole/" target="_blank" rel="noopener">Elevundersøkelsen</a>, from Udir&rsquo;s open statistics bank (tables 150 and 148).</td>
+            <td><span class="sk-src-tag sk-src-tag--open" data-en="Open data" data-no="Åpne data">Open data</span></td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="National test results, per school" data-no="Nasjonale prøver, per skole">National test results, per school</th>
+            <td data-en-html="&lt;a href=&quot;https://www.udir.no/tall-og-forskning/statistikk/statistikk-grunnskole/nasjonale-prover-5.-trinn/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Udir&amp;rsquo;s statistics portal&lt;/a&gt;, public figures without login. The average of English, reading and maths in year 5 (107 schools) or year 8 (60 schools), school year 2025&amp;ndash;26. Udir hides results for small groups." data-no-html="&lt;a href=&quot;https://www.udir.no/tall-og-forskning/statistikk/statistikk-grunnskole/nasjonale-prover-5.-trinn/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Udirs statistikkportal&lt;/a&gt;, offentlige tall uten innlogging. Snittet av engelsk, lesing og regning på 5. trinn (107 skoler) eller 8. trinn (60 skoler), skoleåret 2025&amp;ndash;26. Udir skjuler resultater for små grupper."><a href="https://www.udir.no/tall-og-forskning/statistikk/statistikk-grunnskole/nasjonale-prover-5.-trinn/" target="_blank" rel="noopener">Udir&rsquo;s statistics portal</a>, public figures without login. The average of English, reading and maths in year 5 (107 schools) or year 8 (60 schools), school year 2025&ndash;26. Udir hides results for small groups.</td>
+            <td><span class="sk-src-tag sk-src-tag--open" data-en="Open data" data-no="Åpne data">Open data</span></td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Address search" data-no="Adressesøk">Address search</th>
+            <td data-en-html="&lt;a href=&quot;https://ws.geonorge.no/adresser/v1/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Kartverket&amp;rsquo;s address API&lt;/a&gt;, asked live while you type." data-no-html="&lt;a href=&quot;https://ws.geonorge.no/adresser/v1/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Kartverkets adresse-API&lt;/a&gt;, spurt direkte mens du skriver."><a href="https://ws.geonorge.no/adresser/v1/" target="_blank" rel="noopener">Kartverket&rsquo;s address API</a>, asked live while you type.</td>
+            <td><span class="sk-src-tag sk-src-tag--live" data-en="Live service" data-no="Live-tjeneste">Live service</span></td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="The map" data-no="Kartet">The map</th>
+            <td data-en-html="&lt;a href=&quot;https://openfreemap.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenFreeMap&lt;/a&gt; tiles. Map data &amp;copy; &lt;a href=&quot;https://www.openstreetmap.org/copyright&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenStreetMap contributors&lt;/a&gt; (ODbL)." data-no-html="&lt;a href=&quot;https://openfreemap.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenFreeMap&lt;/a&gt;-kartfliser. Kartdata &amp;copy; &lt;a href=&quot;https://www.openstreetmap.org/copyright&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;OpenStreetMap-bidragsytere&lt;/a&gt; (ODbL)."><a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> tiles. Map data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a> (ODbL).</td>
+            <td><span class="sk-src-tag sk-src-tag--live" data-en="Live service" data-no="Live-tjeneste">Live service</span></td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Route to school without stairs" data-no="Skolevei uten trapper">Route to school without stairs</th>
+            <td data-en-html="&lt;a href=&quot;https://valhalla.github.io/valhalla/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Valhalla&lt;/a&gt; with a wheelchair profile, on a public server run by FOSSGIS e.V., using OpenStreetMap data. Fine for testing; a launch needs its own server." data-no-html="&lt;a href=&quot;https://valhalla.github.io/valhalla/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Valhalla&lt;/a&gt; med rullestolprofil, på en offentlig server driftet av FOSSGIS e.V., med OpenStreetMap-data. Greit for testing; en lansering trenger egen server."><a href="https://valhalla.github.io/valhalla/" target="_blank" rel="noopener">Valhalla</a> with a wheelchair profile, on a public server run by FOSSGIS e.V., using OpenStreetMap data. Fine for testing; a launch needs its own server.</td>
+            <td><span class="sk-src-tag sk-src-tag--live" data-en="Live service" data-no="Live-tjeneste">Live service</span></td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Public transport" data-no="Kollektivtransport">Public transport</th>
+            <td data-en-html="A button that opens &lt;a href=&quot;https://reise.ruter.no/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Ruter&amp;rsquo;s journey planner&lt;/a&gt;. Nothing is stored." data-no-html="En knapp som åpner &lt;a href=&quot;https://reise.ruter.no/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Ruters reiseplanlegger&lt;/a&gt;. Ingenting lagres.">A button that opens <a href="https://reise.ruter.no/" target="_blank" rel="noopener">Ruter&rsquo;s journey planner</a>. Nothing is stored.</td>
+            <td><span class="sk-src-tag sk-src-tag--link" data-en="Link only" data-no="Bare lenke">Link only</span></td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Deadlines, catchment areas and help texts" data-no="Frister, skolekretser og hjelpetekster">Deadlines, catchment areas and help texts</th>
+            <td data-en-html="&lt;a href=&quot;https://www.oslo.kommune.no/skole-og-utdanning/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Oslo kommune&lt;/a&gt; (deadlines checked November 2026). Rights and appeals link to &lt;a href=&quot;https://www.statsforvalteren.no/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Statsforvalteren&lt;/a&gt;, &lt;a href=&quot;https://www.ffo.no/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;FFO&lt;/a&gt; and &lt;a href=&quot;https://www.udir.no/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Udir&lt;/a&gt;." data-no-html="&lt;a href=&quot;https://www.oslo.kommune.no/skole-og-utdanning/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Oslo kommune&lt;/a&gt; (frister sjekket november 2026). Rettigheter og klager lenker til &lt;a href=&quot;https://www.statsforvalteren.no/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Statsforvalteren&lt;/a&gt;, &lt;a href=&quot;https://www.ffo.no/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;FFO&lt;/a&gt; og &lt;a href=&quot;https://www.udir.no/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Udir&lt;/a&gt;."><a href="https://www.oslo.kommune.no/skole-og-utdanning/" target="_blank" rel="noopener">Oslo kommune</a> (deadlines checked November 2026). Rights and appeals link to <a href="https://www.statsforvalteren.no/" target="_blank" rel="noopener">Statsforvalteren</a>, <a href="https://www.ffo.no/" target="_blank" rel="noopener">FFO</a> and <a href="https://www.udir.no/" target="_blank" rel="noopener">Udir</a>.</td>
+            <td><span class="sk-src-tag sk-src-tag--link" data-en="Link only" data-no="Bare lenke">Link only</span></td>
+          </tr>
+          <tr>
+            <th scope="row" data-en="Access in the building: lift, step-free entrance, special groups" data-no="Tilgjengelighet i bygget: heis, trinnfri inngang, spesialgruppe">Access in the building: lift, step-free entrance, special groups</th>
+            <td data-en-html="Example data for 7 schools around Majorstuen. Real facts will come from the schools themselves, through the &amp;ldquo;For schools&amp;rdquo; page in the prototype. There is no national register for this." data-no-html="Eksempeldata for 7 skoler rundt Majorstuen. Ekte fakta skal komme fra skolene selv, via «For skoler»-siden i prototypen. Det finnes ikke noe nasjonalt register for dette.">Example data for 7 schools around Majorstuen. Real facts will come from the schools themselves, through the &ldquo;For schools&rdquo; page in the prototype. There is no national register for this.</td>
+            <td><span class="sk-src-tag sk-src-tag--ex" data-en="Example" data-no="Eksempel">Example</span></td>
+          </tr>
+          </tbody>
+        </table>
+      </details>
     </section>
 
   </main>
@@ -610,6 +709,22 @@
     <span class="hi-live" aria-live="polite"></span>
   </aside>
 
+  <script>
+    // Open the collapsed data-sources block when someone links or jumps to it.
+    (function () {
+      function openSources() {
+        if (location.hash !== '#data-sources') return;
+        var d = document.getElementById('data-sources');
+        if (d) { d.open = true; d.scrollIntoView(); }
+      }
+      window.addEventListener('hashchange', openSources);
+      document.addEventListener('DOMContentLoaded', openSources);
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[href="#data-sources"]');
+        if (a) { var d = document.getElementById('data-sources'); if (d) d.open = true; }
+      });
+    })();
+  </script>
   <script src="i18n.js?v=2"></script>
   <script src="hi.js" defer></script>
   <script src="clips.js" defer></script>
