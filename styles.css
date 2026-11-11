@@ -424,45 +424,67 @@ footer.site {
   gap: 12px;
 }
 
-/* "Off screen": Bant and the plants, as polaroids, just above the Say hi card */
-.offscreen {
-  display: grid;
-  grid-template-columns: minmax(0, 290px) minmax(0, 1fr);
-  gap: 40px;
-  align-items: center;
-  margin: 0 0 40px;
-  padding: 44px 40px 52px 48px;
-  border-radius: 28px;
-  background: #f7f3ea;
-  border: 1px solid #ebe2cf;
-}
+/* "Off screen": a photo wall of Bant and the plants, just above the Say hi card */
+.offscreen { position: relative; margin: 0 0 40px; padding: 44px 48px 60px; border-radius: 28px; background: var(--warm); border: 1px solid var(--warm-line); }
+.offscreen-top { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px 40px; margin: 0 0 34px; }
+.offscreen-copy { flex: 1 1 340px; max-width: 430px; }
 .offscreen h2 { margin: 0 0 12px; font-family: 'Caveat', cursive; font-size: 48px; line-height: .95; font-weight: 700; letter-spacing: 0; color: #2b2b2b; }
-.offscreen p { margin: 0; font-size: 16px; line-height: 1.55; color: #55524a; }
-.offscreen-prints { display: flex; justify-content: center; padding: 8px 0 18px; }
-.offscreen-print { flex: 0 1 25%; min-width: 0; margin: 0 -3px; padding: 9px 9px 0; background: #fff; border-radius: 4px; box-shadow: 0 2px 4px rgba(60,40,10,.08), 0 22px 36px -22px rgba(60,40,10,.55); transition: transform .25s ease; }
-.offscreen-print:nth-child(1) { transform: rotate(-5deg) translateY(12px); z-index: 2; }
-.offscreen-print:nth-child(2) { transform: rotate(2.5deg); z-index: 1; }
-.offscreen-print:nth-child(3) { transform: rotate(-2deg) translateY(18px); z-index: 2; }
-.offscreen-print:nth-child(4) { transform: rotate(3.5deg) translateY(4px); z-index: 1; }
-.offscreen-print:hover { transform: rotate(0) translateY(-6px) scale(1.04); z-index: 3; }
-.offscreen-print .ph { aspect-ratio: 4 / 5; overflow: hidden; background: #ece6d8; }
-.offscreen-print img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.offscreen-print figcaption { min-height: 2.2em; display: flex; align-items: center; justify-content: center; padding: 8px 4px 12px; font-family: 'Caveat', cursive; font-size: 21px; font-weight: 600; line-height: 1.05; text-align: center; color: #333; }
+.offscreen-copy p { margin: 0; font-size: 16px; line-height: 1.55; color: #55524a; }
+.os-side { position: relative; display: flex; align-items: center; gap: 18px; }
+.os-note { max-width: 200px; margin: 0; font-family: 'Caveat', cursive; font-size: 24px; font-weight: 600; line-height: 1.05; color: #2b2b2b; transform: rotate(-3deg); }
+.os-note b { font-weight: 700; color: var(--id-s); }
+.os-arrow { flex: none; align-self: flex-end; margin: 0 0 -26px -10px; color: var(--id-s); }
+.os-shuffle { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 20px; border: 1.5px solid var(--navy); border-radius: 999px; background: #fff; color: var(--navy); font: 600 16px/1 inherit; font-family: inherit; cursor: pointer; transition: background-color .2s ease, transform .2s ease; }
+.os-shuffle:hover { background: #fffdf4; transform: translateY(-1px); }
+.os-shuffle:hover svg { transform: rotate(-12deg); }
+.os-shuffle svg { transition: transform .2s ease; }
+.os-shuffle:focus-visible { outline: 3px solid var(--id-s); outline-offset: 3px; }
+.os-shuffle[hidden] { display: none; }
+.os-swipe { display: none; }
+
+.offscreen-wall { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-flow: dense; gap: 30px 18px; align-items: start; padding: 6px 2px 0; }
+.offscreen-wall:focus-visible { outline: 3px solid var(--id-s); outline-offset: 4px; border-radius: 12px; }
+.os-print { position: relative; margin: 0; padding: 9px 9px 0; background: #fff; border-radius: 4px; box-shadow: 0 2px 4px rgba(60,40,10,.08), 0 22px 36px -22px rgba(60,40,10,.55); transform: translateY(var(--y, 0px)) rotate(var(--r, 0deg)); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+.os-print:hover { z-index: 3; transform: translateY(-8px) rotate(0deg) scale(1.06); }
+.os-print .ph { aspect-ratio: 4 / 5; overflow: hidden; background: #ece6d8; }
+.os-print img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.os-print figcaption { min-height: 2.2em; display: flex; align-items: center; justify-content: center; padding: 8px 4px 12px; font-family: 'Caveat', cursive; font-size: 21px; font-weight: 600; line-height: 1.05; text-align: center; color: #333; }
+/* The landscape photo spans two columns and matches the portrait photos' height */
+.os-wide { grid-column: span 2; align-self: stretch; display: flex; flex-direction: column; }
+.os-wide .ph { position: relative; flex: 1; aspect-ratio: auto; }
+.os-wide img { position: absolute; inset: 0; }
+/* Washi tape and pins */
+.os-print::before { content: ""; position: absolute; z-index: 1; top: -11px; left: 50%; width: 62px; height: 22px; margin-left: -31px; border-radius: 2px; background: rgba(250, 204, 21, .55); transform: rotate(-4deg); }
+.os-print:nth-child(3n+2)::before { width: 54px; margin-left: -27px; background: rgba(47, 82, 217, .2); transform: rotate(5deg); }
+.os-print:nth-child(3n)::before { top: 3px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #ff9b9b, #d93a3a 60%, #a51f1f); box-shadow: 0 2px 3px rgba(0,0,0,.28); transform: none; }
+.os-paws { position: absolute; right: 44px; bottom: 12px; color: #e2d5b8; fill: currentColor; pointer-events: none; }
+
 @media (prefers-reduced-motion: reduce) {
-  .offscreen-print { transition: none; }
-  .offscreen-print:hover { transform: none; }
+  .os-print, .os-shuffle, .os-shuffle svg { transition: none; }
+  .os-print:hover { transform: translateY(var(--y, 0px)) rotate(var(--r, 0deg)); }
+  .os-shuffle:hover, .os-shuffle:hover svg { transform: none; }
 }
+@media (forced-colors: active) { .os-print { border: 1px solid CanvasText; } }
 @media (max-width: 960px) {
-  .offscreen { grid-template-columns: 1fr; gap: 28px; padding: 36px 32px 44px; }
-  .offscreen-prints { max-width: 720px; margin: 0 auto; }
+  .offscreen { padding: 36px 32px 52px; }
+  .offscreen-wall { gap: 26px 14px; }
+  .os-print figcaption { font-size: 19px; }
 }
 @media (max-width: 760px) {
-  .offscreen { padding: 32px 20px 36px; border-radius: 24px; margin-bottom: 28px; }
+  .offscreen { padding: 32px 0 26px; border-radius: 24px; margin-bottom: 28px; }
+  .offscreen-top { padding: 0 20px; margin-bottom: 8px; align-items: flex-start; }
   .offscreen h2 { font-size: 46px; }
-  .offscreen-prints { flex-wrap: wrap; row-gap: 22px; padding: 4px 4px 8px; }
-  .offscreen-print { flex: 0 0 46%; margin: 0 -2px; }
-  .offscreen-print:nth-child(3) { transform: rotate(-2deg) translateY(4px); }
-  .offscreen-print figcaption { font-size: 19px; padding: 7px 2px 10px; }
+  .os-side { flex-wrap: wrap; gap: 14px 18px; width: 100%; }
+  .os-note { max-width: none; flex: 1 1 100%; }
+  .os-arrow { display: none; }
+  .os-swipe { display: block; margin-left: auto; font-family: 'Caveat', cursive; font-size: 21px; font-weight: 600; color: #55524a; }
+  .offscreen-wall { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 20px; padding: 22px 20px 30px; scrollbar-width: none; }
+  .offscreen-wall::-webkit-scrollbar { display: none; }
+  .offscreen-wall:focus-visible { outline-offset: -3px; }
+  .os-print { flex: 0 0 156px; scroll-snap-align: start; }
+  .os-wide { display: flex; flex-basis: 290px; }
+  .os-print figcaption { font-size: 19px; padding: 7px 2px 10px; }
+  .os-paws { display: none; }
 }
 
 /* ---------- Case study ---------- */
