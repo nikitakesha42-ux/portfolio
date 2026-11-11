@@ -2590,8 +2590,8 @@ footer.site {
 .home-hero-ref .meet-badge .ring text {
   fill: var(--navy);
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
+  font-size: 9.5px;
+  letter-spacing: 0.04em; /* the phrase twice must fit the 239-unit circle, or the ends overlap */
 }
 .home-hero-ref .meet-badge .star {
   font-size: 22px;
@@ -3307,7 +3307,7 @@ img, video { max-width: 100%; height: auto; }
     float: none;
     width: 65%;
     max-width: 240px;
-    margin: 0 auto 20px;
+    margin: 0 auto 32px;
   }
   .home-hero-ref .meet-badge { width: 62px; height: 62px; right: -14px; bottom: -14px; }
   .home-hero-ref .meet-badge svg { width: 62px; height: 62px; }
