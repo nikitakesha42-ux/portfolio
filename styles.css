@@ -4154,8 +4154,8 @@ video.clip:focus-visible { outline: 3px solid currentColor; outline-offset: 3px;
 .how-section .tpl-section-label { display: block; margin-bottom: 10px; }
 .how-section .id-h2 { max-width: none; }
 .how-section .id-h2 span { display: block; color: var(--id-s); }
-.how-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 36px; align-items: start; }
-.how-note { position: relative; margin: 8px 0 0; padding: 38px 34px 28px; background: #fffdf4; border-radius: 6px 6px 20px 6px; transform: rotate(-1.2deg); box-shadow: 0 26px 40px -28px rgba(60, 40, 10, .55), 0 1px 0 rgba(0,0,0,.04);
+.how-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 36px; align-items: center; }
+.how-note { position: relative; margin: 0; padding: 38px 34px 28px; background: #fffdf4; border-radius: 6px 6px 20px 6px; transform: rotate(-1.2deg); box-shadow: 0 26px 40px -28px rgba(60, 40, 10, .55), 0 1px 0 rgba(0,0,0,.04);
   background-image: repeating-linear-gradient(transparent 0 31px, rgba(47, 82, 217, .10) 31px 32px); background-position: 0 22px; }
 .how-note::before { content: ""; position: absolute; top: -14px; left: 50%; width: 120px; height: 30px; margin-left: -60px; background: rgba(250, 204, 21, .55); transform: rotate(3deg); border-radius: 3px; }
 .how-note p { margin: 0 0 14px; font-size: 18px; line-height: 32px; color: #1f2937; }
