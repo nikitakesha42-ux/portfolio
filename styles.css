@@ -4284,7 +4284,7 @@ video.clip:focus-visible { outline: 3px solid currentColor; outline-offset: 3px;
 .cc-cta { font-size: 16px; font-weight: 600; color: var(--navy); }
 
 /* The AI research workflow closes chapter 02 */
-.chapter .process-band { margin-top: 32px; padding: 36px 40px 32px; background: #fff; border: 1px solid var(--rule); border-radius: 22px; }
+.chapter .process-band { margin: 0 0 32px; padding: 36px 40px 32px; background: #fff; border: 1px solid var(--rule); border-radius: 22px; }
 .chapter .process-band-h2 { margin: 10px 0 24px; max-width: 46ch; font-size: 24px; line-height: 1.25; }
 .chapter .process-steps { gap: 0; margin: 0 0 28px; border-top: 1px solid var(--rule); }
 .chapter .process-step { padding: 20px 24px 0 0; background: none; border: 0; border-radius: 0; }
