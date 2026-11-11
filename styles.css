@@ -4183,26 +4183,28 @@ video.clip:focus-visible { outline: 3px solid currentColor; outline-offset: 3px;
 .how-rules b { display: block; font-size: 17px; color: #111827; letter-spacing: -0.01em; }
 .how-rules span:not(.how-ico) { display: block; font-size: 14.5px; line-height: 1.45; color: #4b5563; margin-top: 2px; }
 
-.hi-card { position: relative; overflow: hidden; margin: 0 0 72px; padding: 56px 48px 48px; border-radius: 32px; color: #fff;
-  background: radial-gradient(120% 140% at 100% 0%, #5b7cfa 0%, #2f52d9 45%, #1e3aa8 100%); box-shadow: 0 40px 60px -40px rgba(30, 58, 168, .8); }
-.hi-card::after { content: ""; position: absolute; right: -80px; bottom: -110px; width: 320px; height: 320px; border-radius: 50%; background: rgba(255,255,255,.07); pointer-events: none; }
-.hi-face { position: absolute; right: 52px; top: 44px; width: 96px; height: 96px; transform: rotate(8deg); filter: drop-shadow(0 14px 18px rgba(0,0,0,.25)); animation: hiWave 2.4s ease-in-out 1s 2; }
-@keyframes hiWave { 0%,100% { transform: rotate(8deg); } 20% { transform: rotate(-6deg) translateY(-4px); } 40% { transform: rotate(12deg); } 60% { transform: rotate(-2deg); } }
-.hi-spark { position: absolute; right: 168px; top: 40px; font-size: 30px; color: #fde68a; line-height: 1; }
-.hi-heart { position: absolute; right: 40px; top: 156px; font-size: 26px; color: #f9a8d4; line-height: 1; transform: rotate(-12deg); }
-.hi-status { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3); font-size: 13.5px; font-weight: 600; }
-.hi-status i { width: 9px; height: 9px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 4px rgba(74, 222, 128, .25); }
-.hi-card h2 { margin: 20px 0 14px; max-width: 17ch; font-size: clamp(34px, 5vw, 60px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 800; color: #fff; }
-.hi-card h2 span { color: #fde68a; }
-.hi-card p { margin: 0 0 28px; max-width: 54ch; font-size: 17px; line-height: 1.55; color: rgba(255,255,255,.88); }
+.hi-card { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 0 56px; align-items: center; margin: 0 0 72px; padding: 44px 48px; border-radius: 28px; color: var(--navy); background: #f4f6ff; border: 1px solid #dce3fb; }
+.hi-card > * { grid-column: 1; }
+.hi-status { justify-self: start; display: inline-flex; align-items: center; gap: 8px; padding: 6px 13px; border-radius: 999px; background: #fff; border: 1px solid #cfd8f6; font-size: 13.5px; font-weight: 600; color: var(--navy); }
+.hi-status i { width: 9px; height: 9px; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 4px rgba(22, 163, 74, .18); }
+.hi-card h2 { margin: 16px 0 10px; max-width: 22ch; font-size: clamp(28px, 3.2vw, 38px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 800; color: var(--navy); }
+.hi-card h2 span { color: var(--id-s); }
+.hi-card p { margin: 0; max-width: 54ch; font-size: 16px; line-height: 1.55; color: #4b5563; }
 .hi-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.hi-card .hi-actions { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-column: 2; grid-row: 1 / span 3; }
+.hi-card .hi-actions .hi-btn { grid-column: span 2; justify-content: center; padding: 0 12px; }
+.hi-card .hi-actions .hi-primary { grid-column: 1 / -1; }
 .hi-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 20px; border-radius: 999px; font: inherit; font-size: 15.5px; font-weight: 600; text-decoration: none; cursor: pointer;
-  color: #fff; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.45); transition: background .15s ease, transform .15s ease; }
-.hi-btn:hover { background: rgba(255,255,255,.18); transform: translateY(-1px); }
-.hi-btn:focus-visible { outline: 3px solid #fde68a; outline-offset: 3px; }
-.hi-btn.hi-primary { background: #fff; color: #1e3aa8; border-color: #fff; }
-.hi-btn.hi-primary:hover { background: #fde68a; border-color: #fde68a; }
+  color: var(--navy); background: #fff; border: 1.5px solid #c3cdf0; transition: background .15s ease, border-color .15s ease, color .15s ease; }
+.hi-btn:hover { border-color: var(--navy); }
+.hi-btn:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+.hi-btn.hi-primary { background: var(--navy); color: #fff; border-color: var(--navy); }
+.hi-btn.hi-primary:hover { background: var(--id-s); border-color: var(--id-s); }
 .hi-copy.is-done { background: #4ade80; border-color: #4ade80; color: #052e16; }
+@media (max-width: 900px) {
+  .hi-card { grid-template-columns: 1fr; }
+  .hi-card .hi-actions { grid-column: 1; grid-row: auto; max-width: 460px; margin-top: 24px; }
+}
 .hi-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .hi-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; max-width: 1120px; margin: 0 auto 64px; padding: 20px 24px; border-radius: 22px; background: var(--id-s-bg); border: 2px solid var(--id-s); }
@@ -4235,19 +4237,16 @@ video.clip:focus-visible { outline: 3px solid currentColor; outline-offset: 3px;
   .how-note { padding: 32px 22px 22px; transform: none; }
   .how-note p { font-size: 16.5px; }
   .how-rules li { transform: none !important; }
-  .hi-card { padding: 120px 22px 30px; border-radius: 24px; }
-  .hi-face { right: auto; left: 22px; top: 26px; width: 72px; height: 72px; }
-  .hi-spark { right: 30px; top: 30px; }
-  .hi-heart { right: 70px; top: 70px; }
-  .hi-btn { flex: 1 1 100%; justify-content: center; }
+  .hi-card { padding: 28px 20px; border-radius: 22px; }
+  .hi-card .hi-actions .hi-btn { grid-column: span 3; font-size: 15px; }
+  .hi-card .hi-actions .hi-primary,
+  .hi-card .hi-actions .hi-copy { grid-column: 1 / -1; }
   .hi-strip { margin: 0 16px 48px; }
 }
-@media (prefers-reduced-motion: reduce) { .hi-face { animation: none; } .how-rules li, .hi-btn { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .how-rules li, .hi-btn { transition: none; } }
 @media (forced-colors: active) { .how-note mark, .about-hero .hero-bio mark, .now-block mark { background: Mark; color: MarkText; } .hi-card { border: 2px solid CanvasText; } }
-.hi-face { background: #fff; border-radius: 30px; padding: 10px; }
 .about-hero .hero-bio p + p { margin-top: 12px; }
-@media (max-width: 680px) { .hi-face { padding: 7px; border-radius: 22px; } }
-#contact.hi-card h2 { font-size: clamp(30px, 4vw, 46px); max-width: 20ch; }
+#contact.hi-card h2 { max-width: 24ch; }
 .hi-ico { flex: none; display: block; }
 
 /* ============================================================
